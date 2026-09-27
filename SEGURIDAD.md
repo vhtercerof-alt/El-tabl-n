@@ -96,7 +96,6 @@ Estas cambian cómo funciona la app o dependen de la base de datos, que no pude 
 | Contador de vistas de noticias | Pasarlo a una función del servidor y quitar a los estudiantes el permiso de editar `prensa` | Cambio pequeño en la página + SQL (plantilla B.3) |
 | Registro abierto | Pedir un **código de invitación** o que el owner apruebe cada cuenta nueva | Un paso más para los estudiantes |
 | Imágenes de terceros | Subir las fotos de la ruleta y las plantillas de memes a tu propio Storage de Supabase | Trabajo manual de subir imágenes |
-| Política de seguridad de contenido (CSP) | Solo es posible si la app se publica fuera de Systeme.io, en un hosting donde controles las cabeceras | Requiere mudar el hosting |
 
 ---
 
@@ -128,6 +127,17 @@ Estas cambian cómo funciona la app o dependen de la base de datos, que no pude 
 10. **Datos de menores:** si los estudiantes son menores de edad, mantené la regla que ya muestra la app (no pedir teléfono, correo real ni dirección) y evitá guardar fotos reales de ellos en servicios de terceros.
 
 ---
+
+## 6 bis. Versión para Vercel (cabeceras de seguridad)
+
+Al publicar en Vercel (ver `VERCEL.md`), `vercel.json` agrega protecciones que Systeme.io no permitía:
+
+- **Content-Security-Policy:** el navegador solo ejecuta código del propio sitio y de la librería fijada en jsDelivr. Solo se conecta a tu proyecto de Supabase. Aunque apareciera un nuevo fallo de inyección, un código inyectado no podría ejecutarse ni enviar datos a otro servidor.
+- **X-Frame-Options / frame-ancestors:** otra página no puede mostrar el tablón dentro de un marco para engañar a los usuarios (*clickjacking*).
+- **Strict-Transport-Security:** siempre por conexión cifrada (HTTPS).
+- **X-Content-Type-Options, Referrer-Policy, Permissions-Policy:** evitan interpretaciones peligrosas de archivos, no revelan de qué página vienen los visitantes y bloquean cámara, micrófono y ubicación.
+
+Se probó en navegador con estas cabeceras: la portada y el ingreso cargan sin errores ni bloqueos. Las pantallas internas (después de iniciar sesión) no se pudieron probar sin acceso a tu Supabase. Si algo no carga, la consola del navegador mostrará "Content Security Policy" con el recurso bloqueado.
 
 ## 7. Pendientes de verificar
 
