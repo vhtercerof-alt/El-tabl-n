@@ -1,5 +1,7 @@
 <!-- EL TABLÓN · pegar completo en un bloque de código de Systeme.io -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js"
+integrity="sha384-Rj26LVGvoeRVR6+mwQmFfcR3QOBEwT+ZmuCWpuiqeTzJpCs0ER4ITAWGb4Hiy3Ok"
+crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap');
@@ -7535,7 +7537,7 @@ más abajo.
 </label>
 <label class="tb-field">
 <span>Contraseña nueva</span>
-<input id="tb-password-new" type="text" minlength="8" placeholder="Mínimo 8 caracteres" required>
+<input id="tb-password-new" type="password" autocomplete="new-password" minlength="10" placeholder="Mínimo 10 caracteres" required>
 </label>
 <div class="wide tb-actions">
 <button class="tb-primary">Asignar contraseña</button>
@@ -8415,9 +8417,36 @@ function has(object, key) {
 return Object.prototype.hasOwnProperty.call(object, key);
 }
 function escapeHtml(value) {
-var element = document.createElement("div");
-element.textContent = value === null || value === undefined ? "" : String(value);
-return element.innerHTML;
+// Escapa también comillas: el texto se usa dentro de atributos (src, title,
+// style, data-*). Sin esto, un nombre o URL con comillas podía inyectar código.
+return (value === null || value === undefined ? "" : String(value))
+.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+.replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+// Devuelve una URL de imagen segura o "" si no lo es. Acepta http(s), blob:
+// e imágenes data: en base64. Codifica los caracteres que podrían cerrar
+// un url("...") de CSS o un atributo HTML.
+function safeUrl(value) {
+var raw = String(value === null || value === undefined ? "" : value).trim();
+if (!raw || raw.length > 8000000 || /[\u0000-\u001f\u007f]/.test(raw)) { return ""; }
+if (/^data:/i.test(raw)) {
+return /^data:image\/(png|jpe?g|gif|webp);base64,[A-Za-z0-9+\/=]+$/i.test(raw) ? raw : "";
+}
+if (/^blob:/i.test(raw)) {
+return /^blob:https?:\/\/[^\s"'()\\<>]+$/i.test(raw) ? raw : "";
+}
+var u;
+try { u = new URL(raw); } catch (e) { return ""; }
+if ((u.protocol !== "https:" && u.protocol !== "http:") || u.username || u.password) { return ""; }
+return u.href.replace(/["'()\\<>\s]/g, function (c) {
+return "%" + c.charCodeAt(0).toString(16).toUpperCase().padStart(2, "0");
+});
+}
+// Solo colores CSS simples (#hex, rgb/hsl, nombre); evita inyectar CSS.
+function safeCssColor(value, fallback) {
+var v = String(value === null || value === undefined ? "" : value).trim();
+if (/^#[0-9a-f]{3,8}$/i.test(v) || /^(rgb|hsl)a?\([0-9.,%\s\/deg-]+\)$/i.test(v) || /^[a-z]{3,20}$/i.test(v)) { return v; }
+return fallback || "#8fa6ff";
 }
 function pad(value) { return (value < 10 ? "0" : "") + value; }
 function showMessage(text, success) {
@@ -8566,7 +8595,7 @@ var url = avatarUrl(profile);
 var name = profile.display_name || profile.username || "?";
 if (url) {
 return '<div class="' + className + ' tb-avatar-img" style="background-image:url(&quot;' +
-escapeHtml(url) + '&quot;)"></div>';
+escapeHtml(safeUrl(url)) + '&quot;)"></div>';
 }
 return '<div class="' + className + '">' +
 escapeHtml(name.charAt(0).toUpperCase()) + "</div>";
@@ -8661,8 +8690,8 @@ return '<div class="tb-item-preview ' +
 }
 if (kind === "avatar") {
 return '<div class="tb-item-preview"><div class="tb-avatar-preview" style="' +
-(unlocked && item.url
-? "background-image:url(&quot;" + escapeHtml(item.url) + "&quot;)"
+(unlocked && safeUrl(item.url)
+? "background-image:url(&quot;" + escapeHtml(safeUrl(item.url)) + "&quot;)"
 : "background:" + item.color + (unlocked ? "" : "33")) +
 '"></div></div>';
 }
@@ -9008,16 +9037,17 @@ alert("Contadores reiniciados para " + result.data + " usuario(s).");
 await loadData();
 return;
 }
-var payload = {};
-Object.keys(COLLECTIONS).forEach(function (kind) {
-if (collectionSupported(kind)) { payload[COLLECTIONS[kind].spin] = null; }
-});
-var own = await client.from("profiles").update(payload).eq("id", me.id);
+// Se usa la función del servidor (que verifica el rol owner) en vez de
+// escribir el perfil directamente: así la base puede impedir que cualquier
+// usuario borre sus propios contadores de giro.
+var own = await client.rpc("owner_reset_spins", { target_user: me.id });
 if (own.error) {
 alert(own.error.message);
 return;
 }
-Object.keys(payload).forEach(function (field) { me[field] = null; });
+Object.keys(COLLECTIONS).forEach(function (kind) {
+if (collectionSupported(kind)) { me[COLLECTIONS[kind].spin] = null; }
+});
 renderShop();
 alert("Tus contadores quedaron en cero.");
 }
@@ -9053,11 +9083,11 @@ return '<div class="tb-gift tb-gift-carta' + (sellada.shiny ? ' tb-gift-shiny' :
 '<div class="tb-gift-sobre"><span>✦</span></div>' +
 '<p class="tb-gift-nota">Carta sellada</p>' +
 '<p class="tb-muted" style="margin:-6px 0 10px;font-size:12px">' + (sellada.shiny ? 'Algo brilla adentro…' : 'Ábrela para descubrirla') + '</p>' +
-'<button class="tb-primary" data-gift="' + gift.id + '">Abrir</button></div>';
+'<button class="tb-primary" data-gift="' + escapeHtml(gift.id) + '">Abrir</button></div>';
 }
 return '<div class="tb-gift"><div class="tb-gift-icon">🎁</div>' +
 '<p class="tb-muted">' + escapeHtml(kindLabel(gift.kind)) + "</p>" +
-'<button class="tb-primary" data-gift="' + gift.id + '">Abrir</button></div>';
+'<button class="tb-primary" data-gift="' + escapeHtml(gift.id) + '">Abrir</button></div>';
 }).join("") + "</div>"
 : emptyState("Cuando te envíen algo aparecerá aquí.")) +
 "</div>" +
@@ -9108,7 +9138,7 @@ if (!userSelect) { return; }
 userSelect.innerHTML = '<option value="">Selecciona un destinatario</option>' +
 '<option value="__all__">⭐ Todos los usuarios</option>' +
 profiles.map(function (profile) {
-return '<option value="' + profile.id + '">' +
+return '<option value="' + escapeHtml(profile.id) + '">' +
 escapeHtml(profile.display_name) + " (@" + escapeHtml(profile.username) + ")</option>";
 }).join("");
 $("#tb-gift-kind").innerHTML = '<option value="__cartas">✦ Cartas épicas (normal y Shiny)</option>' +
@@ -9193,8 +9223,8 @@ return '<div class="tb-pod tb-pod-' + place + '" data-profile="' +
 profile.id + '">' +
 '<span class="tb-pod-medal">' + medals[place] + "</span>" +
 '<div class="tb-pod-avatar"' +
-(url ? ' style="background-image:url(&quot;' + escapeHtml(url) + '&quot;)"' : "") + ">" +
-(url ? "" : escapeHtml(String(profile.display_name || "?").charAt(0).toUpperCase())) +
+(safeUrl(url) ? ' style="background-image:url(&quot;' + escapeHtml(safeUrl(url)) + '&quot;)"' : "") + ">" +
+(safeUrl(url) ? "" : escapeHtml(String(profile.display_name || "?").charAt(0).toUpperCase())) +
 "</div>" +
 '<span class="tb-pod-name">' + escapeHtml(profile.display_name) + "</span>" +
 '<span class="tb-pod-score">' + (profile.completed_tasks || 0) + " cumplidas</span>" +
@@ -9252,8 +9282,8 @@ var publicada = tiempoRelativo(task.created_at);
 var controls = "";
 if (managementMode && isStaff()) {
 controls = '<div class="tb-actions">' +
-'<button class="tb-secondary" data-edit-task="' + task.id + '">Editar</button>' +
-'<button class="tb-danger" data-delete-task="' + task.id + '">Borrar</button></div>';
+'<button class="tb-secondary" data-edit-task="' + escapeHtml(task.id) + '">Editar</button>' +
+'<button class="tb-danger" data-delete-task="' + escapeHtml(task.id) + '">Borrar</button></div>';
 }
 var urgente = priority === "alta"
 ? '<span class="tb-task-urgente">Urgente</span>'
@@ -9664,7 +9694,7 @@ roleHtml(profile) + "</div></div>"
 '<small class="tb-muted">@' + escapeHtml(profile.username) + "</small><br>" +
 roleHtml(profile);
 return '<article class="tb-card tb-profile-card' + skinClass(profile) +
-'" data-profile="' + profile.id + '">' +
+'" data-profile="' + escapeHtml(profile.id) + '">' +
 shinyArtHtml(profile) + frameHtml(profile) +
 '<div class="tb-banner" style="' + bannerStyle(profile) + '"></div>' +
 '<div class="tb-profile-body">' +
@@ -9735,7 +9765,7 @@ renderProfiles();
 }
 var opciones = '<option value="">Selecciona un usuario</option>' +
 profilesOrdenados().map(function (profile) {
-return '<option value="' + profile.id + '">' + escapeHtml(profile.display_name) +
+return '<option value="' + escapeHtml(profile.id) + '">' + escapeHtml(profile.display_name) +
 " (@" + escapeHtml(profile.username) + ") · nivel " + (profile.level || 1) +
 "</option>";
 }).join("");
@@ -9743,24 +9773,24 @@ $("#tb-password-user").innerHTML = opciones;
 $("#tb-level-user").innerHTML = opciones;
 $("#tb-owner-users").innerHTML = profilesOrdenados().map(function (profile) {
 var deleteButton = profile.id !== me.id
-? '<button class="tb-danger" data-delete-user="' + profile.id + '">Borrar perfil</button>'
+? '<button class="tb-danger" data-delete-user="' + escapeHtml(profile.id) + '">Borrar perfil</button>'
 : "";
 return "<tr><td><b>" + escapeHtml(profile.display_name) + "</b><br><small>@" +
 escapeHtml(profile.username) + "</small></td><td>" +
-'<select data-role-user="' + profile.id + '">' +
+'<select data-role-user="' + escapeHtml(profile.id) + '">' +
 '<option value="student"' + (profile.role === "student" ? " selected" : "") + ">student</option>" +
 '<option value="admin"' + (profile.role === "admin" ? " selected" : "") + ">admin</option>" +
 '<option value="owner"' + (profile.role === "owner" ? " selected" : "") + ">owner</option>" +
 "</select></td><td>" +
 '<input class="tb-level-input" type="number" min="1" max="999" value="' +
-(profile.level || 1) + '" data-level-user="' + profile.id + '">' +
+(profile.level || 1) + '" data-level-user="' + escapeHtml(profile.id) + '">' +
 "</td><td>" +
 '<input class="tb-level-input" type="number" min="0" max="9999" style="width:58px" ' +
 'value="' + (profile.streak_count || 0) + '" title="Días de racha" ' +
-'data-racha-user="' + profile.id + '">' +
+'data-racha-user="' + escapeHtml(profile.id) + '">' +
 '<input class="tb-level-input" type="number" min="0" max="99" style="width:44px;margin-left:5px" ' +
 'value="' + (profile.streak_shields || 0) + '" title="Protectores de racha" ' +
-'data-escudo-user="' + profile.id + '">' +
+'data-escudo-user="' + escapeHtml(profile.id) + '">' +
 "</td><td>" + (profile.completed_tasks || 0) + "</td><td>" + deleteButton + "</td></tr>";
 }).join("");
 $$("[data-profile]").forEach(function (card) {
@@ -10816,8 +10846,8 @@ if (!fondo) { return ""; }
 var claro = root.classList.contains("tb-light");
 var tonos = (claro && fondo.cieloDia ? fondo.cieloDia : fondo.cielo).split(",");
 var dibujo = claro && fondo.escenaDia ? fondo.escenaDia : fondo.escena;
-if (fondo.url && fondo.url.trim()) {
-return 'url("' + fondo.url.trim() + '")';
+if (fondo.url && safeUrl(fondo.url)) {
+return 'url("' + safeUrl(fondo.url) + '")';
 }
 var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" ' +
 'preserveAspectRatio="xMidYMid slice">' +
@@ -11048,7 +11078,7 @@ return;
 var lista = rolesOrdenados();
 caja.innerHTML = lista.map(function (rol, indice) {
 return '<div class="tb-role-row' + (rol.id === rolSeleccionado ? " activa" : "") +
-'" data-role="' + rol.id + '" style="--rc:' + escapeHtml(rol.color) + '">' +
+'" data-role="' + escapeHtml(rol.id) + '" style="--rc:' + escapeHtml(safeCssColor(rol.color)) + '">' +
 '<span class="tb-grip" title="Arrastra para mover">⠿</span>' +
 '<span class="tb-role-dot' + (rol.icon ? "" : " plano") + '">' +
 (rol.icon ? iconoRol(rol.icon) : "") + "</span>" +
@@ -11056,9 +11086,9 @@ return '<div class="tb-role-row' + (rol.id === rolSeleccionado ? " activa" : "")
 (rol.base ? '<span class="tb-role-base">base</span>' : "") +
 '<span class="tb-role-count">' + contarMiembros(rol.id) + "</span>" +
 '<span class="tb-role-tools">' +
-'<button type="button" class="tb-mini" data-subir="' + rol.id + '"' +
+'<button type="button" class="tb-mini" data-subir="' + escapeHtml(rol.id) + '"' +
 (indice === 0 ? " disabled" : "") + ">▲</button>" +
-'<button type="button" class="tb-mini" data-bajar="' + rol.id + '"' +
+'<button type="button" class="tb-mini" data-bajar="' + escapeHtml(rol.id) + '"' +
 (indice === lista.length - 1 ? " disabled" : "") + ">▼</button>" +
 "</span></div>";
 }).join("");
@@ -11088,7 +11118,7 @@ return;
 }
 var miembros = miembrosDe(rol.id);
 caja.innerHTML =
-'<div class="tb-role-hero" style="--rc:' + escapeHtml(rol.color) + '">' +
+'<div class="tb-role-hero" style="--rc:' + escapeHtml(safeCssColor(rol.color)) + '">' +
 '<div class="tb-role-hero-icon">' +
 (rol.icon ? iconoRol(rol.icon) : iconoRol("estrella")) + "</div>" +
 '<div class="tb-role-hero-text">' +
@@ -11136,7 +11166,7 @@ return '<label class="tb-field">' +
 "</small></span>" +
 "</label>" +
 '<label class="tb-field"><span>Icono</span></label>' +
-'<div class="tb-icon-grid" id="tb-role-icons" style="--rc:' + escapeHtml(rol.color) + '">' +
+'<div class="tb-icon-grid" id="tb-role-icons" style="--rc:' + escapeHtml(safeCssColor(rol.color)) + '">' +
 '<button type="button" class="tb-icon-pick' + (rol.icon ? "" : " on") +
 '" data-icono="">✕</button>' +
 Object.keys(ICONOS_ROL).map(function (nombre) {
@@ -11159,7 +11189,7 @@ return '<p class="tb-muted" style="margin:0 0 12px;font-size:12.5px">' +
 '<div class="tb-member-list" id="tb-role-members">' +
 profilesOrdenados().map(function (profile) {
 return '<label class="tb-member">' +
-'<input type="checkbox" value="' + profile.id + '"' +
+'<input type="checkbox" value="' + escapeHtml(profile.id) + '"' +
 (miembros.indexOf(profile.id) >= 0 ? " checked" : "") + ">" +
 '<span class="tb-member-name">' + escapeHtml(profile.display_name) +
 "<small>@" + escapeHtml(profile.username) + "</small></span>" +
@@ -11522,7 +11552,7 @@ if (!select) { return; }
 var elegido = select.value;
 select.innerHTML = '<option value="__all__">⭐ Todos los usuarios</option>' +
 profilesOrdenados().map(function (profile) {
-return '<option value="' + profile.id + '">' +
+return '<option value="' + escapeHtml(profile.id) + '">' +
 escapeHtml(profile.display_name) + " (@" + escapeHtml(profile.username) +
 ") · " + (profile.belis || 0).toLocaleString("es") + " B</option>";
 }).join("");
@@ -12337,8 +12367,8 @@ var relojTimer = null;
 function panelHtml(clave, clase, color, etiqueta, icono_, titulo, cuerpo, pie, foto, arte) {
 return '<button type="button" class="tb-panelN ' + clase +
 '" data-panel="' + clave + '" style="--pn:' + color + '">' +
-(foto ? '<div class="tb-pn-foto" style="background-image:url(&quot;' +
-escapeHtml(foto) + '&quot;)"></div>' : "") +
+(safeUrl(foto) ? '<div class="tb-pn-foto" style="background-image:url(&quot;' +
+escapeHtml(safeUrl(foto)) + '&quot;)"></div>' : "") +
 (arte && ARTE[arte] ? '<div class="tb-pn-arte" style="background-image:' +
 ARTE[arte] + '"></div>' : "") +
 '<div class="tb-pn-etiqueta">' + icono_ + "<span>" + escapeHtml(etiqueta) + "</span>" +
@@ -12517,7 +12547,7 @@ $("#tb-modal-name").textContent = "";
 var tarjeta = $("#tb-profile-modal .tb-modal-card");
 tarjeta.className = "tb-modal-card tb-glass tb-lector";
 $("#tb-modal-content").innerHTML =
-(foto ? '<img class="tb-art-img" src="' + escapeHtml(foto) + '" alt="">' : "") +
+(safeUrl(foto) ? '<img class="tb-art-img" src="' + escapeHtml(safeUrl(foto)) + '" alt="">' : "") +
 "<h2>" + escapeHtml(titulo) + "</h2>" +
 '<p class="tb-muted" style="margin:0 0 14px;font-size:12px">' + escapeHtml(pie) + "</p>" +
 '<div class="tb-cuerpo">' + formatoArticulo(cuerpo) + "</div>" +
@@ -12819,8 +12849,8 @@ return String(t || "")
 .trim();
 }
 function previaImagen(url) {
-return url
-? '<img class="tb-art-previa" src="' + escapeHtml(url) + '" alt="">'
+return safeUrl(url)
+? '<img class="tb-art-previa" src="' + escapeHtml(safeUrl(url)) + '" alt="">'
 : "";
 }
 var LIMITE_ARCHIVO = 2 * 1024 * 1024;
@@ -12902,8 +12932,8 @@ return '<div class="tb-snap">' +
 (art.publicada ? "" : " · borrador") +
 " · 👁 " + (art.vistas || 0) + " · ❤ " + reaccionesDe(art.id).length + "</span>" +
 '<span class="tb-snap-podio">' + escapeHtml(art.titulo) + "</span>" +
-'<button type="button" class="tb-mini" data-art-editar="' + art.id + '">✎</button>' +
-'<button type="button" class="tb-mini danger" data-art-borrar="' + art.id + '">✕</button>' +
+'<button type="button" class="tb-mini" data-art-editar="' + escapeHtml(art.id) + '">✎</button>' +
+'<button type="button" class="tb-mini danger" data-art-borrar="' + escapeHtml(art.id) + '">✕</button>' +
 "</div>";
 }).join("") + "</div>";
 $$("[data-art-editar]").forEach(function (b) {
@@ -13348,11 +13378,11 @@ if (!c) { return ""; }
 var propia = urlDe("club:" + c.nombre);
 if (propia) {
 return '<span class="tb-escudo ' + (clase || "") + '" style="background-image:url(&quot;' +
-escapeHtml(propia) + '&quot;);background-size:cover;background-position:center"></span>';
+escapeHtml(safeUrl(propia)) + '&quot;);background-size:cover;background-position:center"></span>';
 }
 if (c.logo) {
 return '<span class="tb-escudo ' + (clase || "") + '" style="background-image:url(&quot;' +
-escapeHtml(c.logo) + '&quot;);background-size:cover;background-position:center"></span>';
+escapeHtml(safeUrl(c.logo)) + '&quot;);background-size:cover;background-position:center"></span>';
 }
 var a = cssColor(c.color, "#8fa6ff");
 var b = cssColor(c.color2, a);
@@ -13374,7 +13404,7 @@ var color = cssColor(c && c.color ? c.color : "#8fa6ff", "#8fa6ff");
 var propia = urlPj(p, c);
 if (propia) {
 return '<span class="tb-pj-avatar" style="--pjc:' + color +
-';background-image:url(&quot;' + escapeHtml(propia) +
+';background-image:url(&quot;' + escapeHtml(safeUrl(propia)) +
 '&quot;);background-size:cover;background-position:center;color:transparent"></span>';
 }
 return '<span class="tb-pj-avatar" style="--pjc:' + color + '">' +
@@ -13846,7 +13876,7 @@ var result = await client.from("imagenes").select("*");
 imagenesReady = !result.error;
 imagenes = {};
 (result.data || []).forEach(function (fila) {
-if (fila.url) { imagenes[fila.clave] = fila.url; }
+if (fila.url && safeUrl(fila.url)) { imagenes[fila.clave] = safeUrl(fila.url); }
 });
 }
 var PREMIOS = [
@@ -13901,7 +13931,7 @@ if (!p) { return ""; }
 var url = urlDe("premio:" + id);
 if (url) {
 return '<span class="tb-premio-ico' + (grande ? " grande" : "") +
-'" style="background-image:url(&quot;' + escapeHtml(url) +
+'" style="background-image:url(&quot;' + escapeHtml(safeUrl(url)) +
 '&quot;);background-size:cover;background-position:center"></span>';
 }
 return '<span class="tb-premio-ico' + (grande ? " grande" : "") +
@@ -13987,7 +14017,7 @@ $$(".tb-img-url").forEach(function (campo) {
 var clave = campo.dataset.clave;
 var url = campo.value.trim();
 if (url === (campo.dataset.actual || "")) { return; }
-if (url && !/^https?:\/\//i.test(url)) {
+if (url && (!/^https?:\/\//i.test(url) || !safeUrl(url))) {
 alert("La dirección de " + clave + " debe empezar por http:// o https://");
 cambios = null;
 return;
@@ -16453,7 +16483,7 @@ var jugadas = pin.lista.filter(function (p) { return p.estado === "terminada"; }
 var fila = function (p) {
 var otro = p.retador === me.id ? p.rival : p.retador;
 var urgente = pend.indexOf(p.id) >= 0;
-return '<button type="button" class="bn-fila' + (urgente ? " urgente" : "") + '" data-pin-abrir="' + p.id + '">' +
+return '<button type="button" class="bn-fila' + (urgente ? " urgente" : "") + '" data-pin-abrir="' + escapeHtml(p.id) + '">' +
 '<span class="bn-fila-nombre">' + escapeHtml(bnNombre(otro)) + "</span>" +
 '<span class="bn-fila-estado">' + escapeHtml(pinEstadoTexto(p)) + "</span></button>";
 };
@@ -17285,7 +17315,7 @@ var texto = p.status === "pendiente"
 : "Partida en curso";
 return '<div class="tb-gato-fila"><div><b>' + escapeHtml(nombreRival(p)) + "</b>" +
 "<small>" + texto + "</small></div>" +
-'<button type="button" data-abrir="' + p.id + '">' +
+'<button type="button" data-abrir="' + escapeHtml(p.id) + '">' +
 (p.status === "pendiente" && p.guest_id === me.id ? "Responder" : "Abrir") +
 "</button></div>";
 }).join("")
@@ -17295,7 +17325,7 @@ var filasRivales = rivales.length
 ? rivales.map(function (p) {
 return '<div class="tb-gato-fila"><div><b>' + escapeHtml(p.display_name || p.username) +
 "</b><small>@" + escapeHtml(p.username) + " · nivel " + (p.level || 1) + "</small></div>" +
-'<button type="button" data-retar="' + p.id + '">Retar</button></div>';
+'<button type="button" data-retar="' + escapeHtml(p.id) + '">Retar</button></div>';
 }).join("")
 : '<p class="tb-muted">Todavía no hay nadie más registrado.</p>';
 caja.innerHTML = cabeceraArcade("X y O", marcador) +
@@ -17722,7 +17752,7 @@ function arbolPanelHTML() {
 var pal = "", i, p;
 for (i = 0; i < ARBOL_PALETAS.length; i++) {
 p = ARBOL_PALETAS[i];
-pal += '<button type="button" class="tb-arbol-swatch" data-paleta="' + p.id + '" aria-pressed="' + (arbolEstado.paletaId === p.id) + '">' +
+pal += '<button type="button" class="tb-arbol-swatch" data-paleta="' + escapeHtml(p.id) + '" aria-pressed="' + (arbolEstado.paletaId === p.id) + '">' +
 '<span class="tb-arbol-puntos" aria-hidden="true"><i style="background:' + p.corteza + '"></i><i style="background:' + p.hoja + '"></i><i style="background:' + p.flor + '"></i></span>' +
 escapeHtml(p.nombre) + "</button>";
 }
@@ -18031,7 +18061,7 @@ var pct = total ? Math.round((votos / total) * 100) : 0;
 var esMia = miVoto === op.id;
 var deshabilitado = !!miVoto;
 return '<button type="button" class="tb-encuesta-opcion' + (esMia ? " tb-encuesta-mia" : "") + '"' +
-' data-votar-encuesta="' + encuesta.id + '" data-votar-opcion="' + op.id + '"' + (deshabilitado ? " disabled" : "") + ">" +
+' data-votar-encuesta="' + escapeHtml(encuesta.id) + '" data-votar-opcion="' + escapeHtml(op.id) + '"' + (deshabilitado ? " disabled" : "") + ">" +
 '<span class="tb-encuesta-barra" style="width:' + (deshabilitado ? pct : 0) + '%"></span>' +
 '<span class="tb-encuesta-opcion-fila">' +
 '<span class="tb-encuesta-opcion-txt">' + escapeHtml(op.texto) + (esMia ? " ✓" : "") + "</span>" +
@@ -18045,7 +18075,7 @@ return '<div class="tb-card tb-glass tb-encuesta-tarjeta">' +
 (miVoto ? " · ya votaste" : " · toca una opción para votar") + "</p>" +
 opciones +
 (isStaff()
-? '<button type="button" class="tb-secondary tb-encuesta-cerrar" data-cerrar-encuesta="' + encuesta.id + '">Cerrar esta encuesta</button>'
+? '<button type="button" class="tb-secondary tb-encuesta-cerrar" data-cerrar-encuesta="' + escapeHtml(encuesta.id) + '">Cerrar esta encuesta</button>'
 : "") +
 "</div></div>";
 }
@@ -18206,7 +18236,7 @@ return '<button type="button" class="tb-meme-chip' + (capa.fuente === k ? " on" 
 var plantillas = MEME_PLANTILLAS.map(function (t) {
 return '<button type="button" class="' + (memeEstado.src === t[1] ? "on" : "") +
 '" data-meme-plantilla="' + escapeHtml(t[1]) + '" data-meme-nombre="' + escapeHtml(t[0]) +
-'" title="' + escapeHtml(t[0]) + '"><img alt="" loading="lazy" src="' + escapeHtml(t[1]) + '" /></button>';
+'" title="' + escapeHtml(t[0]) + '"><img alt="" loading="lazy" referrerpolicy="no-referrer" src="' + escapeHtml(safeUrl(t[1])) + '" /></button>';
 }).join("");
 return "<label>Diseño</label>" +
 '<div class="tb-meme-chips">' + disenos + "</div>" +
@@ -18549,7 +18579,7 @@ mods = '<div class="tb-meme-item-mods">' +
 }
 return '<div class="tb-meme-item">' +
 (pendiente ? '<span class="tb-meme-badge">EN REVISIÓN</span>' : "") +
-'<img src="' + escapeHtml(m.imagen) + '" alt="' + escapeHtml(m.titulo || "meme") + '" />' +
+'<img src="' + escapeHtml(safeUrl(m.imagen)) + '" alt="' + escapeHtml(m.titulo || "meme") + '" />' +
 '<div class="tb-meme-item-pie">' + escapeHtml(autor ? (autor.display_name || "Alguien") : "Alguien") + "</div>" +
 mods +
 "</div>";
@@ -19022,6 +19052,16 @@ showMessage("Configura SUPABASE_URL y SUPABASE_ANON_KEY en el script.");
 return;
 }
 var username = $("#tb-register-user").value.trim().toLowerCase();
+var claveNueva = $("#tb-register-pass").value;
+if (!/^[a-z0-9_]{3,24}$/.test(username)) {
+showMessage("El usuario solo puede tener letras, números y guion bajo (3 a 24).");
+return;
+}
+if (claveNueva.length < 8 || claveNueva.toLowerCase().indexOf(username) >= 0 || entropiaDe(claveNueva) < 40) {
+showMessage("Esa contraseña es muy fácil de adivinar. Usa al menos 8 caracteres, " +
+"mezcla letras, números y un símbolo, y no incluyas tu usuario.");
+return;
+}
 var result = await client.auth.signUp({
 email: internalEmail(username),
 password: $("#tb-register-pass").value,
@@ -19094,7 +19134,7 @@ var select = $("#tb-comp-user");
 if (!select) { return; }
 var elegido = select.value;
 select.innerHTML = profilesOrdenados().map(function (profile) {
-return '<option value="' + profile.id + '">' +
+return '<option value="' + escapeHtml(profile.id) + '">' +
 escapeHtml(profile.display_name) + " (@" + escapeHtml(profile.username) + ")</option>";
 }).join("");
 if (elegido) { select.value = elegido; }
@@ -19182,7 +19222,10 @@ $("#tb-password-form").onsubmit = async function (event) {
 event.preventDefault();
 var target = $("#tb-password-user").value;
 var password = $("#tb-password-new").value;
-if (!target || password.length < 8) { return; }
+if (!target || password.length < 10) {
+alert("La contraseña nueva debe tener al menos 10 caracteres.");
+return;
+}
 var profile = profiles.find(function (item) { return item.id === target; });
 if (!confirm("¿Asignar una contraseña nueva a " +
 (profile ? profile.display_name : "este usuario") + "?")) { return; }
@@ -19566,7 +19609,7 @@ var demo = Object.assign({}, me, { motion:carta.motionId, card:selectedCard });
 var owned = epicShiny ? shinyOwned(chosen.id) : cartaOwned(chosen.id);
 var equipped = me.motion === carta.motionId && me.card === selectedCard;
 var canEquip = owned && collectionSupported('motion') && collectionSupported('card');
-target.innerHTML = '<div class="tb-epic-feature"><div><div class="tb-epic-art' + (epicShiny ? ' tb-epic-art-shiny' : '') + '" style="background-image:var(--' + chosen.id + '-' + (epicShiny ? 'shiny-hero' : 'banner') + ')"></div><div class="tb-epic-caption tb-cf-' + chosen.slug + '"><h2>' + (epicShiny ? 'Shiny · ' : 'Carta · ') + escapeHtml(chosen.name) + '</h2><span class="' + (epicShiny ? 'tb-rarity tb-rarity-shiny' : rarityClass(chosen.rarity)) + '">' + (epicShiny ? 'Shiny' : escapeHtml(chosen.rarity)) + '</span></div><p class="tb-muted">' + escapeHtml(chosen.description) + '</p><div class="tb-actions"><button type="button" class="tb-primary" id="tb-epic-equip-carta"' + (canEquip ? '' : ' disabled') + '>' + (equipped ? (epicShiny ? 'Shiny equipada' : 'Carta equipada') : owned ? 'Equipar ' + (epicShiny ? 'Shiny' : 'carta completa') : (epicShiny ? 'Shiny no conseguida' : 'Carta no conseguida')) + '</button><button type="button" class="tb-secondary" id="tb-epic-toggle-shiny">Ver ' + (epicShiny ? 'carta normal' : 'versión Shiny') + '</button></div><p class="tb-help">' + (isOwner() ? 'Como owner puedes probar todas las variantes.' : (epicShiny ? 'La Shiny aparece con una probabilidad de 0,0000000067 % por giro.' : 'La carta normal aparece con una probabilidad de 0,000000067 % por giro.')) + ' La versión Shiny extiende la ilustración por toda la tarjeta sin tapar el texto.</p></div><div><div class="tb-epic-profile-demo">' + profileCard(demo) + '</div><p class="tb-help">' + (epicShiny ? 'La ilustración ocupa toda la superficie; los datos usan cristales oscuros para conservar la lectura.' : 'Vista completa de la carta normal.') + '</p></div></div><div class="tb-epic-filters">' + ['','Común','Raro','Épico','Legendario','Único'].map(function (r) { return '<button type="button" class="tb-secondary" data-epic-filter="' + escapeHtml(r) + '" aria-pressed="' + (epicFilter === r) + '">' + escapeHtml(r || 'Todos') + '</button>'; }).join('') + '</div><div class="tb-epic-grid">' + EPIC_COLLECTION.filter(function (d) { return !epicFilter || d.rarity === epicFilter; }).map(function (d) { return '<button type="button" class="tb-epic-tile" data-epic-item="' + d.id + '" aria-pressed="' + (d.id === chosen.id) + '"><span class="tb-epic-thumb" style="background-image:var(--' + d.id + '-' + (epicShiny ? 'shiny-hero-still' : 'still') + ')"></span><strong class="tb-cf-' + d.slug + '">' + (epicShiny ? 'Shiny · ' : 'Carta · ') + escapeHtml(d.name) + '</strong><span class="' + (epicShiny ? 'tb-rarity tb-rarity-shiny' : rarityClass(d.rarity)) + '">' + (epicShiny ? 'Shiny' : escapeHtml(d.rarity)) + '</span></button>'; }).join('') + '</div>';
+target.innerHTML = '<div class="tb-epic-feature"><div><div class="tb-epic-art' + (epicShiny ? ' tb-epic-art-shiny' : '') + '" style="background-image:var(--' + chosen.id + '-' + (epicShiny ? 'shiny-hero' : 'banner') + ')"></div><div class="tb-epic-caption tb-cf-' + chosen.slug + '"><h2>' + (epicShiny ? 'Shiny · ' : 'Carta · ') + escapeHtml(chosen.name) + '</h2><span class="' + (epicShiny ? 'tb-rarity tb-rarity-shiny' : rarityClass(chosen.rarity)) + '">' + (epicShiny ? 'Shiny' : escapeHtml(chosen.rarity)) + '</span></div><p class="tb-muted">' + escapeHtml(chosen.description) + '</p><div class="tb-actions"><button type="button" class="tb-primary" id="tb-epic-equip-carta"' + (canEquip ? '' : ' disabled') + '>' + (equipped ? (epicShiny ? 'Shiny equipada' : 'Carta equipada') : owned ? 'Equipar ' + (epicShiny ? 'Shiny' : 'carta completa') : (epicShiny ? 'Shiny no conseguida' : 'Carta no conseguida')) + '</button><button type="button" class="tb-secondary" id="tb-epic-toggle-shiny">Ver ' + (epicShiny ? 'carta normal' : 'versión Shiny') + '</button></div><p class="tb-help">' + (isOwner() ? 'Como owner puedes probar todas las variantes.' : (epicShiny ? 'La Shiny aparece con una probabilidad de 0,0000000067 % por giro.' : 'La carta normal aparece con una probabilidad de 0,000000067 % por giro.')) + ' La versión Shiny extiende la ilustración por toda la tarjeta sin tapar el texto.</p></div><div><div class="tb-epic-profile-demo">' + profileCard(demo) + '</div><p class="tb-help">' + (epicShiny ? 'La ilustración ocupa toda la superficie; los datos usan cristales oscuros para conservar la lectura.' : 'Vista completa de la carta normal.') + '</p></div></div><div class="tb-epic-filters">' + ['','Común','Raro','Épico','Legendario','Único'].map(function (r) { return '<button type="button" class="tb-secondary" data-epic-filter="' + escapeHtml(r) + '" aria-pressed="' + (epicFilter === r) + '">' + escapeHtml(r || 'Todos') + '</button>'; }).join('') + '</div><div class="tb-epic-grid">' + EPIC_COLLECTION.filter(function (d) { return !epicFilter || d.rarity === epicFilter; }).map(function (d) { return '<button type="button" class="tb-epic-tile" data-epic-item="' + escapeHtml(d.id) + '" aria-pressed="' + (d.id === chosen.id) + '"><span class="tb-epic-thumb" style="background-image:var(--' + d.id + '-' + (epicShiny ? 'shiny-hero-still' : 'still') + ')"></span><strong class="tb-cf-' + d.slug + '">' + (epicShiny ? 'Shiny · ' : 'Carta · ') + escapeHtml(d.name) + '</strong><span class="' + (epicShiny ? 'tb-rarity tb-rarity-shiny' : rarityClass(d.rarity)) + '">' + (epicShiny ? 'Shiny' : escapeHtml(d.rarity)) + '</span></button>'; }).join('') + '</div>';
 target.querySelectorAll('[data-epic-item]').forEach(function (b) { b.onclick = function () { epicSelected = b.dataset.epicItem; renderEpicGallery(); }; });
 target.querySelectorAll('[data-epic-filter]').forEach(function (b) { b.onclick = function () { epicFilter = b.dataset.epicFilter; renderEpicGallery(); }; });
 $('#tb-epic-toggle-shiny').onclick = function () { epicShiny = !epicShiny; renderEpicGallery(); };
@@ -20678,7 +20721,7 @@ var x = s.celda % BN_N, y = Math.floor(s.celda / BN_N), p = 100 / BN_N;
 return '<div class="bn-sondeo" style="left:' + ((x - 1) * p) + "%;top:" + ((y - 1) * p) + "%;width:" + (3 * p) + "%;height:" + (3 * p) + '%">' +
 "<b>" + s.conteo + "</b></div>";
 }).join("");
-return '<div class="bn-tablero ' + opc.clase + (opc.activa ? " activo" : "") + '" id="' + opc.id + '">' +
+return '<div class="bn-tablero ' + opc.clase + (opc.activa ? " activo" : "") + '" id="' + escapeHtml(opc.id) + '">' +
 '<div class="bn-agua"></div><div class="bn-capa">' + sondeos + barcos + "</div>" +
 '<div class="bn-rejilla">' + celdas + '</div><div class="bn-fx" aria-hidden="true"></div></div>';
 }
@@ -21151,7 +21194,7 @@ var jugadas = bn.lista.filter(function (p) { return p.estado === "terminada"; })
 var fila = function (p) {
 var otro = p.retador === me.id ? p.rival : p.retador;
 var urgente = pend.indexOf(p.id) >= 0;
-return '<button type="button" class="bn-fila' + (urgente ? " urgente" : "") + '" data-bn-abrir="' + p.id + '">' +
+return '<button type="button" class="bn-fila' + (urgente ? " urgente" : "") + '" data-bn-abrir="' + escapeHtml(p.id) + '">' +
 '<span class="bn-fila-nombre">' + escapeHtml(bnNombre(otro)) + "</span>" +
 '<span class="bn-fila-estado">' + escapeHtml(bnEstadoTexto(p)) + "</span></button>";
 };
@@ -21182,7 +21225,7 @@ bnSeccionVivo() +
 '<input type="search" class="bn-buscar" id="bn-buscar" placeholder="Buscar por nombre" value="' + attrHtml(bn.filtro) + '">' +
 '<div class="bn-rivales">' + (rivales.length ? rivales.map(function (p) {
 return '<div class="bn-rival"><span><b>' + escapeHtml(nombreDe(p)) + "</b><small>@" + escapeHtml(p.username || "") +
-" · nivel " + (p.level || 1) + '</small></span><button type="button" class="bn-btn chico" data-bn-retar="' + p.id + '">Retar</button></div>';
+" · nivel " + (p.level || 1) + '</small></span><button type="button" class="bn-btn chico" data-bn-retar="' + escapeHtml(p.id) + '">Retar</button></div>';
 }).join("") : '<p class="bn-vacio">Nadie coincide con esa búsqueda.</p>') + "</div>" +
 "</section>" +
 "</div>";
@@ -21211,7 +21254,7 @@ var estado = v.estado === "terminada" ? "Terminó · ganó " + bnNombre(v.ganado
 return '<div class="bn-vivo-fila"><div class="bn-vivo-duelo"><b>' + escapeHtml(bnNombre(v.retador)) + "</b>" +
 '<span class="bn-vivo-marca">' + v.impactos_retador + " – " + v.impactos_rival + "</span><b>" + escapeHtml(bnNombre(v.rival)) + "</b>" +
 "<small>" + escapeHtml(estado) + "</small></div>" +
-'<button type="button" class="bn-btn chico' + (mia ? "" : " primario") + '" data-bn-mirar="' + v.id + '">' + (mia ? "Abrir" : "Mirar") + "</button></div>";
+'<button type="button" class="bn-btn chico' + (mia ? "" : " primario") + '" data-bn-mirar="' + escapeHtml(v.id) + '">' + (mia ? "Abrir" : "Mirar") + "</button></div>";
 }).join("") + "</section>";
 }
 function bnPintarEspectador(caja, e) {
@@ -21764,7 +21807,7 @@ caja.innerHTML = stpCabecera() +
 '<div><h2>Stop</h2><p>Sale una letra. Llenás cada categoría con una palabra que empiece por ella. El primero que termina grita ¡Stop! y se cierra la ronda para todos.</p></div></section>' +
 (stp.listo ? "" : '<p class="bn-aviso-error">' + escapeHtml(stp.error || "Cargando salas…") + "</p>") +
 (mias.length ? '<div class="stp-volver">' + mias.map(function (s) {
-return '<button type="button" class="stp-btn amarillo" data-stp-entrar="' + s.id + '">Volver a tu sala ' + escapeHtml(s.codigo) + "</button>";
+return '<button type="button" class="stp-btn amarillo" data-stp-entrar="' + escapeHtml(s.id) + '">Volver a tu sala ' + escapeHtml(s.codigo) + "</button>";
 }).join("") + "</div>" : "") +
 '<div class="stp-lobby">' +
 '<section class="stp-panel stp-crear"><h3>Crear una sala</h3>' +
@@ -21791,7 +21834,7 @@ var yaEstoy = stp.mias.indexOf(s.id) >= 0;
 return '<div class="stp-sala-fila"><span><b>' + escapeHtml(s.nombre) + "</b><small>" +
 escapeHtml(bnNombre(s.anfitrion)) + " · " + (stp.cuentas[s.id] || 0) + " jugando · " +
 (s.estado === "espera" ? "en espera" : "ronda " + s.ronda + " de " + s.rondas) + "</small></span>" +
-'<span class="stp-sala-botones">' + (yaEstoy ? "" : '<button type="button" class="stp-btn chico fantasma" data-stp-mirar="' + s.id + '">Mirar</button>') +
+'<span class="stp-sala-botones">' + (yaEstoy ? "" : '<button type="button" class="stp-btn chico fantasma" data-stp-mirar="' + escapeHtml(s.id) + '">Mirar</button>') +
 '<button type="button" class="stp-btn chico" data-stp-' + (yaEstoy ? "entrar" : "unir") + '="' + (yaEstoy ? s.id : attrHtml(s.codigo)) + '">' +
 (yaEstoy ? "Volver" : "Entrar") + "</button></span></div>";
 }).join("") : '<p class="bn-vacio">No hay salas abiertas. Creá una y compartí el código.</p>') +
