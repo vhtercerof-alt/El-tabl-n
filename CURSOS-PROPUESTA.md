@@ -4,7 +4,7 @@
 
 ## 1. Conclusión
 
-Hay tres formas de hacerlo. Recomiendo la **Opción B, "un tablón con varios cursos"**, construida por etapas. Aprovecha lo que ya existe: el mismo **código de invitación** decidiría en qué curso entra cada estudiante. La excepción: si los cursos son de **instituciones distintas** que no deben compartir nada, conviene la **Opción C**.
+Hay tres formas de hacerlo. Recomiendo la **Opción B, "un tablón con varios cursos"**, construida por etapas. Cada estudiante elegiría su curso con un **código de curso** que tú le das. La excepción: si los cursos son de **instituciones distintas** que no deben compartir nada, conviene la **Opción C**.
 
 Antes de construir necesito tus respuestas a las preguntas de la sección 5, porque cambian el diseño.
 
@@ -21,7 +21,7 @@ Antes de construir necesito tus respuestas a las preguntas de la sección 5, por
 | Del curso | `tasks`, `task_reactions`, `tb_entregas`, `noticias`, `prensa`, `prensa_reacciones`, `encuestas`, `encuesta_votos`, `memes`, `ranking_snapshots`, `tb_ideas`, `tb_achievements`, `tb_achievement_awards` |
 | Personales | `profiles` (Belis, nivel, racha, cosméticos, arcade), `gifts`, `cosmetic_log`, `carreras` |
 | Juegos entre dos o más | `ttt_matches`, `pinturillo_partidas`, `bn_partidas`, `stop_salas`, `stop_jugadores` |
-| Configuración | `roles`, `member_roles`, `imagenes`, `ruleta_perfiles`, `level_rewards`, `tb_showcase_settings`, `tb_invitaciones`, `tb_ajustes` |
+| Configuración | `roles`, `member_roles`, `imagenes`, `ruleta_perfiles`, `level_rewards`, `tb_showcase_settings` |
 
 ---
 
@@ -43,7 +43,7 @@ Cada curso tiene su propio proyecto de Supabase y su propia página en Vercel. E
 Una sola página y una sola base de datos. Cada tarea, noticia, encuesta o entrega pertenece a un curso, y cada usuario ve solo los cursos en los que está inscrito.
 
 **Cómo funcionaría para el estudiante:**
-1. Se registra con el código de invitación de su curso, por ejemplo `GRUPOA26`. Queda inscrito en ese curso automáticamente.
+1. Se registra e ingresa el código de su curso, por ejemplo `GRUPOA26`. Queda inscrito en ese curso.
 2. Si luego recibe el código de otro curso, lo ingresa en su perfil y queda inscrito en ambos.
 3. Arriba de la pantalla aparece un **selector de curso**. Las tareas, noticias, encuestas y el ranking cambian según el curso elegido.
 
@@ -56,7 +56,7 @@ Una sola página y una sola base de datos. Cada tarea, noticia, encuesta o entre
 - Tablas nuevas: `cursos` (nombre, color, año, activo) y `curso_miembros` (usuario, curso, rol en el curso: estudiante, profesor o ayudante).
 - A las tablas del grupo "Del curso" se les agrega la columna `curso_id`. Todo lo que ya existe pasa a un primer curso, por ejemplo "Grupo original", así **no se pierde nada**.
 - Las reglas de seguridad pasan de "¿es staff?" a "¿es miembro, o profesor, de *este* curso?". Esta es la parte más delicada y debe probarse igual que se probaron las entregas.
-- Los códigos de invitación tienen un curso asociado.
+- Cada curso tiene su propio código para inscribirse.
 - Avisos: "nueva tarea" llega solo a los miembros de ese curso.
 
 | A favor | En contra |
@@ -64,7 +64,7 @@ Una sola página y una sola base de datos. Cada tarea, noticia, encuesta o entre
 | Una sola cuenta por estudiante, aunque esté en varios cursos | Es el cambio más grande: toca casi todas las secciones |
 | Una sola página que mantener y publicar | Hay que migrar los datos con cuidado, con respaldo previo |
 | Permite sumar otros profesores sin darles poder sobre todo el tablón | Requiere decidir qué se comparte entre cursos (sección 5) |
-| Reutiliza los códigos de invitación y las entregas | |
+| Reutiliza las entregas y los avisos | |
 
 **Esfuerzo:** alto, dividido en etapas que se pueden publicar por separado:
 

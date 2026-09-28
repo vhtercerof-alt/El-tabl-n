@@ -6626,7 +6626,7 @@ animation-duration: .01ms !important; animation-iteration-count: 1 !important; t
 }
 #tablon-root .bn-espectador > .bn-emotes, #tablon-root .bn-espectador > .bn-extra { order: 3; }
 #tablon-root .bn-espectador > .bn-emotes { margin-top: 0; }
-/* ---- Entregas, invitaciones y avisos ---- */
+/* ---- Entregas y avisos ---- */
 .tb-ent-barra { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; position: relative; z-index: 2; }
 .tb-ent-btn { padding: 9px 13px; font-size: 13px; }
 .tb-ent-chip { display: inline-flex; align-items: center; gap: 4px; padding: 5px 10px; border-radius: 999px; font-size: 12px; font-weight: 800; border: 1px solid var(--line); background: #ffffff0d; }
@@ -10958,7 +10958,7 @@ var TEXTO_TERMINOS =
 "organizar las tareas escolares de un grupo concreto. No es un servicio " +
 "comercial, no vende nada y no muestra publicidad.</p>" +
 "<h4>2. Quién puede usarlo</h4>" +
-"<p>El acceso es por invitación. Cada persona es responsable de su " +
+"<p>Está pensado para los integrantes del grupo. Cada persona es responsable de su " +
 "usuario y su contraseña, y de todo lo que se haga desde su cuenta. " +
 "Si eres menor de edad, se entiende que usas el sitio con conocimiento " +
 "de tu madre, padre o tutor.</p>" +
@@ -19156,8 +19156,8 @@ bio: $("#tb-register-bio").value.trim()
 }
 });
 if (result.error) {
-showMessage(/TB_INVITACION_INVALIDA|Database error saving new user/i.test(result.error.message || "")
-? "No se pudo crear la cuenta. Avísale a tu profe (falta ejecutar DESACTIVAR-invitaciones.sql en Supabase)."
+showMessage(/Database error saving new user/i.test(result.error.message || "")
+? "No se pudo crear la cuenta por un error del servidor. Avísale a tu profe."
 : result.error.message);
 return;
 }
@@ -19217,7 +19217,7 @@ avisoToast("⚠️ Tarea publicada, pero no se pudo enviar el aviso: " + (r.erro
 } else if (r.repetido) {
 avisoToast("📌 Tarea guardada. El aviso de esta tarea ya se había enviado antes.");
 } else if (!r.enviados) {
-avisoToast("📌 Tarea publicada. Nadie más tiene los avisos activados todavía (tú no recibes el aviso de tus propias tareas).");
+avisoToast("📌 Tarea publicada, pero ningún dispositivo tiene los avisos activados todavía.");
 } else {
 avisoToast("📣 Aviso de la tarea enviado a " + r.enviados + " dispositivo(s).");
 }
@@ -22230,7 +22230,7 @@ if (s.estado === "revision") { stpPintarRevision(caja, stp.est); return; }
 stpPintarFinal(caja, stp.est);
 }
 /* ===================================================================
-   ENTREGAS DE TAREAS · CÓDIGOS DE INVITACIÓN · AVISOS AL CELULAR
+   ENTREGAS DE TAREAS · AVISOS AL CELULAR
    Requiere ejecutar supabase/ACTIVAR-1-entregas.sql y ACTIVAR-3-avisos.sql.
    =================================================================== */
 var ENT_SQL = "ACTIVAR-1-entregas.sql y ACTIVAR-3-avisos.sql (carpeta supabase)";

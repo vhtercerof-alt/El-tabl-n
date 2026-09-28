@@ -4,7 +4,7 @@
 // usuario. El servidor decide SIEMPRE a quién avisar y qué texto enviar;
 // la página nunca puede mandar mensajes arbitrarios.
 //
-//   tarea_nueva        · solo owner/admin · avisa a todos
+//   tarea_nueva        · solo owner/admin · avisa a todos (incluido quien publica)
 //   entrega_nueva      · solo el autor de la entrega · avisa a owner/admin
 //   entrega_calificada · solo owner/admin · avisa al autor de la entrega
 //   prueba             · cualquiera · avisa SOLO a sus propios dispositivos
@@ -119,7 +119,8 @@ export default async function handler(req, res) {
     if (!(await primeraVez(clave))) {
       return res.status(200).json({ enviados: 0, repetido: true });
     }
-    const enviados = await enviar(destinos || [], mensaje, uid);
+    // En una tarea nueva también avisa a quien la publica (confirma que funcionó).
+    const enviados = await enviar(destinos || [], mensaje, tipo === "tarea_nueva" ? null : uid);
     return res.status(200).json({ enviados });
   } catch (e) {
     console.error("[notificar]", e && e.message, e && e.detalle);

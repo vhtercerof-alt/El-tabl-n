@@ -9,7 +9,7 @@
 | Variables `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY` (secreta) y `VAPID_SUBJECT` | ✅ Cargadas |
 | Clave secreta de Supabase | ⚠️ Está cargada como `PRIVATE_KEY`. La app ahora la reconoce con ese nombre si de verdad es la clave **secret** de Supabase. Lo ideal es renombrarla a `SUPABASE_SERVICE_ROLE_KEY` (paso C.1) |
 | Ejecutar en Supabase `ACTIVAR-1-entregas.sql` y `ACTIVAR-3-avisos.sql` | Parte 1 hecha; confirma la 3 (parte B) |
-| Quitar los códigos de invitación: ejecutar `DESACTIVAR-invitaciones.sql` | ⏳ **Falta** (parte B) |
+| Borrar de la base de datos los restos del código de invitación: ejecutar `DESACTIVAR-invitaciones.sql` (la página ya no tiene nada de invitaciones) | ⏳ **Falta** (parte B) |
 | Economía (ruletas, tienda, regalos, niveles, racha, premio diario): ejecutar `TABLON-economia-segura.sql` y luego abrir la app con la cuenta owner | ⏳ **Falta** (parte B) |
 | Activar Analytics | ⏳ **Falta** (paso C.2) |
 | Borrar el proyecto duplicado vacío `el-tablon` (Settings → Delete Project) | ⏳ **Falta** |
@@ -130,7 +130,7 @@ Si no llega:
 
 | Qué pasa | Quién recibe el aviso |
 |----------|-----------------------|
-| Publicas una tarea (nueva, o al marcar una como publicada) | Todos menos tú, una sola vez por tarea. Al publicar, un mensaje en pantalla te dice a cuántos dispositivos llegó |
+| Publicas una tarea (nueva, o al marcar una como publicada) | Todos, incluido tú, una sola vez por tarea. Al publicar, un mensaje en pantalla te dice a cuántos dispositivos llegó |
 | Un estudiante entrega o reenvía | Owner y admins |
 | Calificas una entrega | Solo ese estudiante |
 | Cada día a las 8:00 (hora de Nicaragua), si quedan entregas sin revisar | Owner y admins: «Tienes N entregas esperando tu calificación» |
