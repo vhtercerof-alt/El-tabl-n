@@ -31,6 +31,9 @@ const pagina = `<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="same-origin">
 <title>El Tablón</title>
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon.png">
+<meta name="theme-color" content="#0d1024">
 ${libreria}
 <link rel="stylesheet" href="/styles.css">
 <style>html,body{margin:0;background:#0d1024;}</style>
@@ -47,5 +50,6 @@ fs.mkdirSync("public");
 fs.writeFileSync("public/index.html", pagina);
 fs.writeFileSync("public/styles.css", estilo[1].trim() + "\n");
 fs.writeFileSync("public/app.js", script[1].trim() + "\n");
+fs.copyFileSync("assets/favicon.png", "public/favicon.png");
 console.log("public/ generado:",
   ["index.html", "styles.css", "app.js"].map(f => `${f} ${(fs.statSync("public/" + f).size / 1024).toFixed(0)} KB`).join(", "));
