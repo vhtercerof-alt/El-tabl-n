@@ -10,6 +10,7 @@
 | Clave secreta de Supabase | ⚠️ Está cargada como `PRIVATE_KEY`. La app ahora la reconoce con ese nombre si de verdad es la clave **secret** de Supabase. Lo ideal es renombrarla a `SUPABASE_SERVICE_ROLE_KEY` (paso C.1) |
 | Ejecutar en Supabase `ACTIVAR-1-entregas.sql` y `ACTIVAR-3-avisos.sql` | Parte 1 hecha; confirma la 3 (parte B) |
 | Quitar los códigos de invitación: ejecutar `DESACTIVAR-invitaciones.sql` | ⏳ **Falta** (parte B) |
+| Economía (ruletas, tienda, regalos, niveles, racha, premio diario): ejecutar `TABLON-economia-segura.sql` y luego abrir la app con la cuenta owner | ⏳ **Falta** (parte B) |
 | Activar Analytics | ⏳ **Falta** (paso C.2) |
 | Borrar el proyecto duplicado vacío `el-tablon` (Settings → Delete Project) | ⏳ **Falta** |
 
@@ -57,6 +58,7 @@ Son archivos cortos que están en la carpeta `supabase/`:
 | `ACTIVAR-1-entregas.sql` | Activa las entregas de tareas y su calificación |
 | `ACTIVAR-3-avisos.sql` | Activa los avisos al celular |
 | `DESACTIVAR-invitaciones.sql` | **Quita** los códigos de invitación: vuelve a permitir crear cuentas sin código. Ejecútalo si llegaste a correr el antiguo `ACTIVAR-2-invitaciones.sql` |
+| `TABLON-economia-segura.sql` | Activa girar ruletas, la tienda, abrir regalos, las recompensas de nivel, la racha y el premio diario. **Después de ejecutarlo, abre El Tablón una vez con tu cuenta de owner** para que se cargue el catálogo de premios |
 
 Para **cada** archivo:
 
