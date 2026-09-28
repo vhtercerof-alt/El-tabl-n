@@ -101,16 +101,16 @@ En Vercel: **tu proyecto → Analytics → Enable**. No hace falta tocar código
 ### C.3 Probar los avisos
 
 1. Abre la página publicada en tu celular. En Android, usa Chrome.
-2. En **Inicio** aparece la tarjeta **🔔 Activa los avisos**. Tócala y acepta el permiso.
+2. En **Inicio** aparece la tarjeta **🔔 Activa los avisos**. Tócala y acepta el permiso. Una vez activados, la tarjeta desaparece de Inicio y queda en **Temas**, donde puedes probarlos o desactivarlos.
    - **iPhone/iPad:** primero toca **Compartir → Agregar a pantalla de inicio** y abre El Tablón desde ese ícono. Apple solo permite avisos en apps instaladas así.
 3. Desde otra cuenta (o la computadora), publica una tarea de prueba. Te debe llegar el aviso **📌 Nueva tarea**.
 
 Si no llega:
 
-1. En **Inicio**, en la tarjeta de avisos, toca **Enviar aviso de prueba**. Si algo está mal, la tarjeta muestra el motivo: a ti, como owner, con el detalle de qué ajuste falta.
+1. En **Temas**, en la tarjeta de avisos, toca **Enviar aviso de prueba**. Si algo está mal, la tarjeta muestra el motivo: a ti, como owner, con el detalle de qué ajuste falta.
 2. Revisa que el celular no esté en modo «No molestar» y que Chrome o Safari tengan permitidas las notificaciones en los ajustes del teléfono.
 3. Si cambiaste alguna variable en Vercel, haz **Redeploy**.
-4. Si sigue sin funcionar, en esa misma tarjeta toca **Desactivar** y luego **Activar avisos** otra vez.
+4. Si sigue sin funcionar, en esa misma tarjeta toca **Desactivar avisos** y luego **Activar avisos** otra vez.
 
 ---
 
@@ -133,6 +133,7 @@ Si no llega:
 | Publicas una tarea (nueva, o al marcar una como publicada) | Todos, incluido tú, una sola vez por tarea. Al publicar, un mensaje en pantalla te dice a cuántos dispositivos llegó |
 | Un estudiante entrega o reenvía | Owner y admins |
 | Calificas una entrega | Solo ese estudiante |
+| Tú envías un **aviso personalizado** desde *Panel del owner → Enviar un aviso personalizado* | Quien elijas: todos, solo estudiantes, solo owner y admins, o una persona |
 | Cada día a las 8:00 (hora de Nicaragua), si quedan entregas sin revisar | Owner y admins: «Tienes N entregas esperando tu calificación» |
 
 El recordatorio diario lo ejecuta Vercel automáticamente (sección *Cron Jobs* del proyecto) y está protegido con la variable secreta `CRON_SECRET`, que ya quedó cargada. Para cambiar la hora, edita `"schedule"` en `vercel.json`: la hora va en UTC, y 14:00 UTC son las 8:00 en Nicaragua.

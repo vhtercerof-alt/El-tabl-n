@@ -7101,6 +7101,7 @@ id="tb-search-clear" title="Limpiar">×</button>
 <p>Cambia la apariencia general de El tablón.</p>
 </div>
 </div>
+<div id="tb-push-ajustes" class="tb-card tb-hidden" style="margin-bottom:16px" aria-live="polite"></div>
 <div class="tb-card"><div id="tb-themes" class="tb-theme-list"></div></div>
 <div class="tb-card" style="margin-top:16px">
 <div class="tb-card-head">
@@ -7433,6 +7434,23 @@ Publicar inmediatamente
 </div>
 </section>
 <section id="tb-view-owner" class="tb-view tb-owner-only">
+<details class="tb-card tb-extra-owner" id="tb-anuncio-panel" open>
+<summary>📣 Enviar un aviso personalizado</summary>
+<p class="tb-muted">Llega como notificación a los dispositivos que tienen los avisos activados. Úsalo para anunciar una actualización, una novedad o un recordatorio.</p>
+<form id="tb-anuncio-form">
+<label class="tb-field"><span>Título (máximo 60 caracteres)</span><input id="tb-anuncio-titulo" maxlength="60" required placeholder="🎉 ¡Nueva actualización de El Tablón!"></label>
+<label class="tb-field"><span>Mensaje (máximo 180 caracteres)</span><textarea id="tb-anuncio-cuerpo" maxlength="180" required placeholder="Ya pueden entregar sus tareas desde la pestaña Entregas."></textarea></label>
+<div class="tb-form-grid">
+<label class="tb-field"><span>¿A quién se lo envío?</span><select id="tb-anuncio-destino"></select></label>
+<label class="tb-field"><span>Al tocar el aviso, abrir</span><select id="tb-anuncio-vista">
+<option value="home">Inicio</option><option value="tasks">Tareas</option><option value="entregas">Entregas</option>
+<option value="noticias">Noticias</option><option value="ranking">Ranking</option><option value="gifts">Regalos</option>
+</select></label>
+</div>
+<button type="submit" class="tb-primary" id="tb-anuncio-enviar">📣 Enviar aviso</button>
+<p class="tb-extra-status" id="tb-anuncio-status" role="status" aria-live="polite"></p>
+</form>
+</details>
 <details class="tb-card tb-extra-owner" id="tb-extra-owner-panel">
 <summary>🏅 Administrar vitrina de logros</summary>
 <p class="tb-muted">Diseña las insignias, reconoce a tus estudiantes y elige el acabado del mueble.</p>
@@ -10275,6 +10293,10 @@ leon_hartazgo_2: "Bueno ya, si seguís así me hago el dormido.",
 gato_acceso_1: "Para entrar escribe tu usuario, no tu nombre completo. Va todo junto, en minúscula y sin espacios.",
 gato_acceso_2: "Si es tu primera vez, usa el botón de crear cuenta. Si ya tienes una, solo escribe tu usuario y tu contraseña.",
 gato_acceso_3: "El ojito al lado de la contraseña te deja verla, por si quieres revisar lo que escribiste.",
+gato_avisos_activados: "¡Listo, avisos activados! Desde ahora te aviso de todo. Ese cuadro ya no estará en Inicio: si quieres probarlos o apagarlos, búscalos en la pestaña Temas.",
+gato_avisos_desactivados: "Apagaste los avisos en este dispositivo. Si cambias de idea, el cuadro para activarlos volvió a Inicio.",
+leon_avisos_activados: "¡Avisos activados! Ya no vas a ver ese cuadro en Inicio: lo mudé a la pestaña Temas, por si querés probarlos o apagarlos.",
+leon_avisos_desactivados: "Apagaste los avisos. Si te arrepentís, el cuadro para activarlos volvió a Inicio.",
 leon_acceso_1: "Tu usuario es ese nombre corto que te pusiste, no tu nombre y apellido. Ojo con eso.",
 gato_charla_1: "Un consejo: empieza por la tarea que menos te gusta. El resto se siente más liviano después.",
 gato_charla_2: "Si algo del tablón no se entiende, tócame y te lo explico otra vez.",
@@ -18875,6 +18897,8 @@ if (name === "mascota") { renderMascotaVista(); }
 if (name === "noticias") { marcarNoticiasVistas(); }
 if (name === "semana") { renderSemana(); }
 if (name === "entregas") { entregasRender(); entregasCargar().then(entregasRender); }
+if (name === "owner") { anuncioPintarDestinos(); }
+if (name === "cosmetics") { pushPintar(); }
 mascGuiarVista(name);
 if (name === "shop") {
 updateSpinState();
@@ -22332,6 +22356,7 @@ pushEstado.mensaje = pushEstado.problemas && pushEstado.problemas.length
 ? "Este dispositivo quedó registrado, pero el servidor de avisos aún no está listo" +
 (isOwner() ? ": " + pushEstado.problemas.join(" ") : ". Avísale a tu profe.")
 : "Listo: te avisaremos en este dispositivo. Toca «Enviar aviso de prueba» para comprobarlo.";
+mascDecirDe(mascActiva, [mascActiva + "_avisos_activados"]);
 } catch (e) {
 pushEstado.mensaje = entMensaje(e);
 } finally {
@@ -22374,43 +22399,75 @@ if (client) { await client.rpc("tb_borrar_suscripcion", { p_endpoint: sub.endpoi
 await sub.unsubscribe();
 }
 pushEstado.suscrito = false;
-if (!silencioso) { pushEstado.mensaje = "Avisos desactivados en este dispositivo."; }
+if (!silencioso) {
+pushEstado.mensaje = "Avisos desactivados en este dispositivo.";
+mascDecirDe(mascActiva, [mascActiva + "_avisos_desactivados"]);
+}
 } catch (e) { if (!silencioso) { pushEstado.mensaje = entMensaje(e); } }
 if (!silencioso) { pushPintar(); }
 }
+function pushEstadoActual() {
+if (esIOS() && !appInstalada()) { return "ios"; }
+if (!pushSoportado()) { return "nosoporta"; }
+if (Notification.permission === "denied") { return "bloqueado"; }
+return pushEstado.suscrito ? "activo" : "inactivo";
+}
 function pushPintar() {
-var caja = $("#tb-push-card");
-if (!caja || !pushEstado) { return; }
-if (!esVercel() || !me) { caja.classList.add("tb-hidden"); return; }
-var html = "";
+var inicio = $("#tb-push-card");
+var temas = $("#tb-push-ajustes");
+if (!pushEstado) { return; }
+var visible = esVercel() && !!me;
+var estado = visible ? pushEstadoActual() : "";
 var instalar = pushEstado.instalar
 ? '<button type="button" class="tb-secondary" data-push="instalar">📲 Instalar app</button>' : "";
-if (esIOS() && !appInstalada()) {
-html = "<b>🔔 Avisos en iPhone/iPad</b><p>Toca <b>Compartir</b> → <b>Agregar a pantalla de inicio</b>, " +
-"abre El Tablón desde ese ícono y activa los avisos aquí.</p>";
-} else if (!pushSoportado()) {
-if (!instalar) { caja.classList.add("tb-hidden"); return; }
-html = "<b>📲 Instala El Tablón</b><p>Ábrelo como una app desde tu pantalla de inicio.</p>" +
+var paraQue = isStaff() ? " y de las entregas por revisar." : " y de la calificación de tus entregas.";
+var mensaje = pushEstado.mensaje ? '<p class="tb-help">' + escapeHtml(pushEstado.mensaje) + "</p>" : "";
+var botonActivar = '<button type="button" class="tb-primary" data-push="on"' + (pushEstado.ocupado ? " disabled" : "") + ">" +
+(pushEstado.ocupado ? "Activando…" : "Activar avisos") + "</button>";
+var textos = {
+ios: "<b>🔔 Avisos en iPhone/iPad</b><p>Toca <b>Compartir</b> → <b>Agregar a pantalla de inicio</b>, " +
+"abre El Tablón desde ese ícono y activa los avisos.</p>",
+bloqueado: "<b>🔕 Avisos bloqueados</b><p>Los bloqueaste en este navegador. Para activarlos, " +
+"permite las notificaciones de este sitio en la configuración del navegador o del teléfono.</p>",
+inactivo: "<b>🔔 Activa los avisos</b><p>Te avisaremos en este dispositivo de las tareas nuevas" + paraQue + "</p>"
+};
+/* Inicio: solo mientras los avisos NO estén activos. */
+if (inicio) {
+var htmlInicio = "";
+if (estado === "ios" || estado === "bloqueado") { htmlInicio = textos[estado]; }
+else if (estado === "inactivo") { htmlInicio = textos.inactivo + '<div class="tb-actions">' + botonActivar + instalar + "</div>"; }
+else if (estado === "nosoporta" && instalar) {
+htmlInicio = "<b>📲 Instala El Tablón</b><p>Ábrelo como una app desde tu pantalla de inicio.</p>" +
 '<div class="tb-actions">' + instalar + "</div>";
-} else if (Notification.permission === "denied") {
-html = "<b>🔕 Avisos bloqueados</b><p>Los bloqueaste en este navegador. Para activarlos, " +
-"permite las notificaciones de este sitio en la configuración del navegador.</p>";
-} else if (pushEstado.suscrito) {
-html = "<b>🔔 Avisos activados</b><p>Te avisaremos de tareas nuevas" +
-(isStaff() ? " y de entregas por revisar." : " y cuando califiquen tus entregas.") + "</p>" +
+}
+if (htmlInicio) {
+inicio.innerHTML = htmlInicio + mensaje;
+inicio.classList.remove("tb-hidden");
+} else {
+inicio.classList.add("tb-hidden");
+}
+}
+/* Temas: siempre, con todas las opciones. */
+if (temas) {
+if (!visible) { temas.classList.add("tb-hidden"); return; }
+var htmlTemas;
+if (estado === "activo") {
+htmlTemas = "<b>🔔 Avisos activados en este dispositivo</b><p>Te avisaremos de las tareas nuevas" + paraQue + "</p>" +
 '<div class="tb-actions"><button type="button" class="tb-primary" data-push="probar"' + (pushEstado.ocupado ? " disabled" : "") +
 ">Enviar aviso de prueba</button>" +
-'<button type="button" class="tb-secondary" data-push="off">Desactivar</button>' + instalar + "</div>";
+'<button type="button" class="tb-secondary" data-push="off">Desactivar avisos</button>' + instalar + "</div>";
+} else if (estado === "inactivo") {
+htmlTemas = "<b>🔕 Avisos desactivados en este dispositivo</b><p>Actívalos para enterarte de las tareas nuevas" + paraQue + "</p>" +
+'<div class="tb-actions">' + botonActivar + instalar + "</div>";
+} else if (estado === "nosoporta") {
+htmlTemas = "<b>🔕 Avisos no disponibles</b><p>Este navegador no permite avisos. Prueba con Chrome, Edge o Firefox.</p>" +
+(instalar ? '<div class="tb-actions">' + instalar + "</div>" : "");
 } else {
-html = "<b>🔔 Activa los avisos</b><p>Recibe en este dispositivo las tareas nuevas" +
-(isStaff() ? " y las entregas por revisar." : " y la calificación de tus entregas.") + "</p>" +
-'<div class="tb-actions"><button type="button" class="tb-primary" data-push="on"' +
-(pushEstado.ocupado ? " disabled" : "") + ">" + (pushEstado.ocupado ? "Activando…" : "Activar avisos") +
-"</button>" + instalar + "</div>";
+htmlTemas = textos[estado];
 }
-if (pushEstado.mensaje) { html += '<p class="tb-help">' + escapeHtml(pushEstado.mensaje) + "</p>"; }
-caja.innerHTML = html;
-caja.classList.remove("tb-hidden");
+temas.innerHTML = htmlTemas + mensaje;
+temas.classList.remove("tb-hidden");
+}
 }
 window.addEventListener("beforeinstallprompt", function (ev) {
 ev.preventDefault();
@@ -22711,6 +22768,54 @@ entregasRender();
 renderProfiles(); renderRanking();
 notificar("entrega_calificada", e.id);
 }
+/* ---------- Aviso personalizado (owner) ---------- */
+function anuncioPintarDestinos() {
+var select = $("#tb-anuncio-destino");
+if (!select) { return; }
+var elegido = select.value;
+select.innerHTML = '<option value="todos">📢 Todos</option>' +
+'<option value="estudiantes">🎒 Solo estudiantes</option>' +
+'<option value="staff">🛡 Solo owner y admins</option>' +
+'<optgroup label="Una persona">' + profilesOrdenados().map(function (p) {
+return '<option value="' + escapeHtml(p.id) + '">' + escapeHtml(p.display_name || p.username) +
+" (@" + escapeHtml(p.username) + ")</option>";
+}).join("") + "</optgroup>";
+if (elegido) { select.value = elegido; }
+}
+async function anuncioEnviar(ev) {
+ev.preventDefault();
+var estado = $("#tb-anuncio-status");
+var boton = $("#tb-anuncio-enviar");
+var titulo = $("#tb-anuncio-titulo").value.trim();
+var texto = $("#tb-anuncio-cuerpo").value.trim();
+var destino = $("#tb-anuncio-destino").value || "todos";
+if (!titulo || !texto) { estado.textContent = "Escribe un título y un mensaje."; return; }
+var nombreDestino = $("#tb-anuncio-destino").selectedOptions[0] ? $("#tb-anuncio-destino").selectedOptions[0].textContent : destino;
+if (!confirm("¿Enviar este aviso a: " + nombreDestino + "?\n\n" + titulo + "\n" + texto)) { return; }
+boton.disabled = true;
+estado.textContent = "Enviando…";
+try {
+var sesion = await client.auth.getSession();
+var token = sesion.data && sesion.data.session && sesion.data.session.access_token;
+var r = await fetch("/api/notificar", {
+method: "POST",
+headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
+body: JSON.stringify({ tipo: "anuncio", id: destino, titulo: titulo, cuerpo: texto, vista: $("#tb-anuncio-vista").value })
+});
+var datos = await r.json().catch(function () { return {}; });
+if (!r.ok) { throw new Error(datos.error || ("Error " + r.status)); }
+if (!datos.dispositivos) {
+estado.textContent = "No se envió: ningún destinatario tiene los avisos activados todavía.";
+} else {
+estado.textContent = "✅ Aviso enviado a " + datos.enviados + " de " + datos.dispositivos + " dispositivo(s).";
+$("#tb-anuncio-form").reset();
+}
+} catch (e) {
+estado.textContent = "⚠️ " + entMensaje(e);
+} finally {
+boton.disabled = false;
+}
+}
 /* ---------- Eventos ---------- */
 root.addEventListener("click", function (ev) {
 var b = ev.target.closest && ev.target.closest("button");
@@ -22730,6 +22835,7 @@ pushEstado.instalar.userChoice.then(function () { pushEstado.instalar = null; pu
 }
 });
 $("#tb-ent-form").addEventListener("submit", entregaEnviar);
+$("#tb-anuncio-form").addEventListener("submit", anuncioEnviar);
 $("#tb-ent-cancelar").addEventListener("click", entregaCerrar);
 $("#tb-ent-modal").addEventListener("click", function (ev) { if (ev.target === this) { entregaCerrar(); } });
 document.addEventListener("keydown", function (ev) {

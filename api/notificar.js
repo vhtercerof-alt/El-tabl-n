@@ -8,6 +8,8 @@
 //   entrega_nueva      · solo el autor de la entrega · avisa a owner/admin
 //   entrega_calificada · solo owner/admin · avisa al autor de la entrega
 //   prueba             · cualquiera · avisa SOLO a sus propios dispositivos
+//   anuncio            · solo owner · aviso personalizado (título y mensaje)
+//                        a todos, solo estudiantes, solo staff o una persona
 //
 // Cada aviso se registra en tb_push_log para no repetirlo.
 //
@@ -16,7 +18,14 @@ import {
   CFG, prepararVapid, recortar, db, usuarioDeLaSesion, primeraVez, suscripciones, enviar,
 } from "./_push.js";
 
-const TIPOS = new Set(["tarea_nueva", "entrega_nueva", "entrega_calificada", "prueba"]);
+const TIPOS = new Set(["tarea_nueva", "entrega_nueva", "entrega_calificada", "prueba", "anuncio"]);
+const VISTAS = new Set(["home", "tasks", "entregas", "noticias", "ranking", "gifts"]);
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+// Texto libre del owner: sin caracteres de control y con largo máximo.
+function textoLimpio(valor, max) {
+  return String(valor || "").replace(/[\u0000-\u001f\u007f]/g, " ").replace(/\s+/g, " ").trim().slice(0, max);
+}
 const ID_VALIDO = /^[0-9A-Za-z-]{1,64}$/;
 
 export default async function handler(req, res) {
@@ -53,7 +62,33 @@ export default async function handler(req, res) {
 
     let destinos, mensaje, clave;
 
-    if (tipo === "prueba") {
+    if (tipo === "anuncio") {
+      if (yo.role !== "owner") return res.status(403).json({ error: "Solo el owner puede enviar avisos personalizados." });
+      const titulo = textoLimpio(cuerpo.titulo, 60);
+      const texto = textoLimpio(cuerpo.cuerpo, 180);
+      const vista = VISTAS.has(String(cuerpo.vista)) ? String(cuerpo.vista) : "home";
+      if (!titulo || !texto) return res.status(400).json({ error: "Escribe un título y un mensaje." });
+      let ids = null;
+      if (id === "estudiantes" || id === "staff") {
+        const perfiles = await db("profiles?select=id,role&limit=5000");
+        ids = (perfiles || [])
+          .filter((p) => (p.role === "owner" || p.role === "admin") === (id === "staff"))
+          .map((p) => p.id);
+      } else if (id !== "todos") {
+        if (!UUID.test(id)) return res.status(400).json({ error: "Destinatario no válido." });
+        ids = [id];
+      }
+      // Como mucho un anuncio cada 15 segundos (evita envíos dobles por error).
+      if (!(await primeraVez(`anuncio:${uid}:${Math.floor(Date.now() / 15000)}`))) {
+        return res.status(429).json({ error: "Espera unos segundos antes de enviar otro aviso." });
+      }
+      destinos = ids && !ids.length ? [] : await suscripciones(ids);
+      if (!destinos.length) {
+        return res.status(200).json({ enviados: 0, dispositivos: 0 });
+      }
+      const enviados = await enviar(destinos, { titulo, cuerpo: texto, url: vista === "home" ? "/" : `/?vista=${vista}` }, null);
+      return res.status(200).json({ enviados, dispositivos: destinos.length });
+    } else if (tipo === "prueba") {
       // Solo a los dispositivos de quien lo pide; como mucho uno por minuto.
       clave = `prueba:${uid}:${Math.floor(Date.now() / 60000)}`;
       destinos = await suscripciones([uid]);
