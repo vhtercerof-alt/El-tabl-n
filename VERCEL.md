@@ -8,7 +8,7 @@
 | Rama que se publica en producción: `claude/lucid-curie-14ahbh` (la rama principal del repositorio) | ✅ Hecho |
 | Variables `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY` (secreta) y `VAPID_SUBJECT` | ✅ Cargadas |
 | Variable `SUPABASE_SERVICE_ROLE_KEY` | ⏳ **Falta:** debes agregarla tú (paso C.1) |
-| Ejecutar `supabase/ACTIVAR-entregas-invitaciones-avisos.sql` | ⏳ **Falta** (parte B) |
+| Ejecutar en Supabase `ACTIVAR-1-entregas.sql`, `ACTIVAR-2-invitaciones.sql` y `ACTIVAR-3-avisos.sql` | ⏳ **Falta** (parte B) |
 | Activar Analytics | ⏳ **Falta** (paso C.2) |
 | Borrar el proyecto duplicado vacío `el-tablon` (Settings → Delete Project) | ⏳ **Falta** |
 
@@ -49,15 +49,28 @@ Solo se publica lo que va en `public/` y en `api/`. El informe, los archivos SQL
 
 ## B. Activar entregas, invitaciones y avisos (Supabase)
 
-1. En Supabase, abre **SQL Editor → New query**.
-2. Copia **todo** el contenido de `supabase/ACTIVAR-entregas-invitaciones-avisos.sql`, pégalo y haz clic en **Run**.
-3. Al final aparece tu **código de invitación inicial**. Anótalo: desde este momento **nadie puede crear una cuenta sin un código**. Las cuentas que ya existen no se ven afectadas.
-4. Si algún estudiante necesita registrarse, compártele el código o crea uno nuevo en **Panel del owner → Códigos de invitación**. Desde ahí también puedes:
-   - crear códigos con límite de usos o fecha de vencimiento (por ejemplo, uno por grupo);
-   - desactivar o borrar un código si se filtra;
-   - desactivar la exigencia de código (no recomendado).
+Son **tres archivos cortos** en la carpeta `supabase/`. Ejecútalos en este orden:
 
-El archivo se puede ejecutar más de una vez sin romper nada.
+| Orden | Archivo | Qué activa |
+|-------|---------|------------|
+| 1 | `ACTIVAR-1-entregas.sql` | Entregas de tareas y calificación |
+| 2 | `ACTIVAR-2-invitaciones.sql` | Códigos de invitación (al final muestra tu primer código) |
+| 3 | `ACTIVAR-3-avisos.sql` | Avisos al celular |
+
+Para **cada** archivo:
+
+1. En GitHub, abre el archivo y usa el botón **Copy raw file** (ícono de dos cuadritos, arriba a la derecha del contenido). Así se copia completo.
+2. En Supabase: **SQL Editor → New query**, para tener una pestaña **vacía**.
+3. Pega con Ctrl+V (Cmd+V en Mac). **No selecciones nada**: si hay texto seleccionado, Supabase ejecuta solo esa parte.
+4. Haz clic en **Run**. Debe aparecer una tabla con "Entregas activadas", tu código de invitación o "Avisos activados".
+
+Si aparece un error, repite ese mismo archivo desde el paso 1. Se pueden ejecutar varias veces sin romper nada, incluso si un intento anterior quedó a medias.
+
+**Después de la parte 2, nadie puede crear una cuenta sin código.** Las cuentas que ya existen no se ven afectadas. Comparte el código solo con tu grupo, o crea otros en **Panel del owner → Códigos de invitación**. Desde ahí también puedes:
+
+- crear códigos con límite de usos o fecha de vencimiento (por ejemplo, uno por grupo);
+- desactivar o borrar un código si se filtra;
+- desactivar la exigencia de código (no recomendado).
 
 ---
 

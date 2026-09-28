@@ -1,37 +1,29 @@
 -- =====================================================================
--- EL TABLÓN · Activar: entregas de tareas, códigos de invitación y avisos
+-- EL TABLÓN · ACTIVAR PARTE 1 de 3 · Entregas de tareas
 -- =====================================================================
--- Ejecutar UNA vez en Supabase → SQL Editor → New query → Run.
--- Se puede volver a ejecutar sin romper nada (es idempotente).
---
--- Qué crea:
---   1. Funciones de apoyo para saber si quien llama es owner/admin.
---   2. tb_entregas + bucket privado "entregas": los estudiantes envían su
---      trabajo y el owner/admin lo aprueba (suma 1 cumplido) o lo devuelve.
---   3. tb_invitaciones + tb_ajustes: solo se puede crear cuenta con un
---      código válido. Al final se muestra el código inicial.
---   4. tb_push_suscripciones + tb_push_log: avisos al celular.
---
--- Supuestos (tomados de lo que ya usa la página): public.profiles tiene
--- las columnas id (uuid del usuario), role ('owner'/'admin'/'student') y
--- completed_tasks; public.tasks tiene id y published.
+-- Cómo ejecutarlo en Supabase:
+--   1. SQL Editor → New query (una pestaña VACÍA).
+--   2. Pega TODO este archivo. No selecciones nada (si hay texto
+--      seleccionado, Supabase ejecuta solo lo seleccionado).
+--   3. Clic en Run. Debe decir "Success".
+-- Se puede ejecutar varias veces sin romper nada.
+-- Ejecuta las partes en orden: 1, 2 y 3.
 -- =====================================================================
-
 
 -- ---------------------------------------------------------------------
 -- 1. Funciones de apoyo
 -- ---------------------------------------------------------------------
 create or replace function public.tb_es_staff()
-returns boolean language sql stable security definer set search_path = public as $$
+returns boolean language sql stable security definer set search_path = public as $fn$
   select exists (select 1 from public.profiles
                  where id = auth.uid() and role in ('owner', 'admin'));
-$$;
+$fn$;
 
 create or replace function public.tb_es_owner()
-returns boolean language sql stable security definer set search_path = public as $$
+returns boolean language sql stable security definer set search_path = public as $fn$
   select exists (select 1 from public.profiles
                  where id = auth.uid() and role = 'owner');
-$$;
+$fn$;
 
 revoke all on function public.tb_es_staff() from public, anon;
 revoke all on function public.tb_es_owner() from public, anon;
@@ -43,7 +35,7 @@ grant execute on function public.tb_es_owner() to authenticated;
 -- 2. ENTREGAS
 -- ---------------------------------------------------------------------
 -- task_id toma automáticamente el mismo tipo que tasks.id (bigint o uuid).
-do $$
+do $do$
 declare
   tipo_id text;
 begin
@@ -71,7 +63,7 @@ begin
       updated_at        timestamptz not null default now(),
       unique (task_id, user_id)
     )$f$, tipo_id);
-end $$;
+end $do$;
 
 create index if not exists tb_entregas_estado_idx on public.tb_entregas (estado, updated_at desc);
 
@@ -92,7 +84,7 @@ grant select on public.tb_entregas to authenticated;
 -- Enviar o reenviar una entrega (estudiante).
 create or replace function public.tb_enviar_entrega(
   p_task text, p_texto text, p_archivo_path text, p_archivo_nombre text)
-returns json language plpgsql security definer set search_path = public as $$
+returns json language plpgsql security definer set search_path = public as $fn$
 declare
   v_uid   uuid := auth.uid();
   v_texto text := nullif(btrim(coalesce(p_texto, '')), '');
@@ -113,7 +105,8 @@ begin
   end if;
   -- El archivo debe estar en la carpeta del propio estudiante.
   if p_archivo_path is not null and
-     p_archivo_path !~ ('^' || v_uid::text || '/[A-Za-z0-9._-]{1,120}$') then
+     (split_part(p_archivo_path, '/', 1) <> v_uid::text
+      or p_archivo_path !~ '^[0-9a-f-]{36}/[A-Za-z0-9._-]{1,120}\Z') then
     raise exception 'Archivo no válido.';
   end if;
 
@@ -137,22 +130,20 @@ begin
     where id = v_row.id
     returning * into v_row;
   else
-    execute format(
-      'insert into public.tb_entregas (task_id, user_id, texto, archivo_path, archivo_nombre)
-       select id, $1, $2, $3, $4 from public.tasks where id::text = $5
-       returning *')
-    into v_row
-    using v_uid, v_texto, p_archivo_path, left(p_archivo_nombre, 120), v_task_id;
+    insert into public.tb_entregas (task_id, user_id, texto, archivo_path, archivo_nombre)
+    select t.id, v_uid, v_texto, p_archivo_path, left(p_archivo_nombre, 120)
+    from public.tasks t where t.id::text = v_task_id
+    returning * into v_row;
   end if;
 
   return json_build_object('id', v_row.id, 'updated_at', v_row.updated_at);
-end $$;
+end $fn$;
 
 -- Calificar (owner/admin). Aprobar suma 1 cumplido una sola vez;
 -- devolver una entrega que estaba aprobada lo resta.
 create or replace function public.tb_calificar_entrega(
   p_entrega bigint, p_aprobar boolean, p_nota integer, p_comentario text)
-returns json language plpgsql security definer set search_path = public as $$
+returns json language plpgsql security definer set search_path = public as $fn$
 declare
   v_row public.tb_entregas%rowtype;
 begin
@@ -186,7 +177,7 @@ begin
 
   return json_build_object('id', v_row.id, 'estado', v_row.estado,
                            'revisada_at', v_row.revisada_at);
-end $$;
+end $fn$;
 
 revoke all on function public.tb_enviar_entrega(text, text, text, text) from public, anon;
 revoke all on function public.tb_calificar_entrega(bigint, boolean, integer, text) from public, anon;
@@ -222,141 +213,4 @@ create policy "tb entregas borrar" on storage.objects
          and (storage.foldername(name))[1] = auth.uid()::text);
 
 
--- ---------------------------------------------------------------------
--- 3. CÓDIGOS DE INVITACIÓN
--- ---------------------------------------------------------------------
-create table if not exists public.tb_invitaciones (
-  codigo      text primary key check (codigo ~ '^[A-Z0-9]{6,20}$'),
-  nota        text check (char_length(nota) <= 80),
-  max_usos    integer check (max_usos > 0),
-  usos        integer not null default 0,
-  expira      timestamptz,
-  activo      boolean not null default true,
-  creado_por  uuid default auth.uid() references auth.users(id) on delete set null,
-  created_at  timestamptz not null default now()
-);
-
-create table if not exists public.tb_ajustes (
-  id                     integer primary key default 1 check (id = 1),
-  invitacion_obligatoria boolean not null default true
-);
-insert into public.tb_ajustes (id) values (1) on conflict (id) do nothing;
-
-alter table public.tb_invitaciones enable row level security;
-alter table public.tb_ajustes enable row level security;
-revoke all on public.tb_invitaciones from anon;
-revoke all on public.tb_ajustes from anon;
-
-drop policy if exists tb_invitaciones_owner on public.tb_invitaciones;
-create policy tb_invitaciones_owner on public.tb_invitaciones
-  for all to authenticated
-  using (public.tb_es_owner()) with check (public.tb_es_owner());
-
-drop policy if exists tb_ajustes_owner on public.tb_ajustes;
-create policy tb_ajustes_owner on public.tb_ajustes
-  for all to authenticated
-  using (public.tb_es_owner()) with check (public.tb_es_owner());
-
--- La página pregunta si hace falta código (sin revelar ningún código).
-create or replace function public.tb_invitacion_requerida()
-returns boolean language sql stable security definer set search_path = public as $$
-  select coalesce((select invitacion_obligatoria from public.tb_ajustes where id = 1), true);
-$$;
-grant execute on function public.tb_invitacion_requerida() to anon, authenticated;
-
--- Se ejecuta en el servidor al crear cada cuenta: sin código válido,
--- la cuenta NO se crea (no se puede saltar desde el navegador).
-create or replace function public.tb_validar_invitacion()
-returns trigger language plpgsql security definer set search_path = public as $$
-declare
-  v_codigo text := upper(btrim(coalesce(new.raw_user_meta_data ->> 'codigo_invitacion', '')));
-begin
-  new.raw_user_meta_data := coalesce(new.raw_user_meta_data, '{}'::jsonb) - 'codigo_invitacion';
-  if not public.tb_invitacion_requerida() then
-    return new;
-  end if;
-  update public.tb_invitaciones
-     set usos = usos + 1
-   where codigo = v_codigo
-     and activo
-     and (expira is null or expira > now())
-     and (max_usos is null or usos < max_usos);
-  if not found then
-    raise exception 'TB_INVITACION_INVALIDA';
-  end if;
-  return new;
-end $$;
-
-drop trigger if exists tb_validar_invitacion on auth.users;
-create trigger tb_validar_invitacion
-  before insert on auth.users
-  for each row execute function public.tb_validar_invitacion();
-
--- Código inicial (solo si todavía no hay ninguno).
-insert into public.tb_invitaciones (codigo, nota)
-select c.codigo, 'Código inicial'
-from (select string_agg(substr('ABCDEFGHJKLMNPQRSTUVWXYZ23456789',
-                               (get_byte(x.b, g) % 32) + 1, 1), '') as codigo
-      from (select decode(md5(gen_random_uuid()::text), 'hex') as b) x,
-           generate_series(0, 7) g) c
-where not exists (select 1 from public.tb_invitaciones);
-
-
--- ---------------------------------------------------------------------
--- 4. AVISOS (notificaciones push)
--- ---------------------------------------------------------------------
-create table if not exists public.tb_push_suscripciones (
-  id         bigint generated always as identity primary key,
-  user_id    uuid not null default auth.uid() references auth.users(id) on delete cascade,
-  endpoint   text not null unique
-             check (endpoint ~ '^https://' and char_length(endpoint) <= 1000),
-  p256dh     text not null check (char_length(p256dh) <= 200),
-  auth       text not null check (char_length(auth) <= 100),
-  created_at timestamptz not null default now()
-);
-alter table public.tb_push_suscripciones enable row level security;
-revoke all on public.tb_push_suscripciones from anon;
-
-drop policy if exists tb_push_propias on public.tb_push_suscripciones;
-create policy tb_push_propias on public.tb_push_suscripciones
-  for select to authenticated using (user_id = auth.uid());
-revoke insert, update, delete on public.tb_push_suscripciones from authenticated;
-
--- Guardar/quitar la suscripción de este dispositivo para el usuario actual.
-create or replace function public.tb_guardar_suscripcion(p_endpoint text, p_p256dh text, p_auth text)
-returns void language plpgsql security definer set search_path = public as $$
-begin
-  if auth.uid() is null then raise exception 'Inicia sesión.'; end if;
-  insert into public.tb_push_suscripciones (user_id, endpoint, p256dh, auth)
-  values (auth.uid(), p_endpoint, p_p256dh, p_auth)
-  on conflict (endpoint) do update
-    set user_id = excluded.user_id, p256dh = excluded.p256dh,
-        auth = excluded.auth, created_at = now();
-end $$;
-
-create or replace function public.tb_borrar_suscripcion(p_endpoint text)
-returns void language sql security definer set search_path = public as $$
-  delete from public.tb_push_suscripciones
-  where endpoint = p_endpoint and user_id = auth.uid();
-$$;
-
-revoke all on function public.tb_guardar_suscripcion(text, text, text) from public, anon;
-revoke all on function public.tb_borrar_suscripcion(text) from public, anon;
-grant execute on function public.tb_guardar_suscripcion(text, text, text) to authenticated;
-grant execute on function public.tb_borrar_suscripcion(text) to authenticated;
-
--- Registro interno para no enviar el mismo aviso dos veces
--- (solo lo usa el servidor de Vercel con la clave service_role).
-create table if not exists public.tb_push_log (
-  clave      text primary key,
-  created_at timestamptz not null default now()
-);
-alter table public.tb_push_log enable row level security;
-revoke all on public.tb_push_log from anon, authenticated;
-
-
--- ---------------------------------------------------------------------
--- Resultado: tu código de invitación inicial
--- ---------------------------------------------------------------------
-select codigo as "Código de invitación inicial", usos, activo
-from public.tb_invitaciones order by created_at limit 5;
+select 'Entregas activadas' as resultado;
