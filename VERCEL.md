@@ -128,9 +128,14 @@ Si no llega:
 
 | Qué pasa | Quién recibe el aviso |
 |----------|-----------------------|
-| Publicas una tarea (nueva, o al marcar una como publicada) | Todos, una sola vez por tarea |
+| Publicas una tarea (nueva, o al marcar una como publicada) | Todos menos tú, una sola vez por tarea. Al publicar, un mensaje en pantalla te dice a cuántos dispositivos llegó |
 | Un estudiante entrega o reenvía | Owner y admins |
 | Calificas una entrega | Solo ese estudiante |
+| Cada día a las 8:00 (hora de Nicaragua), si quedan entregas sin revisar | Owner y admins: «Tienes N entregas esperando tu calificación» |
+
+El recordatorio diario lo ejecuta Vercel automáticamente (sección *Cron Jobs* del proyecto) y está protegido con la variable secreta `CRON_SECRET`, que ya quedó cargada. Para cambiar la hora, edita `"schedule"` en `vercel.json`: la hora va en UTC, y 14:00 UTC son las 8:00 en Nicaragua.
+
+**Importante:** si en el mismo celular o navegador entras con otra cuenta (por ejemplo, una de estudiante para probar), al cerrar sesión ese dispositivo deja de recibir tus avisos. Vuelve a activarlos cuando entres con tu cuenta.
 
 El texto de cada aviso lo arma siempre el servidor. Nadie puede usar el sistema para mandar mensajes inventados. Al cerrar sesión, ese dispositivo deja de recibir avisos.
 

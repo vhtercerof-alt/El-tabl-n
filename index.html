@@ -6656,6 +6656,9 @@ animation-duration: .01ms !important; animation-iteration-count: 1 !important; t
 .tb-ent-calificar .tb-actions { grid-column: 1 / -1; }
 @media (max-width: 600px) { .tb-ent-calificar { grid-template-columns: 1fr; } }
 #tb-push-card { margin: 0 0 17px; }
+.tb-toast { position: fixed; left: 50%; bottom: 24px; z-index: 9500; transform: translateX(-50%); width: min(560px, calc(100vw - 32px)); padding: 13px 16px; border-radius: 14px; background: #141a3a; border: 1px solid #8fa6ff55; color: #eef2ff; font-size: 14px; font-weight: 700; line-height: 1.45; box-shadow: 0 12px 40px #0008; animation: tbToastIn .25s ease-out; transition: opacity .4s, transform .4s; }
+.tb-toast.fuera { opacity: 0; transform: translate(-50%, 12px); }
+@keyframes tbToastIn { from { opacity: 0; transform: translate(-50%, 12px); } to { opacity: 1; transform: translateX(-50%); } }
 #tb-push-card p { margin: 6px 0 10px; color: #b0bad0; font-size: 13.5px; line-height: 1.5; }
 </style>
 <div id="tablon-root" class="tb-theme-midnight">
@@ -19206,7 +19209,19 @@ alert(result.error.message);
 return;
 }
 if (taskData.published) {
-notificar("tarea_nueva", taskId || (result.data && result.data.id));
+notificar("tarea_nueva", taskId || (result.data && result.data.id)).then(function (r) {
+if (!r) { return; }
+if (r.fallo) {
+avisoToast("⚠️ Tarea publicada, pero no se pudo enviar el aviso: " + (r.error || "error desconocido") +
+(r.problemas && r.problemas.length ? " " + r.problemas.join(" ") : ""));
+} else if (r.repetido) {
+avisoToast("📌 Tarea guardada. El aviso de esta tarea ya se había enviado antes.");
+} else if (!r.enviados) {
+avisoToast("📌 Tarea publicada. Nadie más tiene los avisos activados todavía (tú no recibes el aviso de tus propias tareas).");
+} else {
+avisoToast("📣 Aviso de la tarea enviado a " + r.enviados + " dispositivo(s).");
+}
+});
 }
 $("#tb-task-cancel").click();
 await refreshTasks();
@@ -22236,8 +22251,17 @@ return faltaTablaTb(error)
 : ((error && error.message) || String(error || "Error de conexión."));
 }
 /* ---------- Avisos (push) ---------- */
+function avisoToast(texto) {
+var nodo = document.createElement("div");
+nodo.className = "tb-toast";
+nodo.setAttribute("role", "status");
+nodo.textContent = texto;
+root.appendChild(nodo);
+setTimeout(function () { nodo.classList.add("fuera"); }, 5200);
+setTimeout(function () { nodo.remove(); }, 5700);
+}
 async function notificar(tipo, id) {
-if (!esVercel() || !client || id === null || id === undefined) { return; }
+if (!esVercel() || !client || id === null || id === undefined) { return null; }
 try {
 var sesion = await client.auth.getSession();
 var token = sesion.data && sesion.data.session && sesion.data.session.access_token;
@@ -22247,8 +22271,10 @@ method: "POST",
 headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
 body: JSON.stringify({ tipo: tipo, id: String(id) })
 });
-if (!r.ok) { console.warn("[avisos]", r.status, await r.text()); }
-} catch (e) { console.warn("[avisos]", e); }
+var datos = await r.json().catch(function () { return {}; });
+if (!r.ok) { console.warn("[avisos]", r.status, datos); datos.fallo = true; }
+return datos;
+} catch (e) { console.warn("[avisos]", e); return { fallo: true, error: "Sin conexión con el servidor de avisos." }; }
 }
 var pushEstado = { suscrito: false, ocupado: false, mensaje: "", instalar: null };
 function pushSoportado() {

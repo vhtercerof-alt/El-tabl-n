@@ -69,5 +69,11 @@
         }
       ]
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/recordatorio",
+      "schedule": "0 14 * * *"
+    }
   ]
 }
