@@ -6626,8 +6626,63 @@ animation-duration: .01ms !important; animation-iteration-count: 1 !important; t
 }
 #tablon-root .bn-espectador > .bn-emotes, #tablon-root .bn-espectador > .bn-extra { order: 3; }
 #tablon-root .bn-espectador > .bn-emotes { margin-top: 0; }
+/* ---- Entregas, invitaciones y avisos ---- */
+.tb-ent-barra { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; position: relative; z-index: 2; }
+.tb-ent-btn { padding: 9px 13px; font-size: 13px; }
+.tb-ent-chip { display: inline-flex; align-items: center; gap: 4px; padding: 5px 10px; border-radius: 999px; font-size: 12px; font-weight: 800; border: 1px solid var(--line); background: #ffffff0d; }
+.tb-ent-chip.aprobada { color: #5cf0a5; border-color: #5cf0a555; background: #5cf0a514; }
+.tb-ent-chip.pendiente { color: #ffd27a; border-color: #ffd27a55; background: #ffd27a14; }
+.tb-ent-chip.devuelta { color: #ff9a6a; border-color: #ff9a6a55; background: #ff9a6a14; }
+.tb-ent-chip.tarde { color: #ff7a8a; border-color: #ff7a8a55; }
+.tb-ent-coment { flex-basis: 100%; margin: 2px 0 0; font-size: 13px; color: #cbd5ff; white-space: pre-wrap; }
+.tb-ent-modal { position: fixed; inset: 0; z-index: 9000; display: grid; place-items: center; padding: 16px; background: #05071acc; backdrop-filter: blur(6px); }
+.tb-ent-modal.tb-hidden { display: none; }
+.tb-ent-caja { width: min(520px, 100%); max-height: calc(100vh - 32px); overflow: auto; }
+.tb-ent-caja h3 { margin: 0 0 4px; }
+.tb-ent-filtros { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; }
+.tb-ent-filtros button.on { background: linear-gradient(110deg, #91adff, #766eff 58%, #a056ef); border-color: transparent; }
+.tb-ent-lista { display: grid; gap: 14px; }
+.tb-ent-item { display: grid; gap: 10px; }
+.tb-ent-cabeza { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.tb-ent-cabeza > div:nth-child(2) { flex: 1; min-width: 160px; }
+.tb-ent-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.tb-ent-tarea { font-size: 12.5px; margin-top: 2px; }
+.tb-ent-texto { margin: 0; padding: 12px; border-radius: 12px; background: #ffffff08; border: 1px solid var(--line); white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.5; }
+.tb-ent-archivo { justify-self: start; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tb-ent-previa img { display: block; max-width: 100%; max-height: 420px; border-radius: 12px; border: 1px solid var(--line); }
+.tb-ent-calificar { display: grid; grid-template-columns: 140px 1fr; gap: 0 12px; align-items: start; }
+.tb-ent-calificar .tb-field { margin: 4px 0; }
+.tb-ent-calificar .tb-field textarea { min-height: 60px; }
+.tb-ent-calificar .tb-actions { grid-column: 1 / -1; }
+@media (max-width: 600px) { .tb-ent-calificar { grid-template-columns: 1fr; } }
+#tb-push-card { margin: 0 0 17px; }
+#tb-push-card p { margin: 6px 0 10px; color: #b0bad0; font-size: 13.5px; line-height: 1.5; }
+.tb-inv-switch { display: flex; align-items: center; gap: 10px; margin: 12px 0; font-weight: 750; }
+.tb-inv-tabla { display: grid; gap: 8px; margin-top: 8px; }
+.tb-inv-fila { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: #ffffff08; }
+.tb-inv-fila code { font-size: 16px; font-weight: 900; letter-spacing: .12em; color: #ffd27a; }
+.tb-inv-info { flex: 1; min-width: 180px; font-size: 12.5px; color: #b0bad0; }
+.tb-inv-ok { color: #5cf0a5; } .tb-inv-no { color: #ff9a6a; }
+.tb-inv-botones { display: flex; gap: 6px; flex-wrap: wrap; }
+.tb-inv-botones button { padding: 7px 10px; font-size: 12px; }
 </style>
 <div id="tablon-root" class="tb-theme-midnight">
+<div id="tb-ent-modal" class="tb-ent-modal tb-hidden" role="dialog" aria-modal="true" aria-labelledby="tb-ent-titulo">
+<form class="tb-card tb-ent-caja" id="tb-ent-form">
+<h3 id="tb-ent-titulo">📤 Entregar tarea</h3>
+<p class="tb-muted" id="tb-ent-tarea"></p>
+<label class="tb-field"><span>Tu respuesta (opcional si adjuntas un archivo)</span>
+<textarea id="tb-ent-texto" maxlength="2000" placeholder="Escribe aquí tu respuesta o un comentario para tu profe"></textarea></label>
+<label class="tb-field"><span>Foto o PDF (opcional, máximo 5 MB)</span>
+<input id="tb-ent-archivo" type="file" accept="image/png,image/jpeg,image/webp,application/pdf"></label>
+<small class="tb-help" id="tb-ent-actual"></small>
+<p class="tb-alert tb-hidden" id="tb-ent-error" role="alert"></p>
+<div class="tb-actions">
+<button type="submit" class="tb-primary" id="tb-ent-enviar">Enviar</button>
+<button type="button" class="tb-secondary" id="tb-ent-cancelar">Cancelar</button>
+</div>
+</form>
+</div>
 <div class="tb-portal" id="tb-portal">
 <div class="tb-portal-caja">
 <div class="tb-guardian" id="tb-guardian" role="button" tabindex="0"
@@ -6779,6 +6834,12 @@ y recuperes el acceso.
 </form>
 <form id="tb-register" class="tb-hidden">
 <label class="tb-fl">
+<input id="tb-register-codigo" placeholder=" " autocomplete="off" autocapitalize="characters"
+spellcheck="false" maxlength="20" pattern="[A-Za-z0-9]{6,20}" required>
+<span class="tb-fl-label" id="tb-register-codigo-label">Código de invitación</span>
+</label>
+<small class="tb-help">Te lo da tu profe. Sin él no se puede crear la cuenta.</small>
+<label class="tb-fl">
 <input id="tb-register-user" placeholder=" " autocomplete="username"
 pattern="[A-Za-z0-9_]{3,24}" required>
 <span class="tb-fl-label">Usuario</span>
@@ -6885,6 +6946,10 @@ caracteres y lo puedes cambiar cuando quieras desde Personalizar.
 <button class="tb-rail-btn tb-staff-only" data-view="redaccion" title="Redacción">
 ✍<span class="tb-rail-label">Redacción</span>
 </button>
+<button class="tb-rail-btn tb-staff-only" data-view="entregas" title="Entregas">
+📥<span class="tb-rail-label">Entregas</span>
+<span class="tb-badge tb-entregas-badge tb-hidden"></span>
+</button>
 <button class="tb-rail-btn tb-staff-only" data-view="manage" title="Administrar">
 ⚙<span class="tb-rail-label">Publicar</span>
 </button>
@@ -6924,6 +6989,7 @@ caracteres y lo puedes cambiar cuando quieras desde Personalizar.
 <button class="tb-nav" data-view="ranking">🏆 Ranking</button>
 <button class="tb-nav" data-view="mascota">🐾 Mascota</button>
 <button class="tb-nav tb-staff-only" data-view="redaccion">✍ Redacción</button>
+<button class="tb-nav tb-staff-only" data-view="entregas">📥 Entregas<span class="tb-badge tb-entregas-badge tb-hidden"></span></button>
 <button class="tb-nav tb-staff-only" data-view="manage">⚙ Publicar tareas</button>
 <button class="tb-nav tb-owner-only" data-view="roles">★ Roles</button>
 <button class="tb-nav tb-owner-only" data-view="owner">♛ Panel del owner</button>
@@ -6963,6 +7029,7 @@ title="Tu racha diaria"></span>
 <p>Revisa las tareas publicadas y el progreso de tu grupo.</p>
 </div>
 </div>
+<div id="tb-push-card" class="tb-card tb-hidden" aria-live="polite"></div>
 <div class="tb-grid">
 <div class="tb-card">
 <div class="tb-card-head">
@@ -7287,6 +7354,21 @@ Arrastra por ⠿ o usa las flechas. Los roles marcados como
 </div>
 </div>
 </section>
+<section id="tb-view-entregas" class="tb-view tb-staff-only">
+<div class="tb-welcome">
+<div>
+<h1>Entregas</h1>
+<p id="tb-entregas-resumen">Revisa el trabajo de tus estudiantes y dales su cumplido.</p>
+</div>
+<button type="button" class="tb-secondary" id="tb-entregas-refrescar">Actualizar</button>
+</div>
+<div class="tb-ent-filtros">
+<button type="button" class="tb-secondary on" data-ent-filtro="pendiente">⏳ Por revisar</button>
+<button type="button" class="tb-secondary" data-ent-filtro="revisadas">✔ Revisadas</button>
+<button type="button" class="tb-secondary" data-ent-filtro="todas">Todas</button>
+</div>
+<div id="tb-entregas-lista" class="tb-ent-lista"></div>
+</section>
 <section id="tb-view-manage" class="tb-view tb-staff-only">
 <div class="tb-welcome">
 <div>
@@ -7362,6 +7444,19 @@ Publicar inmediatamente
 </div>
 </section>
 <section id="tb-view-owner" class="tb-view tb-owner-only">
+<details class="tb-card tb-extra-owner" id="tb-inv-panel" open>
+<summary>🎟️ Códigos de invitación</summary>
+<p class="tb-muted">Solo quien tenga un código válido puede crear una cuenta. Compártelo únicamente con tu grupo.</p>
+<label class="tb-inv-switch"><input type="checkbox" id="tb-inv-obligatorio" checked> Exigir código para registrarse</label>
+<form id="tb-inv-form" class="tb-form-grid">
+<label class="tb-field"><span>Nota (ej. «Grupo A 2026»)</span><input id="tb-inv-nota" maxlength="80"></label>
+<label class="tb-field"><span>Usos máximos (vacío = sin límite)</span><input id="tb-inv-max" type="number" min="1" max="1000"></label>
+<label class="tb-field"><span>Vence en días (vacío = no vence)</span><input id="tb-inv-dias" type="number" min="1" max="365"></label>
+<div class="tb-field" style="display:flex;align-items:flex-end"><button class="tb-primary" style="width:100%">Crear código</button></div>
+</form>
+<p class="tb-extra-status" id="tb-inv-status" role="status" aria-live="polite"></p>
+<div id="tb-inv-lista"></div>
+</details>
 <details class="tb-card tb-extra-owner" id="tb-extra-owner-panel">
 <summary>🏅 Administrar vitrina de logros</summary>
 <p class="tb-muted">Diseña las insignias, reconoce a tus estudiantes y elige el acabado del mueble.</p>
@@ -9319,7 +9414,7 @@ urgente +
 '<span class="tb-autor">' + foto + escapeHtml(autor) + "</span>" +
 (publicada ? '<span class="tb-task-estado">' + escapeHtml(publicada) + "</span>" : "") +
 "</div>" +
-"</div>" + barraReacciones(task) + controls + "</article>";
+"</div>" + barraReacciones(task) + (managementMode ? "" : entregaBarraHtml(task)) + controls + "</article>";
 }
 function renderTasks() {
 var published = tasks.filter(function (task) { return task.published; });
@@ -10688,6 +10783,7 @@ border: '<rect x="3.2" y="4.4" width="17.6" height="15.2" rx="2"/><path d="M6.6 
 UI.epic = UI.inventory;
 UI.showcase = UI.ranking;
 UI.ideas = UI.noticias;
+UI.entregas = '<path d="M4 13.2h4.2l1.6 2.8h4.4l1.6-2.8H20"/><path d="M6.2 4.6h11.6l2.2 8.6v5a1.8 1.8 0 0 1-1.8 1.8H5.8A1.8 1.8 0 0 1 4 18.2v-5z"/><path d="M12 7v5.4M9.6 10 12 12.4 14.4 10"/>';
 function icono(nombre, clase) {
 if (!UI[nombre]) { return ""; }
 return '<svg class="tb-ico ' + (clase || "") + '" viewBox="0 0 24 24" ' +
@@ -18769,7 +18865,7 @@ $("#tb-auth-sub").textContent = mode === "login"
 }
 function showView(name) {
 if(me&&(name==="shop"||name==="inventory"))rpSchedule();
-if ((name === "manage" || name === "redaccion") && !isStaff()) { return; }
+if ((name === "manage" || name === "redaccion" || name === "entregas") && !isStaff()) { return; }
 if (name === "owner" && !isOwner()) { return; }
 if (name !== "arcade") {
 detenerTetris();
@@ -18794,7 +18890,7 @@ home: "Resumen", tasks: "Tareas", semana: "Semana", profiles: "Perfiles", cosmet
 shop: "Tienda", inventory: "Personalizar", gifts: "Regalos",
 noticias: "Noticias", juego: "Camino al Ídolo", arcade: "Actividades",
 redaccion: "Redacción", ranking: "Ranking", mascota: "Tu mascota",
-manage: "Administrar tareas", roles: "Roles", owner: "Panel del owner", showcase: "Mi vitrina", ideas: "Buzón de ideas", epic: "Cartas Épicas"
+manage: "Administrar tareas", entregas: "Entregas", roles: "Roles", owner: "Panel del owner", showcase: "Mi vitrina", ideas: "Buzón de ideas", epic: "Cartas Épicas"
 };
 $("#tb-page-title").textContent = titles[name] || "El tablón";
 if (name === "epic") { renderEpicGallery(); }
@@ -18802,6 +18898,9 @@ if (name === "showcase" || name === "ideas" || name === "owner") { extraReload()
 if (name === "mascota") { renderMascotaVista(); }
 if (name === "noticias") { marcarNoticiasVistas(); }
 if (name === "semana") { renderSemana(); }
+if (name === "entregas") { entregasRender(); entregasCargar().then(entregasRender); }
+if (name === "tasks" || name === "home") { entregasCargar().then(function () { renderTasks(); }); }
+if (name === "owner") { invCargar(); }
 mascGuiarVista(name);
 if (name === "shop") {
 updateSpinState();
@@ -18856,6 +18955,7 @@ sincronizarCatalogo();
 await cargarPartidasGato();
 await cargarEncuestasActivas();
 await cargarMemes();
+try { await entregasCargar(); } catch (error) { console.warn("[entregas]", error); }
 renderTasks();
 renderProfiles();
 renderMyProfile();
@@ -18885,8 +18985,9 @@ pintarInsigniaNoticias();
 limpiarFormularioArticulo();
 $("#tb-auth").classList.add("tb-hidden");
 $("#tb-app").classList.remove("tb-hidden");
-showView("home");
+showView(vistaInicial());
 movePill(false);
+pushActualizar();
 mascInicializar();
 mascGuiaVista = "home";
 setTimeout(function () {
@@ -19060,6 +19161,11 @@ return;
 }
 var username = $("#tb-register-user").value.trim().toLowerCase();
 var claveNueva = $("#tb-register-pass").value;
+var codigoInv = $("#tb-register-codigo").value.trim().toUpperCase();
+if ((invitacionRequerida || codigoInv) && !/^[A-Z0-9]{6,20}$/.test(codigoInv)) {
+showMessage("Escribe el código de invitación que te dio tu profe (6 a 20 letras y números).");
+return;
+}
 if (!/^[a-z0-9_]{3,24}$/.test(username)) {
 showMessage("El usuario solo puede tener letras, números y guion bajo (3 a 24).");
 return;
@@ -19076,12 +19182,15 @@ options: {
 data: {
 username: username,
 display_name: $("#tb-register-name").value.trim(),
-bio: $("#tb-register-bio").value.trim()
+bio: $("#tb-register-bio").value.trim(),
+codigo_invitacion: codigoInv
 }
 }
 });
 if (result.error) {
-showMessage(result.error.message);
+showMessage(/TB_INVITACION_INVALIDA|Database error saving new user/i.test(result.error.message || "")
+? "Código de invitación inválido, vencido o agotado. Pídele uno nuevo a tu profe."
+: result.error.message);
 return;
 }
 if (!result.data.session) {
@@ -19093,6 +19202,7 @@ await loadData();
 };
 $("#tb-logout").onclick = async function () {
 mascDecirDe(mascActiva, [mascActiva + "_despedida_1"]);
+try { await pushDesactivar(true); } catch (error) { /* sin avisos que quitar */ }
 await client.auth.signOut();
 setTimeout(function () { window.location.reload(); }, 1400);
 };
@@ -19124,11 +19234,14 @@ if (taskId) {
 result = await client.from("tasks").update(taskData).eq("id", taskId);
 } else {
 taskData.created_by = me.id;
-result = await client.from("tasks").insert(taskData);
+result = await client.from("tasks").insert(taskData).select("id").single();
 }
 if (result.error) {
 alert(result.error.message);
 return;
+}
+if (taskData.published) {
+notificar("tarea_nueva", taskId || (result.data && result.data.id));
 }
 $("#tb-task-cancel").click();
 await refreshTasks();
@@ -22136,5 +22249,546 @@ if (s.estado === "jugando") { stpPintarJuego(caja, stp.est); return; }
 if (s.estado === "revision") { stpPintarRevision(caja, stp.est); return; }
 stpPintarFinal(caja, stp.est);
 }
+/* ===================================================================
+   ENTREGAS DE TAREAS · CÓDIGOS DE INVITACIÓN · AVISOS AL CELULAR
+   Requiere ejecutar supabase/ACTIVAR-entregas-invitaciones-avisos.sql.
+   =================================================================== */
+var ENT_SQL = "ACTIVAR-entregas-invitaciones-avisos.sql";
+var ENT_TIPOS = ["image/png", "image/jpeg", "image/webp", "application/pdf"];
+var ENT_MAX = 5 * 1024 * 1024;
+var ent = { lista: [], listas: false, error: "", filtro: "pendiente", abierta: null, enviando: false };
+function esVercel() {
+var m = document.querySelector('meta[name="tb-plataforma"]');
+return !!m && m.content === "vercel";
+}
+function faltaTablaTb(error) {
+return !!error && (["42P01", "PGRST205", "PGRST202", "42883"].indexOf(error.code) !== -1 ||
+/does not exist|schema cache|could not find/i.test(error.message || ""));
+}
+function entMensaje(error) {
+return faltaTablaTb(error)
+? "Falta activar esta función: ejecuta " + ENT_SQL + " en el SQL Editor de Supabase."
+: ((error && error.message) || String(error || "Error de conexión."));
+}
+/* ---------- Avisos (push) ---------- */
+async function notificar(tipo, id) {
+if (!esVercel() || !client || id === null || id === undefined) { return; }
+try {
+var sesion = await client.auth.getSession();
+var token = sesion.data && sesion.data.session && sesion.data.session.access_token;
+if (!token) { return; }
+await fetch("/api/notificar", {
+method: "POST",
+headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
+body: JSON.stringify({ tipo: tipo, id: String(id) })
+});
+} catch (e) { console.warn("[avisos]", e); }
+}
+var pushEstado = { suscrito: false, ocupado: false, mensaje: "", instalar: null };
+function pushSoportado() {
+return esVercel() && window.isSecureContext && "serviceWorker" in navigator &&
+"PushManager" in window && "Notification" in window;
+}
+function esIOS() {
+return /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+(navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+}
+function appInstalada() {
+return (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) ||
+navigator.standalone === true;
+}
+function base64aBytes(b64) {
+var relleno = "=".repeat((4 - (b64.length % 4)) % 4);
+var crudo = atob((b64 + relleno).replace(/-/g, "+").replace(/_/g, "/"));
+var salida = new Uint8Array(crudo.length);
+for (var i = 0; i < crudo.length; i++) { salida[i] = crudo.charCodeAt(i); }
+return salida;
+}
+async function pushRegistro() {
+return navigator.serviceWorker.register("/sw.js", { scope: "/" });
+}
+async function pushSuscripcionActual() {
+if (!pushSoportado()) { return null; }
+var reg = await navigator.serviceWorker.getRegistration("/");
+return reg ? reg.pushManager.getSubscription() : null;
+}
+async function pushActualizar() {
+try { pushEstado.suscrito = !!(await pushSuscripcionActual()); } catch (e) { pushEstado.suscrito = false; }
+pushPintar();
+}
+async function pushActivar() {
+if (pushEstado.ocupado) { return; }
+pushEstado.ocupado = true; pushEstado.mensaje = ""; pushPintar();
+try {
+var permiso = await Notification.requestPermission();
+if (permiso !== "granted") { throw new Error("No diste permiso para mostrar avisos."); }
+var r = await fetch("/api/push-clave");
+var datos = await r.json();
+if (!r.ok || !datos.clave) { throw new Error(datos.error || "Los avisos aún no están configurados."); }
+var reg = await pushRegistro();
+await navigator.serviceWorker.ready;
+var sub = await reg.pushManager.getSubscription() ||
+await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: base64aBytes(datos.clave) });
+var j = sub.toJSON();
+var g = await client.rpc("tb_guardar_suscripcion", {
+p_endpoint: j.endpoint, p_p256dh: j.keys.p256dh, p_auth: j.keys.auth
+});
+if (g.error) { await sub.unsubscribe(); throw g.error; }
+pushEstado.suscrito = true;
+pushEstado.mensaje = "Listo: te avisaremos en este dispositivo.";
+} catch (e) {
+pushEstado.mensaje = entMensaje(e);
+} finally {
+pushEstado.ocupado = false; pushPintar();
+}
+}
+async function pushDesactivar(silencioso) {
+try {
+var sub = await pushSuscripcionActual();
+if (sub) {
+if (client) { await client.rpc("tb_borrar_suscripcion", { p_endpoint: sub.endpoint }); }
+await sub.unsubscribe();
+}
+pushEstado.suscrito = false;
+if (!silencioso) { pushEstado.mensaje = "Avisos desactivados en este dispositivo."; }
+} catch (e) { if (!silencioso) { pushEstado.mensaje = entMensaje(e); } }
+if (!silencioso) { pushPintar(); }
+}
+function pushPintar() {
+var caja = $("#tb-push-card");
+if (!caja || !pushEstado) { return; }
+if (!esVercel() || !me) { caja.classList.add("tb-hidden"); return; }
+var html = "";
+var instalar = pushEstado.instalar
+? '<button type="button" class="tb-secondary" data-push="instalar">📲 Instalar app</button>' : "";
+if (esIOS() && !appInstalada()) {
+html = "<b>🔔 Avisos en iPhone/iPad</b><p>Toca <b>Compartir</b> → <b>Agregar a pantalla de inicio</b>, " +
+"abre El Tablón desde ese ícono y activa los avisos aquí.</p>";
+} else if (!pushSoportado()) {
+if (!instalar) { caja.classList.add("tb-hidden"); return; }
+html = "<b>📲 Instala El Tablón</b><p>Ábrelo como una app desde tu pantalla de inicio.</p>" +
+'<div class="tb-actions">' + instalar + "</div>";
+} else if (Notification.permission === "denied") {
+html = "<b>🔕 Avisos bloqueados</b><p>Los bloqueaste en este navegador. Para activarlos, " +
+"permite las notificaciones de este sitio en la configuración del navegador.</p>";
+} else if (pushEstado.suscrito) {
+html = "<b>🔔 Avisos activados</b><p>Te avisaremos de tareas nuevas" +
+(isStaff() ? " y de entregas por revisar." : " y cuando califiquen tus entregas.") + "</p>" +
+'<div class="tb-actions"><button type="button" class="tb-secondary" data-push="off">Desactivar</button>' + instalar + "</div>";
+} else {
+html = "<b>🔔 Activa los avisos</b><p>Recibe en este dispositivo las tareas nuevas" +
+(isStaff() ? " y las entregas por revisar." : " y la calificación de tus entregas.") + "</p>" +
+'<div class="tb-actions"><button type="button" class="tb-primary" data-push="on"' +
+(pushEstado.ocupado ? " disabled" : "") + ">" + (pushEstado.ocupado ? "Activando…" : "Activar avisos") +
+"</button>" + instalar + "</div>";
+}
+if (pushEstado.mensaje) { html += '<p class="tb-help">' + escapeHtml(pushEstado.mensaje) + "</p>"; }
+caja.innerHTML = html;
+caja.classList.remove("tb-hidden");
+}
+window.addEventListener("beforeinstallprompt", function (ev) {
+ev.preventDefault();
+pushEstado.instalar = ev;
+pushPintar();
+});
+window.addEventListener("appinstalled", function () { pushEstado.instalar = null; pushPintar(); });
+if (esVercel() && "serviceWorker" in navigator && window.isSecureContext) {
+pushRegistro().then(pushActualizar).catch(function (e) { console.warn("[sw]", e); });
+}
+function vistaInicial() {
+var permitidas = ["home", "tasks", "entregas", "ranking", "noticias", "gifts"];
+try {
+var url = new URL(window.location.href);
+var vista = url.searchParams.get("vista");
+if (vista) {
+url.searchParams.delete("vista");
+window.history.replaceState(null, "", url.pathname + url.search + url.hash);
+}
+if (vista === "entregas" && !isStaff()) { return "tasks"; }
+return permitidas.indexOf(vista) >= 0 ? vista : "home";
+} catch (e) { return "home"; }
+}
+/* ---------- Entregas ---------- */
+async function entregasCargar() {
+if (!client || !me) { return; }
+var r = await client.from("tb_entregas").select("*")
+.order("updated_at", { ascending: false }).limit(isStaff() ? 300 : 200);
+if (r.error) {
+ent.listas = false; ent.lista = [];
+ent.error = faltaTablaTb(r.error) ? "falta" : r.error.message;
+} else {
+ent.listas = true; ent.lista = r.data || []; ent.error = "";
+}
+entregasBadge();
+}
+function entregaMia(taskId) {
+return ent.lista.find(function (e) { return mismoId(e.task_id, taskId) && me && e.user_id === me.id; });
+}
+function entregasBadge() {
+if (!ent) { return; }
+var pendientes = isStaff()
+? ent.lista.filter(function (e) { return e.estado === "pendiente"; }).length : 0;
+$$(".tb-entregas-badge").forEach(function (b) {
+b.textContent = pendientes > 99 ? "99+" : String(pendientes);
+b.classList.toggle("tb-hidden", !pendientes);
+});
+}
+function entregaBarraHtml(task) {
+if (!ent || !ent.listas || !me || isStaff()) { return ""; }
+var e = entregaMia(task.id);
+var id = escapeHtml(task.id);
+if (!e) {
+return '<div class="tb-ent-barra"><button type="button" class="tb-primary tb-ent-btn" data-entregar="' +
+id + '">📤 Entregar tarea</button></div>';
+}
+var coment = e.comentario ? '<p class="tb-ent-coment">💬 ' + escapeHtml(e.comentario) + "</p>" : "";
+if (e.estado === "aprobada") {
+return '<div class="tb-ent-barra"><span class="tb-ent-chip aprobada">✅ Aprobada' +
+(e.nota !== null && e.nota !== undefined ? " · Nota " + escapeHtml(e.nota) : "") + "</span>" + coment + "</div>";
+}
+if (e.estado === "devuelta") {
+return '<div class="tb-ent-barra"><span class="tb-ent-chip devuelta">↩️ Devuelta para corregir</span>' + coment +
+'<button type="button" class="tb-primary tb-ent-btn" data-entregar="' + id + '">Volver a entregar</button></div>';
+}
+return '<div class="tb-ent-barra"><span class="tb-ent-chip pendiente">⏳ En revisión</span>' +
+'<button type="button" class="tb-secondary tb-ent-btn" data-entregar="' + id + '">Editar entrega</button></div>';
+}
+function entregaAbrir(taskId) {
+var task = tasks.find(function (t) { return mismoId(t.id, taskId); });
+if (!task) { return; }
+var previa = entregaMia(taskId);
+ent.abierta = task.id;
+$("#tb-ent-tarea").textContent = (task.subject ? task.subject + " · " : "") + (task.title || "");
+$("#tb-ent-texto").value = previa && previa.texto ? previa.texto : "";
+$("#tb-ent-archivo").value = "";
+$("#tb-ent-actual").textContent = previa && previa.archivo_nombre
+? "Archivo actual: " + previa.archivo_nombre + " (si eliges otro, lo reemplaza)." : "";
+$("#tb-ent-error").classList.add("tb-hidden");
+$("#tb-ent-enviar").disabled = false;
+$("#tb-ent-enviar").textContent = previa ? "Enviar de nuevo" : "Enviar";
+$("#tb-ent-modal").classList.remove("tb-hidden");
+setTimeout(function () { $("#tb-ent-texto").focus(); }, 50);
+}
+function entregaCerrar() {
+ent.abierta = null;
+$("#tb-ent-modal").classList.add("tb-hidden");
+}
+function entregaError(texto) {
+var caja = $("#tb-ent-error");
+caja.textContent = texto;
+caja.classList.remove("tb-hidden");
+}
+// Reduce la foto (máx. 1600 px, JPEG). También borra datos ocultos como la ubicación GPS.
+function entregaComprimir(archivo) {
+return new Promise(function (resolver, rechazar) {
+var url = URL.createObjectURL(archivo);
+var img = new Image();
+img.onload = function () {
+var escala = Math.min(1, 1600 / Math.max(img.naturalWidth, img.naturalHeight));
+var lienzo = document.createElement("canvas");
+lienzo.width = Math.max(1, Math.round(img.naturalWidth * escala));
+lienzo.height = Math.max(1, Math.round(img.naturalHeight * escala));
+var ctx = lienzo.getContext("2d");
+ctx.fillStyle = "#fff";
+ctx.fillRect(0, 0, lienzo.width, lienzo.height);
+ctx.drawImage(img, 0, 0, lienzo.width, lienzo.height);
+URL.revokeObjectURL(url);
+lienzo.toBlob(function (blob) {
+if (blob) { resolver(blob); } else { rechazar(new Error("No se pudo procesar la foto.")); }
+}, "image/jpeg", 0.85);
+};
+img.onerror = function () { URL.revokeObjectURL(url); rechazar(new Error("El archivo no es una imagen válida.")); };
+img.src = url;
+});
+}
+function nombreAleatorio(ext) {
+var bytes = crypto.getRandomValues(new Uint8Array(6));
+return Date.now() + "-" + Array.prototype.map.call(bytes, function (b) {
+return b.toString(16).padStart(2, "0");
+}).join("") + "." + ext;
+}
+async function entregaEnviar(ev) {
+ev.preventDefault();
+if (ent.enviando || ent.abierta === null) { return; }
+var task = tasks.find(function (t) { return mismoId(t.id, ent.abierta); });
+if (!task) { entregaCerrar(); return; }
+var previa = entregaMia(task.id);
+var texto = $("#tb-ent-texto").value.trim();
+var archivo = $("#tb-ent-archivo").files[0] || null;
+if (!texto && !archivo && !(previa && previa.archivo_path)) {
+entregaError("Escribe tu respuesta o adjunta una foto o PDF."); return;
+}
+if (archivo && ENT_TIPOS.indexOf(archivo.type) < 0) {
+entregaError("Solo se aceptan fotos (JPG, PNG, WEBP) o PDF."); return;
+}
+if (archivo && archivo.type === "application/pdf" && archivo.size > ENT_MAX) {
+entregaError("El PDF pasa de 5 MB. Prueba con uno más liviano."); return;
+}
+ent.enviando = true;
+var boton = $("#tb-ent-enviar");
+boton.disabled = true; boton.textContent = "Enviando…";
+var ruta = previa ? previa.archivo_path : null;
+var nombre = previa ? previa.archivo_nombre : null;
+var subido = null;
+try {
+if (archivo) {
+var esPdf = archivo.type === "application/pdf";
+var blob = esPdf ? archivo : await entregaComprimir(archivo);
+if (blob.size > ENT_MAX) { throw new Error("El archivo pasa de 5 MB."); }
+subido = me.id + "/" + nombreAleatorio(esPdf ? "pdf" : "jpg");
+var sub = await client.storage.from("entregas").upload(subido, blob, {
+contentType: esPdf ? "application/pdf" : "image/jpeg", upsert: false, cacheControl: "3600"
+});
+if (sub.error) { subido = null; throw sub.error; }
+ruta = subido;
+nombre = archivo.name.replace(/[\u0000-\u001f]/g, "").slice(0, 120) || (esPdf ? "archivo.pdf" : "foto.jpg");
+}
+var r = await client.rpc("tb_enviar_entrega", {
+p_task: String(task.id), p_texto: texto, p_archivo_path: ruta, p_archivo_nombre: nombre
+});
+if (r.error) { throw r.error; }
+if (subido && previa && previa.archivo_path && previa.archivo_path !== subido) {
+client.storage.from("entregas").remove([previa.archivo_path]).catch(function () {});
+}
+entregaCerrar();
+await entregasCargar();
+renderTasks();
+notificar("entrega_nueva", r.data && r.data.id);
+alert("¡Listo! Tu entrega quedó en revisión. Te avisaremos cuando la califiquen.");
+} catch (e) {
+if (subido) { client.storage.from("entregas").remove([subido]).catch(function () {}); }
+entregaError(entMensaje(e));
+} finally {
+ent.enviando = false;
+boton.disabled = false;
+boton.textContent = previa ? "Enviar de nuevo" : "Enviar";
+}
+}
+/* ---------- Bandeja del owner/admin ---------- */
+function entregaTarjeta(e) {
+var perfil = profiles.find(function (p) { return p.id === e.user_id; });
+var task = tasks.find(function (t) { return mismoId(t.id, e.task_id); });
+var id = escapeHtml(e.id);
+var nombre = perfil ? (perfil.display_name || perfil.username) : "Estudiante";
+var tarde = task && task.due_date && String(e.updated_at).slice(0, 10) > String(task.due_date).slice(0, 10);
+var chip = e.estado === "aprobada" ? '<span class="tb-ent-chip aprobada">✅ Aprobada' +
+(e.nota !== null && e.nota !== undefined ? " · " + escapeHtml(e.nota) : "") + "</span>"
+: e.estado === "devuelta" ? '<span class="tb-ent-chip devuelta">↩️ Devuelta</span>'
+: '<span class="tb-ent-chip pendiente">⏳ Por revisar</span>';
+return '<article class="tb-card tb-ent-item" data-ent="' + id + '">' +
+'<div class="tb-ent-cabeza">' + (perfil ? avatarHtml(perfil, "tb-autor-foto") : "") +
+"<div><b>" + escapeHtml(nombre) + "</b>" +
+(perfil && perfil.username ? ' <small class="tb-muted">@' + escapeHtml(perfil.username) + "</small>" : "") +
+'<div class="tb-muted tb-ent-tarea">' + escapeHtml(task ? task.title : "Tarea eliminada") +
+" · " + escapeHtml(tiempoRelativo(e.updated_at) || "") + "</div></div>" +
+'<div class="tb-ent-chips">' + chip + (tarde ? '<span class="tb-ent-chip tarde">Fuera de plazo</span>' : "") + "</div></div>" +
+(e.texto ? '<p class="tb-ent-texto">' + escapeHtml(e.texto) + "</p>" : "") +
+(e.archivo_path ? '<button type="button" class="tb-secondary tb-ent-archivo" data-ent-archivo="' + id + '">📎 ' +
+escapeHtml(e.archivo_nombre || "Ver archivo") + "</button><div class=\"tb-ent-previa\"></div>" : "") +
+'<div class="tb-ent-calificar">' +
+'<label class="tb-field"><span>Nota (0 a 100, opcional)</span><input type="number" min="0" max="100" data-ent-nota value="' +
+(e.nota !== null && e.nota !== undefined ? escapeHtml(e.nota) : "") + '"></label>' +
+'<label class="tb-field"><span>Comentario para el estudiante</span><textarea maxlength="1000" data-ent-coment>' +
+escapeHtml(e.comentario || "") + "</textarea></label>" +
+'<div class="tb-actions"><button type="button" class="tb-primary" data-ent-aprobar="' + id + '">✅ Aprobar y dar cumplido</button>' +
+'<button type="button" class="tb-secondary" data-ent-devolver="' + id + '">↩️ Devolver para corregir</button></div>' +
+"</div></article>";
+}
+function entregasRender() {
+var caja = $("#tb-entregas-lista");
+if (!caja) { return; }
+$$("[data-ent-filtro]").forEach(function (b) {
+b.classList.toggle("on", b.dataset.entFiltro === ent.filtro);
+});
+if (!ent.listas) {
+caja.innerHTML = '<div class="tb-empty"><b>' + (ent.error === "falta" ? "Falta activar las entregas" : "No se pudieron cargar") +
+"</b>" + escapeHtml(ent.error === "falta" ? "Ejecuta " + ENT_SQL + " en el SQL Editor de Supabase y recarga la página." : ent.error) + "</div>";
+return;
+}
+var pend = ent.lista.filter(function (e) { return e.estado === "pendiente"; }).length;
+$("#tb-entregas-resumen").textContent = pend + " por revisar · " + (ent.lista.length - pend) + " revisadas";
+var lista = ent.lista.filter(function (e) {
+return ent.filtro === "todas" || (ent.filtro === "pendiente" ? e.estado === "pendiente" : e.estado !== "pendiente");
+});
+caja.innerHTML = lista.length ? lista.map(entregaTarjeta).join("")
+: '<div class="tb-empty"><b>Nada por aquí</b>' +
+(ent.filtro === "pendiente" ? "No hay entregas por revisar. ¡Todo al día!" : "No hay entregas en esta lista.") + "</div>";
+}
+async function entregaVerArchivo(id, boton) {
+var e = ent.lista.find(function (x) { return mismoId(x.id, id); });
+if (!e || !e.archivo_path) { return; }
+var r = await client.storage.from("entregas").createSignedUrl(e.archivo_path, 600);
+if (r.error || !r.data) { alert(entMensaje(r.error)); return; }
+var url = safeUrl(r.data.signedUrl);
+if (!url) { return; }
+if (/\.pdf$/i.test(e.archivo_path)) { window.open(url, "_blank", "noopener"); return; }
+var previa = boton.parentNode.querySelector(".tb-ent-previa");
+if (previa) {
+previa.innerHTML = '<a href="' + escapeHtml(url) + '" target="_blank" rel="noopener">' +
+'<img src="' + escapeHtml(url) + '" alt="Archivo entregado" referrerpolicy="no-referrer"></a>';
+}
+}
+async function entregaCalificar(id, aprobar, boton) {
+var art = boton.closest("[data-ent]");
+var e = ent.lista.find(function (x) { return mismoId(x.id, id); });
+if (!art || !e) { return; }
+var notaTxt = art.querySelector("[data-ent-nota]").value.trim();
+var comentario = art.querySelector("[data-ent-coment]").value.trim();
+var nota = notaTxt === "" ? null : parseInt(notaTxt, 10);
+if (nota !== null && (isNaN(nota) || nota < 0 || nota > 100)) { alert("La nota debe estar entre 0 y 100."); return; }
+if (!aprobar && !comentario && !confirm("¿Devolver sin comentario? Al estudiante le ayuda saber qué corregir.")) { return; }
+art.querySelectorAll("button").forEach(function (b) { b.disabled = true; });
+var r = await client.rpc("tb_calificar_entrega", {
+p_entrega: Number(e.id), p_aprobar: !!aprobar, p_nota: nota, p_comentario: comentario
+});
+if (r.error) {
+art.querySelectorAll("button").forEach(function (b) { b.disabled = false; });
+alert(entMensaje(r.error));
+return;
+}
+var perfil = profiles.find(function (p) { return p.id === e.user_id; });
+if (perfil) {
+var antes = !!e.cumplido_otorgado;
+if (aprobar && !antes) { perfil.completed_tasks = (perfil.completed_tasks || 0) + 1; }
+if (!aprobar && antes) { perfil.completed_tasks = Math.max(0, (perfil.completed_tasks || 0) - 1); }
+}
+await entregasCargar();
+entregasRender();
+renderProfiles(); renderRanking();
+notificar("entrega_calificada", e.id);
+}
+/* ---------- Códigos de invitación (owner) ---------- */
+var inv = { lista: [], obligatorio: true, listo: false, error: "" };
+function invGenerar() {
+var letras = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+return Array.prototype.map.call(crypto.getRandomValues(new Uint8Array(8)), function (b) {
+return letras.charAt(b % 32);
+}).join("");
+}
+async function invCargar() {
+if (!client || !isOwner()) { return; }
+var r1 = await client.from("tb_invitaciones").select("*").order("created_at", { ascending: false });
+var r2 = await client.from("tb_ajustes").select("invitacion_obligatoria").eq("id", 1).maybeSingle();
+if (r1.error || r2.error) { inv.listo = false; inv.error = entMensaje(r1.error || r2.error); }
+else { inv.listo = true; inv.error = ""; inv.lista = r1.data || []; inv.obligatorio = !r2.data || r2.data.invitacion_obligatoria !== false; }
+invRender();
+}
+function invEstado(c) {
+if (!c.activo) { return "Desactivado"; }
+if (c.expira && new Date(c.expira) < new Date()) { return "Vencido"; }
+if (c.max_usos && c.usos >= c.max_usos) { return "Agotado"; }
+return "Activo";
+}
+function invRender() {
+var caja = $("#tb-inv-lista");
+if (!caja) { return; }
+var sw = $("#tb-inv-obligatorio");
+if (!inv.listo) {
+caja.innerHTML = '<p class="tb-muted">' + escapeHtml(inv.error || "Cargando…") + "</p>";
+if (sw) { sw.disabled = true; }
+return;
+}
+if (sw) { sw.disabled = false; sw.checked = inv.obligatorio; }
+caja.innerHTML = inv.lista.length ? '<div class="tb-inv-tabla">' + inv.lista.map(function (c) {
+var estado = invEstado(c);
+var cod = escapeHtml(c.codigo);
+return '<div class="tb-inv-fila"><code>' + cod + "</code>" +
+'<span class="tb-inv-info">' + escapeHtml(c.nota || "Sin nota") + " · " + escapeHtml(c.usos) +
+(c.max_usos ? "/" + escapeHtml(c.max_usos) : "") + " usos" +
+(c.expira ? " · vence " + escapeHtml(new Date(c.expira).toLocaleDateString("es")) : "") +
+' · <b class="tb-inv-' + (estado === "Activo" ? "ok" : "no") + '">' + estado + "</b></span>" +
+'<span class="tb-inv-botones"><button type="button" class="tb-secondary" data-inv-copiar="' + cod + '">Copiar</button>' +
+'<button type="button" class="tb-secondary" data-inv-activo="' + cod + '">' + (c.activo ? "Desactivar" : "Activar") + "</button>" +
+'<button type="button" class="tb-danger" data-inv-borrar="' + cod + '">Borrar</button></span></div>';
+}).join("") + "</div>" : '<p class="tb-muted">No hay códigos. Crea uno para que tus estudiantes puedan registrarse.</p>';
+}
+function invAviso(texto) {
+var s = $("#tb-inv-status");
+if (s) { s.textContent = texto; }
+}
+async function invCrear(ev) {
+ev.preventDefault();
+var max = parseInt($("#tb-inv-max").value, 10);
+var dias = parseInt($("#tb-inv-dias").value, 10);
+var fila = {
+codigo: invGenerar(),
+nota: $("#tb-inv-nota").value.trim().slice(0, 80) || null,
+max_usos: max > 0 ? max : null,
+expira: dias > 0 ? new Date(Date.now() + dias * 86400000).toISOString() : null
+};
+var r = await client.from("tb_invitaciones").insert(fila);
+if (r.error) { invAviso(entMensaje(r.error)); return; }
+$("#tb-inv-form").reset();
+invAviso("Código creado: " + fila.codigo + ". Compártelo solo con tu grupo.");
+await invCargar();
+}
+async function invAlternar(codigo) {
+var c = inv.lista.find(function (x) { return x.codigo === codigo; });
+if (!c) { return; }
+var r = await client.from("tb_invitaciones").update({ activo: !c.activo }).eq("codigo", codigo);
+if (r.error) { invAviso(entMensaje(r.error)); return; }
+await invCargar();
+}
+async function invBorrar(codigo) {
+if (!confirm("¿Borrar el código " + codigo + "? Las cuentas ya creadas no se afectan.")) { return; }
+var r = await client.from("tb_invitaciones").delete().eq("codigo", codigo);
+if (r.error) { invAviso(entMensaje(r.error)); return; }
+await invCargar();
+}
+async function invObligatorio(valor) {
+if (!valor && !confirm("Si lo desactivas, CUALQUIER persona con el enlace podrá crear una cuenta. ¿Continuar?")) {
+$("#tb-inv-obligatorio").checked = true; return;
+}
+var r = await client.from("tb_ajustes").update({ invitacion_obligatoria: !!valor }).eq("id", 1);
+if (r.error) { invAviso(entMensaje(r.error)); }
+await invCargar();
+}
+var invitacionRequerida = true;
+function pintarCampoInvitacion() {
+var campo = $("#tb-register-codigo");
+if (!campo) { return; }
+campo.required = invitacionRequerida;
+$("#tb-register-codigo-label").textContent = invitacionRequerida
+? "Código de invitación" : "Código de invitación (opcional)";
+}
+if (client) {
+client.rpc("tb_invitacion_requerida").then(function (r) {
+if (!r.error && r.data === false) { invitacionRequerida = false; }
+pintarCampoInvitacion();
+}, function () {});
+}
+/* ---------- Eventos ---------- */
+root.addEventListener("click", function (ev) {
+var b = ev.target.closest && ev.target.closest("button");
+if (!b || !root.contains(b)) { return; }
+if (b.dataset.entregar !== undefined) { entregaAbrir(b.dataset.entregar); return; }
+if (b.dataset.entArchivo) { entregaVerArchivo(b.dataset.entArchivo, b); return; }
+if (b.dataset.entAprobar) { entregaCalificar(b.dataset.entAprobar, true, b); return; }
+if (b.dataset.entDevolver) { entregaCalificar(b.dataset.entDevolver, false, b); return; }
+if (b.dataset.entFiltro) { ent.filtro = b.dataset.entFiltro; entregasRender(); return; }
+if (b.id === "tb-entregas-refrescar") { entregasCargar().then(entregasRender); return; }
+if (b.dataset.invCopiar) {
+var codigo = b.dataset.invCopiar;
+(navigator.clipboard ? navigator.clipboard.writeText(codigo) : Promise.reject())
+.then(function () { invAviso("Copiado: " + codigo); }, function () { invAviso("Tu código es: " + codigo); });
+return;
+}
+if (b.dataset.invActivo) { invAlternar(b.dataset.invActivo); return; }
+if (b.dataset.invBorrar) { invBorrar(b.dataset.invBorrar); return; }
+if (b.dataset.push === "on") { pushActivar(); return; }
+if (b.dataset.push === "off") { pushDesactivar(false); return; }
+if (b.dataset.push === "instalar" && pushEstado.instalar) {
+pushEstado.instalar.prompt();
+pushEstado.instalar.userChoice.then(function () { pushEstado.instalar = null; pushPintar(); });
+}
+});
+$("#tb-ent-form").addEventListener("submit", entregaEnviar);
+$("#tb-ent-cancelar").addEventListener("click", entregaCerrar);
+$("#tb-ent-modal").addEventListener("click", function (ev) { if (ev.target === this) { entregaCerrar(); } });
+document.addEventListener("keydown", function (ev) {
+if (ev.key === "Escape" && ent.abierta !== null) { entregaCerrar(); }
+});
+$("#tb-inv-form").addEventListener("submit", invCrear);
+$("#tb-inv-obligatorio").addEventListener("change", function () { invObligatorio(this.checked); });
 })();
 </script>

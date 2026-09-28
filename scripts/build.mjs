@@ -31,9 +31,13 @@ const pagina = `<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="same-origin">
 <title>El Tablón</title>
+<meta name="tb-plataforma" content="vercel">
+<link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" type="image/png" href="/favicon.png">
-<link rel="apple-touch-icon" href="/favicon.png">
+<link rel="apple-touch-icon" href="/icon-192.png">
 <meta name="theme-color" content="#0d1024">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="El Tablón">
 ${libreria}
 <link rel="stylesheet" href="/styles.css">
 <style>html,body{margin:0;background:#0d1024;}</style>
@@ -41,6 +45,8 @@ ${libreria}
 <body>
 ${cuerpo}
 <script src="/app.js"></script>
+<!-- Estadísticas de Vercel (sin cookies). Actívalas en el panel: Analytics → Enable. -->
+<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
 `;
@@ -51,5 +57,8 @@ fs.writeFileSync("public/index.html", pagina);
 fs.writeFileSync("public/styles.css", estilo[1].trim() + "\n");
 fs.writeFileSync("public/app.js", script[1].trim() + "\n");
 fs.copyFileSync("assets/favicon.png", "public/favicon.png");
+for (const f of ["sw.js", "manifest.webmanifest", "icon-192.png", "icon-512.png", "icon-maskable-512.png"]) {
+  fs.copyFileSync("pwa/" + f, "public/" + f);
+}
 console.log("public/ generado:",
   ["index.html", "styles.css", "app.js"].map(f => `${f} ${(fs.statSync("public/" + f).size / 1024).toFixed(0)} KB`).join(", "));
