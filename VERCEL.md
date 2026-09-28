@@ -1,5 +1,18 @@
 # Publicar y configurar El Tablón en Vercel
 
+## Estado actual (28/09/2026)
+
+| Paso | Estado |
+|------|--------|
+| Proyecto `el-tabl-n-5nqf` en Vercel, conectado a GitHub y publicado en **https://el-tablon1.vercel.app** | ✅ Hecho |
+| Rama que se publica en producción: `claude/lucid-curie-14ahbh` (la rama principal del repositorio) | ✅ Hecho |
+| Variables `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY` (secreta) y `VAPID_SUBJECT` | ✅ Cargadas |
+| Variable `SUPABASE_SERVICE_ROLE_KEY` | ⏳ **Falta:** debes agregarla tú (paso C.1) |
+| Ejecutar `supabase/ACTIVAR-entregas-invitaciones-avisos.sql` | ⏳ **Falta** (parte B) |
+| Activar Analytics | ⏳ **Falta** (paso C.2) |
+| Borrar el proyecto duplicado vacío `el-tablon` (Settings → Delete Project) | ⏳ **Falta** |
+
+
 Esta guía tiene tres partes. Hazlas en orden y una sola vez:
 
 - **A. Publicar la página** (unos 10 minutos).
@@ -61,7 +74,7 @@ En Vercel: **tu proyecto → Settings → Environment Variables**. Agrega estas 
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase → **Project Settings → API Keys** → la clave **secret** (o `service_role` en proyectos antiguos) | **Sí, muy secreta** |
 | `VAPID_PUBLIC_KEY` | Archivo `CLAVES-AVISOS-PRIVADO.txt` que te entregué | No |
 | `VAPID_PRIVATE_KEY` | El mismo archivo | **Sí** |
-| `VAPID_SUBJECT` | `mailto:` seguido de tu correo, por ejemplo `mailto:profe@ejemplo.com` | No |
+| `VAPID_SUBJECT` | La dirección de la app (`https://el-tablon1.vercel.app`) o `mailto:` y tu correo | No |
 
 > ⚠️ **La clave secreta de Supabase abre toda la base de datos.** Va únicamente en Vercel. Nunca la pongas en `index.html`, en GitHub, en un chat ni en una captura de pantalla. Si se filtra, en Supabase puedes generar una nueva y desactivar la anterior.
 
