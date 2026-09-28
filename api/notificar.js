@@ -38,7 +38,10 @@ async function db(ruta, opciones = {}) {
     ...opciones,
     headers: {
       apikey: SUPABASE_SERVICE_ROLE_KEY,
-      Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+      // Las claves nuevas (sb_secret_…) no son JWT: van solo en "apikey".
+      ...(SUPABASE_SERVICE_ROLE_KEY.startsWith("sb_secret_")
+        ? {}
+        : { Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}` }),
       "Content-Type": "application/json",
       ...(opciones.headers || {}),
     },

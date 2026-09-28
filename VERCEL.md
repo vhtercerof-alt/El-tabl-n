@@ -1,49 +1,126 @@
-# Publicar El Tablón en Vercel
+# Publicar y configurar El Tablón en Vercel
 
-El repositorio ya está preparado. No hay que instalar nada ni tocar código.
+Esta guía tiene tres partes. Hazlas en orden y una sola vez:
 
-## Cómo está organizado
+- **A. Publicar la página** (unos 10 minutos).
+- **B. Activar entregas, invitaciones y avisos en Supabase** (unos 5 minutos).
+- **C. Conectar los avisos y las estadísticas en Vercel** (unos 10 minutos).
+
+---
+
+## Cómo está organizado el repositorio
 
 | Archivo | Para qué sirve |
 |---------|----------------|
-| `index.html` | **El único archivo que editás.** Es la misma página que se pega en Systeme.io. |
-| `scripts/build.mjs` | Vercel lo ejecuta en cada publicación. Separa `index.html` en `public/index.html`, `public/styles.css` y `public/app.js`. |
-| `vercel.json` | Le dice a Vercel cómo construir el sitio y qué cabeceras de seguridad enviar. |
-| `public/` | Se genera sola; no se sube al repositorio. |
+| `index.html` | **La app.** Es el único archivo que editas para cambiar la página. |
+| `api/notificar.js`, `api/push-clave.js` | Pequeño servidor en Vercel que envía los avisos al celular. |
+| `pwa/` | Ícono, manifiesto y *service worker*: permiten instalar la app y recibir avisos. |
+| `supabase/*.sql` | Instrucciones para la base de datos. Se ejecutan en Supabase, no en Vercel. |
+| `scripts/build.mjs` | Vercel lo ejecuta en cada publicación: arma la carpeta `public/`. |
+| `vercel.json` | Configuración de Vercel y cabeceras de seguridad. |
 
-Solo se publica la carpeta `public/`. El informe, el SQL y los scripts **no** quedan visibles en internet.
+Solo se publica lo que va en `public/` y en `api/`. El informe, los archivos SQL y los scripts **no** quedan visibles en internet.
 
-## Pasos (una sola vez)
+---
 
-1. **Crear la rama principal en GitHub.** Hoy el repositorio solo tiene la rama `claude/lucid-curie-14ahbh`. En GitHub:
-   - abrí un Pull Request de esa rama hacia una rama `main` y hacé *Merge*;
-   - o, en *Settings → Branches*, poné esa rama como predeterminada.
+## A. Publicar la página
 
-   Vercel publica en producción la rama predeterminada.
-2. Entrá a <https://vercel.com> e iniciá sesión con tu cuenta de GitHub.
-3. Hacé clic en **Add New… → Project** e importá el repositorio `vhtercerof-alt/El-tabl-n`. Si no aparece, usá *Adjust GitHub App Permissions* y dale acceso a ese repositorio.
-4. En la pantalla de configuración:
-   - **Framework Preset:** `Other`.
-   - **Build Command / Output Directory:** dejalos como están. `vercel.json` ya los define (`node scripts/build.mjs` y `public`).
-   - **Environment Variables:** ninguna. La URL y la clave pública de Supabase van en la página, y eso es normal.
-5. Hacé clic en **Deploy**. En uno o dos minutos te da una dirección del tipo `https://el-tabl-n.vercel.app`.
-6. En **Supabase → Authentication → URL Configuration**, poné esa dirección en **Site URL**.
-7. Hacé la prueba rápida: iniciar sesión, girar una ruleta, abrir memes, publicar una noticia con foto y escuchar la mascota.
+1. **Crea la rama principal en GitHub.** El trabajo está en la rama `claude/lucid-curie-14ahbh`. En github.com, abre un *Pull Request* de esa rama hacia `main` y haz clic en *Merge*. Vercel publica en producción la rama principal.
+2. Entra a <https://vercel.com> e inicia sesión con tu cuenta de GitHub.
+3. Haz clic en **Add New… → Project** e importa `vhtercerof-alt/El-tabl-n`. Si no aparece, usa *Adjust GitHub App Permissions* y dale acceso a ese repositorio.
+4. En la configuración deja **Framework Preset: Other**. El resto ya viene definido en `vercel.json`.
+5. Haz clic en **Deploy**. Te dará una dirección del tipo `https://el-tabl-n.vercel.app`.
+6. En **Supabase → Authentication → URL Configuration**, pon esa dirección en **Site URL**.
 
-## Después
+---
 
-- **Actualizar la app:** editá `index.html`, hacé commit y push a `main`. Vercel vuelve a publicar solo.
-- **Dominio propio (opcional):** en *Project → Settings → Domains*.
-- **Vistas previas:** cada rama o Pull Request genera una dirección de prueba. Dejá activado *Deployment Protection → Vercel Authentication* (viene así por defecto) para que solo vos puedas verlas.
-- **Si cambiás de proyecto Supabase:** además de `SUPABASE_URL` en `index.html`, cambiá la dirección `quppebdummixryqqcady.supabase.co` en `vercel.json` (aparece en `connect-src` y `media-src`). Si no, la página no podrá conectarse.
-- **Si agregás una fuente de datos nueva** (otra API, videos de YouTube, otra CDN), hay que añadirla en la cabecera `Content-Security-Policy` de `vercel.json`. Si no, el navegador la bloquea. Ese bloqueo es precisamente la protección.
-- **Systeme.io:** si mantenés las dos versiones, las dos usan la misma base de datos. Cuando Vercel funcione bien, conviene retirar el bloque de Systeme.io para tener una sola puerta de entrada.
+## B. Activar entregas, invitaciones y avisos (Supabase)
+
+1. En Supabase, abre **SQL Editor → New query**.
+2. Copia **todo** el contenido de `supabase/ACTIVAR-entregas-invitaciones-avisos.sql`, pégalo y haz clic en **Run**.
+3. Al final aparece tu **código de invitación inicial**. Anótalo: desde este momento **nadie puede crear una cuenta sin un código**. Las cuentas que ya existen no se ven afectadas.
+4. Si algún estudiante necesita registrarse, compártele el código o crea uno nuevo en **Panel del owner → Códigos de invitación**. Desde ahí también puedes:
+   - crear códigos con límite de usos o fecha de vencimiento (por ejemplo, uno por grupo);
+   - desactivar o borrar un código si se filtra;
+   - desactivar la exigencia de código (no recomendado).
+
+El archivo se puede ejecutar más de una vez sin romper nada.
+
+---
+
+## C. Avisos y estadísticas (Vercel)
+
+### C.1 Variables de entorno (claves)
+
+En Vercel: **tu proyecto → Settings → Environment Variables**. Agrega estas seis. Marca los tres entornos (*Production*, *Preview*, *Development*), salvo `SUPABASE_SERVICE_ROLE_KEY`, que conviene poner **solo en Production**.
+
+| Nombre | Dónde la consigues | ¿Es secreta? |
+|--------|-------------------|--------------|
+| `SUPABASE_URL` | Es la misma de `index.html`: `https://quppebdummixryqqcady.supabase.co` | No |
+| `SUPABASE_ANON_KEY` | Es la misma `SUPABASE_ANON_KEY` que aparece en `index.html` | No |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase → **Project Settings → API Keys** → la clave **secret** (o `service_role` en proyectos antiguos) | **Sí, muy secreta** |
+| `VAPID_PUBLIC_KEY` | Archivo `CLAVES-AVISOS-PRIVADO.txt` que te entregué | No |
+| `VAPID_PRIVATE_KEY` | El mismo archivo | **Sí** |
+| `VAPID_SUBJECT` | `mailto:` seguido de tu correo, por ejemplo `mailto:profe@ejemplo.com` | No |
+
+> ⚠️ **La clave secreta de Supabase abre toda la base de datos.** Va únicamente en Vercel. Nunca la pongas en `index.html`, en GitHub, en un chat ni en una captura de pantalla. Si se filtra, en Supabase puedes generar una nueva y desactivar la anterior.
+
+Si pierdes el archivo de claves de avisos, se pueden generar otras con `npx web-push generate-vapid-keys`. Al cambiarlas, cada persona tendrá que volver a activar los avisos.
+
+Después de guardar las variables, ve a **Deployments → último despliegue → ⋯ → Redeploy**. Las variables solo se aplican a los despliegues nuevos.
+
+### C.2 Estadísticas de visitas
+
+En Vercel: **tu proyecto → Analytics → Enable**. No hace falta tocar código: la página ya incluye el script. Las estadísticas no usan cookies ni guardan datos personales. Empiezan a mostrarse unos minutos después de las primeras visitas.
+
+### C.3 Probar los avisos
+
+1. Abre la página publicada en tu celular. En Android, usa Chrome.
+2. En **Inicio** aparece la tarjeta **🔔 Activa los avisos**. Tócala y acepta el permiso.
+   - **iPhone/iPad:** primero toca **Compartir → Agregar a pantalla de inicio** y abre El Tablón desde ese ícono. Apple solo permite avisos en apps instaladas así.
+3. Desde otra cuenta (o la computadora), publica una tarea de prueba. Te debe llegar el aviso **📌 Nueva tarea**.
+
+Si no llega, revisa en **Vercel → Logs** si aparecen errores de `/api/notificar`. El mensaje "Avisos no configurados" significa que falta alguna variable del paso C.1 o que no hiciste *Redeploy*.
+
+---
+
+## Cómo se usa cada función
+
+### Entregas y cumplidos
+
+- **Estudiante:** en cada tarea aparece **📤 Entregar tarea**. Puede escribir su respuesta y/o adjuntar una foto o un PDF (máximo 5 MB). Las fotos se reducen y se les borran datos ocultos como la ubicación GPS. Mientras no esté aprobada, puede editar su entrega.
+- **Tú (owner o admin):** en el menú aparece **📥 Entregas**, con un número de pendientes. En cada entrega puedes:
+  - **✅ Aprobar y dar cumplido:** suma 1 al contador de tareas cumplidas del estudiante (el del ranking), con nota opcional de 0 a 100 y comentario;
+  - **↩️ Devolver para corregir:** el estudiante ve tu comentario y puede volver a entregar.
+- Aprobar dos veces la misma entrega no suma dos cumplidos. Si devuelves una entrega que ya estaba aprobada, se resta el cumplido.
+- Los archivos son **privados**: solo los ven el estudiante que los subió y el owner o los admins, mediante enlaces temporales de 10 minutos.
+- El botón manual **Cumplimientos** del panel del owner sigue funcionando como antes.
+
+### Avisos que se envían
+
+| Qué pasa | Quién recibe el aviso |
+|----------|-----------------------|
+| Publicas una tarea (nueva, o al marcar una como publicada) | Todos, una sola vez por tarea |
+| Un estudiante entrega o reenvía | Owner y admins |
+| Calificas una entrega | Solo ese estudiante |
+
+El texto de cada aviso lo arma siempre el servidor. Nadie puede usar el sistema para mandar mensajes inventados. Al cerrar sesión, ese dispositivo deja de recibir avisos.
+
+---
+
+## Mantenimiento
+
+- **Actualizar la app:** edita `index.html`, haz commit y push a `main`. Vercel vuelve a publicar solo.
+- **Volver atrás:** Vercel → Deployments → elige una versión anterior → ⋯ → **Promote to Production**.
+- **Espacio de almacenamiento:** las fotos y PDF de las entregas ocupan espacio en Supabase. Revisa de vez en cuando **Supabase → Storage → entregas** y el uso del plan.
+- **Si cambias de proyecto Supabase:** cambia la dirección en `index.html`, en `vercel.json` (`connect-src` y `media-src`) y en la variable `SUPABASE_URL`.
+- **Si agregas una fuente externa nueva** (otra API, videos), añádela a `Content-Security-Policy` en `vercel.json`; si no, el navegador la bloquea.
+- **Systeme.io:** la versión pegada ahí sigue funcionando para entregas e invitaciones, pero **no** puede enviar avisos ni instalarse como app. Conviene dejar solo la de Vercel.
 
 ## Probar en tu computadora (opcional)
 
 ```bash
+npm install
 node scripts/build.mjs
-npx serve public
+npx vercel dev
 ```
-
-Este modo no aplica las cabeceras de `vercel.json`. Para probarlas, usá `npx vercel dev`.
