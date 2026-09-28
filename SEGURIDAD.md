@@ -26,7 +26,7 @@
 | 6 | La contraseña que el owner asigna a un usuario se escribía a la vista | Media | ✅ Corregido |
 | 7 | Colores de roles insertados en estilos sin validar | Baja | ✅ Corregido |
 | 8 | Identificadores de la base puestos en botones sin escapar | Baja | ✅ Corregido (preventivo) |
-| 9 | Registro abierto: cualquiera que encuentre la página puede crear una cuenta | Media | ✅ Resuelto con códigos de invitación (sección 6 ter) |
+| 9 | Registro abierto: cualquiera que encuentre la página puede crear una cuenta | Media | 💬 Por decisión del owner se mantiene abierto (los códigos de invitación se probaron y se retiraron) |
 | 10 | Imágenes cargadas desde sitios de terceros (Tenor, Pinterest, wsrv.nl…) | Baja (privacidad) | 💬 Recomendación |
 | 11 | Dominio de correo interno `eltablon-app.com` | Media (por verificar) | 💬 Recomendación |
 
@@ -138,11 +138,11 @@ Al publicar en Vercel (ver `VERCEL.md`), `vercel.json` agrega protecciones que S
 
 Se probó en navegador con estas cabeceras: la portada y el ingreso cargan sin errores ni bloqueos. Las pantallas internas (después de iniciar sesión) no se pudieron probar sin acceso a tu Supabase. Si algo no carga, la consola del navegador mostrará "Content Security Policy" con el recurso bloqueado.
 
-## 6 ter. Seguridad de las funciones nuevas (entregas, invitaciones, avisos)
+## 6 ter. Seguridad de las funciones nuevas (entregas y avisos)
 
 Cómo se diseñaron para que no abran nuevas puertas:
 
-- **Códigos de invitación:** los valida la **base de datos** en el momento de crear la cuenta. Desde el navegador no se pueden saltar. Nadie más que el owner puede ver la lista de códigos. Se generan al azar, con 8 caracteres (más de un billón de combinaciones). Cada código puede tener límite de usos y fecha de vencimiento. El código no queda guardado en el perfil del usuario.
+- **Códigos de invitación:** se implementaron y probaron, pero se retiraron por decisión del owner. `supabase/DESACTIVAR-invitaciones.sql` los elimina de la base de datos. El registro queda abierto: cualquiera con el enlace puede crear una cuenta.
 - **Entregas:** los estudiantes **no escriben directamente** en la tabla. Todo pasa por funciones del servidor que comprueban:
   - que la tarea esté publicada;
   - que el archivo esté en la carpeta del propio estudiante;
@@ -151,7 +151,7 @@ Cómo se diseñaron para que no abran nuevas puertas:
 
   Solo el owner o un admin pueden calificar. El cumplido se suma una sola vez, dentro de la misma operación, para que no se pueda duplicar.
 - **Archivos de entregas:** van en un espacio **privado** de Supabase, con un máximo de 5 MB y solo imágenes o PDF. Se muestran mediante enlaces temporales de 10 minutos. A las fotos se les quitan datos ocultos como la ubicación GPS.
-- **Avisos:** el servidor de Vercel comprueba la sesión de quien pide el aviso y su rol, y **arma él mismo el texto**. Un estudiante no puede anunciar tareas, avisar sobre entregas ajenas ni mandar mensajes inventados. Cada aviso se envía una sola vez. La clave secreta de Supabase y la clave privada de avisos viven solo en Vercel.
+- **Avisos:** el servidor de Vercel comprueba la sesión de quien pide el aviso y su rol, y **arma él mismo el texto**. Un estudiante no puede anunciar tareas, avisar sobre entregas ajenas ni mandar mensajes inventados. El aviso de prueba llega solo a los dispositivos de quien lo pide, como máximo uno por minuto. Cada aviso se envía una sola vez. La clave secreta de Supabase y la clave privada de avisos viven solo en Vercel.
 - **Pruebas realizadas:**
   - el SQL se ejecutó dos veces seguidas en una base PostgreSQL que imita a Supabase, con escenarios de ataque (estudiante que intenta aprobarse, usar archivos ajenos, escribir directo en las tablas, registrarse sin código o con un código agotado): todos quedaron bloqueados;
   - la función de avisos pasó 13 pruebas de autorización;

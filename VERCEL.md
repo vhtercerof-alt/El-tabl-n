@@ -7,8 +7,9 @@
 | Proyecto `el-tabl-n-5nqf` en Vercel, conectado a GitHub y publicado en **https://el-tablon1.vercel.app** | ✅ Hecho |
 | Rama que se publica en producción: `claude/lucid-curie-14ahbh` (la rama principal del repositorio) | ✅ Hecho |
 | Variables `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY` (secreta) y `VAPID_SUBJECT` | ✅ Cargadas |
-| Variable `SUPABASE_SERVICE_ROLE_KEY` | ⏳ **Falta:** debes agregarla tú (paso C.1) |
-| Ejecutar en Supabase `ACTIVAR-1-entregas.sql`, `ACTIVAR-2-invitaciones.sql` y `ACTIVAR-3-avisos.sql` | ⏳ **Falta** (parte B) |
+| Clave secreta de Supabase | ⚠️ Está cargada como `PRIVATE_KEY`. La app ahora la reconoce con ese nombre si de verdad es la clave **secret** de Supabase. Lo ideal es renombrarla a `SUPABASE_SERVICE_ROLE_KEY` (paso C.1) |
+| Ejecutar en Supabase `ACTIVAR-1-entregas.sql` y `ACTIVAR-3-avisos.sql` | Parte 1 hecha; confirma la 3 (parte B) |
+| Quitar los códigos de invitación: ejecutar `DESACTIVAR-invitaciones.sql` | ⏳ **Falta** (parte B) |
 | Activar Analytics | ⏳ **Falta** (paso C.2) |
 | Borrar el proyecto duplicado vacío `el-tablon` (Settings → Delete Project) | ⏳ **Falta** |
 
@@ -16,7 +17,7 @@
 Esta guía tiene tres partes. Hazlas en orden y una sola vez:
 
 - **A. Publicar la página** (unos 10 minutos).
-- **B. Activar entregas, invitaciones y avisos en Supabase** (unos 5 minutos).
+- **B. Activar entregas y avisos en Supabase** (unos 5 minutos).
 - **C. Conectar los avisos y las estadísticas en Vercel** (unos 10 minutos).
 
 ---
@@ -47,30 +48,26 @@ Solo se publica lo que va en `public/` y en `api/`. El informe, los archivos SQL
 
 ---
 
-## B. Activar entregas, invitaciones y avisos (Supabase)
+## B. Activar entregas y avisos (Supabase)
 
-Son **tres archivos cortos** en la carpeta `supabase/`. Ejecútalos en este orden:
+Son archivos cortos que están en la carpeta `supabase/`:
 
-| Orden | Archivo | Qué activa |
-|-------|---------|------------|
-| 1 | `ACTIVAR-1-entregas.sql` | Entregas de tareas y calificación |
-| 2 | `ACTIVAR-2-invitaciones.sql` | Códigos de invitación (al final muestra tu primer código) |
-| 3 | `ACTIVAR-3-avisos.sql` | Avisos al celular |
+| Archivo | Qué hace |
+|---------|----------|
+| `ACTIVAR-1-entregas.sql` | Activa las entregas de tareas y su calificación |
+| `ACTIVAR-3-avisos.sql` | Activa los avisos al celular |
+| `DESACTIVAR-invitaciones.sql` | **Quita** los códigos de invitación: vuelve a permitir crear cuentas sin código. Ejecútalo si llegaste a correr el antiguo `ACTIVAR-2-invitaciones.sql` |
 
 Para **cada** archivo:
 
 1. En GitHub, abre el archivo y usa el botón **Copy raw file** (ícono de dos cuadritos, arriba a la derecha del contenido). Así se copia completo.
 2. En Supabase: **SQL Editor → New query**, para tener una pestaña **vacía**.
 3. Pega con Ctrl+V (Cmd+V en Mac). **No selecciones nada**: si hay texto seleccionado, Supabase ejecuta solo esa parte.
-4. Haz clic en **Run**. Debe aparecer una tabla con "Entregas activadas", tu código de invitación o "Avisos activados".
+4. Haz clic en **Run**. Debe aparecer una tabla con un mensaje de resultado.
 
-Si aparece un error, repite ese mismo archivo desde el paso 1. Se pueden ejecutar varias veces sin romper nada, incluso si un intento anterior quedó a medias.
+Todos se pueden ejecutar varias veces sin romper nada.
 
-**Después de la parte 2, nadie puede crear una cuenta sin código.** Las cuentas que ya existen no se ven afectadas. Comparte el código solo con tu grupo, o crea otros en **Panel del owner → Códigos de invitación**. Desde ahí también puedes:
-
-- crear códigos con límite de usos o fecha de vencimiento (por ejemplo, uno por grupo);
-- desactivar o borrar un código si se filtra;
-- desactivar la exigencia de código (no recomendado).
+> Iniciar sesión **nunca** necesitó código. Los códigos solo afectaban a la creación de cuentas nuevas.
 
 ---
 
@@ -84,7 +81,7 @@ En Vercel: **tu proyecto → Settings → Environment Variables**. Agrega estas 
 |--------|-------------------|--------------|
 | `SUPABASE_URL` | Es la misma de `index.html`: `https://quppebdummixryqqcady.supabase.co` | No |
 | `SUPABASE_ANON_KEY` | Es la misma `SUPABASE_ANON_KEY` que aparece en `index.html` | No |
-| `SUPABASE_SERVICE_ROLE_KEY` | Supabase → **Project Settings → API Keys** → la clave **secret** (o `service_role` en proyectos antiguos) | **Sí, muy secreta** |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase → **Project Settings → API Keys** → la clave **secret** (o `service_role` en proyectos antiguos). El nombre tiene que ser exactamente este | **Sí, muy secreta** |
 | `VAPID_PUBLIC_KEY` | Archivo `CLAVES-AVISOS-PRIVADO.txt` que te entregué | No |
 | `VAPID_PRIVATE_KEY` | El mismo archivo | **Sí** |
 | `VAPID_SUBJECT` | La dirección de la app (`https://el-tablon1.vercel.app`) o `mailto:` y tu correo | No |
@@ -106,7 +103,12 @@ En Vercel: **tu proyecto → Analytics → Enable**. No hace falta tocar código
    - **iPhone/iPad:** primero toca **Compartir → Agregar a pantalla de inicio** y abre El Tablón desde ese ícono. Apple solo permite avisos en apps instaladas así.
 3. Desde otra cuenta (o la computadora), publica una tarea de prueba. Te debe llegar el aviso **📌 Nueva tarea**.
 
-Si no llega, revisa en **Vercel → Logs** si aparecen errores de `/api/notificar`. El mensaje "Avisos no configurados" significa que falta alguna variable del paso C.1 o que no hiciste *Redeploy*.
+Si no llega:
+
+1. En **Inicio**, en la tarjeta de avisos, toca **Enviar aviso de prueba**. Si algo está mal, la tarjeta muestra el motivo: a ti, como owner, con el detalle de qué ajuste falta.
+2. Revisa que el celular no esté en modo «No molestar» y que Chrome o Safari tengan permitidas las notificaciones en los ajustes del teléfono.
+3. Si cambiaste alguna variable en Vercel, haz **Redeploy**.
+4. Si sigue sin funcionar, en esa misma tarjeta toca **Desactivar** y luego **Activar avisos** otra vez.
 
 ---
 
@@ -114,8 +116,8 @@ Si no llega, revisa en **Vercel → Logs** si aparecen errores de `/api/notifica
 
 ### Entregas y cumplidos
 
-- **Estudiante:** en cada tarea aparece **📤 Entregar tarea**. Puede escribir su respuesta y/o adjuntar una foto o un PDF (máximo 5 MB). Las fotos se reducen y se les borran datos ocultos como la ubicación GPS. Mientras no esté aprobada, puede editar su entrega.
-- **Tú (owner o admin):** en el menú aparece **📥 Entregas**, con un número de pendientes. En cada entrega puedes:
+- **Estudiante:** en el menú aparece la pestaña **📥 Entregas**, con todas las tareas publicadas, su estado y el botón **📤 Entregar**. La insignia roja indica cuántas tiene por entregar o corregir. Puede escribir su respuesta y/o adjuntar una foto o un PDF (máximo 5 MB). Las fotos se reducen y se les borran datos ocultos como la ubicación GPS. Mientras no esté aprobada, puede editar su entrega.
+- **Tú (owner o admin):** la misma pestaña **📥 Entregas** muestra la bandeja de revisión, con el número de entregas pendientes. En cada entrega puedes:
   - **✅ Aprobar y dar cumplido:** suma 1 al contador de tareas cumplidas del estudiante (el del ranking), con nota opcional de 0 a 100 y comentario;
   - **↩️ Devolver para corregir:** el estudiante ve tu comentario y puede volver a entregar.
 - Aprobar dos veces la misma entrega no suma dos cumplidos. Si devuelves una entrega que ya estaba aprobada, se resta el cumplido.
@@ -141,7 +143,7 @@ El texto de cada aviso lo arma siempre el servidor. Nadie puede usar el sistema 
 - **Espacio de almacenamiento:** las fotos y PDF de las entregas ocupan espacio en Supabase. Revisa de vez en cuando **Supabase → Storage → entregas** y el uso del plan.
 - **Si cambias de proyecto Supabase:** cambia la dirección en `index.html`, en `vercel.json` (`connect-src` y `media-src`) y en la variable `SUPABASE_URL`.
 - **Si agregas una fuente externa nueva** (otra API, videos), añádela a `Content-Security-Policy` en `vercel.json`; si no, el navegador la bloquea.
-- **Systeme.io:** la versión pegada ahí sigue funcionando para entregas e invitaciones, pero **no** puede enviar avisos ni instalarse como app. Conviene dejar solo la de Vercel.
+- **Systeme.io:** la versión pegada ahí sigue funcionando para las entregas, pero **no** puede enviar avisos ni instalarse como app. Conviene dejar solo la de Vercel.
 
 ## Probar en tu computadora (opcional)
 

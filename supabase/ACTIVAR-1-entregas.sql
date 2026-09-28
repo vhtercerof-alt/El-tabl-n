@@ -1,5 +1,5 @@
 -- =====================================================================
--- EL TABLÓN · ACTIVAR PARTE 1 de 3 · Entregas de tareas
+-- EL TABLÓN · ACTIVAR PARTE 1 · Entregas de tareas
 -- =====================================================================
 -- Cómo ejecutarlo en Supabase:
 --   1. SQL Editor → New query (una pestaña VACÍA).
@@ -7,7 +7,7 @@
 --      seleccionado, Supabase ejecuta solo lo seleccionado).
 --   3. Clic en Run. Debe decir "Success".
 -- Se puede ejecutar varias veces sin romper nada.
--- Ejecuta las partes en orden: 1, 2 y 3.
+-- Después ejecuta ACTIVAR-3-avisos.sql.
 -- =====================================================================
 
 -- ---------------------------------------------------------------------

@@ -7,24 +7,20 @@
 //   tarea_nueva        · solo owner/admin · avisa a todos
 //   entrega_nueva      · solo el autor de la entrega · avisa a owner/admin
 //   entrega_calificada · solo owner/admin · avisa al autor de la entrega
+//   prueba             · cualquiera · avisa SOLO a sus propios dispositivos
 //
 // Cada aviso se registra en tb_push_log para no repetirlo.
 //
-// Variables de entorno (Vercel → Settings → Environment Variables):
-//   SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY,
-//   VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY, VAPID_SUBJECT (mailto:tu@correo)
+// Variables de entorno: ver api/_config.js.
 import webpush from "web-push";
+import { configuracion } from "./_config.js";
 
-const {
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY,
-  SUPABASE_SERVICE_ROLE_KEY,
-  VAPID_PUBLIC_KEY,
-  VAPID_PRIVATE_KEY,
-  VAPID_SUBJECT,
-} = process.env;
+const CFG = configuracion();
+const SUPABASE_URL = CFG.supabaseUrl;
+const SUPABASE_ANON_KEY = CFG.anonKey;
+const SUPABASE_SERVICE_ROLE_KEY = CFG.serviceKey;
 
-const TIPOS = new Set(["tarea_nueva", "entrega_nueva", "entrega_calificada"]);
+const TIPOS = new Set(["tarea_nueva", "entrega_nueva", "entrega_calificada", "prueba"]);
 const ID_VALIDO = /^[0-9A-Za-z-]{1,64}$/;
 
 function recortar(texto, max) {
@@ -47,7 +43,10 @@ async function db(ruta, opciones = {}) {
     },
   });
   if (!r.ok) {
-    throw new Error(`Supabase ${r.status}`);
+    const detalle = await r.text().catch(() => "");
+    const e = new Error(`Supabase ${r.status}`);
+    e.detalle = detalle.slice(0, 300);
+    throw e;
   }
   const texto = await r.text();
   return texto ? JSON.parse(texto) : null;
@@ -76,7 +75,11 @@ async function suscripciones(filtroUsuarios) {
   const filtro = filtroUsuarios
     ? `&user_id=in.(${filtroUsuarios.join(",")})`
     : "";
-  return db(`tb_push_suscripciones?select=id,user_id,endpoint,p256dh,auth${filtro}&limit=2000`);
+  const filas = await db(`tb_push_suscripciones?select=id,user_id,endpoint,p256dh,auth${filtro}&limit=2000`);
+  // Doble control: aunque la consulta ya filtra, nunca enviar a otros usuarios.
+  if (!filtroUsuarios) return filas || [];
+  const permitidos = new Set(filtroUsuarios);
+  return (filas || []).filter((s) => permitidos.has(s.user_id));
 }
 
 async function enviar(subs, mensaje, excluir) {
@@ -108,9 +111,8 @@ export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Método no permitido." });
   }
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY || !SUPABASE_SERVICE_ROLE_KEY ||
-      !VAPID_PUBLIC_KEY || !VAPID_PRIVATE_KEY) {
-    return res.status(503).json({ error: "Avisos no configurados en Vercel." });
+  if (!CFG.listo) {
+    return res.status(503).json({ error: "Avisos no configurados en Vercel.", problemas: CFG.problemas });
   }
 
   const auth = String(req.headers.authorization || "");
@@ -134,15 +136,26 @@ export default async function handler(req, res) {
     if (!yo) return res.status(403).json({ error: "Perfil no encontrado." });
     const esStaff = yo.role === "owner" || yo.role === "admin";
 
-    webpush.setVapidDetails(
-      VAPID_SUBJECT || "mailto:avisos@example.invalid",
-      VAPID_PUBLIC_KEY,
-      VAPID_PRIVATE_KEY
-    );
+    webpush.setVapidDetails(CFG.vapidSubject, CFG.vapidPublic, CFG.vapidPrivate);
 
     let destinos, mensaje, clave;
 
-    if (tipo === "tarea_nueva") {
+    if (tipo === "prueba") {
+      // Solo a los dispositivos de quien lo pide; como mucho uno por minuto.
+      clave = `prueba:${uid}:${Math.floor(Date.now() / 60000)}`;
+      destinos = await suscripciones([uid]);
+      if (!destinos.length) {
+        return res.status(404).json({ error: "Este usuario no tiene dispositivos con avisos activados." });
+      }
+      mensaje = { titulo: "🔔 Aviso de prueba", cuerpo: "¡Los avisos de El Tablón funcionan en este dispositivo!", url: "/" };
+      if (!(await primeraVez(clave))) {
+        return res.status(429).json({ error: "Espera un minuto antes de otra prueba." });
+      }
+      const enviados = await enviar(destinos, mensaje, null);
+      return res.status(enviados ? 200 : 502).json(enviados
+        ? { enviados }
+        : { error: "El servicio de avisos del navegador rechazó el envío. Desactiva y vuelve a activar los avisos." });
+    } else if (tipo === "tarea_nueva") {
       if (!esStaff) return res.status(403).json({ error: "No autorizado." });
       const [tarea] = await db(`tasks?id=eq.${id}&select=id,title,subject,published`);
       if (!tarea || !tarea.published) return res.status(404).json({ error: "Tarea no publicada." });
@@ -185,7 +198,7 @@ export default async function handler(req, res) {
               : `Revisa los comentarios de «${titulo}» y vuelve a entregar.`,
             140
           ),
-          url: "/?vista=tasks",
+          url: "/?vista=entregas",
         };
       }
     }
@@ -196,7 +209,14 @@ export default async function handler(req, res) {
     const enviados = await enviar(destinos || [], mensaje, uid);
     return res.status(200).json({ enviados });
   } catch (e) {
-    console.error("[notificar]", e && e.message);
-    return res.status(500).json({ error: "No se pudo enviar el aviso." });
+    console.error("[notificar]", e && e.message, e && e.detalle);
+    const faltaTabla = e && /PGRST205|42P01|does not exist|schema cache/i.test(e.detalle || "");
+    return res.status(500).json({
+      error: faltaTabla
+        ? "Falta ejecutar ACTIVAR-3-avisos.sql (y ACTIVAR-1-entregas.sql) en Supabase."
+        : e && /Supabase 401|Supabase 403/.test(e.message)
+          ? "La clave secreta de Supabase en Vercel no es válida."
+          : "No se pudo enviar el aviso.",
+    });
   }
 }

@@ -1,5 +1,5 @@
 -- =====================================================================
--- EL TABLÓN · ACTIVAR PARTE 3 de 3 · Avisos al celular
+-- EL TABLÓN · ACTIVAR AVISOS · Avisos al celular
 -- =====================================================================
 -- Cómo ejecutarlo en Supabase:
 --   1. SQL Editor → New query (una pestaña VACÍA).
