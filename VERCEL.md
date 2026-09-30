@@ -13,7 +13,7 @@
 | Economía (ruletas, tienda, regalos, niveles, racha, premio diario): ejecutar `TABLON-economia-segura.sql` y luego abrir la app con la cuenta owner | ⏳ **Falta** (parte B) |
 | Activar Analytics | ⏳ **Falta** (paso C.2) |
 | Borrar el proyecto duplicado vacío `el-tablon` (Settings → Delete Project) | ⏳ **Falta** |
-| Herramientas con IA (Profesor de lengua y Voleibol): cargar `GEMINI_API_KEY` y ejecutar `ACTIVAR-4-permisos-roles.sql` (paso C.4) | ⏳ **Falta** |
+| Profesor de lengua y Voleibol: funcionan solos con el **motor integrado**. Falta ejecutar `ACTIVAR-4-permisos-roles.sql` para dar el permiso del voleibol a otros roles. `GEMINI_API_KEY` es **opcional** (paso C.4) | ⏳ Falta el SQL |
 
 
 Esta guía tiene tres partes. Hazlas en orden y una sola vez:
@@ -113,20 +113,20 @@ Si no llega:
 3. Si cambiaste alguna variable en Vercel, haz **Redeploy**.
 4. Si sigue sin funcionar, en esa misma tarjeta toca **Desactivar avisos** y luego **Activar avisos** otra vez.
 
-### C.4 Herramientas con IA (Profesor de lengua y Voleibol)
+### C.4 Profesor de lengua y Voleibol
 
-Las dos herramientas de **Actividades** usan **Google Gemini** desde el servidor de Vercel. La clave nunca llega al navegador.
+Las dos herramientas de **Actividades** funcionan con un **motor integrado** que corre dentro del navegador: no usa internet ni claves, no tiene límites de uso y el texto no sale del dispositivo.
 
-1. Entra a **https://aistudio.google.com** con tu cuenta de Google → **Get API key** → **Create API key**.
-2. En Vercel → **Settings → Environment Variables** agrega `GEMINI_API_KEY` con esa clave (marca **Sensitive**, entorno *Production*).
-3. En Supabase ejecuta **`supabase/ACTIVAR-4-permisos-roles.sql`** (permiso del voleibol).
-4. **Deployments → Redeploy**.
+- **Profesor de lengua:** revisa la ortografía con el diccionario libre de LibreOffice (carpeta `motor/`, ver `motor/LEEME.md`) y aplica reglas de tildes, gramática, concordancia, puntuación, mayúsculas, repetición y estilo. Acepta el voseo y palabras de Nicaragua. El índice "estilo tipo IA" se calcula con patrones de escritura: es orientativo y no es una prueba.
+- **Voleibol:** prueba las combinaciones de puestos según las habilidades, la estatura, la mano hábil y las posiciones de cada jugador, y arma el sistema, la alineación, el líbero, la banca, las rotaciones y el plan táctico.
 
 **Quién puede usar cada una:**
-- **Profesor de lengua:** todos los usuarios con sesión iniciada.
-- **Voleibol:** solo el owner, y quien tenga un rol con el permiso activado: **Roles → elige el rol → pestaña Permisos → 🏐 Voleibol**. El servidor vuelve a comprobarlo en cada uso.
+- **Profesor de lengua:** todos.
+- **Voleibol:** solo el owner, y quien tenga un rol con el permiso: **Roles → elige el rol → pestaña Permisos → 🏐 Voleibol**. Requiere ejecutar **`supabase/ACTIVAR-4-permisos-roles.sql`**.
 
-Variables opcionales:
+**IA de Google (opcional):** si algún día cargas `GEMINI_API_KEY` en Vercel (clave gratuita en https://aistudio.google.com), aparece además un botón **🤖 Con IA de Google** en cada herramienta. Sin esa clave, el botón no se muestra y todo funciona con el motor integrado.
+
+Variables opcionales (solo para la IA de Google):
 
 | Variable | Por defecto |
 |----------|-------------|

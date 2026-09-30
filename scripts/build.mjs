@@ -60,5 +60,10 @@ fs.copyFileSync("assets/favicon.png", "public/favicon.png");
 for (const f of ["sw.js", "manifest.webmanifest", "icon-192.png", "icon-512.png", "icon-maskable-512.png"]) {
   fs.copyFileSync("pwa/" + f, "public/" + f);
 }
+// Motor integrado del Profesor de lengua (diccionario y corrector, sin API).
+fs.mkdirSync("public/motor");
+for (const f of ["es.aff", "es.dic", "ortografia.js"]) {
+  fs.copyFileSync("motor/" + f, "public/motor/" + f);
+}
 console.log("public/ generado:",
   ["index.html", "styles.css", "app.js"].map(f => `${f} ${(fs.statSync("public/" + f).size / 1024).toFixed(0)} KB`).join(", "));

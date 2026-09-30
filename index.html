@@ -15904,11 +15904,11 @@ var datos = arcadeDatos();
 var retos = retosPendientes().length;
 var tarjetas = [
 { id: "lengua", ico: "📝", color: "#ff5d73", titulo: "Profesor de lengua",
-texto: "Pega tu texto y la IA subraya con colores cada error de ortografía, tildes, gramática y puntuación, te explica la regla, te da la versión corregida y estima si parece hecho con IA.",
-pie: "Con IA · " + (lg.cuota && lg.cuota.limite ? iaUsos(lg) : "revisiones diarias"), accion: "Revisar →", badge: "NUEVO" },
+texto: "Pega tu texto y el profesor subraya con colores cada error de ortografía, tildes, gramática y puntuación, te explica la regla, te da la versión corregida y estima si parece hecho con IA.",
+pie: "Motor integrado · sin límites", accion: "Revisar →", badge: "NUEVO" },
 { id: "voley", ico: "🏐", color: "#ff9a3c", titulo: "Voleibol: alineaciones",
-texto: "Crea tu plantilla con los puntos fuertes de cada jugador, arma la cancha, mira cada rotación y pide a la IA la mejor alineación, investigando en internet con prioridad a sitios oficiales.",
-pie: "Con IA · acceso con permiso", accion: "Armar →", badge: "NUEVO", permiso: "voleibol" },
+texto: "Crea tu plantilla con los puntos fuertes de cada jugador, arma la cancha, mira cada rotación y obtén al instante la mejor alineación y un plan táctico.",
+pie: "Motor integrado · con permiso", accion: "Armar →", badge: "NUEVO", permiso: "voleibol" },
 { id: "tetris", ico: "🟦", color: "#7ae8ff", titulo: "Tetris",
 texto: "El clásico de las piezas que caen. Sube de nivel mientras más líneas hagas.",
 pie: "Récord: " + (datos.tetris || 0) + " pts", accion: "Jugar →" },
@@ -22676,9 +22676,9 @@ var html = '<div class="ia-panel"><div class="lg-top">' +
 '<div class="lg-anillo" style="--p:' + p.general + ";--ac:" + lgColor(p.general) + '"><div>' + p.general + "<small>DE 100</small></div></div>" +
 '<div><span class="lg-nivel">' + escapeHtml(r.nivel_texto) + "</span>" +
 '<p class="lg-resumen">' + escapeHtml(r.resumen) + "</p>" +
-'<small style="color:var(--muted)">' + r.errores.length + " observación(es)" +
+'<small style="color:var(--muted)">' + (r.motor === "ia" ? "🤖 IA de Google · " : "🧠 Motor integrado · ") + r.errores.length + " observación(es)" +
 (r.no_localizados ? " · " + r.no_localizados + " no se pudo(ieron) ubicar en el texto" : "") + "</small></div>" +
-'<div class="lg-ia"><small>🤖 PROBABILIDAD ESTIMADA DE IA</small>' +
+'<div class="lg-ia"><small>🤖 ' + (r.motor === "ia" ? "PROBABILIDAD ESTIMADA DE IA" : "ÍNDICE DE ESTILO TIPO IA") + "</small>" +
 '<div class="lg-ia-num" style="color:' + iaColor + '">' + r.ia.porcentaje + "%</div>" +
 '<div class="lg-ia-barra"><i style="left:' + r.ia.porcentaje + '%"></i></div>' +
 "<b style=\"font-size:13px\">" + escapeHtml(r.ia.veredicto) + "</b>" +
@@ -22750,12 +22750,15 @@ escapeHtml(lg.texto) + "</textarea>" +
 "<span><b>" + c.palabras + "</b> palabras</span><span><b>" + c.caracteres + "</b>/" + LG_MAX + " caracteres</span>" +
 "<span><b>" + c.oraciones + "</b> oraciones</span><span><b>" + c.parrafos + "</b> párrafos</span><span>⏱ " + c.lectura + " min de lectura</span></div>" +
 '<div class="ia-fila"><button type="button" class="tb-secondary" id="lg-limpiar">🧹 Borrar</button>' +
-'<button type="button" class="tb-primary" id="lg-revisar"' + (lg.cargando ? " disabled" : "") + ">✨ Revisar texto</button></div></div>" +
+'<button type="button" class="tb-primary" id="lg-revisar"' + (lg.cargando ? " disabled" : "") + ">✨ Revisar texto</button>" +
+(lg.cuota && lg.cuota.listo ? '<button type="button" class="tb-secondary" id="lg-revisar-ia"' + (lg.cargando ? " disabled" : "") + ' title="Usa la IA de Google (requiere clave en Vercel)">🤖 Con IA de Google</button>' : "") +
+"</div></div>" +
 (lg.error ? '<div class="ia-aviso mal" style="margin-top:10px">' + escapeHtml(lg.error) + "</div>" : "") +
 '<div class="ia-fila" style="margin-top:12px">' + Object.keys(LG_CAT).map(function (k) {
 return '<span class="ia-chip on" style="--cc:' + LG_CAT[k].c + ';cursor:default"><i></i>' + escapeHtml(LG_CAT[k].n) + "</span>";
 }).join("") + "</div>" +
-'<p style="margin:10px 0 0;color:var(--muted);font-size:11.5px">🔒 El texto se envía a la IA de Google (Gemini) para revisarlo. No incluyas datos personales como teléfonos, direcciones o contraseñas.</p></div>' +
+'<p style="margin:10px 0 0;color:var(--muted);font-size:11.5px">🧠 <b>Revisar texto</b> usa el motor integrado: funciona al instante, sin límites y tu texto no sale de tu dispositivo.' +
+(lg.cuota && lg.cuota.listo ? " 🤖 <b>Con IA de Google</b> envía el texto a Gemini: no incluyas datos personales." : "") + "</p></div>" +
 (h.length ? '<div class="ia-panel"><h3>🕘 Revisiones recientes <small style="color:var(--muted);font-weight:600">(solo en este dispositivo)</small></h3><div class="lg-historial">' +
 h.map(function (x, i) {
 return '<button type="button" data-lg-hist="' + i + '"><span>' + escapeHtml(x.texto.slice(0, 70)) + (x.texto.length > 70 ? "…" : "") +
@@ -22767,12 +22770,13 @@ function pintarLengua() {
 var caja = $("#tb-arcade");
 if (!caja) { return; }
 iaCargarCuota(lg, "/api/lengua", function () { if (arcadeActual === "lengua" && !lg.cargando) { pintarLengua(); } });
-var html = cabeceraArcade("Profesor de lengua", [["Revisiones", iaUsos(lg)]]) +
+var html = cabeceraArcade("Profesor de lengua", [["Motor", "Integrado"]].concat(lg.cuota && lg.cuota.listo ? [["IA de Google", iaUsos(lg)]] : [])) +
 '<div class="ia-wrap"><div class="ia-panel" style="padding:14px 18px"><h3 style="margin:0">📝 Profesor de lengua</h3>' +
-'<p style="margin:4px 0 0;color:var(--muted);font-size:13px">Pega tu texto: la IA marca con colores los errores de ortografía, tildes, gramática, puntuación, estilo y más; te explica cada regla, te da la versión corregida y estima si el texto parece hecho con IA.</p></div>' +
-iaAvisoConfig(lg);
+'<p style="margin:4px 0 0;color:var(--muted);font-size:13px">Pega tu texto: el profesor marca con colores los errores de ortografía, tildes, gramática, puntuación, estilo y más; te explica cada regla, te da la versión corregida y estima si el texto parece hecho con IA.</p></div>';
 if (lg.cargando) {
-html += iaCargando("El profesor está leyendo tu texto…", ["Leyendo el texto", "Buscando errores de ortografía y tildes", "Revisando gramática y puntuación", "Analizando estilo y coherencia", "Estimando señales de IA", "Preparando la versión corregida"], lg.paso || 0);
+html += lg.modo === "ia"
+? iaCargando("La IA de Google está leyendo tu texto…", ["Leyendo el texto", "Buscando errores de ortografía y tildes", "Revisando gramática y puntuación", "Analizando estilo y coherencia", "Estimando señales de IA", "Preparando la versión corregida"], lg.paso || 0)
+: iaCargando("Revisando tu texto…", ["Cargando el diccionario (solo la primera vez)", "Revisando ortografía, gramática y puntuación"], lg.paso || 0);
 } else if (lg.res) {
 html += lgResultado();
 } else {
@@ -22822,7 +22826,9 @@ if (s) { s.onchange = function () { lg[par[1]] = s.value; }; }
 var boton = $("#lg-limpiar");
 if (boton) { boton.onclick = function () { lg.texto = ""; lg.error = ""; pintarLengua(); }; }
 boton = $("#lg-revisar");
-if (boton) { boton.onclick = lgRevisar; }
+if (boton) { boton.onclick = function () { lgRevisar("local"); }; }
+boton = $("#lg-revisar-ia");
+if (boton) { boton.onclick = function () { lgRevisar("ia"); }; }
 $$("[data-lg-hist]").forEach(function (b) {
 b.onclick = function () {
 var x = lgHistorial()[+b.dataset.lgHist];
@@ -22885,18 +22891,32 @@ return (i + 1) + ". [" + (LG_CAT[e.categoria] || LG_CAT.estilo).n + "] «" + e.f
 };
 }
 }
-async function lgRevisar() {
+async function lgRevisar(modo) {
 var texto = lg.texto;
 var c = lgConteo(texto);
 if (c.palabras < 5) { lg.error = "Escribe al menos 5 palabras."; pintarLengua(); return; }
+if (texto.length > LG_MAX) { lg.error = "El texto es muy largo (máximo " + LG_MAX + " caracteres)."; pintarLengua(); return; }
 lg.error = "";
+lg.modo = modo === "ia" ? "ia" : "local";
 lg.cargando = true;
-iaAvanzarPasos(lg, 6, function () { if (arcadeActual === "lengua") { pintarLengua(); } });
+var repintar = function () { if (arcadeActual === "lengua") { pintarLengua(); } };
+iaAvanzarPasos(lg, lg.modo === "ia" ? 6 : 2, repintar);
 pintarLengua();
-var r = await iaLlamar("/api/lengua", "POST", { texto: texto, tipo: lg.tipo, nivel: lg.nivel, enfoque: lg.enfoque });
+var r;
+if (lg.modo === "ia") {
+r = await iaLlamar("/api/lengua", "POST", { texto: texto, tipo: lg.tipo, nivel: lg.nivel, enfoque: lg.enfoque });
+if (r.datos && typeof r.datos.usados === "number") { lg.cuota = { listo: true, usados: r.datos.usados, limite: r.datos.limite }; }
+if (r.ok) { r.datos.motor = "ia"; }
+} else {
+try {
+r = { ok: true, datos: await lgMotorLocal(texto, lg.tipo) };
+} catch (e) {
+console.error("[lengua]", e);
+r = { ok: false, datos: { error: "No se pudo revisar el texto en este navegador. Actualiza la página e intenta de nuevo." } };
+}
+}
 lg.cargando = false;
 clearInterval(lg.pasoTimer);
-if (r.datos && typeof r.datos.usados === "number") { lg.cuota = { listo: true, usados: r.datos.usados, limite: r.datos.limite }; }
 if (!r.ok) {
 lg.error = r.datos.error || "No se pudo revisar el texto.";
 } else {
@@ -22911,11 +22931,428 @@ if (arcadeActual === "lengua") { pintarLengua(); }
 else if (r.ok) { avisoToast("📝 El Profesor de lengua terminó de revisar tu texto (Actividades → Profesor de lengua)."); }
 }
 
+/* ---------- Motor integrado del Profesor de lengua (sin API) ----------
+   Ortografía: diccionario de LibreOffice en un Web Worker (/motor/).
+   Gramática, puntuación, tildes, mayúsculas, repetición y estilo: reglas. */
+var lgWorker = null;
+var lgWorkerPend = {};
+var lgWorkerN = 0;
+function lgOrtografia(palabras) {
+return new Promise(function (resolver) {
+if (!palabras.length) { resolver({ ok: true, resultados: [] }); return; }
+try {
+if (!lgWorker) {
+lgWorker = new Worker("/motor/ortografia.js");
+lgWorker.onmessage = function (e) {
+var d = e.data || {};
+var f = lgWorkerPend[d.id];
+if (f) { delete lgWorkerPend[d.id]; f(d); }
+};
+lgWorker.onerror = function () {
+Object.keys(lgWorkerPend).forEach(function (k) { lgWorkerPend[k]({ ok: false }); delete lgWorkerPend[k]; });
+lgWorker = null;
+};
+}
+var id = ++lgWorkerN;
+lgWorkerPend[id] = resolver;
+lgWorker.postMessage({ id: id, palabras: palabras });
+setTimeout(function () { if (lgWorkerPend[id]) { delete lgWorkerPend[id]; resolver({ ok: false }); } }, 25000);
+} catch (e) { resolver({ ok: false }); }
+});
+}
+var LG_L = "A-Za-zÁÉÍÓÚÜÑáéíóúüñ";
+var LG_ANTES = "(?<![" + LG_L + "])";
+var LG_DESPUES = "(?![" + LG_L + "])";
+function lgRe(cuerpo, banderas) { return new RegExp(LG_ANTES + cuerpo + LG_DESPUES, banderas || "gi"); }
+function lgMayus(original, nuevo) {
+if (!original || !nuevo) { return nuevo; }
+return original[0] !== original[0].toLowerCase() ? nuevo[0].toUpperCase() + nuevo.slice(1) : nuevo;
+}
+var LG_DIAS = "lunes|martes|miércoles|jueves|viernes|sábado|domingo|enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|setiembre|octubre|noviembre|diciembre";
+var LG_ANGLICISMOS = { ok: "de acuerdo", okay: "de acuerdo", full: "completamente", nice: "agradable", random: "al azar", cool: "genial", crush: "amor platónico", spoiler: "destripe" };
+var LG_PARTICIPIO = /(ado|ada|ido|ida|to|cho|so|sto)$/i;
+// Reglas: { re, cat, grav, exp, regla, sug(m) } · sug devuelve el texto que reemplaza a m[0].
+var LG_REGLAS = [
+{ re: lgRe("haiga(s|mos|n)?"), cat: "gramatica", grav: "grave",
+exp: "«Haiga» es una forma vulgar del verbo haber.", regla: "El presente de subjuntivo de haber es haya, hayas, hayamos, hayan.",
+sug: function (m) { return lgMayus(m[0], "haya" + (m[1] || "")); } },
+{ re: lgRe("(fu|dij|hic|v|tuv|estuv|pus|traj|com|viv|sal|beb|escrib|pud|quis|sup|dorm|ped|sent|le|o)(istes|ístes)"), cat: "gramatica", grav: "moderado",
+exp: "En pretérito, la segunda persona no lleva «s» final.", regla: "Se escribe fuiste, dijiste, hiciste (no fuistes, dijistes).",
+sug: function (m) { return m[0].replace(/s$/i, ""); } },
+{ re: lgRe("(lleg|habl|pens|mand|dej|pas|jug|compr|estudi|termin|mir|busc|olvid|entr|gan|tom|cant|bail|trabaj|esper|lleg|llam|cambi|empez|contest|pregunt)astes"), cat: "gramatica", grav: "moderado",
+exp: "En pretérito, la segunda persona no lleva «s» final.", regla: "Se escribe llegaste, hablaste (no llegastes, hablastes).",
+sug: function (m) { return m[0].replace(/s$/i, ""); } },
+{ re: lgRe("(pienso|piensa|piensan|creo|cree|creen|opino|opina|considero|supongo|imagino|dijo|dije|dijeron|parece|resulta|pensaba|creía) de que"), cat: "gramatica", grav: "moderado",
+exp: "Dequeísmo: sobra el «de» antes de «que».", regla: "Con verbos como pensar, creer u opinar se dice «pienso que», no «pienso de que».",
+sug: function (m) { return m[1] + " que"; } },
+{ re: lgRe("(va|van|vamos|iba|iban) haber"), cat: "gramatica", grav: "grave",
+exp: "Falta la preposición «a»: la perífrasis es «ir a + infinitivo».", regla: "Se escribe «va a haber», «van a haber».",
+sug: function (m) { return m[1] + " a haber"; } },
+{ re: lgRe("haber si"), cat: "gramatica", grav: "grave",
+exp: "Aquí corresponde la expresión «a ver» (del verbo ver), no el verbo haber.", regla: "«A ver si…» expresa expectativa; «haber» es un verbo (haber comido).",
+sug: function (m) { return lgMayus(m[0], "a ver si"); } },
+{ re: lgRe("a ver ([" + LG_L + "]+(?:ado|ido|ada|ida))"), cat: "gramatica", grav: "grave",
+exp: "Delante de un participio va el verbo «haber», no «a ver».", regla: "Se escribe «haber hecho», «haber comido».",
+sug: function (m) { return "haber " + m[1]; } },
+{ re: lgRe("más (mejor|peor|mayor|menor)"), cat: "gramatica", grav: "moderado",
+exp: "«Mejor», «peor», «mayor» y «menor» ya son comparativos: no se les antepone «más».", regla: "Se dice «mejor», no «más mejor».",
+sug: function (m) { return m[1]; } },
+{ re: lgRe("(hubieron|habían|habrán|hubiesen|hubieran) ([" + LG_L + "]+)"), cat: "gramatica", grav: "moderado",
+filtro: function (m) { return !LG_PARTICIPIO.test(m[2]) && !/^(sido|que|de|a|en|se|le|lo|la|me|te|nos|ya|no)$/i.test(m[2]); },
+exp: "Cuando «haber» indica existencia es impersonal y va en singular.", regla: "Se dice «había muchas personas», «hubo problemas».",
+sug: function (m) { var s = { hubieron: "hubo", habían: "había", habrán: "habrá", hubiesen: "hubiese", hubieran: "hubiera" }[m[1].toLowerCase()]; return lgMayus(m[1], s) + " " + m[2]; } },
+{ re: lgRe("en base a"), cat: "estilo", grav: "leve",
+exp: "La expresión recomendada es «con base en» o «a partir de».", regla: "Se prefiere «con base en» o «sobre la base de».",
+sug: function (m) { return lgMayus(m[0], "con base en"); } },
+{ re: /¿\s*(que|como|donde|cuando|cual|cuales|quien|quienes|cuanto|cuanta|cuantos|cuantas)(?![A-Za-zÁÉÍÓÚÜÑáéíóúüñ])/gi, cat: "acentuacion", grav: "moderado",
+exp: "Las palabras interrogativas llevan tilde.", regla: "Qué, cómo, dónde, cuándo, cuál y quién llevan tilde cuando preguntan o exclaman.",
+sug: function (m) { var t = { que: "qué", como: "cómo", donde: "dónde", cuando: "cuándo", cual: "cuál", cuales: "cuáles", quien: "quién", quienes: "quiénes", cuanto: "cuánto", cuanta: "cuánta", cuantos: "cuántos", cuantas: "cuántas" }; var w = t[m[1].toLowerCase()]; if (lgInicioOracion(m.input, m.index)) { w = w[0].toUpperCase() + w.slice(1); } return m[0].replace(m[1], lgMayus(m[1], w)); } },
+{ re: /¡\s*(que|como|cuanto|cuanta|cuantos|cuantas)(?![A-Za-zÁÉÍÓÚÜÑáéíóúüñ])/gi, cat: "acentuacion", grav: "moderado",
+exp: "Las palabras exclamativas llevan tilde.", regla: "Qué, cómo y cuánto llevan tilde en exclamaciones.",
+sug: function (m) { var t = { que: "qué", como: "cómo", cuanto: "cuánto", cuanta: "cuánta", cuantos: "cuántos", cuantas: "cuántas" }; var w = t[m[1].toLowerCase()]; if (lgInicioOracion(m.input, m.index)) { w = w[0].toUpperCase() + w.slice(1); } return m[0].replace(m[1], lgMayus(m[1], w)); } },
+{ re: /¿\s*por que(?![A-Za-zÁÉÍÓÚÜÑáéíóúüñ])/gi, cat: "acentuacion", grav: "moderado",
+exp: "En una pregunta se escribe «por qué», con tilde.", regla: "«Por qué» pregunta; «porque» responde.",
+sug: function (m) { var r = m[0].replace(/que$/i, "qué"); return lgInicioOracion(m.input, m.index) ? r.replace(/por/, "Por") : r; } },
+{ re: lgRe("el (es|fue|era|dijo|tiene|tenía|está|estaba|hizo|va|iba|quiere|sabe|puede|come|vive|piensa|cree|trabaja|juega|llegó|salió)"), cat: "acentuacion", grav: "moderado",
+exp: "Cuando es pronombre personal («él dijo») lleva tilde; «el» sin tilde es artículo.", regla: "Tilde diacrítica: él (pronombre) / el (artículo).",
+sug: function (m) { return lgMayus(m[0], "él") + " " + m[1]; } },
+{ re: lgRe("tu (eres|tienes|sabes|puedes|vas|estás|haces|quieres|dijiste|fuiste|sos|tenés|sabés|podés)"), cat: "acentuacion", grav: "moderado",
+exp: "Cuando es pronombre personal («tú eres») lleva tilde; «tu» sin tilde es posesivo (tu casa).", regla: "Tilde diacrítica: tú (pronombre) / tu (posesivo).",
+sug: function (m) { return lgMayus(m[0], "tú") + " " + m[1]; } },
+{ re: lgRe("esta (bien|mal|muy|siendo|haciendo|lloviendo|aquí|allí|allá|listo|lista|cerca|lejos|en)"), cat: "acentuacion", grav: "moderado",
+exp: "Aquí es el verbo estar: se escribe «está», con tilde.", regla: "«Está» (verbo) lleva tilde; «esta» (esta casa) no.",
+sug: function (m) { return lgMayus(m[0], "está") + " " + m[1]; } },
+{ re: new RegExp("(?<![,;][ ]?)" + LG_ANTES + "mas" + LG_DESPUES, "gi"), cat: "acentuacion", grav: "leve",
+exp: "Si indica cantidad o comparación («más grande») lleva tilde. «Mas» sin tilde significa «pero» y casi no se usa.", regla: "Tilde diacrítica: más (cantidad) / mas (pero).",
+sug: function (m) { return lgMayus(m[0], "más"); } },
+{ re: lgRe("(a|para|de|por|sin|contra|hacia) mi(?=\\s*[.,;:!?)]|\\s*$)"), cat: "acentuacion", grav: "moderado",
+exp: "Después de preposición, el pronombre «mí» lleva tilde.", regla: "Tilde diacrítica: mí (pronombre: para mí) / mi (posesivo: mi casa).",
+sug: function (m) { return m[1] + " mí"; } },
+{ re: lgRe("si (señor|señora|señorita)"), cat: "acentuacion", grav: "moderado",
+exp: "Como afirmación se escribe «sí», con tilde.", regla: "Tilde diacrítica: sí (afirmación) / si (condicional).",
+sug: function (m) { return lgMayus(m[0], "sí") + " " + m[1]; } },
+{ re: lgRe("la (agua|águila|arma|hacha|alma|área|aula|hambre|ave|haba|hada|ancla|aguja)"), cat: "concordancia", grav: "moderado",
+filtro: function (m) { return !/^aguja$/i.test(m[1]); },
+exp: "Ante sustantivos femeninos que empiezan por «a» tónica se usa «el» (el agua fría).", regla: "El agua, el águila, el aula; pero las aguas, esta agua.",
+sug: function (m) { return lgMayus(m[0], "el") + " " + m[1]; } },
+{ re: /([A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9]+) +([,.;:!?])([A-Za-zÁÉÍÓÚÜÑáéíóúüñ]*)/g, cat: "puntuacion", grav: "leve",
+exp: "No se deja espacio antes de la coma, el punto y otros signos (y sí después).", regla: "Los signos de puntuación van pegados a la palabra anterior y separados de la siguiente.",
+sug: function (m) { return m[1] + m[2] + (m[3] ? " " + m[3] : ""); } },
+{ re: /([A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+)([,;])([A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+)/g, cat: "puntuacion", grav: "leve",
+exp: "Después de la coma o el punto y coma va un espacio.", regla: "Coma y punto y coma se escriben pegados a la palabra anterior y separados de la siguiente.",
+sug: function (m) { return m[1] + m[2] + " " + m[3]; } },
+{ re: /([A-Za-zÁÉÍÓÚÜÑáéíóúüñ]{2,})\.([A-ZÁÉÍÓÚÑ][a-záéíóúüñ]+)/g, cat: "puntuacion", grav: "leve",
+exp: "Después del punto va un espacio.", regla: "El punto se escribe pegado a la palabra anterior y separado de la siguiente.",
+sug: function (m) { return m[1] + ". " + m[2]; } },
+{ re: /,{2,}|;{2,}/g, cat: "puntuacion", grav: "leve",
+exp: "Signo repetido.", regla: "La coma y el punto y coma no se repiten.",
+sug: function (m) { return m[0][0]; } },
+{ re: /(?<!\.)\.\.(?!\.)/g, cat: "puntuacion", grav: "leve",
+exp: "Hay dos puntos seguidos: usa un punto o puntos suspensivos (tres).", regla: "Los puntos suspensivos son siempre tres (...).",
+sug: function () { return "..."; } },
+{ re: lgRe("(sin embargo|no obstante|es decir|por lo tanto|por consiguiente|en conclusión|en resumen|por último|en cambio|por ejemplo) ([" + LG_L + "]+)"), cat: "puntuacion", grav: "moderado",
+filtro: function (m, t) { var antes = t.slice(Math.max(0, m.index - 3), m.index); return /(^|[.!?¿¡]\s*|\n\s*|,\s*|;\s*)$/.test(antes) || m.index === 0; },
+exp: "Este conector va seguido de coma.", regla: "Los conectores como «sin embargo», «es decir» o «por lo tanto» se separan con coma.",
+sug: function (m) { return m[1] + ", " + m[2]; } },
+{ re: lgRe("([" + LG_L + "]+) pero"), cat: "puntuacion", grav: "leve",
+filtro: function (m) { return !/^(no|sino|y|o|e|u|que|más|muy)$/i.test(m[1]); },
+exp: "Delante de «pero» normalmente se escribe coma.", regla: "Las oraciones unidas por pero, mas o sino se separan con coma («Quería ir, pero llovió»).",
+sug: function (m) { return m[1] + ", pero"; } },
+{ re: lgRe("(" + LG_DIAS + ")"), cat: "mayusculas", grav: "leve",
+filtro: function (m, t) { return m[0][0] !== m[0][0].toLowerCase() && !lgInicioOracion(t, m.index); },
+exp: "Los días de la semana y los meses se escriben con minúscula.", regla: "En español: lunes, marzo (no Lunes, Marzo), salvo al inicio de oración.",
+sug: function (m) { return m[0].toLowerCase(); } },
+{ re: new RegExp(LG_ANTES + "([" + LG_L + "]+)\\s+\\1" + LG_DESPUES, "giu"), cat: "repeticion", grav: "moderado",
+filtro: function (m) { return m[1].length > 1; },
+exp: "La palabra está repetida.", regla: "Evita repetir la misma palabra seguida (salvo como recurso de énfasis).",
+sug: function (m) { return m[1]; } },
+{ re: lgRe("(ok|okay|full|nice|random|cool|crush|spoiler)"), cat: "lexico", grav: "leve",
+exp: "Es un anglicismo; en un texto escolar conviene usar la palabra en español.", regla: "Prefiere el equivalente en español cuando existe.",
+sug: function (m) { return lgMayus(m[0], LG_ANGLICISMOS[m[1].toLowerCase()]); } },
+{ re: lgRe("(cosa|cosas)"), cat: "lexico", grav: "leve",
+exp: "«Cosa» es una palabra muy general: busca una más precisa (objeto, idea, tema, aspecto…).", regla: "Usa vocabulario preciso en lugar de palabras comodín.",
+sug: function (m) { return m[0]; } },
+{ re: lgRe("a nivel de"), cat: "estilo", grav: "leve",
+exp: "«A nivel de» solo es correcto cuando hay niveles reales; en otros casos di «en», «en cuanto a» o «entre».", regla: "Evita «a nivel de» cuando no hay jerarquía de niveles.",
+sug: function (m) { return m[0]; } }
+];
+function lgInicioOracion(t, i) {
+var antes = t.slice(0, i).replace(/[¿¡"«(\s]+$/, "");
+return !antes || /[.!?…:\n]$/.test(antes) || /\n\s*$/.test(t.slice(0, i));
+}
+var LG_VACIAS = "de la que el en y a los se del las un por con no una su para es al lo como más o pero sus le ha me si sin sobre este ya entre cuando todo esta ser son dos también fue había era muy años hasta desde está mi porque qué sólo solo han yo hay vez puede todos así nos ni parte tiene él uno donde bien tiempo mismo ese ahora cada e vida otro después te otros aunque esa eso hace otra gobierno tan durante siempre día tanto ella tres sí dijo sido gran país según menos mundo año antes estado quiero luego tenía mucho hacer cosas algo nada vos tu tú les".split(" ");
+var LG_FORMULAS = ["en conclusión", "es importante destacar", "cabe destacar", "cabe mencionar", "en resumen", "en la actualidad", "juega un papel", "desempeña un papel", "papel crucial", "papel fundamental", "no solo", "sino también", "por otro lado", "en definitiva", "un sinfín", "en el ámbito", "a lo largo de la historia", "en el mundo actual", "es fundamental", "es crucial", "es esencial", "foment", "abordar", "abordando", "en última instancia", "sin lugar a dudas", "en este sentido", "a su vez", "de manera significativa", "en términos de", "potenci", "enriquecedor", "multifacétic", "panorama", "adentr", "profundiz", "asimismo"];
+function lgOraciones(t) { return (t.match(/[^.!?…\n]+[.!?…]*/g) || []).map(function (o) { return o.trim(); }).filter(Boolean); }
+async function lgMotorLocal(texto, tipo) {
+var errores = [];
+var rangos = [];
+function libre(a, b) { return !rangos.some(function (r) { return a < r[1] && b > r[0]; }); }
+function agregar(a, b, e) {
+if (!libre(a, b)) { return; }
+rangos.push([a, b]);
+e.fragmento = texto.slice(a, b);
+e._a = a; e._b = b;
+if (typeof e.sugerencia !== "string") { e.sugerencia = e.fragmento; }
+errores.push(e);
+}
+// 1. Reglas.
+LG_REGLAS.forEach(function (regla) {
+regla.re.lastIndex = 0;
+var m;
+var n = 0;
+while ((m = regla.re.exec(texto)) && n < 40) {
+if (m[0] === "") { regla.re.lastIndex++; continue; }
+if (regla.filtro && !regla.filtro(m, texto)) { continue; }
+n++;
+if (tipo === "poema" && regla.cat === "puntuacion") { continue; }
+agregar(m.index, m.index + m[0].length, { categoria: regla.cat, gravedad: regla.grav, explicacion: regla.exp, regla: regla.regla, sugerencia: regla.sug(m) });
+}
+});
+// 2. Mayúscula al inicio de oración.
+var reIni = /(^|[.!?…]\s+|\n\s*)([¿¡"«(]*)([a-záéíóúüñ][A-Za-zÁÉÍÓÚÜÑáéíóúüñ]*)/g;
+var mi;
+while ((mi = reIni.exec(texto))) {
+if (tipo === "poema") { break; }
+var ini = mi.index + mi[1].length + mi[2].length;
+agregar(ini, ini + mi[3].length, { categoria: "mayusculas", gravedad: "moderado",
+explicacion: "Toda oración empieza con mayúscula.", regla: "Se escribe con mayúscula la primera palabra de un texto y la que va después de punto.",
+sugerencia: mi[3][0].toUpperCase() + mi[3].slice(1) });
+}
+// 3. Signos de apertura ¿ ¡.
+lgOraciones(texto).forEach(function (o) {
+[["?", "¿", "interrogación"], ["!", "¡", "exclamación"]].forEach(function (s) {
+if (o.indexOf(s[0]) >= 0 && o.indexOf(s[1]) < 0) {
+var pos = texto.indexOf(o);
+var mp = o.match(/[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+/);
+if (pos >= 0 && mp) {
+var a = pos + mp.index;
+agregar(a, a + mp[0].length, { categoria: "puntuacion", gravedad: "moderado",
+explicacion: "En español los signos de " + s[2] + " se abren y se cierran.", regla: "Se escribe «" + s[1] + "…" + s[0] + "»: el signo de apertura es obligatorio.",
+sugerencia: s[1] + mp[0] });
+}
+}
+});
+});
+// 4. Punto final.
+var fin = texto.replace(/\s+$/, "");
+var mf = fin.match(/([A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9]+)$/);
+if (mf && tipo !== "poema" && fin.split(/\s+/).length > 6) {
+agregar(fin.length - mf[1].length, fin.length, { categoria: "puntuacion", gravedad: "leve",
+explicacion: "El texto termina sin punto final.", regla: "Los textos terminan con punto (o con el signo que corresponda).", sugerencia: mf[1] + "." });
+}
+// 5. Oraciones muy largas y polisíndeton.
+lgOraciones(texto).forEach(function (o) {
+var pal = o.split(/\s+/).filter(Boolean);
+var pos = texto.indexOf(o);
+if (pos < 0 || pal.length < 3) { return; }
+var primeras = o.match(/^\S+\s+\S+\s+\S+/);
+if (!primeras) { return; }
+if (pal.length > 45) {
+agregar(pos, pos + primeras[0].length, { categoria: "coherencia", gravedad: "moderado",
+explicacion: "Esta oración tiene " + pal.length + " palabras: es difícil de seguir. Divídela en dos o tres oraciones.", regla: "Una oración clara suele tener menos de 30 o 35 palabras.", sugerencia: primeras[0] });
+} else if ((o.match(/(^|\s)y(\s|$)/g) || []).length >= 4) {
+agregar(pos, pos + primeras[0].length, { categoria: "estilo", gravedad: "leve",
+explicacion: "Usas «y» muchas veces en la misma oración. Cambia algunas por punto o por otros conectores (además, luego, también).", regla: "Varía los conectores para que el texto fluya.", sugerencia: primeras[0] });
+}
+});
+// 6. Palabras repetidas cerca.
+var palabras = [];
+var rw = /[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+/g;
+var mw;
+while ((mw = rw.exec(texto))) { palabras.push({ w: mw[0], i: mw.index }); }
+var vistas = {};
+var marcadas = 0;
+palabras.forEach(function (p, k) {
+var w = p.w.toLowerCase();
+if (w.length < 5 || LG_VACIAS.indexOf(w) >= 0 || marcadas >= 6) { return; }
+(vistas[w] = vistas[w] || []).push(k);
+var cerca = vistas[w].filter(function (x) { return k - x <= 60; });
+if (cerca.length === 3) {
+marcadas++;
+agregar(p.i, p.i + p.w.length, { categoria: "repeticion", gravedad: "leve",
+explicacion: "«" + p.w + "» aparece " + cerca.length + " veces en pocas líneas. Usa un sinónimo o un pronombre.", regla: "Evita repetir la misma palabra en un espacio corto.", sugerencia: p.w });
+}
+});
+// 7. Ortografía con el diccionario (y concordancia de número).
+var enUrl = [];
+var ru = /(https?:\/\/\S+|www\.\S+|\S+@\S+\.\S+)/g;
+var mu;
+while ((mu = ru.exec(texto))) { enUrl.push([mu.index, mu.index + mu[0].length]); }
+var aRevisar = {};
+palabras.forEach(function (p) {
+if (enUrl.some(function (r) { return p.i >= r[0] && p.i < r[1]; })) { return; }
+if (p.w.length > 1 && p.w === p.w.toUpperCase()) { return; }
+var inicio = lgInicioOracion(texto, p.i);
+if (p.w[0] !== p.w[0].toLowerCase() && !inicio) { p.propio = true; return; }
+p.clave = inicio ? p.w.toLowerCase() : p.w;
+aRevisar[p.clave] = 1;
+});
+var DET_PL = /^(unos|unas|muchos|muchas|varios|varias|algunos|algunas|mis|tus|sus|nuestros|nuestras|estos|estas|esos|esas)$/i;
+var DET_SG = /^(el|un|mi|tu|su|este|ese)$/i;
+palabras.forEach(function (p, k) {
+var sig = palabras[k + 1];
+if (!sig || sig.w.length < 4 || texto.slice(p.i + p.w.length, sig.i) !== " ") { return; }
+if (DET_PL.test(p.w) && /[aeoáéó]$/i.test(sig.w)) { aRevisar[sig.w.toLowerCase()] = 1; aRevisar[sig.w.toLowerCase() + "s"] = 1; }
+if (DET_SG.test(p.w) && /[^s]s$/i.test(sig.w) && sig.w.length >= 5) { aRevisar[sig.w.toLowerCase()] = 1; aRevisar[sig.w.toLowerCase().slice(0, -1)] = 1; }
+});
+var orto = await lgOrtografia(Object.keys(aRevisar));
+var sinDiccionario = !orto.ok;
+var dic = {};
+(orto.resultados || []).forEach(function (r) { dic[r.w] = r; });
+var bien = function (w) { var r = dic[w]; return !!(r && r.ok); };
+if (!sinDiccionario) {
+palabras.forEach(function (p, k) {
+var sig = palabras[k + 1];
+if (!sig || texto.slice(p.i + p.w.length, sig.i) !== " ") { return; }
+var s = sig.w.toLowerCase();
+if (DET_PL.test(p.w) && /[aeoáéó]$/i.test(s) && s.length >= 4 && bien(s) && bien(s + "s")) {
+agregar(p.i, sig.i + sig.w.length, { categoria: "concordancia", gravedad: "moderado",
+explicacion: "«" + p.w + "» está en plural y «" + sig.w + "» en singular: deben concordar en número.", regla: "El determinante y el sustantivo concuerdan en género y número (mis amigos, unos libros).",
+sugerencia: p.w + " " + sig.w + "s" });
+}
+if (DET_SG.test(p.w) && /[^s]s$/i.test(s) && s.length >= 5 && bien(s) && bien(s.slice(0, -1))) {
+var pl = { el: "los", un: "unos", mi: "mis", tu: "tus", su: "sus", este: "estos", ese: "esos" }[p.w.toLowerCase()];
+agregar(p.i, sig.i + sig.w.length, { categoria: "concordancia", gravedad: "moderado",
+explicacion: "«" + p.w + "» está en singular y «" + sig.w + "» en plural: deben concordar en número.", regla: "El determinante y el sustantivo concuerdan en número (sus padres, los perros).",
+sugerencia: lgMayus(p.w, pl) + " " + sig.w });
+}
+});
+palabras.forEach(function (p) {
+if (!p.clave) { return; }
+var r = dic[p.clave];
+if (!r || r.ok) { return; }
+var arreglar = function (w) { return w && p.w[0] !== p.w[0].toLowerCase() ? w[0].toUpperCase() + w.slice(1) : w; };
+if (r.acento) {
+agregar(p.i, p.i + p.w.length, { categoria: "acentuacion", gravedad: "moderado",
+explicacion: "Falta la tilde (o está en la sílaba equivocada): se escribe «" + arreglar(r.acento) + "».", regla: "Las palabras agudas terminadas en vocal, n o s, las graves terminadas en otra consonante y todas las esdrújulas llevan tilde.",
+sugerencia: arreglar(r.acento) });
+} else {
+var sug = r.sug && r.sug[0] ? arreglar(r.sug[0]) : p.w;
+agregar(p.i, p.i + p.w.length, { categoria: "ortografia", gravedad: r.sug && r.sug.length ? "grave" : "moderado",
+explicacion: r.sug && r.sug.length
+? "Esta palabra no aparece en el diccionario. Quizás quisiste escribir: " + r.sug.map(arreglar).join(", ") + "."
+: "Esta palabra no aparece en el diccionario. Revisa cómo se escribe (si es un nombre propio o una palabra local, puedes ignorarlo).",
+regla: "Revisa la escritura de la palabra en el diccionario de la RAE (dle.rae.es).", sugerencia: sug });
+}
+});
+}
+errores.sort(function (x, y) { return x._a - y._a; });
+// Versión corregida: se aplican los reemplazos de atrás hacia adelante.
+var corregido = texto;
+errores.slice().sort(function (x, y) { return y._a - x._a; }).forEach(function (e) {
+if (e.sugerencia !== e.fragmento) { corregido = corregido.slice(0, e._a) + e.sugerencia + corregido.slice(e._b); }
+});
+// Puntajes.
+var total = Math.max(1, palabras.length);
+var peso = { grave: 1.5, moderado: 1, leve: 0.5 };
+function area(cats, factor) {
+var s = 0;
+errores.forEach(function (e) { if (cats.indexOf(e.categoria) >= 0) { s += peso[e.gravedad] || 1; } });
+return Math.max(15, Math.round(100 - (s / total) * 100 * factor));
+}
+var p = {
+ortografia: area(["ortografia", "acentuacion", "mayusculas"], 6),
+gramatica: area(["gramatica", "concordancia"], 8),
+puntuacion: area(["puntuacion"], 5),
+vocabulario: area(["lexico", "repeticion"], 5),
+coherencia: area(["coherencia"], 6),
+estilo: area(["estilo"], 5)
+};
+p.general = Math.round(p.ortografia * 0.25 + p.gramatica * 0.25 + p.puntuacion * 0.2 + p.vocabulario * 0.1 + p.coherencia * 0.1 + p.estilo * 0.1);
+var nivel = p.general >= 90 ? "Excelente" : p.general >= 80 ? "Muy bueno" : p.general >= 65 ? "Bueno" : p.general >= 50 ? "Regular" : "Necesita mejorar";
+var cuenta = {};
+errores.forEach(function (e) { cuenta[e.categoria] = (cuenta[e.categoria] || 0) + 1; });
+var orden = Object.keys(cuenta).sort(function (a, b) { return cuenta[b] - cuenta[a]; });
+var nombres = function (k) { return (LG_CAT[k] || LG_CAT.estilo).n.toLowerCase(); };
+// Estimación de estilo "tipo IA" por patrones (orientativa).
+var oraciones = lgOraciones(texto);
+var largos = oraciones.map(function (o) { return o.split(/\s+/).filter(Boolean).length; });
+var media = largos.reduce(function (a, b) { return a + b; }, 0) / Math.max(1, largos.length);
+var desv = Math.sqrt(largos.reduce(function (a, b) { return a + (b - media) * (b - media); }, 0) / Math.max(1, largos.length));
+var cv = media ? desv / media : 0;
+var bajo = texto.toLowerCase();
+var formulas = LG_FORMULAS.filter(function (f) { return bajo.indexOf(f) >= 0; });
+var personales = (bajo.match(/(?<![a-záéíóúñ])(yo|me|mis?|conmigo|nosotros|nosotras|mamá|papá|mi familia|mis amigos)(?![a-záéíóúñ])/g) || []).length;
+var voseo = /(?<![a-záéíóúñ])(vos|sos|tenés|sabés|podés|querés)(?![a-záéíóúñ])/.test(bajo);
+var densidad = errores.length / total * 100;
+var ia = 12;
+var senales = [];
+if (formulas.length) { ia += Math.min(40, formulas.length * 8); senales.push("Frases muy usadas por la IA: «" + formulas.slice(0, 4).join("», «") + "»."); }
+if (largos.length >= 5 && cv < 0.35) { ia += 15; senales.push("Las oraciones tienen largos muy parecidos entre sí."); }
+if (largos.length >= 5 && cv > 0.6) { ia -= 8; }
+if (total >= 120 && densidad < 1) { ia += 15; senales.push("Casi no tiene errores en un texto largo."); }
+if (densidad > 5) { ia -= 12; senales.push("Tiene errores típicos de escritura humana."); }
+if (personales >= 3) { ia -= 10; senales.push("Incluye experiencias o referencias personales."); }
+else if (total > 150 && !personales) { ia += 8; senales.push("No hay ninguna referencia personal."); }
+if (voseo) { ia -= 12; senales.push("Usa voseo, poco habitual en textos generados por IA."); }
+if (texto.indexOf("—") >= 0) { ia += 5; senales.push("Usa rayas largas (—), frecuentes en textos de IA."); }
+if (total < 50) { ia = Math.min(ia, 30); } else if (total < 100) { ia = Math.min(ia, 65); }
+ia = Math.max(0, Math.min(90, Math.round(ia)));
+var conectores = (bajo.match(/(?<![a-záéíóúñ])(además|sin embargo|por eso|por lo tanto|luego|después|finalmente|en cambio|aunque|porque|mientras|entonces|primero)(?![a-záéíóúñ])/g) || []);
+var distintas = {};
+palabras.forEach(function (x) { distintas[x.w.toLowerCase()] = 1; });
+var variedad = Object.keys(distintas).length / total;
+var fortalezas = [];
+if (!cuenta.ortografia && !cuenta.acentuacion && !sinDiccionario) { fortalezas.push("No encontré faltas de ortografía ni de tildes."); }
+if (!cuenta.gramatica && !cuenta.concordancia) { fortalezas.push("No encontré errores gramaticales comunes."); }
+if (!cuenta.puntuacion) { fortalezas.push("Buen uso de la puntuación."); }
+if (conectores.length >= 3) { fortalezas.push("Usas conectores para unir las ideas."); }
+if (total >= 40 && variedad > 0.6) { fortalezas.push("Tu vocabulario es variado."); }
+if (largos.length >= 4 && cv > 0.45) { fortalezas.push("Combinas oraciones cortas y largas: el texto tiene ritmo."); }
+if (voseo) { fortalezas.push("Usas el voseo con naturalidad, propio del español de Nicaragua."); }
+var consejos = orden.slice(0, 3).map(function (k) {
+return {
+ortografia: "Repasa la escritura de las palabras marcadas y consulta el diccionario de la RAE cuando dudes.",
+acentuacion: "Repasa las reglas de acentuación: agudas, graves, esdrújulas y tilde diacrítica.",
+gramatica: "Revisa las formas verbales marcadas (haber, pretéritos, dequeísmo).",
+concordancia: "Comprueba que artículos, sustantivos y adjetivos coincidan en género y número.",
+puntuacion: "Lee en voz alta: donde haces una pausa suele ir una coma o un punto.",
+mayusculas: "Empieza cada oración con mayúscula y escribe días y meses con minúscula.",
+lexico: "Cambia las palabras comodín o en inglés por palabras precisas en español.",
+repeticion: "Busca sinónimos para las palabras que repites.",
+estilo: "Varía los conectores y evita expresiones poco recomendadas.",
+coherencia: "Divide las oraciones muy largas para que se entiendan mejor."
+}[k];
+});
+if (conectores.length < 2 && total > 60) { consejos.push("Usa más conectores (además, sin embargo, por eso, finalmente) para enlazar las ideas."); }
+var practica = [];
+var vistasCat = {};
+errores.forEach(function (e) {
+if (practica.length >= 3 || vistasCat[e.categoria] || e.sugerencia === e.fragmento) { return; }
+vistasCat[e.categoria] = 1;
+practica.push({ enunciado: "Corrige: «" + e.fragmento + "»", respuesta: e.sugerencia + " — " + e.regla });
+});
+var resumen = errores.length
+? "Encontré " + errores.length + " observación(es)" + (orden.length ? ", sobre todo de " + orden.slice(0, 2).map(nombres).join(" y ") : "") + ". Tócalas en el texto para ver cómo corregirlas."
+: "¡Muy bien! No encontré errores con las reglas que reviso.";
+if (sinDiccionario) { resumen += " (No se pudo cargar el diccionario: esta vez no se revisó la ortografía palabra por palabra.)"; }
+return {
+motor: "local",
+resumen: resumen,
+nivel_texto: nivel,
+puntajes: p,
+errores: errores.map(function (e) {
+return { fragmento: e.fragmento, categoria: e.categoria, gravedad: e.gravedad, explicacion: e.explicacion, sugerencia: e.sugerencia, regla: e.regla };
+}),
+no_localizados: 0,
+texto_corregido: corregido,
+ia: {
+porcentaje: ia,
+veredicto: ia < 30 ? "Probablemente humano" : ia < 60 ? "Mixto o dudoso" : "Probablemente IA",
+senales: senales,
+nota: (total < 100 ? "El texto es corto: la estimación es poco precisa. " : "") +
+"Se calcula con patrones de escritura (frases típicas, ritmo de las oraciones, errores y referencias personales), no con un detector externo."
+},
+fortalezas: fortalezas.slice(0, 5),
+consejos: consejos.slice(0, 4),
+practica: practica
+};
+}
 /* ---------- Voleibol ---------- */
 var VB_POS = [["colocador", "Colocador/a"], ["opuesto", "Opuesto/a"], ["central", "Central"], ["receptor", "Receptor/a (punta)"], ["libero", "Líbero"]];
 var VB_HAB = [["saque", "Saque"], ["recepcion", "Recepción"], ["ataque", "Ataque"], ["bloqueo", "Bloqueo"],
 ["defensa", "Defensa"], ["colocacion", "Colocación"], ["salto", "Salto"], ["velocidad", "Velocidad"]];
-var VB_SISTEMAS = [["auto", "Que la IA elija"], ["5-1", "5-1 (un colocador)"], ["4-2", "4-2 (dos colocadores)"], ["6-2", "6-2"], ["6-0", "6-0 (todos rotan)"]];
+var VB_SISTEMAS = [["auto", "Automático"], ["5-1", "5-1 (un colocador)"], ["4-2", "4-2 (dos colocadores)"], ["6-2", "6-2"], ["6-0", "6-0 (todos rotan)"]];
 var VB_OBJETIVOS = [["equilibrio", "Equilibrio"], ["ataque", "Potencia de ataque"], ["defensa", "Defensa y recepción"], ["aprendizaje", "Formativo (que todos jueguen)"]];
 var VB_ZONAS_ORDEN = [4, 3, 2, 5, 6, 1];
 var VB_ZONA_NOMBRE = { 1: "Zaguero der. (saca)", 2: "Delantero der.", 3: "Delantero centro", 4: "Delantero izq.", 5: "Zaguero izq.", 6: "Zaguero centro" };
@@ -23109,7 +23546,7 @@ return '<button type="button" class="tb-secondary' + (vb.rot === r ? " on" : "")
 '<p style="margin:4px 0 0;text-align:center;color:var(--muted);font-size:12px">' +
 (vb.rot === 1 ? "Elige quién empieza en cada zona. Luego mira cómo queda en cada rotación (R2 a R6)." : "Así queda la cancha después de " + (vb.rot - 1) + " rotación(es). Para cambiar jugadores vuelve a R1.") + "</p>" +
 '<div class="ia-fila" style="justify-content:center;margin-top:10px"><button type="button" class="tb-secondary" id="vb-vaciar">🧹 Vaciar cancha</button>' +
-(eq.analisis && eq.analisis.titulares && eq.analisis.titulares.length ? '<button type="button" class="tb-secondary" id="vb-usar-ia2">🤖 Usar la alineación de la IA</button>' : "") + "</div></div>" +
+(eq.analisis && eq.analisis.titulares && eq.analisis.titulares.length ? '<button type="button" class="tb-secondary" id="vb-usar-ia2">🧠 Usar la alineación recomendada</button>' : "") + "</div></div>" +
 '<div class="ia-panel"><h3>📊 Fuerza por rotación</h3>' +
 (completas ? '<table class="vb-tabla"><tr><th>ROT.</th><th>ATAQUE</th><th>BLOQUEO</th><th>RECEP.</th><th>SAQUE</th><th>TOTAL</th></tr>' +
 filas.map(function (f) {
@@ -23135,7 +23572,7 @@ function vbResultadoIA(eq) {
 var a = eq.analisis;
 if (!a) { return ""; }
 var nombre = function (id) { var j = vbJug(eq, id); return j ? (j.numero ? "#" + j.numero + " " : "") + j.nombre : "(jugador eliminado)"; };
-var html = '<div class="ia-panel"><div class="ia-fila" style="justify-content:space-between"><h3 style="margin:0">🤖 Sistema recomendado: ' + escapeHtml(a.sistema || "—") + "</h3>" +
+var html = '<div class="ia-panel"><div class="ia-fila" style="justify-content:space-between"><h3 style="margin:0">' + (a.motor === "local" ? "🧠" : "🤖") + " Sistema recomendado: " + escapeHtml(a.sistema || "—") + "</h3>" +
 '<small style="color:var(--muted)">' + escapeHtml(a.fecha ? new Date(a.fecha).toLocaleString("es-NI", { dateStyle: "medium", timeStyle: "short" }) : "") + "</small></div>" +
 '<p style="font-size:13.5px">' + escapeHtml(a.por_que_sistema) + "</p>" +
 '<div class="ia-grid2"><div>' + vbMini(eq, a.titulares) +
@@ -23166,6 +23603,11 @@ var enlace = function (f) {
 var u = safeUrl(f.url);
 return u ? '<a href="' + u + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(f.titulo || f.url) + "</a>" : escapeHtml(f.titulo);
 };
+if (a.motor === "local") {
+html += '<div class="ia-panel"><h3>📚 Cómo se calculó</h3><p style="font-size:13px;margin:0">Motor integrado: combina las habilidades, la estatura, la mano hábil y las posiciones que cargaste con criterios generales del voleibol (sistemas 5-1, 4-2, 6-2 y 6-0, orden de rotación y funciones del líbero según el reglamento de la FIVB). No consulta internet.</p>' +
+'<p style="font-size:11.5px;color:var(--muted);margin:10px 0 0">Recomendación orientativa: la decisión final es del entrenador. Mientras más completos estén los datos de cada jugador, mejor será la propuesta.</p></div>';
+return html;
+}
 html += '<div class="ia-panel"><h3>📚 Fuentes que consultó la IA</h3><div class="vb-fuentes">' +
 (a.fuentes && a.fuentes.length ? a.fuentes.map(function (f) {
 return "<div>" + (f.oficial ? "🏛️ " : "🔗 ") + enlace(f) + (f.oficial ? ' <small style="color:var(--ok);font-weight:800">OFICIAL</small>' : "") + "</div>";
@@ -23177,8 +23619,8 @@ return html;
 }
 function vbPanelIA(eq) {
 var disp = eq.jugadores.filter(function (j) { return j.disponible !== false; }).length;
-var html = '<div class="ia-panel"><h3>🤖 Pide la mejor alineación</h3>' +
-'<p style="margin:0 0 6px;color:var(--muted);font-size:13px">La IA estudia a tus ' + disp + " jugador(es) disponibles, investiga en internet dando prioridad a sitios oficiales (FIVB, Volleyball World, federaciones) y te propone el sistema, la alineación, el líbero y el plan táctico.</p>" +
+var html = '<div class="ia-panel"><h3>🧠 Mejor alineación</h3>' +
+'<p style="margin:0 0 6px;color:var(--muted);font-size:13px">El motor integrado estudia a tus ' + disp + " jugador(es) disponibles, prueba las combinaciones de puestos según sus habilidades, estatura y posiciones, y te propone el sistema, la alineación, el líbero, la banca y el plan táctico. Funciona al instante y sin límites.</p>" +
 '<div class="vb-form">' +
 '<label class="tb-field"><span>Categoría</span><input id="vb-e-cat" maxlength="60" value="' + escapeHtml(eq.categoria) + '" placeholder="Ej.: sub-16 escolar"></label>' +
 '<label class="tb-field"><span>Rama</span><select id="vb-e-rama">' + lgOpciones([["mixta", "Mixta"], ["femenina", "Femenina"], ["masculina", "Masculina"]], eq.rama) + "</select></label>" +
@@ -23186,8 +23628,8 @@ var html = '<div class="ia-panel"><h3>🤖 Pide la mejor alineación</h3>' +
 '<label class="tb-field"><span>Objetivo</span><select id="vb-e-obj">' + lgOpciones(VB_OBJETIVOS, eq.objetivo) + "</select></label>" +
 '<label class="tb-field ancho"><span>Rival (opcional)</span><textarea id="vb-e-rival" maxlength="600" placeholder="Ej.: saca muy fuerte, su mejor atacante es zurda y ataca por zona 2, bloqueo bajo…">' + escapeHtml(eq.rival) + "</textarea></label>" +
 '<label class="tb-field ancho"><span>Notas del equipo (opcional)</span><textarea id="vb-e-notas" maxlength="600" placeholder="Ej.: torneo intercolegial, cancha pequeña, poca experiencia en 5-1…">' + escapeHtml(eq.notas) + "</textarea></label></div>" +
-'<div class="ia-fila"><button type="button" class="tb-primary" id="vb-pedir"' + (vb.cargando || disp < 2 ? " disabled" : "") + ">🤖 Recomendar alineación</button>" +
-'<small style="color:var(--muted)">' + escapeHtml(iaUsos(vb)) + "</small></div>" +
+'<div class="ia-fila"><button type="button" class="tb-primary" id="vb-pedir"' + (vb.cargando || disp < 2 ? " disabled" : "") + ">🧠 Recomendar alineación</button>" +
+(vb.cuota && vb.cuota.listo ? '<button type="button" class="tb-secondary" id="vb-pedir-ia"' + (vb.cargando || disp < 2 ? " disabled" : "") + '>🤖 Con IA de Google (investiga en internet)</button><small style="color:var(--muted)">' + escapeHtml(iaUsos(vb)) + "</small>" : "") + "</div>" +
 (disp < 6 ? '<div class="ia-aviso" style="margin-top:10px">Tienes ' + disp + " jugador(es) disponible(s). Para una alineación completa se necesitan 6 (y 7 con líbero).</div>" : "") +
 (vb.error ? '<div class="ia-aviso mal" style="margin-top:10px">' + escapeHtml(vb.error) + "</div>" : "") + "</div>";
 if (vb.cargando) {
@@ -23209,7 +23651,7 @@ d.equipos.map(function (e) { return '<option value="' + e.id + '"' + (e.id === e
 '<button type="button" class="tb-secondary" id="vb-eq-borrar" title="Borrar equipo">🗑</button>' +
 '<button type="button" class="tb-secondary" id="vb-exportar">⬇️ Exportar</button>' +
 '<label class="tb-secondary" style="cursor:pointer">⬆️ Importar<input type="file" id="vb-importar" accept="application/json,.json" style="display:none"></label></div></div>' +
-'<div class="vb-tabs" style="margin-top:12px">' + [["plantilla", "👥 Plantilla"], ["cancha", "🏐 Cancha y rotaciones"], ["ia", "🤖 Alineación con IA"]].map(function (t) {
+'<div class="vb-tabs" style="margin-top:12px">' + [["plantilla", "👥 Plantilla"], ["cancha", "🏐 Cancha y rotaciones"], ["ia", "🧠 Mejor alineación"]].map(function (t) {
 return '<button type="button" class="ia-chip' + (vb.pestana === t[0] ? " on" : "") + '" data-vb-tab="' + t[0] + '">' + t[1] + "</button>";
 }).join("") + "</div></div>";
 }
@@ -23218,8 +23660,8 @@ var caja = $("#tb-arcade");
 if (!caja) { return; }
 iaCargarCuota(vb, "/api/voleibol", function () { if (arcadeActual === "voley" && !vb.cargando) { pintarVoley(); } });
 var eq = vbEquipo();
-var html = cabeceraArcade("Voleibol", [["Jugadores", eq.jugadores.length], ["Análisis IA", iaUsos(vb)]]) +
-'<div class="ia-wrap">' + vbCabeceraEquipos() + (vb.pestana === "ia" ? iaAvisoConfig(vb) : "");
+var html = cabeceraArcade("Voleibol", [["Jugadores", eq.jugadores.length], ["Motor", "Integrado"]]) +
+'<div class="ia-wrap">' + vbCabeceraEquipos();
 if (vb.pestana === "plantilla") { html += vbPlantilla(eq); }
 else if (vb.pestana === "cancha") { html += vbCancha(eq); }
 else { html += vbPanelIA(eq); }
@@ -23239,7 +23681,7 @@ eq.libero = eq.analisis.libero && vbJug(eq, eq.analisis.libero.jugador_id) ? eq.
 vb.rot = 1;
 vb.pestana = "cancha";
 vbGuardar();
-avisoToast("🏐 Alineación de la IA colocada en la cancha.");
+avisoToast("🏐 Alineación recomendada colocada en la cancha.");
 pintarVoley();
 }
 function ligarVoley() {
@@ -23379,7 +23821,9 @@ if (b) { b.onclick = function () { vbUsarIA(eq); }; }
 b = $("#vb-usar-ia2");
 if (b) { b.onclick = function () { vbUsarIA(eq); }; }
 b = $("#vb-pedir");
-if (b) { b.onclick = function () { vbLeerFormEquipo(eq); vbGuardar(); vbPedir(eq); }; }
+if (b) { b.onclick = function () { vbLeerFormEquipo(eq); vbGuardar(); vbPedir(eq, "local"); }; }
+b = $("#vb-pedir-ia");
+if (b) { b.onclick = function () { vbLeerFormEquipo(eq); vbGuardar(); vbPedir(eq, "ia"); }; }
 }
 function vbNormalizarJugador(j) {
 j = j && typeof j === "object" ? j : {};
@@ -23398,18 +23842,233 @@ unico: String(j.unico || "").slice(0, 300),
 disponible: j.disponible !== false
 };
 }
-async function vbPedir(eq) {
+/* ---------- Motor integrado del voleibol (sin API) ----------
+   Busca la combinación de puestos con mayor puntaje según habilidades,
+   estatura y posiciones declaradas, y arma el plan con reglas tácticas. */
+function vbH(j, k) { return +j.habilidades[k] || 3; }
+function vbAltura(j) { return j.altura ? Math.max(0, Math.min(3, (j.altura - 160) / 10)) : 0; }
+function vbDeclara(j, p) { return j.posiciones.indexOf(p) >= 0 ? 4 : 0; }
+var VB_PUESTO = {
+colocador: function (j) { return vbH(j, "colocacion") * 3 + vbH(j, "defensa") * 0.5 + vbH(j, "velocidad") * 0.5 + vbDeclara(j, "colocador"); },
+colocador62: function (j) { return vbH(j, "colocacion") * 2.2 + vbH(j, "ataque") * 1.3 + vbH(j, "bloqueo") * 0.5 + vbDeclara(j, "colocador"); },
+opuesto: function (j) { return vbH(j, "ataque") * 2 + vbH(j, "bloqueo") * 1.2 + vbH(j, "salto") + vbH(j, "saque") * 0.5 + (j.mano === "izquierda" ? 1 : 0) + vbAltura(j) + vbDeclara(j, "opuesto") - (j.posiciones.indexOf("libero") >= 0 ? 4 : 0); },
+central: function (j) { return vbH(j, "bloqueo") * 2 + vbH(j, "ataque") * 1.2 + vbH(j, "salto") + vbAltura(j) * 1.5 + vbDeclara(j, "central") - (j.posiciones.indexOf("libero") >= 0 ? 4 : 0); },
+receptor: function (j) { return vbH(j, "recepcion") * 2 + vbH(j, "ataque") * 1.5 + vbH(j, "defensa") * 0.8 + vbH(j, "saque") * 0.4 + vbDeclara(j, "receptor"); },
+libero: function (j) { return vbH(j, "recepcion") * 2 + vbH(j, "defensa") * 2 + vbH(j, "velocidad") * 0.5 - vbH(j, "ataque") * 0.3 + vbDeclara(j, "libero") * 1.5; },
+universal: function (j) { var s = 0; VB_HAB.forEach(function (h) { s += vbH(j, h[0]); }); return s / 2; }
+};
+function vbSistemaAuto(eq, jug) {
+if (eq.sistema && eq.sistema !== "auto") { return eq.sistema; }
+var col = jug.slice().sort(function (a, b) { return VB_PUESTO.colocador(b) - VB_PUESTO.colocador(a); });
+var buenos = jug.filter(function (j) { return vbH(j, "colocacion") >= 3 || j.posiciones.indexOf("colocador") >= 0; }).length;
+if (eq.objetivo === "aprendizaje") { return buenos >= 2 ? "4-2" : "6-0"; }
+if (col[0] && (vbH(col[0], "colocacion") >= 4 || col[0].posiciones.indexOf("colocador") >= 0)) { return "5-1"; }
+return buenos >= 2 ? "4-2" : "5-1";
+}
+// Asigna jugadores a puestos maximizando el puntaje total (voraz + intercambios).
+function vbAsignar(jug, puestos) {
+var libres = jug.slice();
+var asig = puestos.map(function (p) {
+libres.sort(function (a, b) { return VB_PUESTO[p](b) - VB_PUESTO[p](a); });
+return libres.shift() || null;
+});
+var puntaje = function () { return asig.reduce(function (s, j, i) { return s + (j ? VB_PUESTO[puestos[i]](j) : 0); }, 0); };
+var mejoro = true;
+var vueltas = 0;
+while (mejoro && vueltas++ < 200) {
+mejoro = false;
+var base = puntaje();
+for (var i = 0; i < asig.length; i++) {
+for (var k = i + 1; k < asig.length; k++) {
+var t = asig[i]; asig[i] = asig[k]; asig[k] = t;
+if (puntaje() > base + 0.001) { mejoro = true; base = puntaje(); } else { t = asig[i]; asig[i] = asig[k]; asig[k] = t; }
+}
+for (var b = 0; b < libres.length; b++) {
+var antes = asig[i];
+asig[i] = libres[b];
+if (puntaje() > base + 0.001) { libres[b] = antes; mejoro = true; base = puntaje(); } else { asig[i] = antes; }
+}
+}
+}
+return { asig: asig, banca: libres.filter(Boolean) };
+}
+function vbFuertes(j, n) {
+return VB_HAB.slice().sort(function (a, b) { return vbH(j, b[0]) - vbH(j, a[0]); }).slice(0, n || 2)
+.map(function (h) { return h[1].toLowerCase() + " " + vbH(j, h[0]); }).join(", ");
+}
+function vbNombre(j) { return (j.numero ? "#" + j.numero + " " : "") + j.nombre; }
+function vbMedia2(lista, k) { return lista.length ? lista.reduce(function (s, j) { return s + vbH(j, k); }, 0) / lista.length : 0; }
+var VB_EJERCICIOS = {
+saque: { nombre: "Saque a zonas", objetivo: "Saque seguro y dirigido", descripcion: "Marca zonas con conos en la cancha rival. Cada jugador saca 10 veces a una zona elegida; cuenta aciertos y errores. Primero seguridad, luego potencia." },
+recepcion: { nombre: "Recepción en W", objetivo: "Recepción estable hacia el colocador", descripcion: "Un entrenador saca a los receptores formados en W. El balón debe llegar alto a la zona del colocador (entre zonas 2 y 3). Series de 10 por rotación." },
+ataque: { nombre: "Ataque desde zona 4 y 2", objetivo: "Mejorar la carrera y el golpe", descripcion: "Pase alto del colocador a zona 4 y luego a zona 2. Trabaja la carrera de 3 pasos, el salto y golpear arriba y adelante; busca las esquinas." },
+bloqueo: { nombre: "Bloqueo con desplazamiento", objetivo: "Llegar a tiempo al bloqueo", descripcion: "Los centrales se desplazan a los lados con pasos laterales y saltan con las manos por encima de la red. Luego bloqueo doble con el punta o el opuesto." },
+defensa: { nombre: "Defensa de balones atacados", objetivo: "Reacción y posición baja", descripcion: "El entrenador ataca desde una mesa o banco a los defensores en posición baja; deben levantar el balón alto al centro de la cancha." },
+colocacion: { nombre: "Colocación a objetivos", objetivo: "Pases precisos", descripcion: "Colocación de dedos hacia un aro o compañero en zona 4 y zona 2, desde distintos pases de recepción. Series de 20 con registro de aciertos." },
+salto: { nombre: "Saltos pliométricos", objetivo: "Mejorar el salto", descripcion: "Saltos a cajón bajo, saltos con carrera de ataque y saltos laterales, con descanso suficiente. Adecúalo a la edad y evita la sobrecarga." },
+velocidad: { nombre: "Desplazamientos cortos", objetivo: "Rapidez de reacción", descripcion: "Carreras cortas y cambios de dirección a la señal del entrenador, terminando con un toque de balón." }
+};
+function vbMotorLocal(eq) {
+var jug = eq.jugadores.filter(function (j) { return j.disponible !== false; });
+var adv = [];
+if (jug.length < 6) { adv.push("Solo hay " + jug.length + " jugador(es) disponibles: faltan " + (6 - jug.length) + " para completar la cancha."); }
+var sistema = vbSistemaAuto(eq, jug);
+var conLibero = jug.length >= 7;
+var puestos = {
+"5-1": ["colocador", "opuesto", "central", "central", "receptor", "receptor"],
+"4-2": ["colocador", "colocador", "central", "central", "receptor", "receptor"],
+"6-2": ["colocador62", "colocador62", "central", "central", "receptor", "receptor"],
+"6-0": ["universal", "universal", "universal", "universal", "universal", "universal"]
+}[sistema];
+if (conLibero) { puestos = ["libero"].concat(puestos); }
+var r = vbAsignar(jug, puestos);
+var libero = conLibero ? r.asig.shift() : null;
+if (conLibero) { puestos = puestos.slice(1); }
+var por = {};
+puestos.forEach(function (p, i) { (por[p] = por[p] || []).push(r.asig[i]); });
+var ord = function (lista, k) { return (lista || []).filter(Boolean).sort(function (a, b) { return vbH(b, k) - vbH(a, k); }); };
+var titulares = [];
+var poner = function (zona, j, rol, motivo) { if (j) { titulares.push({ zona: zona, jugador_id: j.id, rol: rol, motivo: motivo }); } };
+var cen = ord(por.central, "bloqueo");
+var rec = ord(por.receptor, "ataque");
+if (sistema === "5-1") {
+var s = (por.colocador || [])[0];
+var o = (por.opuesto || [])[0];
+poner(1, s, "colocador", s && "Mejor perfil de colocador (" + vbFuertes(s) + "). Empieza en zona 1 y saca primero.");
+poner(2, rec[0], "receptor", rec[0] && "Punta más completo en ataque (" + vbFuertes(rec[0]) + ").");
+poner(3, cen[0], "central", cen[0] && "Mejor bloqueador (" + vbFuertes(cen[0]) + ").");
+poner(4, o, "opuesto", o && "Mejor atacante para el opuesto (" + vbFuertes(o) + ")" + (o.mano === "izquierda" ? "; ataca con la izquierda, con ventaja por zona 2." : ". Queda enfrentado al colocador."));
+poner(5, rec[1], "receptor", rec[1] && "Segundo punta, clave en recepción (" + vbFuertes(rec[1]) + ").");
+poner(6, cen[1], "central", cen[1] && "Segundo central (" + vbFuertes(cen[1]) + ").");
+} else if (sistema === "4-2" || sistema === "6-2") {
+var col = ord(por.colocador || por.colocador62, "colocacion");
+poner(1, col[0], "colocador", col[0] && "Colocador principal (" + vbFuertes(col[0]) + ")." + (sistema === "6-2" ? " Coloca cuando está en la zaga y ataca cuando está en la red." : " Coloca cuando está en la red."));
+poner(2, rec[0], "receptor", rec[0] && "Punta más completo (" + vbFuertes(rec[0]) + ").");
+poner(3, cen[0], "central", cen[0] && "Mejor bloqueador (" + vbFuertes(cen[0]) + ").");
+poner(4, col[1], "colocador", col[1] && "Segundo colocador, enfrentado al primero para que siempre haya uno en la red (" + vbFuertes(col[1]) + ").");
+poner(5, rec[1], "receptor", rec[1] && "Segundo punta (" + vbFuertes(rec[1]) + ").");
+poner(6, cen[1], "central", cen[1] && "Segundo central (" + vbFuertes(cen[1]) + ").");
+} else {
+var uni = ord(por.universal, "ataque");
+var sac = uni.slice(3).sort(function (a, b) { return vbH(b, "saque") - vbH(a, "saque"); });
+[[4, uni[0]], [3, uni[1]], [2, uni[2]], [1, sac[0]], [6, sac[1]], [5, sac[2]]].forEach(function (x) {
+poner(x[0], x[1], "universal", x[1] && "Todos rotan por todos los puestos (" + vbFuertes(x[1]) + ").");
+});
+}
+titulares = titulares.filter(function (t) { return t.motivo; });
+titulares.forEach(function (t) {
+var j = vbJug(eq, t.jugador_id);
+if (j && j.posiciones.length && t.rol !== "universal" && j.posiciones.indexOf(t.rol) < 0) {
+adv.push(j.nombre + " juega de " + vbPosNombre(t.rol).toLowerCase() + " aunque su posición habitual es " + j.posiciones.map(vbPosNombre).join(" / ").toLowerCase() + ".");
+}
+});
+if (sistema !== "6-0" && !jug.some(function (j) { return j.posiciones.indexOf("colocador") >= 0; })) { adv.push("Nadie tiene marcada la posición de colocador: elegí a quien mejor coloca según sus habilidades."); }
+if (!conLibero && jug.length >= 6) { adv.push("Con " + jug.length + " jugadores no se usa líbero (se necesitan al menos 7)."); }
+var cancha = {};
+titulares.forEach(function (t) { cancha[t.zona] = t.jugador_id; });
+var eqTmp = { jugadores: eq.jugadores, cancha: cancha, libero: libero ? libero.id : "", analisis: { titulares: titulares } };
+// Rotaciones.
+var reciben = conLibero ? [libero].concat(rec) : rec;
+var recepcionFuerte = vbMedia2(reciben.filter(Boolean), "recepcion") >= 3.3;
+var filas = vbAnalisisRotaciones(eqTmp);
+var rotaciones = filas.map(function (f) {
+var z = vbEnRotacion(eqTmp, f.r);
+var red = [z[4], z[3], z[2]].map(function (id) { var j = vbJug(eq, id); return j ? j.nombre : "—"; });
+var sacador = vbJug(eq, z[1]);
+var colRed = [2, 3, 4].some(function (n) { return z[n] && vbRol(eqTmp, z[n]) === "colocador"; });
+var debil = [["ataque", f.ataque], ["bloqueo", f.bloqueo], ["recepción", f.recepcion]].sort(function (a, b) { return a[1] - b[1]; })[0];
+return {
+rotacion: f.r,
+recepcion: recepcionFuerte && conLibero ? "de 3 (líbero y los dos puntas)." : "en W (5 jugadores); el colocador se esconde cerca de la red.",
+clave: "Saca " + (sacador ? sacador.nombre : "—") + ". En la red: " + red.join(", ") + "." +
+(sistema === "5-1" ? (colRed ? " El colocador está adelante: solo 2 atacantes en red; usa el ataque de zaga del opuesto si puede." : " Colocador en la zaga: 3 atacantes en red, es la rotación para acelerar.") : "") +
+" Punto más débil: " + debil[0] + " (" + debil[1].toFixed(1) + ")."
+};
+});
+var todos = titulares.map(function (t) { return vbJug(eq, t.jugador_id); }).filter(Boolean);
+var redIni = [2, 3, 4].map(function (n) { return vbJug(eq, cancha[n]); }).filter(Boolean);
+var mejorAt = todos.slice().sort(function (a, b) { return vbH(b, "ataque") - vbH(a, "ataque"); })[0];
+var mejorSaque = todos.slice().sort(function (a, b) { return vbH(b, "saque") - vbH(a, "saque"); })[0];
+var zurdo = todos.filter(function (j) { return j.mano === "izquierda"; })[0];
+var saqueMed = vbMedia2(todos, "saque");
+var bloqMed = vbMedia2(redIni, "bloqueo");
+var defMed = vbMedia2(todos.concat(libero ? [libero] : []), "defensa");
+var tacticas = {
+saque: saqueMed >= 3.5
+? "El equipo saca bien (media " + saqueMed.toFixed(1) + "): saque agresivo a zona 1 y 5 del rival y al jugador que peor recibe." + (mejorSaque ? " " + mejorSaque.nombre + " es el mejor sacador." : "")
+: "Prioriza el saque seguro (media " + saqueMed.toFixed(1) + "): flotado, al fondo de la cancha (zonas 1, 6 y 5 rivales). Un punto regalado pesa más que un saque débil.",
+recepcion: recepcionFuerte ? "Recepción de 3 (" + reciben.filter(Boolean).map(function (j) { return j.nombre; }).join(", ") + "): el balón debe llegar alto entre zonas 2 y 3." : "Recepción en W con 5 jugadores: todos reciben menos el colocador. Pide balón alto y al centro antes que un pase rápido.",
+ataque: (mejorAt ? "Busca a " + mejorAt.nombre + " (ataque " + vbH(mejorAt, "ataque") + ") en los puntos importantes. " : "") +
+(zurdo ? zurdo.nombre + " ataca con la izquierda: aprovéchalo por zona 2. " : "") +
+(cen[0] && vbH(cen[0], "ataque") >= 4 ? "El central puede atacar balones rápidos (primer tiempo) por zona 3." : "Usa pases altos a zona 4 y 2: más seguros que los rápidos."),
+bloqueo: bloqMed >= 3.5 ? "Bloqueo doble al mejor atacante rival; el central se desplaza a ayudar." : "Bloqueo simple con buena posición y defensa atrás; no saltes a todo: cubre la diagonal.",
+defensa: defMed >= 3.5 ? "Defensa perimetral (6 atrás) con el líbero en zona 5 o 6 leyendo el ataque rival." : "Defensa con el zaguero centro adelantado (6 adelante) para cubrir toques y balones cortos.",
+transicion: "Después de defender, el primer toque va alto al centro; el colocador corre a la red y los atacantes se abren para atacar."
+};
+var rival = String(eq.rival || "").toLowerCase();
+var plan = [];
+if (/saque|sacan|saca/.test(rival)) { plan.push("Contra su saque fuerte: recepción de 3 jugadores más retrasada y pase alto al centro."); }
+if (/zurd/.test(rival)) { plan.push("Tienen un atacante zurdo: refuerza el bloqueo sobre su zona de ataque (normalmente tu zona 4) y defiende su diagonal."); }
+if (/alt|bloque/.test(rival)) { plan.push("Si bloquean bien, ataca a las manos hacia afuera, usa toques cortos y alterna zonas."); }
+if (/bajo|pequeñ/.test(rival)) { plan.push("Si su bloqueo es bajo, ataca alto y fuerte por encima."); }
+if (/recep|reciben mal|débil/.test(rival)) { plan.push("Saca a su punto débil de recepción para dificultar su armado."); }
+if (/rápid|velocidad/.test(rival)) { plan.push("Juegan rápido: los bloqueadores salen antes y la defensa se coloca baja."); }
+if (rival && !plan.length) { plan.push("Observa sus primeras rotaciones, identifica a su mejor atacante y al que peor recibe, y ajusta saque y bloqueo a ellos."); }
+var medias = VB_HAB.map(function (h) { return [h[0], vbMedia2(todos, h[0])]; }).sort(function (a, b) { return a[1] - b[1]; });
+var ejercicios = medias.slice(0, 3).map(function (m) { var e = VB_EJERCICIOS[m[0]]; return { nombre: e.nombre, objetivo: e.objetivo + " (media del equipo: " + m[1].toFixed(1) + ")", descripcion: e.descripcion }; });
+var suplentes = r.banca.map(function (j) {
+var fuerte = VB_HAB.slice().sort(function (a, b) { return vbH(j, b[0]) - vbH(j, a[0]); })[0][0];
+var cuando = { saque: "Cambio de saque: entra para sacar en momentos clave.", recepcion: "Entra en la zaga para reforzar la recepción.", defensa: "Entra en la zaga para reforzar la defensa.", bloqueo: "Cambio para el bloqueo cuando el rival ataca fuerte.", ataque: "Cambio ofensivo cuando falta punto en la red.", colocacion: "Colocador de relevo (doble cambio con el opuesto).", salto: "Cambio para bloqueo o ataque en la red.", velocidad: "Cambio para defensa y cobertura." }[fuerte];
+return { jugador_id: j.id, cuando_entra: cuando };
+});
+var porque = {
+"5-1": "Un solo colocador organiza todo el juego, así el equipo gana ritmo y confianza. Es el sistema más usado en competición cuando hay un colocador claro.",
+"4-2": "Dos colocadores enfrentados: siempre hay uno en la red que coloca. Es más sencillo de aprender y funciona bien cuando no hay un colocador dominante.",
+"6-2": "Dos colocadores que también atacan: coloca el que está en la zaga, así siempre hay 3 atacantes en la red. Exige colocadores con buen ataque.",
+"6-0": "Todos colocan y atacan según la zona. Es el sistema más formativo: todos aprenden todos los puestos."
+}[sistema] + (eq.sistema && eq.sistema !== "auto" ? " (Lo elegiste en las opciones.)" : "");
+return {
+motor: "local",
+sistema: sistema,
+por_que_sistema: porque,
+titulares: titulares,
+libero: libero ? { jugador_id: libero.id, reemplaza_a: sistema === "6-0" ? "el zaguero que peor recibe" : "los centrales cuando pasan a la zaga", motivo: "Mejor combinación de recepción y defensa (" + vbFuertes(libero) + "). Solo juega en la zaga: no saca, no bloquea ni ataca por encima de la red." }
+: { jugador_id: "", reemplaza_a: "", motivo: jug.length >= 6 ? "Sin líbero: con menos de 7 jugadores disponibles no se usa." : "" },
+suplentes: suplentes,
+rotaciones: rotaciones,
+tacticas: tacticas,
+plan_rival: plan.join(" "),
+ejercicios: ejercicios,
+advertencias: adv,
+fuentes: [],
+consultas: []
+};
+}
+async function vbPedir(eq, modo) {
 vb.error = "";
 vb.cargando = true;
+vb.modo = modo === "ia" ? "ia" : "local";
+var r;
+if (vb.modo === "ia") {
 iaAvanzarPasos(vb, 5, function () { if (arcadeActual === "voley") { pintarVoley(); } });
 pintarVoley();
-var r = await iaLlamar("/api/voleibol", "POST", {
+r = await iaLlamar("/api/voleibol", "POST", {
 equipo: { nombre: eq.nombre, categoria: eq.categoria, rama: eq.rama, sistema: eq.sistema, objetivo: eq.objetivo, rival: eq.rival, notas: eq.notas },
 jugadores: eq.jugadores
 });
+if (r.datos && typeof r.datos.usados === "number") { vb.cuota = { listo: true, usados: r.datos.usados, limite: r.datos.limite }; }
+if (r.ok) { r.datos.motor = "ia"; }
+} else {
+try {
+if (eq.jugadores.filter(function (j) { return j.disponible !== false; }).length < 2) { throw new Error("pocos"); }
+r = { ok: true, datos: vbMotorLocal(eq) };
+} catch (e) {
+if (!(e && e.message === "pocos")) { console.error("[voleibol]", e); }
+r = { ok: false, datos: { error: e && e.message === "pocos" ? "Agrega al menos 2 jugadores disponibles (lo ideal son 6 o más)." : "No se pudo calcular la alineación. Revisa los datos de los jugadores." } };
+}
+}
 vb.cargando = false;
 clearInterval(vb.pasoTimer);
-if (r.datos && typeof r.datos.usados === "number") { vb.cuota = { listo: true, usados: r.datos.usados, limite: r.datos.limite }; }
 if (!r.ok) {
 vb.error = r.datos.error || "No se pudo hacer el análisis.";
 } else {
@@ -23420,7 +24079,7 @@ eq.analisis = a;
 vbGuardar();
 }
 if (arcadeActual === "voley") { pintarVoley(); }
-else if (r.ok) { avisoToast("🏐 La IA terminó tu alineación (Actividades → Voleibol)."); }
+else if (r.ok) { avisoToast("🏐 Tu alineación está lista (Actividades → Voleibol)."); }
 }
 /* ===================================================================
    ENTREGAS DE TAREAS · AVISOS AL CELULAR
