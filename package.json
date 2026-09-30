@@ -9,7 +9,6 @@
     "build": "node scripts/build.mjs"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "0.129.0",
     "web-push": "3.6.7"
   }
 }

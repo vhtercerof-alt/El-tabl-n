@@ -3,10 +3,10 @@
 //   GET  /api/lengua  → { listo, usados, limite } (usos del día)
 //   POST /api/lengua  { texto, tipo, nivel, enfoque } → análisis completo
 //
-// La respuesta tiene formato fijo (JSON validado por la API), así la página
+// La respuesta tiene formato fijo (JSON con esquema, pedido a Gemini), así la página
 // puede subrayar cada error en su lugar exacto.
 import {
-  MODELO, BETAS, clienteIA, problemasIA, autorizar, descontarUso, devolverUso, limpiar, errorIA, motivoInvalido,
+  gemini, leerJSON, problemasIA, autorizar, descontarUso, devolverUso, limpiar, errorIA,
 } from "./_ia.js";
 
 const MAX_TEXTO = 6000;
@@ -62,14 +62,12 @@ Escribe todas las explicaciones en español, claras y breves.`;
 
 const ESQUEMA = {
   type: "object",
-  additionalProperties: false,
   required: ["resumen", "nivel_texto", "puntajes", "errores", "texto_corregido", "ia", "fortalezas", "consejos", "practica"],
   properties: {
     resumen: { type: "string", description: "Valoración general en 2 o 3 oraciones, dirigida al estudiante." },
     nivel_texto: { type: "string", enum: ["Excelente", "Muy bueno", "Bueno", "Regular", "Necesita mejorar"] },
     puntajes: {
       type: "object",
-      additionalProperties: false,
       required: ["general", "ortografia", "gramatica", "puntuacion", "vocabulario", "coherencia", "estilo"],
       properties: {
         general: { type: "integer" },
@@ -85,7 +83,6 @@ const ESQUEMA = {
       type: "array",
       items: {
         type: "object",
-        additionalProperties: false,
         required: ["fragmento", "categoria", "gravedad", "explicacion", "sugerencia", "regla"],
         properties: {
           fragmento: { type: "string" },
@@ -100,7 +97,6 @@ const ESQUEMA = {
     texto_corregido: { type: "string" },
     ia: {
       type: "object",
-      additionalProperties: false,
       required: ["porcentaje", "veredicto", "senales", "nota"],
       properties: {
         porcentaje: { type: "integer" },
@@ -115,7 +111,6 @@ const ESQUEMA = {
       type: "array",
       items: {
         type: "object",
-        additionalProperties: false,
         required: ["enunciado", "respuesta"],
         properties: { enunciado: { type: "string" }, respuesta: { type: "string" } },
       },
@@ -194,36 +189,24 @@ export default async function handler(req, res) {
       return res.status(429).json({ error: `Ya usaste tus ${acceso.limite} revisiones de hoy. Vuelve mañana.`, usados: acceso.usados, limite: acceso.limite });
     }
 
-    let respuesta;
+    let datos = null;
     try {
-      respuesta = await clienteIA().beta.messages.stream({
-        model: MODELO,
-        max_tokens: 32000,
-        betas: BETAS,
-        fallbacks: "default",
-        output_config: { effort: "high", format: { type: "json_schema", schema: ESQUEMA } },
-        system: SISTEMA,
-        messages: [{
-          role: "user",
-          content:
-            `Tipo de texto: ${TIPOS[tipo]}.\nQuién escribe: ${NIVELES[nivel]}.\nEnfoque: ${ENFOQUES[enfoque]}\n\n` +
-            `<texto_del_estudiante>\n${texto}\n</texto_del_estudiante>`,
-        }],
-      }, { timeout: 280000, maxRetries: 0 }).finalMessage();
+      const r = await gemini({
+        sistema: SISTEMA,
+        esquema: ESQUEMA,
+        plazo: 270000,
+        mensaje:
+          `Tipo de texto: ${TIPOS[tipo]}.\nQuién escribe: ${NIVELES[nivel]}.\nEnfoque: ${ENFOQUES[enfoque]}\n\n` +
+          `<texto_del_estudiante>\n${texto}\n</texto_del_estudiante>`,
+      });
+      datos = leerJSON(r.texto);
     } catch (e) {
       await devolverUso(acceso);
       throw e;
     }
-
-    const invalido = motivoInvalido(respuesta);
-    const bloque = respuesta.content.find((b) => b.type === "text");
-    let datos = null;
-    if (!invalido && bloque) {
-      try { datos = JSON.parse(bloque.text); } catch (e) { datos = null; }
-    }
-    if (!datos) {
+    if (!datos || typeof datos !== "object") {
       await devolverUso(acceso);
-      return res.status(502).json({ error: invalido || "La IA devolvió una respuesta que no se pudo leer. Intenta de nuevo." });
+      return res.status(502).json({ error: "La IA devolvió una respuesta que no se pudo leer. Intenta de nuevo." });
     }
     return res.status(200).json({
       ...normalizar(datos, texto),

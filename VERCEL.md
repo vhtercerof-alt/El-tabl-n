@@ -13,7 +13,7 @@
 | Economía (ruletas, tienda, regalos, niveles, racha, premio diario): ejecutar `TABLON-economia-segura.sql` y luego abrir la app con la cuenta owner | ⏳ **Falta** (parte B) |
 | Activar Analytics | ⏳ **Falta** (paso C.2) |
 | Borrar el proyecto duplicado vacío `el-tablon` (Settings → Delete Project) | ⏳ **Falta** |
-| Herramientas con IA (Profesor de lengua y Voleibol): cargar `ANTHROPIC_API_KEY` (paso C.4) | ⏳ **Falta** |
+| Herramientas con IA (Profesor de lengua y Voleibol): cargar `GEMINI_API_KEY` y ejecutar `ACTIVAR-4-permisos-roles.sql` (paso C.4) | ⏳ **Falta** |
 
 
 Esta guía tiene tres partes. Hazlas en orden y una sola vez:
@@ -115,21 +115,31 @@ Si no llega:
 
 ### C.4 Herramientas con IA (Profesor de lengua y Voleibol)
 
-Las dos herramientas de **Actividades** usan la IA de Anthropic (Claude) desde el servidor de Vercel. La clave nunca llega al navegador.
+Las dos herramientas de **Actividades** usan **Google Gemini** desde el servidor de Vercel. La clave nunca llega al navegador.
 
-1. Crea una cuenta en **https://platform.claude.com** (consola de Anthropic), carga saldo en **Billing** y crea una clave en **API Keys**.
-2. En Vercel → **Settings → Environment Variables** agrega `ANTHROPIC_API_KEY` con esa clave (marca **Sensitive**, entorno *Production*).
-3. **Deployments → Redeploy**.
+1. Entra a **https://aistudio.google.com** con tu cuenta de Google → **Get API key** → **Create API key**.
+2. En Vercel → **Settings → Environment Variables** agrega `GEMINI_API_KEY` con esa clave (marca **Sensitive**, entorno *Production*).
+3. En Supabase ejecuta **`supabase/ACTIVAR-4-permisos-roles.sql`** (permiso del voleibol).
+4. **Deployments → Redeploy**.
 
-Variables opcionales para controlar el gasto (usos por persona y por día; el contador se reinicia a medianoche de Nicaragua y usa la tabla de `ACTIVAR-3-avisos.sql`):
+**Quién puede usar cada una:**
+- **Profesor de lengua:** todos los usuarios con sesión iniciada.
+- **Voleibol:** solo el owner, y quien tenga un rol con el permiso activado: **Roles → elige el rol → pestaña Permisos → 🏐 Voleibol**. El servidor vuelve a comprobarlo en cada uso.
+
+Variables opcionales:
 
 | Variable | Por defecto |
 |----------|-------------|
-| `IA_LIMITE_LENGUA` | 10 revisiones por estudiante |
-| `IA_LIMITE_VOLEIBOL` | 4 análisis por estudiante |
+| `GEMINI_MODEL` | `gemini-flash-latest` (alias de Google que apunta siempre al Flash más reciente) |
+| `IA_LIMITE_LENGUA` | 15 revisiones por estudiante y día |
+| `IA_LIMITE_VOLEIBOL` | 10 análisis por persona con permiso y día |
 | `IA_LIMITE_STAFF` | 40 usos por herramienta para owner y admins |
 
-Si la IA falla, el intento **no** se descuenta. **Costo:** se paga por uso a Anthropic, no a Vercel. Consulta los precios vigentes en https://platform.claude.com/docs/en/about-claude/pricing. La búsqueda web del voleibol se cobra aparte por búsqueda (máximo 5 por análisis). Recomendación: en la consola de Anthropic pon un **límite de gasto mensual** (*Limits*).
+El contador diario se reinicia a medianoche de Nicaragua y usa la tabla de `ACTIVAR-3-avisos.sql`. Si la IA falla, el intento **no** se descuenta.
+
+**Plan gratuito de Gemini:** no cobra, pero tiene límites de solicitudes por minuto y por día **para todo el proyecto** (se comparten entre todos los estudiantes). Si se agotan, la herramienta dice "Se agotó la cuota de la IA por ahora". Consulta tus límites en AI Studio y los precios en https://ai.google.dev/gemini-api/docs/pricing.
+
+> ⚠️ **Privacidad:** en el plan gratuito, Google puede usar los textos enviados para mejorar sus productos. Si activas facturación en Google AI Studio, deja de hacerlo. Avísales a los estudiantes que no pongan datos personales en los textos.
 
 ---
 

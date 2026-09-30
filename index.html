@@ -8096,6 +8096,8 @@ var levelRewards = [];
 var roles = [];
 var memberRoles = [];
 var rolesReady = false;
+var permisosRol = [];
+var permisosListos = false;
 var snapshots = [];
 var snapsReady = false;
 var noticias = [];
@@ -11316,6 +11318,9 @@ var r2 = await client.from("member_roles").select("*");
 rolesReady = !r1.error && !r2.error;
 roles = r1.data || [];
 memberRoles = r2.data || [];
+var r3 = await client.from("tb_permisos_rol").select("role_id,permiso");
+permisosListos = !r3.error;
+permisosRol = r3.data || [];
 if (rolesReady && !roles.some(function (r) { return r.id === rolSeleccionado; })) {
 rolSeleccionado = roles.length ? rolesOrdenados()[0].id : null;
 }
@@ -11389,15 +11394,19 @@ miembros.length + " miembro" + (miembros.length === 1 ? "" : "s") +
 (pestanaRol === "look" ? " on" : "") + '" data-rtab="look">Apariencia</button>' +
 '<button type="button" class="tb-role-tab' +
 (pestanaRol === "gente" ? " on" : "") + '" data-rtab="gente">Miembros</button>' +
+'<button type="button" class="tb-role-tab' +
+(pestanaRol === "permisos" ? " on" : "") + '" data-rtab="permisos">Permisos</button>' +
 "</div>" +
-(pestanaRol === "look" ? editorApariencia(rol) : editorMiembros(rol));
+(pestanaRol === "look" ? editorApariencia(rol) : pestanaRol === "permisos" ? editorPermisos(rol) : editorMiembros(rol));
 $$("[data-rtab]").forEach(function (b) {
 b.onclick = function () {
 pestanaRol = b.dataset.rtab;
 renderEditorRol();
 };
 });
-if (pestanaRol === "look") { enlazarApariencia(rol); } else { enlazarMiembros(rol); }
+if (pestanaRol === "look") { enlazarApariencia(rol); }
+else if (pestanaRol === "permisos") { enlazarPermisos(rol); }
+else { enlazarMiembros(rol); }
 }
 function editorApariencia(rol) {
 return '<label class="tb-field">' +
@@ -11468,6 +11477,48 @@ b.classList.add("on");
 });
 $("#tb-role-save").onclick = function () { guardarRol(rol.id); };
 $("#tb-role-delete").onclick = function () { borrarRol(rol.id); };
+}
+/* Permisos por rol (tabla tb_permisos_rol, supabase/ACTIVAR-4-permisos-roles.sql). */
+var PERMISOS_ROL = [
+{ id: "voleibol", nombre: "🏐 Voleibol: alineaciones con IA",
+texto: "Puede usar la herramienta de alineaciones y tácticas de voleibol en Actividades. El owner siempre puede usarla." }
+];
+function rolTienePermiso(roleId, permiso) {
+return permisosRol.some(function (p) { return String(p.role_id) === String(roleId) && p.permiso === permiso; });
+}
+function tengoPermiso(permiso) {
+if (!me) { return false; }
+if (me.role === "owner") { return true; }
+return memberRoles.some(function (m) { return m.user_id === me.id && rolTienePermiso(m.role_id, permiso); });
+}
+function editorPermisos(rol) {
+if (!permisosListos) {
+return '<p class="tb-muted">Para asignar permisos ejecuta <b>supabase/ACTIVAR-4-permisos-roles.sql</b> en el SQL Editor de Supabase y recarga la página.</p>';
+}
+return '<p class="tb-muted" style="margin:0 0 12px;font-size:12.5px">Lo que pueden hacer las personas con este rol, además de lo normal.</p>' +
+PERMISOS_ROL.map(function (p) {
+return '<label class="tb-toggle" style="margin-bottom:12px">' +
+'<input type="checkbox" data-permiso="' + p.id + '"' + (rolTienePermiso(rol.id, p.id) ? " checked" : "") + ">" +
+"<span><b>" + escapeHtml(p.nombre) + "</b><small>" + escapeHtml(p.texto) + "</small></span></label>";
+}).join("") +
+'<p class="tb-muted" style="font-size:12px">' + miembrosDe(rol.id).length + " persona(s) tienen este rol. El cambio se guarda al instante.</p>";
+}
+function enlazarPermisos(rol) {
+$$("[data-permiso]").forEach(function (caja) {
+caja.onchange = async function () {
+caja.disabled = true;
+var result = await client.rpc("tb_permiso_rol", { p_role: String(rol.id), p_permiso: caja.dataset.permiso, p_activo: caja.checked });
+if (result.error) {
+alert(faltaTablaTb(result.error) ? "Falta ejecutar ACTIVAR-4-permisos-roles.sql en Supabase." : result.error.message);
+caja.checked = !caja.checked;
+caja.disabled = false;
+return;
+}
+await loadRoles();
+avisoToast(caja.checked ? "✅ Permiso asignado al rol." : "Permiso quitado del rol.");
+renderEditorRol();
+};
+});
 }
 function enlazarMiembros(rol) {
 $("#tb-members-save").onclick = function () { guardarMiembros(rol.id); };
@@ -15838,7 +15889,10 @@ if (arcadeActual === "wordle") { pintarWordle(); return; }
 if (arcadeActual === "prefiere") { pintarPreferir(); return; }
 if (arcadeActual === "pinturillo") { pintarPinturillo(); return; }
 if (arcadeActual === "lengua") { pintarLengua(); return; }
-if (arcadeActual === "voley") { pintarVoley(); return; }
+if (arcadeActual === "voley") {
+if (tengoPermiso("voleibol")) { pintarVoley(); return; }
+arcadeActual = "hub";
+}
 caja.classList.remove("bn-escena", "stp-escena");
 if (me && client && Date.now() - (bn.hubPedido || 0) > 30000) {
 bn.hubPedido = Date.now();
@@ -15853,8 +15907,8 @@ var tarjetas = [
 texto: "Pega tu texto y la IA subraya con colores cada error de ortografía, tildes, gramática y puntuación, te explica la regla, te da la versión corregida y estima si parece hecho con IA.",
 pie: "Con IA · " + (lg.cuota && lg.cuota.limite ? iaUsos(lg) : "revisiones diarias"), accion: "Revisar →", badge: "NUEVO" },
 { id: "voley", ico: "🏐", color: "#ff9a3c", titulo: "Voleibol: alineaciones",
-texto: "Crea tu plantilla con los puntos fuertes de cada jugador, arma la cancha, mira cada rotación y pide a la IA la mejor alineación investigando en sitios oficiales.",
-pie: "Con IA · táctica", accion: "Armar →", badge: "NUEVO" },
+texto: "Crea tu plantilla con los puntos fuertes de cada jugador, arma la cancha, mira cada rotación y pide a la IA la mejor alineación, investigando en internet con prioridad a sitios oficiales.",
+pie: "Con IA · acceso con permiso", accion: "Armar →", badge: "NUEVO", permiso: "voleibol" },
 { id: "tetris", ico: "🟦", color: "#7ae8ff", titulo: "Tetris",
 texto: "El clásico de las piezas que caen. Sube de nivel mientras más líneas hagas.",
 pie: "Récord: " + (datos.tetris || 0) + " pts", accion: "Jugar →" },
@@ -15896,6 +15950,7 @@ pie: "Modo historia", accion: "Entrar →" },
 texto: "Mirá quién manda en Tetris, en cada sección de Verdadero o falso y en X y O.",
 pie: "Todas las secciones", accion: "Ver →" }
 ];
+tarjetas = tarjetas.filter(function (t) { return !t.permiso || tengoPermiso(t.permiso); });
 caja.innerHTML = '<div class="tb-arcade-grid">' + tarjetas.map(function (t) {
 return '<button type="button" class="tb-arcade-card" data-arcade="' + t.id +
 '" style="--ac:' + t.color + '">' +
@@ -22699,7 +22754,8 @@ escapeHtml(lg.texto) + "</textarea>" +
 (lg.error ? '<div class="ia-aviso mal" style="margin-top:10px">' + escapeHtml(lg.error) + "</div>" : "") +
 '<div class="ia-fila" style="margin-top:12px">' + Object.keys(LG_CAT).map(function (k) {
 return '<span class="ia-chip on" style="--cc:' + LG_CAT[k].c + ';cursor:default"><i></i>' + escapeHtml(LG_CAT[k].n) + "</span>";
-}).join("") + "</div></div>" +
+}).join("") + "</div>" +
+'<p style="margin:10px 0 0;color:var(--muted);font-size:11.5px">🔒 El texto se envía a la IA de Google (Gemini) para revisarlo. No incluyas datos personales como teléfonos, direcciones o contraseñas.</p></div>' +
 (h.length ? '<div class="ia-panel"><h3>🕘 Revisiones recientes <small style="color:var(--muted);font-weight:600">(solo en este dispositivo)</small></h3><div class="lg-historial">' +
 h.map(function (x, i) {
 return '<button type="button" data-lg-hist="' + i + '"><span>' + escapeHtml(x.texto.slice(0, 70)) + (x.texto.length > 70 ? "…" : "") +
@@ -23110,18 +23166,19 @@ var enlace = function (f) {
 var u = safeUrl(f.url);
 return u ? '<a href="' + u + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(f.titulo || f.url) + "</a>" : escapeHtml(f.titulo);
 };
-html += '<div class="ia-panel"><h3>📚 Fuentes oficiales consultadas</h3><div class="vb-fuentes">' +
-(a.fuentes.length ? a.fuentes.map(function (f) { return "<div>🔗 " + enlace(f) + (f.aporte ? "<br><small style=\"color:var(--muted)\">" + escapeHtml(f.aporte) + "</small>" : "") + "</div>"; }).join("")
-: "<p style=\"margin:0;color:var(--muted)\">La IA no citó fuentes concretas en este análisis.</p>") +
-(a.consultadas && a.consultadas.length ? "<details><summary style=\"cursor:pointer;font-weight:800\">Otras páginas que revisó (" + a.consultadas.length + ")</summary>" +
-a.consultadas.map(function (f) { return "<div>• " + enlace(f) + "</div>"; }).join("") + "</details>" : "") +
-'</div><p style="font-size:11.5px;color:var(--muted);margin:10px 0 0">Recomendación orientativa generada con IA a partir de los datos que cargaste. La decisión final es del entrenador.</p></div>';
+html += '<div class="ia-panel"><h3>📚 Fuentes que consultó la IA</h3><div class="vb-fuentes">' +
+(a.fuentes && a.fuentes.length ? a.fuentes.map(function (f) {
+return "<div>" + (f.oficial ? "🏛️ " : "🔗 ") + enlace(f) + (f.oficial ? ' <small style="color:var(--ok);font-weight:800">OFICIAL</small>' : "") + "</div>";
+}).join("") : '<p style="margin:0;color:var(--muted)">Esta vez la búsqueda no devolvió fuentes.</p>') +
+(a.consultas && a.consultas.length ? '<details><summary style="cursor:pointer;font-weight:800">Búsquedas que hizo (' + a.consultas.length + ")</summary>" +
+a.consultas.map(function (q) { return "<div>🔎 " + escapeHtml(q) + "</div>"; }).join("") + "</details>" : "") +
+'</div><p style="font-size:11.5px;color:var(--muted);margin:10px 0 0">Recomendación orientativa generada con IA (Google Gemini) a partir de los datos que cargaste. Revisa las fuentes: la decisión final es del entrenador.</p></div>';
 return html;
 }
 function vbPanelIA(eq) {
 var disp = eq.jugadores.filter(function (j) { return j.disponible !== false; }).length;
 var html = '<div class="ia-panel"><h3>🤖 Pide la mejor alineación</h3>' +
-'<p style="margin:0 0 6px;color:var(--muted);font-size:13px">La IA estudia a tus ' + disp + " jugador(es) disponibles, investiga en sitios oficiales de voleibol (FIVB, Volleyball World, federaciones) y te propone el sistema, la alineación, el líbero y el plan táctico.</p>" +
+'<p style="margin:0 0 6px;color:var(--muted);font-size:13px">La IA estudia a tus ' + disp + " jugador(es) disponibles, investiga en internet dando prioridad a sitios oficiales (FIVB, Volleyball World, federaciones) y te propone el sistema, la alineación, el líbero y el plan táctico.</p>" +
 '<div class="vb-form">' +
 '<label class="tb-field"><span>Categoría</span><input id="vb-e-cat" maxlength="60" value="' + escapeHtml(eq.categoria) + '" placeholder="Ej.: sub-16 escolar"></label>' +
 '<label class="tb-field"><span>Rama</span><select id="vb-e-rama">' + lgOpciones([["mixta", "Mixta"], ["femenina", "Femenina"], ["masculina", "Masculina"]], eq.rama) + "</select></label>" +
@@ -23134,7 +23191,7 @@ var html = '<div class="ia-panel"><h3>🤖 Pide la mejor alineación</h3>' +
 (disp < 6 ? '<div class="ia-aviso" style="margin-top:10px">Tienes ' + disp + " jugador(es) disponible(s). Para una alineación completa se necesitan 6 (y 7 con líbero).</div>" : "") +
 (vb.error ? '<div class="ia-aviso mal" style="margin-top:10px">' + escapeHtml(vb.error) + "</div>" : "") + "</div>";
 if (vb.cargando) {
-html += iaCargando("Analizando tu equipo…", ["Estudiando a cada jugador", "Investigando en sitios oficiales de voleibol", "Comparando sistemas de juego", "Armando la alineación y las rotaciones", "Preparando el plan táctico"], vb.paso || 0);
+html += iaCargando("Analizando tu equipo…", ["Estudiando a cada jugador", "Investigando en internet (prioridad: sitios oficiales)", "Comparando sistemas de juego", "Armando la alineación y las rotaciones", "Preparando el plan táctico"], vb.paso || 0);
 } else {
 html += vbResultadoIA(eq);
 }
