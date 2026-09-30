@@ -75,5 +75,13 @@
       "path": "/api/recordatorio",
       "schedule": "0 14 * * *"
     }
-  ]
+  ],
+  "functions": {
+    "api/lengua.js": {
+      "maxDuration": 300
+    },
+    "api/voleibol.js": {
+      "maxDuration": 300
+    }
+  }
 }

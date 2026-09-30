@@ -13,6 +13,7 @@
 | Economía (ruletas, tienda, regalos, niveles, racha, premio diario): ejecutar `TABLON-economia-segura.sql` y luego abrir la app con la cuenta owner | ⏳ **Falta** (parte B) |
 | Activar Analytics | ⏳ **Falta** (paso C.2) |
 | Borrar el proyecto duplicado vacío `el-tablon` (Settings → Delete Project) | ⏳ **Falta** |
+| Herramientas con IA (Profesor de lengua y Voleibol): cargar `ANTHROPIC_API_KEY` (paso C.4) | ⏳ **Falta** |
 
 
 Esta guía tiene tres partes. Hazlas en orden y una sola vez:
@@ -111,6 +112,24 @@ Si no llega:
 2. Revisa que el celular no esté en modo «No molestar» y que Chrome o Safari tengan permitidas las notificaciones en los ajustes del teléfono.
 3. Si cambiaste alguna variable en Vercel, haz **Redeploy**.
 4. Si sigue sin funcionar, en esa misma tarjeta toca **Desactivar avisos** y luego **Activar avisos** otra vez.
+
+### C.4 Herramientas con IA (Profesor de lengua y Voleibol)
+
+Las dos herramientas de **Actividades** usan la IA de Anthropic (Claude) desde el servidor de Vercel. La clave nunca llega al navegador.
+
+1. Crea una cuenta en **https://platform.claude.com** (consola de Anthropic), carga saldo en **Billing** y crea una clave en **API Keys**.
+2. En Vercel → **Settings → Environment Variables** agrega `ANTHROPIC_API_KEY` con esa clave (marca **Sensitive**, entorno *Production*).
+3. **Deployments → Redeploy**.
+
+Variables opcionales para controlar el gasto (usos por persona y por día; el contador se reinicia a medianoche de Nicaragua y usa la tabla de `ACTIVAR-3-avisos.sql`):
+
+| Variable | Por defecto |
+|----------|-------------|
+| `IA_LIMITE_LENGUA` | 10 revisiones por estudiante |
+| `IA_LIMITE_VOLEIBOL` | 4 análisis por estudiante |
+| `IA_LIMITE_STAFF` | 40 usos por herramienta para owner y admins |
+
+Si la IA falla, el intento **no** se descuenta. **Costo:** se paga por uso a Anthropic, no a Vercel. Consulta los precios vigentes en https://platform.claude.com/docs/en/about-claude/pricing. La búsqueda web del voleibol se cobra aparte por búsqueda (máximo 5 por análisis). Recomendación: en la consola de Anthropic pon un **límite de gasto mensual** (*Limits*).
 
 ---
 

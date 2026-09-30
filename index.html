@@ -6660,6 +6660,159 @@ animation-duration: .01ms !important; animation-iteration-count: 1 !important; t
 .tb-toast.fuera { opacity: 0; transform: translate(-50%, 12px); }
 @keyframes tbToastIn { from { opacity: 0; transform: translate(-50%, 12px); } to { opacity: 1; transform: translateX(-50%); } }
 #tb-push-card p { margin: 6px 0 10px; color: #b0bad0; font-size: 13.5px; line-height: 1.5; }
+/* ===== Herramientas con IA: Profesor de lengua y Voleibol ===== */
+.ia-wrap { display: grid; gap: 14px; }
+.ia-panel { padding: 18px; border: 1px solid var(--line); border-radius: 20px; background: linear-gradient(150deg, #17274bcc, #080f22dd); }
+.ia-panel h3 { margin: 0 0 10px; font-size: 17px; }
+.ia-panel h4 { margin: 14px 0 8px; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.ia-fila { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.ia-fila > .tb-field { flex: 1 1 160px; margin: 6px 0; }
+.ia-grid2 { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 14px; align-items: start; }
+.ia-aviso { padding: 11px 13px; border: 1px solid #8fa6ff44; border-left: 3px solid var(--accent); border-radius: 11px; background: #8fa6ff12; color: #cdd6f5; font-size: 12.5px; line-height: 1.5; }
+.ia-aviso.mal { border-color: #ff718755; border-left-color: var(--danger); background: #ff718712; color: #ffc1ca; }
+.ia-chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border: 1px solid var(--line); border-radius: 999px; background: #ffffff0d; font-size: 12px; font-weight: 750; cursor: pointer; color: inherit; }
+.ia-chip.on { border-color: var(--cc, var(--accent)); background: color-mix(in srgb, var(--cc, var(--accent)) 22%, transparent); }
+.ia-chip.off { opacity: .45; text-decoration: line-through; }
+.ia-chip i { width: 10px; height: 10px; border-radius: 50%; background: var(--cc, var(--accent)); }
+.ia-contador { display: flex; gap: 14px; flex-wrap: wrap; color: var(--muted); font-size: 12px; font-weight: 700; }
+.ia-contador b { color: var(--text); }
+.ia-texto { width: 100%; min-height: 260px; padding: 14px 16px; border: 1px solid #9bb0ff2e; border-radius: 14px; background: #081226; color: #fff; outline: none; resize: vertical; font: 15.5px/1.7 Georgia, 'Times New Roman', serif; }
+.ia-texto:focus { border-color: #91a8ff; box-shadow: 0 0 0 4px #8198ff18; }
+.ia-cargando { display: grid; gap: 10px; justify-items: center; padding: 34px 16px; text-align: center; }
+.ia-cargando .ia-spin { width: 46px; height: 46px; border: 4px solid #ffffff1a; border-top-color: var(--accent); border-radius: 50%; animation: iaGiro 0.9s linear infinite; }
+.ia-cargando p { margin: 0; color: var(--muted); font-size: 13px; }
+.ia-cargando b { font-size: 15px; }
+@keyframes iaGiro { to { transform: rotate(360deg); } }
+.ia-pasos { display: grid; gap: 6px; margin-top: 6px; text-align: left; font-size: 12.5px; }
+.ia-pasos span { opacity: .4; }
+.ia-pasos span.on { opacity: 1; font-weight: 800; }
+.ia-pasos span.ok { opacity: .8; color: var(--ok); }
+/* Resumen y puntajes */
+.lg-top { display: grid; grid-template-columns: auto minmax(0, 1fr) minmax(210px, 280px); gap: 16px; align-items: center; }
+.lg-anillo { --p: 0; width: 104px; height: 104px; border-radius: 50%; display: grid; place-items: center; background: conic-gradient(var(--ac, var(--ok)) calc(var(--p) * 1%), #ffffff14 0); }
+.lg-anillo div { width: 80px; height: 80px; border-radius: 50%; display: grid; place-items: center; background: #0b1430; text-align: center; font-size: 26px; font-weight: 900; line-height: 1; }
+.lg-anillo small { display: block; margin-top: 3px; font-size: 9.5px; color: var(--muted); letter-spacing: .1em; }
+.lg-nivel { display: inline-block; margin-bottom: 6px; padding: 3px 10px; border-radius: 999px; background: #ffffff14; font-size: 12px; font-weight: 850; }
+.lg-resumen { margin: 0; font-size: 14px; line-height: 1.55; }
+.lg-ia { padding: 12px; border: 1px solid var(--line); border-radius: 14px; background: #ffffff08; }
+.lg-ia-num { font-size: 28px; font-weight: 900; }
+.lg-ia-barra { height: 10px; margin: 6px 0; border-radius: 99px; background: linear-gradient(90deg, #52dfa8, #ffd23f 50%, #ff7187); position: relative; }
+.lg-ia-barra i { position: absolute; top: -4px; width: 4px; height: 18px; border-radius: 3px; background: #fff; box-shadow: 0 0 0 2px #0008; transform: translateX(-50%); }
+.lg-ia small { display: block; color: var(--muted); font-size: 11px; line-height: 1.4; }
+.lg-ia details { margin-top: 6px; font-size: 12px; }
+.lg-ia summary { cursor: pointer; font-weight: 800; }
+.lg-barras { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 8px 16px; margin-top: 14px; }
+.lg-barra { font-size: 12px; font-weight: 750; }
+.lg-barra div { display: flex; justify-content: space-between; }
+.lg-barra u { display: block; height: 7px; margin-top: 4px; border-radius: 99px; background: #ffffff14; overflow: hidden; }
+.lg-barra u i { display: block; height: 100%; border-radius: 99px; background: var(--bc, var(--accent)); }
+/* Texto subrayado */
+.lg-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.lg-hoja { padding: 18px 20px; border-radius: 14px; background: #fbfaf6; color: #1d2233; font: 16.5px/2 Georgia, 'Times New Roman', serif; white-space: pre-wrap; word-wrap: break-word; max-height: 560px; overflow: auto; }
+.lg-m { --cc: #ff5d73; padding: 1px 1px; border-radius: 4px; background: color-mix(in srgb, var(--cc) 24%, transparent); text-decoration: underline wavy var(--cc); text-decoration-thickness: 1.5px; text-underline-offset: 4px; cursor: pointer; color: inherit; }
+.lg-m.grave { text-decoration-thickness: 2.5px; font-weight: 700; }
+.lg-m.leve { text-decoration-style: dotted; }
+.lg-m.sel { outline: 2px solid var(--cc); background: color-mix(in srgb, var(--cc) 40%, transparent); }
+.lg-m.oculto { background: none; text-decoration: none; font-weight: inherit; cursor: text; }
+.lg-m.hecho { --cc: #1faa6f; text-decoration: none; background: #1faa6f22; }
+.lg-ins { background: #1faa6f33; color: #0c6b43; border-radius: 3px; text-decoration: none; }
+.lg-del { background: #ff5d7333; color: #a3192e; border-radius: 3px; }
+.lg-detalle { margin-top: 12px; padding: 14px; border: 1px solid var(--cc, var(--line)); border-left: 5px solid var(--cc, var(--accent)); border-radius: 14px; background: #ffffff0a; }
+.lg-detalle .lg-cambio { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0; font-size: 15px; }
+.lg-detalle s { color: #ff9aaa; }
+.lg-detalle ins { color: #8ff0c4; text-decoration: none; font-weight: 800; }
+.lg-detalle p { margin: 6px 0; font-size: 13.5px; }
+.lg-detalle .lg-regla { color: var(--muted); font-size: 12.5px; }
+.lg-lista { display: grid; gap: 7px; max-height: 520px; overflow: auto; padding-right: 4px; }
+.lg-item { display: grid; grid-template-columns: 12px minmax(0, 1fr); gap: 9px; align-items: start; padding: 9px 10px; border: 1px solid var(--line); border-radius: 12px; background: #ffffff08; text-align: left; cursor: pointer; color: inherit; font-size: 12.5px; }
+.lg-item:hover, .lg-item.sel { border-color: var(--cc); }
+.lg-item i { width: 12px; height: 12px; margin-top: 3px; border-radius: 50%; background: var(--cc); }
+.lg-item b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lg-item small { color: var(--muted); }
+.lg-item.hecho { opacity: .5; }
+.lg-tarjetas { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.lg-tarjetas ul { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.55; }
+.lg-practica { display: grid; gap: 8px; }
+.lg-practica details { padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: #ffffff08; font-size: 13px; }
+.lg-practica summary { cursor: pointer; font-weight: 750; }
+.lg-historial { display: grid; gap: 6px; }
+.lg-historial button { display: flex; justify-content: space-between; gap: 10px; padding: 9px 11px; border: 1px solid var(--line); border-radius: 11px; background: #ffffff08; color: inherit; cursor: pointer; text-align: left; font-size: 12.5px; }
+/* Voleibol */
+.vb-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+.vb-jugadores { display: grid; grid-template-columns: repeat(auto-fill, minmax(235px, 1fr)); gap: 12px; }
+.vb-jug { position: relative; padding: 14px; border: 1px solid var(--line); border-radius: 16px; background: #ffffff08; }
+.vb-jug.fuera { opacity: .5; }
+.vb-jug-cab { display: flex; gap: 10px; align-items: center; }
+.vb-num { flex: 0 0 auto; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 12px; background: linear-gradient(135deg, #ffd27a, #ff9a3c); color: #231400; font-weight: 900; font-size: 17px; }
+.vb-num.lib { background: linear-gradient(135deg, #5ef2d6, #3cc8ff); color: #002027; }
+.vb-jug-cab b { display: block; font-size: 15px; }
+.vb-jug-cab small { color: var(--muted); font-size: 11.5px; }
+.vb-media { margin-left: auto; text-align: center; font-weight: 900; font-size: 19px; }
+.vb-media small { display: block; font-size: 9px; color: var(--muted); letter-spacing: .08em; }
+.vb-pos { display: flex; gap: 5px; flex-wrap: wrap; margin: 9px 0; }
+.vb-pos span { padding: 2px 8px; border-radius: 999px; background: #8fa6ff22; font-size: 11px; font-weight: 800; }
+.vb-habs { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 12px; font-size: 11px; }
+.vb-habs div { display: flex; justify-content: space-between; gap: 6px; }
+.vb-habs u { flex: 1; align-self: center; height: 5px; border-radius: 9px; background: #ffffff14; overflow: hidden; }
+.vb-habs u i { display: block; height: 100%; background: linear-gradient(90deg, #ffd27a, #ff9a3c); }
+.vb-jug p { margin: 8px 0 0; font-size: 12px; color: #cdd6f5; }
+.vb-jug-acc { display: flex; gap: 6px; margin-top: 10px; }
+.vb-jug-acc button { flex: 1; padding: 7px; font-size: 12px; }
+.vb-form { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0 12px; }
+.vb-form .ancho { grid-column: 1 / -1; }
+.vb-sliders { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px 16px; }
+.vb-sliders label { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; font-size: 12.5px; font-weight: 750; }
+.vb-sliders input { grid-column: 1 / -1; width: 100%; accent-color: #ff9a3c; }
+.vb-cancha-wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(250px, 330px); gap: 14px; align-items: start; }
+.vb-cancha { position: relative; max-width: 520px; margin: 0 auto; padding: 26px 16px 16px; border: 3px solid #fff; border-radius: 6px; background: linear-gradient(180deg, #e98a3d, #d9702a); box-shadow: 0 16px 40px #0006; }
+.vb-red { position: absolute; left: -10px; right: -10px; top: -7px; height: 10px; border-radius: 3px; background: repeating-linear-gradient(90deg, #fff 0 6px, #333 6px 8px); box-shadow: 0 2px 0 #0004; }
+.vb-red-txt { position: absolute; top: 6px; left: 0; right: 0; text-align: center; color: #fff9; font-size: 10px; font-weight: 900; letter-spacing: .3em; }
+.vb-zonas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.vb-linea3 { grid-column: 1 / -1; height: 3px; margin: 2px 0; background: #fff; opacity: .85; }
+.vb-zona { min-height: 108px; display: grid; justify-items: center; align-content: center; gap: 4px; padding: 8px 4px; border: 2px dashed #ffffff66; border-radius: 12px; background: #ffffff14; color: #fff; text-align: center; }
+.vb-zona.llena { border-style: solid; border-color: #ffffffaa; background: #0000001f; }
+.vb-zona.saca { box-shadow: 0 0 0 3px #ffd23f; }
+.vb-zona .vb-num { width: 38px; height: 38px; font-size: 16px; }
+.vb-zona b { font-size: 12.5px; line-height: 1.2; text-shadow: 0 1px 2px #0008; }
+.vb-zona small { font-size: 10px; font-weight: 800; opacity: .85; }
+.vb-zona select { width: 100%; max-width: 130px; padding: 4px; border: 0; border-radius: 8px; background: #081226cc; color: #fff; font-size: 11px; }
+.vb-zona-n { font-size: 10px; font-weight: 900; opacity: .75; }
+.vb-rot { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin: 12px 0 4px; }
+.vb-rot button { min-width: 40px; }
+.vb-rot button.on { border-color: #ffd27a; background: #ffd27a22; }
+.vb-tabla { width: 100%; border-collapse: collapse; font-size: 12px; }
+.vb-tabla th, .vb-tabla td { padding: 6px 5px; border-bottom: 1px solid var(--line); text-align: center; }
+.vb-tabla th { color: var(--muted); font-size: 10.5px; letter-spacing: .06em; }
+.vb-tabla tr.debil td { background: #ff718714; }
+.vb-tabla tr.fuerte td { background: #52dfa814; }
+.vb-alertas { display: grid; gap: 6px; margin-top: 10px; font-size: 12.5px; }
+.vb-alertas div { padding: 8px 10px; border-radius: 10px; background: #ffa50014; border: 1px solid #ffa50044; }
+.vb-alertas div.ok { background: #52dfa812; border-color: #52dfa844; }
+.vb-tacticas { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; }
+.vb-tacticas div { padding: 12px; border: 1px solid var(--line); border-radius: 14px; background: #ffffff08; font-size: 13px; }
+.vb-tacticas b { display: block; margin-bottom: 4px; }
+.vb-fuentes { display: grid; gap: 7px; font-size: 12.5px; }
+.vb-fuentes a { color: #9fb4ff; font-weight: 800; word-break: break-word; }
+.vb-mini { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; max-width: 360px; padding: 16px 10px 10px; border: 2px solid #fff; border-radius: 6px; background: #d9702a; position: relative; }
+.vb-mini .vb-red { top: -6px; height: 8px; left: -6px; right: -6px; }
+.vb-mini div { padding: 6px 3px; border-radius: 8px; background: #0000002a; color: #fff; text-align: center; font-size: 11px; font-weight: 800; }
+.vb-mini div span { display: block; font-size: 9px; opacity: .8; }
+#tablon-root.tb-light .ia-panel { background: #ffffffee; color: #16203a; }
+#tablon-root.tb-light .ia-texto { background: #f4f6fc; color: #16203a; }
+#tablon-root.tb-light .lg-anillo div { background: #fff; }
+#tablon-root.tb-light .ia-aviso { color: #2a3558; }
+@media (max-width: 900px) {
+.ia-grid2, .vb-cancha-wrap { grid-template-columns: 1fr; }
+.lg-top { grid-template-columns: auto minmax(0, 1fr); }
+.lg-top .lg-ia { grid-column: 1 / -1; }
+}
+@media (max-width: 520px) {
+.ia-panel { padding: 14px; }
+.lg-top { grid-template-columns: 1fr; justify-items: start; }
+.lg-hoja { padding: 14px; font-size: 15.5px; }
+.vb-zona { min-height: 92px; }
+.vb-zona b { font-size: 11px; }
+}
 </style>
 <div id="tablon-root" class="tb-theme-midnight">
 <div id="tb-ent-modal" class="tb-ent-modal tb-hidden" role="dialog" aria-modal="true" aria-labelledby="tb-ent-titulo">
@@ -15684,6 +15837,8 @@ if (arcadeActual === "stop") { pintarStop(); return; }
 if (arcadeActual === "wordle") { pintarWordle(); return; }
 if (arcadeActual === "prefiere") { pintarPreferir(); return; }
 if (arcadeActual === "pinturillo") { pintarPinturillo(); return; }
+if (arcadeActual === "lengua") { pintarLengua(); return; }
+if (arcadeActual === "voley") { pintarVoley(); return; }
 caja.classList.remove("bn-escena", "stp-escena");
 if (me && client && Date.now() - (bn.hubPedido || 0) > 30000) {
 bn.hubPedido = Date.now();
@@ -15694,6 +15849,12 @@ if (arcadeActual === "hub") { renderArcade(); }
 var datos = arcadeDatos();
 var retos = retosPendientes().length;
 var tarjetas = [
+{ id: "lengua", ico: "📝", color: "#ff5d73", titulo: "Profesor de lengua",
+texto: "Pega tu texto y la IA subraya con colores cada error de ortografía, tildes, gramática y puntuación, te explica la regla, te da la versión corregida y estima si parece hecho con IA.",
+pie: "Con IA · " + (lg.cuota && lg.cuota.limite ? iaUsos(lg) : "revisiones diarias"), accion: "Revisar →", badge: "NUEVO" },
+{ id: "voley", ico: "🏐", color: "#ff9a3c", titulo: "Voleibol: alineaciones",
+texto: "Crea tu plantilla con los puntos fuertes de cada jugador, arma la cancha, mira cada rotación y pide a la IA la mejor alineación investigando en sitios oficiales.",
+pie: "Con IA · táctica", accion: "Armar →", badge: "NUEVO" },
 { id: "tetris", ico: "🟦", color: "#7ae8ff", titulo: "Tetris",
 texto: "El clásico de las piezas que caen. Sube de nivel mientras más líneas hagas.",
 pie: "Récord: " + (datos.tetris || 0) + " pts", accion: "Jugar →" },
@@ -22252,6 +22413,957 @@ if (s.estado === "espera") { stpPintarEspera(caja, stp.est); return; }
 if (s.estado === "jugando") { stpPintarJuego(caja, stp.est); return; }
 if (s.estado === "revision") { stpPintarRevision(caja, stp.est); return; }
 stpPintarFinal(caja, stp.est);
+}
+/* ===================================================================
+   HERRAMIENTAS CON IA · PROFESOR DE LENGUA Y VOLEIBOL
+   Funcionan solo en la versión de Vercel (usan /api/lengua y /api/voleibol).
+   =================================================================== */
+async function iaLlamar(ruta, metodo, cuerpo) {
+if (!esVercel()) {
+return { ok: false, status: 0, datos: { error: "Esta herramienta solo funciona en la versión de Vercel del tablón." } };
+}
+if (!client) { return { ok: false, status: 0, datos: { error: "Sin conexión." } }; }
+try {
+var sesion = await client.auth.getSession();
+var token = sesion.data && sesion.data.session && sesion.data.session.access_token;
+if (!token) { return { ok: false, status: 401, datos: { error: "Inicia sesión de nuevo." } }; }
+var opciones = { method: metodo, headers: { Authorization: "Bearer " + token } };
+if (cuerpo) {
+opciones.headers["Content-Type"] = "application/json";
+opciones.body = JSON.stringify(cuerpo);
+}
+var r = await fetch(ruta, opciones);
+var datos = await r.json().catch(function () { return { error: "Respuesta no válida del servidor (" + r.status + ")." }; });
+return { ok: r.ok, status: r.status, datos: datos || {} };
+} catch (e) {
+return { ok: false, status: 0, datos: { error: "Sin conexión con el servidor. Revisa tu internet." } };
+}
+}
+function iaGuardarLocal(clave, valor) {
+try { window.localStorage.setItem(clave + "-" + (me ? me.id : "x"), JSON.stringify(valor)); return true; } catch (e) { return false; }
+}
+function iaLeerLocal(clave, porDefecto) {
+try {
+var v = JSON.parse(window.localStorage.getItem(clave + "-" + (me ? me.id : "x")) || "null");
+return v === null ? porDefecto : v;
+} catch (e) { return porDefecto; }
+}
+function iaUsos(estado) {
+if (!estado.cuota) { return "Hoy: …"; }
+if (estado.cuota.listo === false) { return "Sin configurar"; }
+return "Hoy: " + Math.max(0, estado.cuota.limite - estado.cuota.usados) + " de " + estado.cuota.limite;
+}
+async function iaCargarCuota(estado, ruta, repintar) {
+if (estado.cuotaPedida) { return; }
+estado.cuotaPedida = true;
+var r = await iaLlamar(ruta, "GET");
+estado.cuota = r.ok ? r.datos : { listo: false, error: r.datos.error, problemas: r.datos.problemas };
+repintar();
+}
+function iaAvisoConfig(estado) {
+if (!esVercel()) {
+return '<div class="ia-aviso mal">Esta herramienta usa inteligencia artificial y solo funciona en la versión de Vercel del tablón (<b>el-tablon1.vercel.app</b>).</div>';
+}
+if (estado.cuota && estado.cuota.listo === false) {
+return '<div class="ia-aviso mal">' + escapeHtml(estado.cuota.error || "La herramienta no está disponible.") +
+(me && me.role === "owner" && estado.cuota.problemas
+? "<br><small>Detalle para el owner: " + escapeHtml(estado.cuota.problemas.join(" ")) + "</small>" : "") + "</div>";
+}
+return "";
+}
+function iaCargando(titulo, pasos, activo) {
+return '<div class="ia-panel ia-cargando"><div class="ia-spin"></div><b>' + escapeHtml(titulo) + "</b>" +
+'<div class="ia-pasos">' + pasos.map(function (p, i) {
+return '<span class="' + (i < activo ? "ok" : i === activo ? "on" : "") + '">' + (i < activo ? "✓ " : "• ") + escapeHtml(p) + "</span>";
+}).join("") + "</div><p>Puede tardar hasta un par de minutos. No cierres esta pestaña.</p></div>";
+}
+function iaAvanzarPasos(estado, total, repintar) {
+clearInterval(estado.pasoTimer);
+estado.paso = 0;
+estado.pasoTimer = setInterval(function () {
+if (!estado.cargando) { clearInterval(estado.pasoTimer); return; }
+if (estado.paso < total - 1) { estado.paso++; repintar(); }
+}, 9000);
+}
+function iaCopiar(texto) {
+if (navigator.clipboard && navigator.clipboard.writeText) {
+navigator.clipboard.writeText(texto).then(function () { avisoToast("📋 Copiado."); }, function () { avisoToast("No se pudo copiar."); });
+} else { avisoToast("Tu navegador no permite copiar automáticamente."); }
+}
+
+/* ---------- Profesor de lengua ---------- */
+var LG_CAT = {
+ortografia: { n: "Ortografía", c: "#ff5d73", ico: "🔤" },
+acentuacion: { n: "Tildes", c: "#ff9a3c", ico: "´" },
+gramatica: { n: "Gramática", c: "#e0b000", ico: "🧩" },
+concordancia: { n: "Concordancia", c: "#8cc63f", ico: "🔗" },
+puntuacion: { n: "Puntuación", c: "#1fa4e0", ico: "❞" },
+mayusculas: { n: "Mayúsculas", c: "#5b6cff", ico: "Aa" },
+lexico: { n: "Vocabulario", c: "#a35cff", ico: "📖" },
+repeticion: { n: "Repetición", c: "#ff5cc8", ico: "🔁" },
+estilo: { n: "Estilo", c: "#12b886", ico: "✒️" },
+coherencia: { n: "Coherencia", c: "#7d8aa8", ico: "🧠" }
+};
+var LG_AREAS = [["ortografia", "Ortografía"], ["gramatica", "Gramática"], ["puntuacion", "Puntuación"],
+["vocabulario", "Vocabulario"], ["coherencia", "Coherencia"], ["estilo", "Estilo"]];
+var LG_TIPOS = [["libre", "Texto libre"], ["ensayo", "Ensayo"], ["narracion", "Narración o cuento"], ["descripcion", "Descripción"],
+["carta", "Carta o correo formal"], ["informe", "Informe o trabajo"], ["resumen", "Resumen"], ["opinion", "Opinión"], ["poema", "Poema"]];
+var LG_NIVELES = [["primaria", "Primaria"], ["secundaria", "Secundaria"], ["universidad", "Universidad"]];
+var LG_ENFOQUES = [["completo", "Revisión completa"], ["basico", "Ortografía y puntuación"], ["redaccion", "Redacción y estilo"]];
+var LG_MAX = 6000;
+var lg = { texto: "", tipo: "libre", nivel: "secundaria", enfoque: "completo", cargando: false, error: "",
+res: null, analizado: "", marcas: [], sel: -1, filtro: {}, pestana: "marcado", cuota: null, cuotaPedida: false, verHistorial: false };
+function lgColor(v) { return v >= 85 ? "#52dfa8" : v >= 70 ? "#8cc63f" : v >= 50 ? "#ffd23f" : "#ff7187"; }
+function lgConteo(texto) {
+var t = texto.trim();
+var palabras = t ? t.split(/\s+/).length : 0;
+var oraciones = t ? (t.match(/[^.!?¿¡…]+[.!?…]+/g) || [t]).length : 0;
+return { palabras: palabras, caracteres: texto.length, oraciones: oraciones,
+parrafos: t ? t.split(/\n\s*\n/).filter(function (p) { return p.trim(); }).length : 0,
+lectura: Math.max(1, Math.round(palabras / 200)) };
+}
+// Ubica cada error en el texto, en orden y sin que se encimen.
+function lgUbicar(texto, errores) {
+var usados = [];
+var pos = 0;
+function libre(a, b) { return !usados.some(function (u) { return a < u[1] && b > u[0]; }); }
+var marcas = [];
+errores.forEach(function (e, i) {
+if (e.aplicado) { return; }
+var f = e.fragmento;
+var desde = pos;
+var idx = -1;
+for (var intento = 0; intento < 2 && idx < 0; intento++) {
+var k = texto.indexOf(f, desde);
+while (k >= 0 && !libre(k, k + f.length)) { k = texto.indexOf(f, k + 1); }
+idx = k;
+desde = 0;
+}
+if (idx < 0) { e.perdido = true; return; }
+e.perdido = false;
+usados.push([idx, idx + f.length]);
+marcas.push({ i: i, a: idx, b: idx + f.length });
+pos = idx + f.length;
+});
+return marcas.sort(function (x, y) { return x.a - y.a; });
+}
+function lgHojaMarcada() {
+var t = lg.analizado;
+var html = "";
+var pos = 0;
+lg.marcas.forEach(function (m) {
+var e = lg.res.errores[m.i];
+var cat = LG_CAT[e.categoria] || LG_CAT.estilo;
+var oculto = lg.filtro[e.categoria] === false;
+html += escapeHtml(t.slice(pos, m.a)) +
+'<mark class="lg-m ' + e.gravedad + (oculto ? " oculto" : "") + (lg.sel === m.i ? " sel" : "") +
+'" style="--cc:' + cat.c + '" data-lg="' + m.i + '" title="' + escapeHtml(cat.n) + '">' +
+escapeHtml(t.slice(m.a, m.b)) + "</mark>";
+pos = m.b;
+});
+return html + escapeHtml(t.slice(pos));
+}
+// Diferencia palabra por palabra entre el original y la versión corregida.
+function lgDiff(a, b) {
+var x = a.split(/(\s+)/);
+var y = b.split(/(\s+)/);
+if (x.length * y.length > 4000000) { return escapeHtml(b); }
+var n = x.length, m = y.length;
+var tabla = [];
+for (var i = 0; i <= n; i++) { tabla.push(new Uint16Array(m + 1)); }
+for (i = n - 1; i >= 0; i--) {
+for (var j = m - 1; j >= 0; j--) {
+tabla[i][j] = x[i] === y[j] ? tabla[i + 1][j + 1] + 1 : Math.max(tabla[i + 1][j], tabla[i][j + 1]);
+}
+}
+var html = "";
+i = 0; j = 0;
+while (i < n && j < m) {
+if (x[i] === y[j]) { html += escapeHtml(x[i]); i++; j++; }
+else if (tabla[i + 1][j] >= tabla[i][j + 1]) { html += /^\s+$/.test(x[i]) ? escapeHtml(x[i]) : '<del class="lg-del">' + escapeHtml(x[i]) + "</del>"; i++; }
+else { html += /^\s+$/.test(y[j]) ? escapeHtml(y[j]) : '<ins class="lg-ins">' + escapeHtml(y[j]) + "</ins>"; j++; }
+}
+for (; i < n; i++) { html += /^\s+$/.test(x[i]) ? escapeHtml(x[i]) : '<del class="lg-del">' + escapeHtml(x[i]) + "</del>"; }
+for (; j < m; j++) { html += /^\s+$/.test(y[j]) ? escapeHtml(y[j]) : '<ins class="lg-ins">' + escapeHtml(y[j]) + "</ins>"; }
+return html;
+}
+function lgOpciones(lista, valor) {
+return lista.map(function (o) {
+return '<option value="' + o[0] + '"' + (o[0] === valor ? " selected" : "") + ">" + escapeHtml(o[1]) + "</option>";
+}).join("");
+}
+function lgDetalle() {
+if (lg.sel < 0 || !lg.res.errores[lg.sel]) {
+return '<div class="lg-detalle"><p>👆 Toca cualquier parte subrayada para ver el error, la regla y cómo corregirlo.</p></div>';
+}
+var e = lg.res.errores[lg.sel];
+var cat = LG_CAT[e.categoria] || LG_CAT.estilo;
+var cambia = e.sugerencia && e.sugerencia !== e.fragmento;
+return '<div class="lg-detalle" style="--cc:' + cat.c + '">' +
+'<div class="ia-fila"><span class="ia-chip on" style="--cc:' + cat.c + '"><i></i>' + escapeHtml(cat.n) + "</span>" +
+'<small style="color:var(--muted);font-weight:800">' + (e.gravedad === "grave" ? "🔴 Grave" : e.gravedad === "moderado" ? "🟠 Moderado" : "🟡 Leve") + "</small></div>" +
+'<div class="lg-cambio"><s>' + escapeHtml(e.fragmento) + "</s>" + (cambia ? " → <ins>" + escapeHtml(e.sugerencia) + "</ins>" : "") + "</div>" +
+"<p>" + escapeHtml(e.explicacion) + "</p>" +
+(e.regla ? '<p class="lg-regla">📘 <b>Regla:</b> ' + escapeHtml(e.regla) + "</p>" : "") +
+'<div class="ia-fila" style="margin-top:8px">' +
+(cambia && !e.aplicado && !e.perdido ? '<button type="button" class="tb-primary" id="lg-aplicar">✔ Aplicar corrección</button>' : "") +
+(e.aplicado ? '<span style="color:var(--ok);font-weight:800">✔ Corrección aplicada</span>' : "") +
+'<button type="button" class="tb-secondary" id="lg-ignorar">Siguiente →</button></div></div>';
+}
+function lgResultado() {
+var r = lg.res;
+var p = r.puntajes;
+var conteoCat = {};
+r.errores.forEach(function (e) { conteoCat[e.categoria] = (conteoCat[e.categoria] || 0) + 1; });
+var pendientes = r.errores.filter(function (e) { return !e.aplicado && !e.perdido && e.sugerencia && e.sugerencia !== e.fragmento; }).length;
+var iaColor = r.ia.porcentaje >= 60 ? "#ff7187" : r.ia.porcentaje >= 30 ? "#ffd23f" : "#52dfa8";
+var html = '<div class="ia-panel"><div class="lg-top">' +
+'<div class="lg-anillo" style="--p:' + p.general + ";--ac:" + lgColor(p.general) + '"><div>' + p.general + "<small>DE 100</small></div></div>" +
+'<div><span class="lg-nivel">' + escapeHtml(r.nivel_texto) + "</span>" +
+'<p class="lg-resumen">' + escapeHtml(r.resumen) + "</p>" +
+'<small style="color:var(--muted)">' + r.errores.length + " observación(es)" +
+(r.no_localizados ? " · " + r.no_localizados + " no se pudo(ieron) ubicar en el texto" : "") + "</small></div>" +
+'<div class="lg-ia"><small>🤖 PROBABILIDAD ESTIMADA DE IA</small>' +
+'<div class="lg-ia-num" style="color:' + iaColor + '">' + r.ia.porcentaje + "%</div>" +
+'<div class="lg-ia-barra"><i style="left:' + r.ia.porcentaje + '%"></i></div>' +
+"<b style=\"font-size:13px\">" + escapeHtml(r.ia.veredicto) + "</b>" +
+"<details><summary>¿Por qué?</summary>" +
+(r.ia.senales.length ? "<ul>" + r.ia.senales.map(function (s) { return "<li>" + escapeHtml(s) + "</li>"; }).join("") + "</ul>" : "<p>No se detectaron señales claras.</p>") +
+(r.ia.nota ? "<p>" + escapeHtml(r.ia.nota) + "</p>" : "") + "</details>" +
+"<small>Es una estimación orientativa, no una prueba. Ningún detector de IA es 100 % confiable.</small></div></div>" +
+'<div class="lg-barras">' + LG_AREAS.map(function (a) {
+var v = p[a[0]];
+return '<div class="lg-barra" style="--bc:' + lgColor(v) + '"><div><span>' + a[1] + "</span><span>" + v + "</span></div><u><i style=\"width:" + v + '%"></i></u></div>';
+}).join("") + "</div></div>";
+html += '<div class="ia-grid2"><div class="ia-panel">' +
+'<div class="lg-tabs">' +
+[["marcado", "🖍️ Texto marcado"], ["corregido", "✅ Versión corregida"], ["comparar", "↔️ Comparar"]].map(function (t) {
+return '<button type="button" class="ia-chip' + (lg.pestana === t[0] ? " on" : "") + '" data-lg-tab="' + t[0] + '">' + t[1] + "</button>";
+}).join("") + "</div>";
+if (lg.pestana === "marcado") {
+html += '<div class="ia-fila" style="margin-bottom:10px">' + Object.keys(LG_CAT).filter(function (k) { return conteoCat[k]; }).map(function (k) {
+var off = lg.filtro[k] === false;
+return '<button type="button" class="ia-chip ' + (off ? "off" : "on") + '" style="--cc:' + LG_CAT[k].c + '" data-lg-cat="' + k + '"><i></i>' +
+escapeHtml(LG_CAT[k].n) + " · " + conteoCat[k] + "</button>";
+}).join("") + "</div>" +
+'<div class="lg-hoja" id="lg-hoja">' + lgHojaMarcada() + "</div>" + lgDetalle();
+} else if (lg.pestana === "corregido") {
+html += '<div class="lg-hoja">' + escapeHtml(r.texto_corregido) + "</div>" +
+'<div class="ia-fila" style="margin-top:10px"><button type="button" class="tb-primary" id="lg-copiar-corr">📋 Copiar versión corregida</button>' +
+'<button type="button" class="tb-secondary" id="lg-usar-corr">✏️ Llevar al editor</button></div>';
+} else {
+html += '<p style="margin:0 0 8px;color:var(--muted);font-size:12.5px"><span class="lg-del">tachado</span> = se quita · <span class="lg-ins">verde</span> = se agrega</p>' +
+'<div class="lg-hoja">' + lgDiff(lg.analizado, r.texto_corregido) + "</div>";
+}
+html += '</div><div class="ia-panel"><h3>📝 Observaciones</h3>' +
+(pendientes ? '<button type="button" class="tb-primary" id="lg-aplicar-todo" style="width:100%;margin-bottom:10px">✨ Aplicar las ' + pendientes + " correcciones</button>" : "") +
+'<div class="lg-lista">' + (r.errores.length ? r.errores.map(function (e, i) {
+var cat = LG_CAT[e.categoria] || LG_CAT.estilo;
+return '<button type="button" class="lg-item' + (e.aplicado ? " hecho" : "") + (lg.sel === i ? " sel" : "") + '" style="--cc:' + cat.c + '" data-lg-item="' + i + '"><i></i><span><b>' +
+(e.aplicado ? "✔ " : "") + escapeHtml(e.fragmento) + (e.sugerencia && e.sugerencia !== e.fragmento ? " → " + escapeHtml(e.sugerencia) : "") + "</b><small>" +
+escapeHtml(cat.n) + (e.perdido && !e.aplicado ? " · no se pudo marcar en el texto" : "") + "</small></span></button>";
+}).join("") : "<p>🎉 ¡No se encontraron errores!</p>") + "</div></div></div>";
+html += '<div class="lg-tarjetas">' +
+'<div class="ia-panel"><h3>💪 Lo que haces bien</h3><ul>' + (r.fortalezas.map(function (s) { return "<li>" + escapeHtml(s) + "</li>"; }).join("") || "<li>—</li>") + "</ul></div>" +
+'<div class="ia-panel"><h3>🎯 Para mejorar</h3><ul>' + (r.consejos.map(function (s) { return "<li>" + escapeHtml(s) + "</li>"; }).join("") || "<li>—</li>") + "</ul></div>" +
+'<div class="ia-panel"><h3>🏋️ Practica</h3><div class="lg-practica">' + (r.practica.map(function (x, i) {
+return "<details><summary>" + (i + 1) + ". " + escapeHtml(x.enunciado) + "</summary><p>✅ " + escapeHtml(x.respuesta) + "</p></details>";
+}).join("") || "<p>—</p>") + "</div></div></div>";
+html += '<div class="ia-fila"><button type="button" class="tb-secondary" id="lg-editar">✏️ Editar y volver a revisar</button>' +
+'<button type="button" class="tb-secondary" id="lg-informe">📋 Copiar informe</button>' +
+'<button type="button" class="tb-secondary" id="lg-nuevo">🆕 Texto nuevo</button></div>';
+return html;
+}
+function lgHistorial() { return iaLeerLocal("tb-lengua-historial", []); }
+function lgGuardarHistorial() {
+var h = lgHistorial().filter(function (x) { return x.texto !== lg.analizado; });
+h.unshift({ fecha: new Date().toISOString(), texto: lg.analizado, tipo: lg.tipo, res: lg.res });
+while (h.length > 8 && !iaGuardarLocal("tb-lengua-historial", h.slice(0, 8))) { h.pop(); }
+iaGuardarLocal("tb-lengua-historial", h.slice(0, 8));
+}
+function lgEditor() {
+var c = lgConteo(lg.texto);
+var h = lgHistorial();
+return '<div class="ia-panel">' +
+'<div class="ia-fila">' +
+'<label class="tb-field"><span>Tipo de texto</span><select id="lg-tipo">' + lgOpciones(LG_TIPOS, lg.tipo) + "</select></label>" +
+'<label class="tb-field"><span>Nivel</span><select id="lg-nivel">' + lgOpciones(LG_NIVELES, lg.nivel) + "</select></label>" +
+'<label class="tb-field"><span>¿Qué revisar?</span><select id="lg-enfoque">' + lgOpciones(LG_ENFOQUES, lg.enfoque) + "</select></label></div>" +
+'<textarea class="ia-texto" id="lg-texto" maxlength="' + LG_MAX + '" placeholder="Escribe o pega aquí tu texto (mínimo 5 palabras). El profesor lo revisará y subrayará cada error con un color según su tipo.">' +
+escapeHtml(lg.texto) + "</textarea>" +
+'<div class="ia-fila" style="justify-content:space-between;margin-top:8px"><div class="ia-contador" id="lg-contador">' +
+"<span><b>" + c.palabras + "</b> palabras</span><span><b>" + c.caracteres + "</b>/" + LG_MAX + " caracteres</span>" +
+"<span><b>" + c.oraciones + "</b> oraciones</span><span><b>" + c.parrafos + "</b> párrafos</span><span>⏱ " + c.lectura + " min de lectura</span></div>" +
+'<div class="ia-fila"><button type="button" class="tb-secondary" id="lg-limpiar">🧹 Borrar</button>' +
+'<button type="button" class="tb-primary" id="lg-revisar"' + (lg.cargando ? " disabled" : "") + ">✨ Revisar texto</button></div></div>" +
+(lg.error ? '<div class="ia-aviso mal" style="margin-top:10px">' + escapeHtml(lg.error) + "</div>" : "") +
+'<div class="ia-fila" style="margin-top:12px">' + Object.keys(LG_CAT).map(function (k) {
+return '<span class="ia-chip on" style="--cc:' + LG_CAT[k].c + ';cursor:default"><i></i>' + escapeHtml(LG_CAT[k].n) + "</span>";
+}).join("") + "</div></div>" +
+(h.length ? '<div class="ia-panel"><h3>🕘 Revisiones recientes <small style="color:var(--muted);font-weight:600">(solo en este dispositivo)</small></h3><div class="lg-historial">' +
+h.map(function (x, i) {
+return '<button type="button" data-lg-hist="' + i + '"><span>' + escapeHtml(x.texto.slice(0, 70)) + (x.texto.length > 70 ? "…" : "") +
+"</span><b>" + (x.res && x.res.puntajes ? x.res.puntajes.general : "—") + "/100 · " +
+escapeHtml(new Date(x.fecha).toLocaleDateString("es-NI", { day: "numeric", month: "short" })) + "</b></button>";
+}).join("") + '</div><button type="button" class="tb-secondary" id="lg-borrar-hist" style="margin-top:8px">Borrar historial</button></div>' : "");
+}
+function pintarLengua() {
+var caja = $("#tb-arcade");
+if (!caja) { return; }
+iaCargarCuota(lg, "/api/lengua", function () { if (arcadeActual === "lengua" && !lg.cargando) { pintarLengua(); } });
+var html = cabeceraArcade("Profesor de lengua", [["Revisiones", iaUsos(lg)]]) +
+'<div class="ia-wrap"><div class="ia-panel" style="padding:14px 18px"><h3 style="margin:0">📝 Profesor de lengua</h3>' +
+'<p style="margin:4px 0 0;color:var(--muted);font-size:13px">Pega tu texto: la IA marca con colores los errores de ortografía, tildes, gramática, puntuación, estilo y más; te explica cada regla, te da la versión corregida y estima si el texto parece hecho con IA.</p></div>' +
+iaAvisoConfig(lg);
+if (lg.cargando) {
+html += iaCargando("El profesor está leyendo tu texto…", ["Leyendo el texto", "Buscando errores de ortografía y tildes", "Revisando gramática y puntuación", "Analizando estilo y coherencia", "Estimando señales de IA", "Preparando la versión corregida"], lg.paso || 0);
+} else if (lg.res) {
+html += lgResultado();
+} else {
+html += lgEditor();
+}
+caja.innerHTML = html + "</div>";
+ligarVolver();
+ligarLengua();
+}
+function lgIrA(i) {
+lg.sel = i;
+lg.pestana = "marcado";
+pintarLengua();
+var nodo = $('[data-lg="' + i + '"]');
+if (nodo && nodo.scrollIntoView) { nodo.scrollIntoView({ block: "center", behavior: "smooth" }); }
+}
+function lgAplicar(i) {
+var e = lg.res.errores[i];
+var m = lg.marcas.filter(function (x) { return x.i === i; })[0];
+if (!e || !m || e.aplicado) { return; }
+lg.analizado = lg.analizado.slice(0, m.a) + e.sugerencia + lg.analizado.slice(m.b);
+e.aplicado = true;
+lg.marcas = lgUbicar(lg.analizado, lg.res.errores);
+}
+function lgSiguiente() {
+var orden = lg.marcas.map(function (m) { return m.i; });
+var k = orden.indexOf(lg.sel);
+return orden.length ? orden[(k + 1) % orden.length] : -1;
+}
+function ligarLengua() {
+var area = $("#lg-texto");
+if (area) {
+area.oninput = function () {
+lg.texto = area.value;
+var c = lgConteo(lg.texto);
+var cont = $("#lg-contador");
+if (cont) {
+cont.innerHTML = "<span><b>" + c.palabras + "</b> palabras</span><span><b>" + c.caracteres + "</b>/" + LG_MAX + " caracteres</span>" +
+"<span><b>" + c.oraciones + "</b> oraciones</span><span><b>" + c.parrafos + "</b> párrafos</span><span>⏱ " + c.lectura + " min de lectura</span>";
+}
+};
+}
+[["#lg-tipo", "tipo"], ["#lg-nivel", "nivel"], ["#lg-enfoque", "enfoque"]].forEach(function (par) {
+var s = $(par[0]);
+if (s) { s.onchange = function () { lg[par[1]] = s.value; }; }
+});
+var boton = $("#lg-limpiar");
+if (boton) { boton.onclick = function () { lg.texto = ""; lg.error = ""; pintarLengua(); }; }
+boton = $("#lg-revisar");
+if (boton) { boton.onclick = lgRevisar; }
+$$("[data-lg-hist]").forEach(function (b) {
+b.onclick = function () {
+var x = lgHistorial()[+b.dataset.lgHist];
+if (!x || !x.res) { return; }
+lg.texto = x.texto; lg.analizado = x.texto; lg.tipo = x.tipo || "libre";
+lg.res = x.res; lg.res.errores.forEach(function (e) { e.aplicado = false; });
+lg.marcas = lgUbicar(lg.analizado, lg.res.errores); lg.sel = -1; lg.filtro = {}; lg.pestana = "marcado";
+pintarLengua();
+};
+});
+boton = $("#lg-borrar-hist");
+if (boton) { boton.onclick = function () { iaGuardarLocal("tb-lengua-historial", []); pintarLengua(); }; }
+$$("[data-lg]").forEach(function (m) { m.onclick = function () { lg.sel = +m.dataset.lg; pintarLengua(); }; });
+$$("[data-lg-item]").forEach(function (b) { b.onclick = function () { lgIrA(+b.dataset.lgItem); }; });
+$$("[data-lg-cat]").forEach(function (b) {
+b.onclick = function () { var k = b.dataset.lgCat; lg.filtro[k] = lg.filtro[k] === false; pintarLengua(); };
+});
+$$("[data-lg-tab]").forEach(function (b) { b.onclick = function () { lg.pestana = b.dataset.lgTab; pintarLengua(); }; });
+boton = $("#lg-aplicar");
+if (boton) { boton.onclick = function () { var sig = lgSiguiente(); lgAplicar(lg.sel); lg.sel = lg.marcas.some(function (m) { return m.i === sig; }) ? sig : -1; pintarLengua(); }; }
+boton = $("#lg-ignorar");
+if (boton) { boton.onclick = function () { lgIrA(lgSiguiente()); }; }
+boton = $("#lg-aplicar-todo");
+if (boton) {
+boton.onclick = function () {
+// De atrás hacia adelante para no mover las posiciones pendientes.
+lg.marcas.slice().sort(function (x, y) { return y.a - x.a; }).forEach(function (m) {
+var e = lg.res.errores[m.i];
+if (e.sugerencia && e.sugerencia !== e.fragmento) {
+lg.analizado = lg.analizado.slice(0, m.a) + e.sugerencia + lg.analizado.slice(m.b);
+e.aplicado = true;
+}
+});
+lg.marcas = lgUbicar(lg.analizado, lg.res.errores);
+lg.sel = -1;
+avisoToast("✨ Correcciones aplicadas. Revisa el texto y, si quieres, vuelve a revisarlo.");
+pintarLengua();
+};
+}
+boton = $("#lg-copiar-corr");
+if (boton) { boton.onclick = function () { iaCopiar(lg.res.texto_corregido); }; }
+boton = $("#lg-usar-corr");
+if (boton) { boton.onclick = function () { lg.texto = lg.res.texto_corregido; lg.res = null; pintarLengua(); }; }
+boton = $("#lg-editar");
+if (boton) { boton.onclick = function () { lg.texto = lg.analizado; lg.res = null; pintarLengua(); }; }
+boton = $("#lg-nuevo");
+if (boton) { boton.onclick = function () { lg.texto = ""; lg.res = null; lg.error = ""; pintarLengua(); }; }
+boton = $("#lg-informe");
+if (boton) {
+boton.onclick = function () {
+var r = lg.res;
+iaCopiar("INFORME DEL PROFESOR DE LENGUA · El Tablón\n\nPuntaje general: " + r.puntajes.general + "/100 (" + r.nivel_texto + ")\n" +
+LG_AREAS.map(function (a) { return "- " + a[1] + ": " + r.puntajes[a[0]]; }).join("\n") +
+"\n\nResumen: " + r.resumen + "\n\nObservaciones:\n" +
+r.errores.map(function (e, i) {
+return (i + 1) + ". [" + (LG_CAT[e.categoria] || LG_CAT.estilo).n + "] «" + e.fragmento + "»" +
+(e.sugerencia !== e.fragmento ? " → «" + e.sugerencia + "»" : "") + ": " + e.explicacion;
+}).join("\n") +
+"\n\nProbabilidad estimada de IA: " + r.ia.porcentaje + "% (" + r.ia.veredicto + "). Estimación orientativa, no es una prueba.");
+};
+}
+}
+async function lgRevisar() {
+var texto = lg.texto;
+var c = lgConteo(texto);
+if (c.palabras < 5) { lg.error = "Escribe al menos 5 palabras."; pintarLengua(); return; }
+lg.error = "";
+lg.cargando = true;
+iaAvanzarPasos(lg, 6, function () { if (arcadeActual === "lengua") { pintarLengua(); } });
+pintarLengua();
+var r = await iaLlamar("/api/lengua", "POST", { texto: texto, tipo: lg.tipo, nivel: lg.nivel, enfoque: lg.enfoque });
+lg.cargando = false;
+clearInterval(lg.pasoTimer);
+if (r.datos && typeof r.datos.usados === "number") { lg.cuota = { listo: true, usados: r.datos.usados, limite: r.datos.limite }; }
+if (!r.ok) {
+lg.error = r.datos.error || "No se pudo revisar el texto.";
+} else {
+lg.res = r.datos;
+lg.analizado = texto;
+lg.res.errores.forEach(function (e) { e.aplicado = false; });
+lg.marcas = lgUbicar(texto, lg.res.errores);
+lg.sel = -1; lg.filtro = {}; lg.pestana = "marcado";
+lgGuardarHistorial();
+}
+if (arcadeActual === "lengua") { pintarLengua(); }
+else if (r.ok) { avisoToast("📝 El Profesor de lengua terminó de revisar tu texto (Actividades → Profesor de lengua)."); }
+}
+
+/* ---------- Voleibol ---------- */
+var VB_POS = [["colocador", "Colocador/a"], ["opuesto", "Opuesto/a"], ["central", "Central"], ["receptor", "Receptor/a (punta)"], ["libero", "Líbero"]];
+var VB_HAB = [["saque", "Saque"], ["recepcion", "Recepción"], ["ataque", "Ataque"], ["bloqueo", "Bloqueo"],
+["defensa", "Defensa"], ["colocacion", "Colocación"], ["salto", "Salto"], ["velocidad", "Velocidad"]];
+var VB_SISTEMAS = [["auto", "Que la IA elija"], ["5-1", "5-1 (un colocador)"], ["4-2", "4-2 (dos colocadores)"], ["6-2", "6-2"], ["6-0", "6-0 (todos rotan)"]];
+var VB_OBJETIVOS = [["equilibrio", "Equilibrio"], ["ataque", "Potencia de ataque"], ["defensa", "Defensa y recepción"], ["aprendizaje", "Formativo (que todos jueguen)"]];
+var VB_ZONAS_ORDEN = [4, 3, 2, 5, 6, 1];
+var VB_ZONA_NOMBRE = { 1: "Zaguero der. (saca)", 2: "Delantero der.", 3: "Delantero centro", 4: "Delantero izq.", 5: "Zaguero izq.", 6: "Zaguero centro" };
+var vb = { datos: null, pestana: "plantilla", editando: null, rot: 1, cargando: false, error: "", cuota: null, cuotaPedida: false };
+function vbId() { return Math.random().toString(36).slice(2, 10); }
+function vbNuevoEquipo(nombre) {
+return { id: vbId(), nombre: nombre || "Mi equipo", categoria: "", rama: "mixta", sistema: "auto", objetivo: "equilibrio",
+rival: "", notas: "", jugadores: [], cancha: {}, libero: "", analisis: null };
+}
+function vbDatos() {
+if (!vb.datos) {
+vb.datos = iaLeerLocal("tb-voleibol", null);
+if (!vb.datos || !Array.isArray(vb.datos.equipos) || !vb.datos.equipos.length) {
+var e = vbNuevoEquipo("Mi equipo");
+vb.datos = { equipos: [e], actual: e.id };
+}
+}
+return vb.datos;
+}
+function vbEquipo() {
+var d = vbDatos();
+return d.equipos.filter(function (e) { return e.id === d.actual; })[0] || d.equipos[0];
+}
+function vbGuardar() {
+if (!iaGuardarLocal("tb-voleibol", vbDatos())) { avisoToast("No se pudo guardar en este dispositivo (almacenamiento lleno o bloqueado)."); }
+}
+function vbJug(eq, id) { return eq.jugadores.filter(function (j) { return j.id === id; })[0] || null; }
+function vbMedia(j) {
+var s = 0;
+VB_HAB.forEach(function (h) { s += +j.habilidades[h[0]] || 0; });
+return (s / VB_HAB.length).toFixed(1);
+}
+function vbPosNombre(p) { var x = VB_POS.filter(function (v) { return v[0] === p; })[0]; return x ? x[1] : p; }
+function vbTarjeta(j) {
+var esLib = j.posiciones.indexOf("libero") >= 0;
+return '<div class="vb-jug' + (j.disponible === false ? " fuera" : "") + '">' +
+'<div class="vb-jug-cab"><div class="vb-num' + (esLib ? " lib" : "") + '">' + escapeHtml(j.numero || "–") + "</div>" +
+"<div><b>" + escapeHtml(j.nombre) + "</b><small>" + (j.altura ? escapeHtml(j.altura) + " cm · " : "") + "mano " + escapeHtml(j.mano) +
+(j.disponible === false ? " · no disponible" : "") + "</small></div>" +
+'<div class="vb-media">' + vbMedia(j) + "<small>MEDIA</small></div></div>" +
+'<div class="vb-pos">' + (j.posiciones.length ? j.posiciones.map(function (p) { return "<span>" + escapeHtml(vbPosNombre(p)) + "</span>"; }).join("") : "<span>Sin posición</span>") + "</div>" +
+'<div class="vb-habs">' + VB_HAB.map(function (h) {
+var v = +j.habilidades[h[0]] || 0;
+return "<div><span>" + h[1] + '</span><u><i style="width:' + v * 20 + '%"></i></u><b>' + v + "</b></div>";
+}).join("") + "</div>" +
+(j.fortalezas ? "<p>💪 " + escapeHtml(j.fortalezas) + "</p>" : "") +
+(j.unico ? "<p>⭐ " + escapeHtml(j.unico) + "</p>" : "") +
+'<div class="vb-jug-acc"><button type="button" class="tb-secondary" data-vb-editar="' + j.id + '">✏️ Editar</button>' +
+'<button type="button" class="tb-secondary" data-vb-disp="' + j.id + '">' + (j.disponible === false ? "✅ Disponible" : "🚫 No disponible") + "</button>" +
+'<button type="button" class="tb-danger" data-vb-borrar="' + j.id + '">🗑</button></div></div>';
+}
+function vbFormulario(j) {
+return '<div class="ia-panel"><h3>' + (j.nuevo ? "➕ Nuevo jugador" : "✏️ Editar jugador") + "</h3>" +
+'<div class="vb-form">' +
+'<label class="tb-field ancho"><span>Nombre</span><input id="vb-f-nombre" maxlength="40" value="' + escapeHtml(j.nombre) + '" placeholder="Nombre o apodo"></label>' +
+'<label class="tb-field"><span>Número</span><input id="vb-f-numero" type="number" min="0" max="99" value="' + escapeHtml(j.numero) + '"></label>' +
+'<label class="tb-field"><span>Estatura (cm)</span><input id="vb-f-altura" type="number" min="100" max="230" value="' + escapeHtml(j.altura || "") + '" placeholder="Opcional"></label>' +
+'<label class="tb-field"><span>Mano hábil</span><select id="vb-f-mano">' + lgOpciones([["derecha", "Derecha"], ["izquierda", "Izquierda"], ["ambas", "Ambas"]], j.mano) + "</select></label></div>" +
+'<h4>Posiciones que domina</h4><div class="ia-fila">' + VB_POS.map(function (p) {
+return '<button type="button" class="ia-chip' + (j.posiciones.indexOf(p[0]) >= 0 ? " on" : "") + '" data-vb-pos="' + p[0] + '">' + escapeHtml(p[1]) + "</button>";
+}).join("") + "</div>" +
+'<h4>Habilidades (1 = por mejorar · 5 = excelente)</h4><div class="vb-sliders">' + VB_HAB.map(function (h) {
+return '<label><span>' + h[1] + '</span><b id="vb-v-' + h[0] + '">' + j.habilidades[h[0]] + "</b>" +
+'<input type="range" min="1" max="5" step="1" data-vb-hab="' + h[0] + '" value="' + j.habilidades[h[0]] + '"></label>';
+}).join("") + "</div>" +
+'<label class="tb-field"><span>Puntos fuertes</span><textarea id="vb-f-fuertes" maxlength="300" placeholder="Ej.: saque en salto muy potente, lee bien el bloqueo rival…">' + escapeHtml(j.fortalezas) + "</textarea></label>" +
+'<label class="tb-field"><span>Rasgos únicos</span><textarea id="vb-f-unico" maxlength="300" placeholder="Ej.: zurdo, muy buen líder en cancha, se pone nervioso en el saque…">' + escapeHtml(j.unico) + "</textarea></label>" +
+'<div class="ia-fila"><button type="button" class="tb-primary" id="vb-f-guardar">💾 Guardar</button>' +
+'<button type="button" class="tb-secondary" id="vb-f-cancelar">Cancelar</button></div></div>';
+}
+function vbPlantilla(eq) {
+if (vb.editando) { return vbFormulario(vb.editando); }
+var disp = eq.jugadores.filter(function (j) { return j.disponible !== false; }).length;
+return '<div class="ia-panel"><div class="ia-fila" style="justify-content:space-between">' +
+"<div><h3 style=\"margin:0\">👥 Plantilla · " + escapeHtml(eq.nombre) + "</h3><small style=\"color:var(--muted)\">" +
+eq.jugadores.length + " jugador(es) · " + disp + " disponible(s)" + (disp < 6 ? " · se necesitan al menos 6 para una alineación completa" : "") + "</small></div>" +
+'<button type="button" class="tb-primary" id="vb-agregar"' + (eq.jugadores.length >= 20 ? " disabled" : "") + ">➕ Agregar jugador</button></div></div>" +
+(eq.jugadores.length ? '<div class="vb-jugadores">' + eq.jugadores.map(vbTarjeta).join("") + "</div>"
+: '<div class="ia-aviso">Empieza agregando a tus jugadores con sus posiciones, habilidades, puntos fuertes y rasgos únicos. Con esa información la IA propone la mejor alineación.</div>');
+}
+// Jugador que ocupa cada zona en la rotación r (1 = inicial). Rotan en sentido horario.
+function vbEnRotacion(eq, r) {
+var salida = {};
+for (var zona = 1; zona <= 6; zona++) {
+var inicial = ((zona - 1 + (r - 1)) % 6) + 1;
+salida[zona] = eq.cancha[inicial] || "";
+}
+return salida;
+}
+function vbRol(eq, id) {
+var ia = eq.analisis && eq.analisis.titulares ? eq.analisis.titulares.filter(function (t) { return t.jugador_id === id; })[0] : null;
+if (ia && ia.rol) { return ia.rol; }
+var j = vbJug(eq, id);
+return j && j.posiciones.length ? j.posiciones.filter(function (p) { return p !== "libero"; })[0] || "" : "";
+}
+function vbPromedio(eq, ids, hab) {
+var vals = ids.map(function (id) { var j = vbJug(eq, id); return j ? +j.habilidades[hab] || 0 : 0; }).filter(function (v) { return v > 0; });
+return vals.length ? vals.reduce(function (a, b) { return a + b; }, 0) / vals.length : 0;
+}
+// Análisis sin IA: fuerza de cada rotación a partir de las habilidades.
+function vbAnalisisRotaciones(eq) {
+var filas = [];
+for (var r = 1; r <= 6; r++) {
+var z = vbEnRotacion(eq, r);
+var red = [z[2], z[3], z[4]].filter(Boolean);
+var zaga = [z[1], z[5], z[6]].filter(Boolean);
+if (eq.libero && vbJug(eq, eq.libero)) {
+// El líbero entra por el central que esté en la zaga.
+var k = zaga.filter(function (id) { return vbRol(eq, id) === "central"; })[0];
+if (k) { zaga[zaga.indexOf(k)] = eq.libero; }
+}
+var colocador = Object.keys(z).filter(function (n) { return z[n] && vbRol(eq, z[n]) === "colocador"; })[0];
+var atacantesRed = red.filter(function (id) { return vbRol(eq, id) !== "colocador"; }).length;
+var fila = {
+r: r,
+ataque: vbPromedio(eq, red, "ataque"),
+bloqueo: vbPromedio(eq, red, "bloqueo"),
+recepcion: vbPromedio(eq, zaga, "recepcion"),
+saque: z[1] ? vbPromedio(eq, [z[1]], "saque") : 0,
+atacantes: atacantesRed,
+colocador: colocador ? (+colocador <= 4 && +colocador >= 2 ? "red" : "zaga") : "—"
+};
+fila.total = (fila.ataque + fila.bloqueo + fila.recepcion + fila.saque) / 4;
+filas.push(fila);
+}
+return filas;
+}
+function vbAlertas(eq) {
+var alertas = [];
+var ids = [1, 2, 3, 4, 5, 6].map(function (z) { return eq.cancha[z]; }).filter(Boolean);
+if (ids.length < 6) { alertas.push(["", "Faltan " + (6 - ids.length) + " zona(s) por completar."]); }
+if (eq.libero && ids.indexOf(eq.libero) >= 0) { alertas.push(["", "El líbero no debe estar como titular en una zona: entra por los zagueros."]); }
+ids.forEach(function (id) {
+var j = vbJug(eq, id);
+if (j && j.disponible === false) { alertas.push(["", j.nombre + " está marcado como no disponible."]); }
+});
+var colocadores = [1, 2, 3, 4, 5, 6].filter(function (z) { return eq.cancha[z] && vbRol(eq, eq.cancha[z]) === "colocador"; });
+if (ids.length === 6 && !colocadores.length) { alertas.push(["", "No hay ningún colocador en la cancha."]); }
+if (colocadores.length === 1) {
+var zc = colocadores[0];
+var opuesta = ((zc + 2) % 6) + 1;
+var op = eq.cancha[opuesta];
+if (op && vbRol(eq, op) !== "opuesto") { alertas.push(["", "En un 5-1 conviene que el opuesto esté enfrentado al colocador (zona " + opuesta + ")."]); }
+else if (op) { alertas.push(["ok", "Colocador y opuesto enfrentados: ✔"]); }
+}
+if (ids.length === 6 && !alertas.filter(function (a) { return !a[0]; }).length) { alertas.push(["ok", "La rotación inicial está completa y sin problemas de reglamento."]); }
+return alertas;
+}
+function vbCancha(eq) {
+var disponibles = eq.jugadores.filter(function (j) { return j.disponible !== false; });
+var z = vbEnRotacion(eq, vb.rot);
+var ocupados = {};
+Object.keys(eq.cancha).forEach(function (k) { if (eq.cancha[k]) { ocupados[eq.cancha[k]] = k; } });
+var liberoEn = "";
+if (eq.libero && vbJug(eq, eq.libero)) {
+[1, 5, 6].forEach(function (n) { if (!liberoEn && z[n] && vbRol(eq, z[n]) === "central") { liberoEn = n; } });
+}
+var zonas = VB_ZONAS_ORDEN.map(function (n, idx) {
+var id = z[n];
+var j = id ? vbJug(eq, id) : null;
+var mostrar = liberoEn === n ? vbJug(eq, eq.libero) : j;
+var celda = '<div class="vb-zona' + (j ? " llena" : "") + (n === 1 ? " saca" : "") + '">' +
+'<span class="vb-zona-n">ZONA ' + n + (n === 1 ? " · 🏐 SACA" : "") + "</span>";
+if (mostrar) {
+celda += '<div class="vb-num' + (liberoEn === n ? " lib" : "") + '">' + escapeHtml(mostrar.numero || "–") + "</div><b>" + escapeHtml(mostrar.nombre) + "</b>" +
+"<small>" + (liberoEn === n ? "Líbero (por " + escapeHtml(j.nombre) + ")" : escapeHtml(vbPosNombre(vbRol(eq, id)) || "")) + "</small>";
+}
+if (vb.rot === 1) {
+celda += '<select data-vb-zona="' + n + '"><option value="">— Elegir —</option>' + disponibles.map(function (x) {
+var ocupadoEn = ocupados[x.id] && +ocupados[x.id] !== n;
+return '<option value="' + x.id + '"' + (eq.cancha[n] === x.id ? " selected" : "") + ">" +
+escapeHtml((x.numero ? "#" + x.numero + " " : "") + x.nombre + (ocupadoEn ? " (en zona " + ocupados[x.id] + ")" : "")) + "</option>";
+}).join("") + "</select>";
+}
+celda += "</div>";
+return (idx === 3 ? '<div class="vb-linea3"></div>' : "") + celda;
+}).join("");
+var filas = vbAnalisisRotaciones(eq);
+var completas = [1, 2, 3, 4, 5, 6].every(function (n) { return eq.cancha[n]; });
+var min = Math.min.apply(null, filas.map(function (f) { return f.total; }));
+var max = Math.max.apply(null, filas.map(function (f) { return f.total; }));
+return '<div class="vb-cancha-wrap"><div class="ia-panel">' +
+'<div class="ia-fila" style="justify-content:space-between"><h3 style="margin:0">🏐 Cancha · rotación ' + vb.rot + "</h3>" +
+'<div class="ia-fila"><label class="tb-field" style="margin:0;min-width:170px"><span>Líbero</span><select id="vb-libero"><option value="">Sin líbero</option>' +
+disponibles.map(function (x) { return '<option value="' + x.id + '"' + (eq.libero === x.id ? " selected" : "") + ">" + escapeHtml((x.numero ? "#" + x.numero + " " : "") + x.nombre) + "</option>"; }).join("") +
+"</select></label></div></div>" +
+'<div class="vb-cancha" style="margin-top:14px"><div class="vb-red"></div><div class="vb-red-txt">RED</div><div class="vb-zonas">' + zonas + "</div></div>" +
+'<div class="vb-rot">' + [1, 2, 3, 4, 5, 6].map(function (r) {
+return '<button type="button" class="tb-secondary' + (vb.rot === r ? " on" : "") + '" data-vb-rot="' + r + '">R' + r + "</button>";
+}).join("") + "</div>" +
+'<p style="margin:4px 0 0;text-align:center;color:var(--muted);font-size:12px">' +
+(vb.rot === 1 ? "Elige quién empieza en cada zona. Luego mira cómo queda en cada rotación (R2 a R6)." : "Así queda la cancha después de " + (vb.rot - 1) + " rotación(es). Para cambiar jugadores vuelve a R1.") + "</p>" +
+'<div class="ia-fila" style="justify-content:center;margin-top:10px"><button type="button" class="tb-secondary" id="vb-vaciar">🧹 Vaciar cancha</button>' +
+(eq.analisis && eq.analisis.titulares && eq.analisis.titulares.length ? '<button type="button" class="tb-secondary" id="vb-usar-ia2">🤖 Usar la alineación de la IA</button>' : "") + "</div></div>" +
+'<div class="ia-panel"><h3>📊 Fuerza por rotación</h3>' +
+(completas ? '<table class="vb-tabla"><tr><th>ROT.</th><th>ATAQUE</th><th>BLOQUEO</th><th>RECEP.</th><th>SAQUE</th><th>TOTAL</th></tr>' +
+filas.map(function (f) {
+return '<tr class="' + (f.total === min && min !== max ? "debil" : f.total === max && min !== max ? "fuerte" : "") + '"><td><b>R' + f.r + "</b></td><td>" +
+f.ataque.toFixed(1) + "</td><td>" + f.bloqueo.toFixed(1) + "</td><td>" + f.recepcion.toFixed(1) + "</td><td>" + f.saque.toFixed(1) + "</td><td><b>" + f.total.toFixed(1) + "</b></td></tr>";
+}).join("") + "</table>" +
+'<p style="font-size:11.5px;color:var(--muted);margin:8px 0 0">Promedios de 1 a 5 según las habilidades que cargaste. En verde la rotación más fuerte, en rojo la más débil: ahí conviene reforzar la recepción o pedir tiempo.</p>'
+: '<p style="font-size:13px;color:var(--muted)">Completa las 6 zonas para ver la fuerza de cada rotación.</p>') +
+'<h4>Revisión de reglas</h4><div class="vb-alertas">' + vbAlertas(eq).map(function (a) {
+return '<div class="' + a[0] + '">' + (a[0] ? "✅ " : "⚠️ ") + escapeHtml(a[1]) + "</div>";
+}).join("") + "</div></div></div>";
+}
+function vbMini(eq, titulares) {
+var porZona = {};
+titulares.forEach(function (t) { porZona[t.zona] = t; });
+return '<div class="vb-mini"><div class="vb-red"></div>' + VB_ZONAS_ORDEN.map(function (n) {
+var t = porZona[n];
+var j = t ? vbJug(eq, t.jugador_id) : null;
+return "<div>" + (j ? escapeHtml((j.numero ? "#" + j.numero + " " : "") + j.nombre) : "—") + "<span>Z" + n + (t ? " · " + escapeHtml(vbPosNombre(t.rol)) : "") + "</span></div>";
+}).join("") + "</div>";
+}
+function vbResultadoIA(eq) {
+var a = eq.analisis;
+if (!a) { return ""; }
+var nombre = function (id) { var j = vbJug(eq, id); return j ? (j.numero ? "#" + j.numero + " " : "") + j.nombre : "(jugador eliminado)"; };
+var html = '<div class="ia-panel"><div class="ia-fila" style="justify-content:space-between"><h3 style="margin:0">🤖 Sistema recomendado: ' + escapeHtml(a.sistema || "—") + "</h3>" +
+'<small style="color:var(--muted)">' + escapeHtml(a.fecha ? new Date(a.fecha).toLocaleString("es-NI", { dateStyle: "medium", timeStyle: "short" }) : "") + "</small></div>" +
+'<p style="font-size:13.5px">' + escapeHtml(a.por_que_sistema) + "</p>" +
+'<div class="ia-grid2"><div>' + vbMini(eq, a.titulares) +
+'<div class="ia-fila" style="margin-top:10px"><button type="button" class="tb-primary" id="vb-usar-ia">🏐 Usar esta alineación en la cancha</button></div></div><div>' +
+(a.libero && a.libero.jugador_id ? "<p><b>🛡️ Líbero:</b> " + escapeHtml(nombre(a.libero.jugador_id)) + (a.libero.reemplaza_a ? " · entra por " + escapeHtml(a.libero.reemplaza_a) : "") + "<br><small>" + escapeHtml(a.libero.motivo) + "</small></p>"
+: (a.libero && a.libero.motivo ? "<p><b>🛡️ Líbero:</b> <small>" + escapeHtml(a.libero.motivo) + "</small></p>" : "")) +
+"</div></div>" +
+"<h4>Por qué cada titular</h4><div class=\"lg-lista\" style=\"max-height:none\">" + a.titulares.slice().sort(function (x, y) { return x.zona - y.zona; }).map(function (t) {
+return '<div class="lg-item" style="--cc:#ff9a3c;cursor:default"><i></i><span><b>Zona ' + t.zona + " · " + escapeHtml(nombre(t.jugador_id)) + " (" + escapeHtml(vbPosNombre(t.rol)) + ")</b><small>" + escapeHtml(t.motivo) + "</small></span></div>";
+}).join("") + "</div>" +
+(a.suplentes.length ? "<h4>Banca</h4><ul style=\"font-size:13px;margin:0;padding-left:18px\">" + a.suplentes.map(function (s) {
+return "<li><b>" + escapeHtml(nombre(s.jugador_id)) + ":</b> " + escapeHtml(s.cuando_entra) + "</li>";
+}).join("") + "</ul>" : "") + "</div>";
+html += '<div class="ia-panel"><h3>🎯 Plan táctico</h3><div class="vb-tacticas">' +
+[["saque", "🏐 Saque"], ["recepcion", "🙌 Recepción"], ["ataque", "💥 Ataque"], ["bloqueo", "🧱 Bloqueo"], ["defensa", "🛡️ Defensa"], ["transicion", "🔄 Transición"]].map(function (t) {
+return a.tacticas[t[0]] ? "<div><b>" + t[1] + "</b>" + escapeHtml(a.tacticas[t[0]]) + "</div>" : "";
+}).join("") + "</div>" +
+(a.plan_rival ? "<h4>Contra el rival</h4><p style=\"font-size:13.5px\">" + escapeHtml(a.plan_rival) + "</p>" : "") +
+(a.rotaciones.length ? "<h4>Rotación por rotación</h4><div class=\"vb-tacticas\">" + a.rotaciones.map(function (r) {
+return "<div><b>R" + r.rotacion + "</b>" + (r.recepcion ? "<small style=\"color:var(--muted)\">Recepción: " + escapeHtml(r.recepcion) + "</small><br>" : "") + escapeHtml(r.clave) + "</div>";
+}).join("") + "</div>" : "") +
+(a.ejercicios.length ? "<h4>Ejercicios recomendados</h4><div class=\"lg-practica\">" + a.ejercicios.map(function (x) {
+return "<details><summary>🏋️ " + escapeHtml(x.nombre) + " — " + escapeHtml(x.objetivo) + "</summary><p>" + escapeHtml(x.descripcion) + "</p></details>";
+}).join("") + "</div>" : "") +
+(a.advertencias.length ? '<h4>Atención</h4><div class="vb-alertas">' + a.advertencias.map(function (x) { return "<div>⚠️ " + escapeHtml(x) + "</div>"; }).join("") + "</div>" : "") +
+"</div>";
+var enlace = function (f) {
+var u = safeUrl(f.url);
+return u ? '<a href="' + u + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(f.titulo || f.url) + "</a>" : escapeHtml(f.titulo);
+};
+html += '<div class="ia-panel"><h3>📚 Fuentes oficiales consultadas</h3><div class="vb-fuentes">' +
+(a.fuentes.length ? a.fuentes.map(function (f) { return "<div>🔗 " + enlace(f) + (f.aporte ? "<br><small style=\"color:var(--muted)\">" + escapeHtml(f.aporte) + "</small>" : "") + "</div>"; }).join("")
+: "<p style=\"margin:0;color:var(--muted)\">La IA no citó fuentes concretas en este análisis.</p>") +
+(a.consultadas && a.consultadas.length ? "<details><summary style=\"cursor:pointer;font-weight:800\">Otras páginas que revisó (" + a.consultadas.length + ")</summary>" +
+a.consultadas.map(function (f) { return "<div>• " + enlace(f) + "</div>"; }).join("") + "</details>" : "") +
+'</div><p style="font-size:11.5px;color:var(--muted);margin:10px 0 0">Recomendación orientativa generada con IA a partir de los datos que cargaste. La decisión final es del entrenador.</p></div>';
+return html;
+}
+function vbPanelIA(eq) {
+var disp = eq.jugadores.filter(function (j) { return j.disponible !== false; }).length;
+var html = '<div class="ia-panel"><h3>🤖 Pide la mejor alineación</h3>' +
+'<p style="margin:0 0 6px;color:var(--muted);font-size:13px">La IA estudia a tus ' + disp + " jugador(es) disponibles, investiga en sitios oficiales de voleibol (FIVB, Volleyball World, federaciones) y te propone el sistema, la alineación, el líbero y el plan táctico.</p>" +
+'<div class="vb-form">' +
+'<label class="tb-field"><span>Categoría</span><input id="vb-e-cat" maxlength="60" value="' + escapeHtml(eq.categoria) + '" placeholder="Ej.: sub-16 escolar"></label>' +
+'<label class="tb-field"><span>Rama</span><select id="vb-e-rama">' + lgOpciones([["mixta", "Mixta"], ["femenina", "Femenina"], ["masculina", "Masculina"]], eq.rama) + "</select></label>" +
+'<label class="tb-field"><span>Sistema</span><select id="vb-e-sis">' + lgOpciones(VB_SISTEMAS, eq.sistema) + "</select></label>" +
+'<label class="tb-field"><span>Objetivo</span><select id="vb-e-obj">' + lgOpciones(VB_OBJETIVOS, eq.objetivo) + "</select></label>" +
+'<label class="tb-field ancho"><span>Rival (opcional)</span><textarea id="vb-e-rival" maxlength="600" placeholder="Ej.: saca muy fuerte, su mejor atacante es zurda y ataca por zona 2, bloqueo bajo…">' + escapeHtml(eq.rival) + "</textarea></label>" +
+'<label class="tb-field ancho"><span>Notas del equipo (opcional)</span><textarea id="vb-e-notas" maxlength="600" placeholder="Ej.: torneo intercolegial, cancha pequeña, poca experiencia en 5-1…">' + escapeHtml(eq.notas) + "</textarea></label></div>" +
+'<div class="ia-fila"><button type="button" class="tb-primary" id="vb-pedir"' + (vb.cargando || disp < 2 ? " disabled" : "") + ">🤖 Recomendar alineación</button>" +
+'<small style="color:var(--muted)">' + escapeHtml(iaUsos(vb)) + "</small></div>" +
+(disp < 6 ? '<div class="ia-aviso" style="margin-top:10px">Tienes ' + disp + " jugador(es) disponible(s). Para una alineación completa se necesitan 6 (y 7 con líbero).</div>" : "") +
+(vb.error ? '<div class="ia-aviso mal" style="margin-top:10px">' + escapeHtml(vb.error) + "</div>" : "") + "</div>";
+if (vb.cargando) {
+html += iaCargando("Analizando tu equipo…", ["Estudiando a cada jugador", "Investigando en sitios oficiales de voleibol", "Comparando sistemas de juego", "Armando la alineación y las rotaciones", "Preparando el plan táctico"], vb.paso || 0);
+} else {
+html += vbResultadoIA(eq);
+}
+return html;
+}
+function vbCabeceraEquipos() {
+var d = vbDatos();
+var eq = vbEquipo();
+return '<div class="ia-panel" style="padding:14px 18px"><div class="ia-fila" style="justify-content:space-between">' +
+'<div><h3 style="margin:0">🏐 Voleibol · alineaciones y táctica</h3><small style="color:var(--muted)">Tus equipos se guardan en este dispositivo. Usa Exportar para pasarlos a otro.</small></div>' +
+'<div class="ia-fila"><select id="vb-equipo" style="padding:8px;border-radius:10px;background:#081226;color:#fff;border:1px solid var(--line)">' +
+d.equipos.map(function (e) { return '<option value="' + e.id + '"' + (e.id === eq.id ? " selected" : "") + ">" + escapeHtml(e.nombre) + "</option>"; }).join("") +
+'</select><button type="button" class="tb-secondary" id="vb-eq-nuevo" title="Nuevo equipo">➕</button>' +
+'<button type="button" class="tb-secondary" id="vb-eq-renombrar" title="Cambiar nombre">✏️</button>' +
+'<button type="button" class="tb-secondary" id="vb-eq-borrar" title="Borrar equipo">🗑</button>' +
+'<button type="button" class="tb-secondary" id="vb-exportar">⬇️ Exportar</button>' +
+'<label class="tb-secondary" style="cursor:pointer">⬆️ Importar<input type="file" id="vb-importar" accept="application/json,.json" style="display:none"></label></div></div>' +
+'<div class="vb-tabs" style="margin-top:12px">' + [["plantilla", "👥 Plantilla"], ["cancha", "🏐 Cancha y rotaciones"], ["ia", "🤖 Alineación con IA"]].map(function (t) {
+return '<button type="button" class="ia-chip' + (vb.pestana === t[0] ? " on" : "") + '" data-vb-tab="' + t[0] + '">' + t[1] + "</button>";
+}).join("") + "</div></div>";
+}
+function pintarVoley() {
+var caja = $("#tb-arcade");
+if (!caja) { return; }
+iaCargarCuota(vb, "/api/voleibol", function () { if (arcadeActual === "voley" && !vb.cargando) { pintarVoley(); } });
+var eq = vbEquipo();
+var html = cabeceraArcade("Voleibol", [["Jugadores", eq.jugadores.length], ["Análisis IA", iaUsos(vb)]]) +
+'<div class="ia-wrap">' + vbCabeceraEquipos() + (vb.pestana === "ia" ? iaAvisoConfig(vb) : "");
+if (vb.pestana === "plantilla") { html += vbPlantilla(eq); }
+else if (vb.pestana === "cancha") { html += vbCancha(eq); }
+else { html += vbPanelIA(eq); }
+caja.innerHTML = html + "</div>";
+ligarVolver();
+ligarVoley();
+}
+function vbLeerFormEquipo(eq) {
+var campos = { categoria: "#vb-e-cat", rama: "#vb-e-rama", sistema: "#vb-e-sis", objetivo: "#vb-e-obj", rival: "#vb-e-rival", notas: "#vb-e-notas" };
+Object.keys(campos).forEach(function (k) { var n = $(campos[k]); if (n) { eq[k] = n.value; } });
+}
+function vbUsarIA(eq) {
+if (!eq.analisis) { return; }
+eq.cancha = {};
+eq.analisis.titulares.forEach(function (t) { if (vbJug(eq, t.jugador_id)) { eq.cancha[t.zona] = t.jugador_id; } });
+eq.libero = eq.analisis.libero && vbJug(eq, eq.analisis.libero.jugador_id) ? eq.analisis.libero.jugador_id : "";
+vb.rot = 1;
+vb.pestana = "cancha";
+vbGuardar();
+avisoToast("🏐 Alineación de la IA colocada en la cancha.");
+pintarVoley();
+}
+function ligarVoley() {
+var eq = vbEquipo();
+var d = vbDatos();
+$$("[data-vb-tab]").forEach(function (b) {
+b.onclick = function () { if (vb.pestana === "ia") { vbLeerFormEquipo(eq); vbGuardar(); } vb.pestana = b.dataset.vbTab; vb.editando = null; pintarVoley(); };
+});
+var s = $("#vb-equipo");
+if (s) { s.onchange = function () { d.actual = s.value; vb.editando = null; vb.rot = 1; vbGuardar(); pintarVoley(); }; }
+var b = $("#vb-eq-nuevo");
+if (b) {
+b.onclick = function () {
+if (d.equipos.length >= 10) { avisoToast("Máximo 10 equipos."); return; }
+var nombre = (window.prompt("Nombre del nuevo equipo:", "Equipo " + (d.equipos.length + 1)) || "").trim().slice(0, 60);
+if (!nombre) { return; }
+var e = vbNuevoEquipo(nombre);
+d.equipos.push(e); d.actual = e.id; vb.pestana = "plantilla"; vbGuardar(); pintarVoley();
+};
+}
+b = $("#vb-eq-renombrar");
+if (b) { b.onclick = function () { var n = (window.prompt("Nuevo nombre del equipo:", eq.nombre) || "").trim().slice(0, 60); if (n) { eq.nombre = n; vbGuardar(); pintarVoley(); } }; }
+b = $("#vb-eq-borrar");
+if (b) {
+b.onclick = function () {
+if (!window.confirm("¿Borrar el equipo «" + eq.nombre + "» con todos sus jugadores? No se puede deshacer.")) { return; }
+d.equipos = d.equipos.filter(function (e) { return e.id !== eq.id; });
+if (!d.equipos.length) { d.equipos.push(vbNuevoEquipo("Mi equipo")); }
+d.actual = d.equipos[0].id; vbGuardar(); pintarVoley();
+};
+}
+b = $("#vb-exportar");
+if (b) {
+b.onclick = function () {
+var blob = new Blob([JSON.stringify({ tipo: "tablon-voleibol", version: 1, equipo: eq }, null, 2)], { type: "application/json" });
+var a = document.createElement("a");
+a.href = URL.createObjectURL(blob);
+a.download = "voleibol-" + eq.nombre.replace(/[^\w-]+/g, "_").slice(0, 40) + ".json";
+document.body.appendChild(a); a.click(); a.remove();
+setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
+};
+}
+var imp = $("#vb-importar");
+if (imp) {
+imp.onchange = function () {
+var f = imp.files && imp.files[0];
+if (!f) { return; }
+if (f.size > 500000) { avisoToast("El archivo es demasiado grande."); return; }
+f.text().then(function (texto) {
+var x = JSON.parse(texto);
+if (!x || x.tipo !== "tablon-voleibol" || !x.equipo || !Array.isArray(x.equipo.jugadores)) { throw new Error("formato"); }
+var e = vbNuevoEquipo(String(x.equipo.nombre || "Equipo importado").slice(0, 60));
+["categoria", "rival", "notas"].forEach(function (k) { e[k] = String(x.equipo[k] || "").slice(0, 600); });
+["rama", "sistema", "objetivo"].forEach(function (k) { if (typeof x.equipo[k] === "string") { e[k] = x.equipo[k].slice(0, 20); } });
+e.jugadores = x.equipo.jugadores.slice(0, 20).map(vbNormalizarJugador);
+if (d.equipos.length >= 10) { throw new Error("max"); }
+d.equipos.push(e); d.actual = e.id; vbGuardar();
+avisoToast("✅ Equipo importado: " + e.nombre);
+pintarVoley();
+}).catch(function (err) { avisoToast(err && err.message === "max" ? "Máximo 10 equipos." : "El archivo no es un equipo válido del tablón."); });
+};
+}
+b = $("#vb-agregar");
+if (b) { b.onclick = function () { vb.editando = vbNormalizarJugador({ nuevo: true }); pintarVoley(); }; }
+$$("[data-vb-editar]").forEach(function (x) {
+x.onclick = function () { var j = vbJug(eq, x.dataset.vbEditar); if (j) { vb.editando = JSON.parse(JSON.stringify(j)); pintarVoley(); } };
+});
+$$("[data-vb-disp]").forEach(function (x) {
+x.onclick = function () { var j = vbJug(eq, x.dataset.vbDisp); if (j) { j.disponible = j.disponible === false; vbGuardar(); pintarVoley(); } };
+});
+$$("[data-vb-borrar]").forEach(function (x) {
+x.onclick = function () {
+var j = vbJug(eq, x.dataset.vbBorrar);
+if (!j || !window.confirm("¿Quitar a " + j.nombre + " de la plantilla?")) { return; }
+eq.jugadores = eq.jugadores.filter(function (y) { return y.id !== j.id; });
+Object.keys(eq.cancha).forEach(function (k) { if (eq.cancha[k] === j.id) { delete eq.cancha[k]; } });
+if (eq.libero === j.id) { eq.libero = ""; }
+vbGuardar(); pintarVoley();
+};
+});
+if (vb.editando) {
+var ed = vb.editando;
+$$("[data-vb-pos]").forEach(function (x) {
+x.onclick = function () {
+var p = x.dataset.vbPos;
+var k = ed.posiciones.indexOf(p);
+if (k >= 0) { ed.posiciones.splice(k, 1); } else { ed.posiciones.push(p); }
+x.classList.toggle("on", k < 0);
+};
+});
+$$("[data-vb-hab]").forEach(function (x) {
+x.oninput = function () { ed.habilidades[x.dataset.vbHab] = +x.value; var v = $("#vb-v-" + x.dataset.vbHab); if (v) { v.textContent = x.value; } };
+});
+b = $("#vb-f-cancelar");
+if (b) { b.onclick = function () { vb.editando = null; pintarVoley(); }; }
+b = $("#vb-f-guardar");
+if (b) {
+b.onclick = function () {
+ed.nombre = ($("#vb-f-nombre").value || "").trim().slice(0, 40);
+if (!ed.nombre) { avisoToast("Escribe el nombre del jugador."); return; }
+ed.numero = String(Math.max(0, Math.min(99, parseInt($("#vb-f-numero").value, 10) || 0)) || "");
+var alt = parseInt($("#vb-f-altura").value, 10);
+ed.altura = alt >= 100 && alt <= 230 ? alt : "";
+ed.mano = $("#vb-f-mano").value;
+ed.fortalezas = ($("#vb-f-fuertes").value || "").trim().slice(0, 300);
+ed.unico = ($("#vb-f-unico").value || "").trim().slice(0, 300);
+var limpio = vbNormalizarJugador(ed);
+delete limpio.nuevo;
+var k = eq.jugadores.map(function (j) { return j.id; }).indexOf(limpio.id);
+if (k >= 0) { eq.jugadores[k] = limpio; } else { eq.jugadores.push(limpio); }
+vb.editando = null; vbGuardar(); pintarVoley();
+};
+}
+}
+$$("[data-vb-zona]").forEach(function (x) {
+x.onchange = function () {
+var n = x.dataset.vbZona;
+// Un jugador solo puede estar en una zona: si ya estaba en otra, se mueve.
+Object.keys(eq.cancha).forEach(function (k) { if (eq.cancha[k] === x.value) { delete eq.cancha[k]; } });
+if (x.value) { eq.cancha[n] = x.value; } else { delete eq.cancha[n]; }
+if (eq.libero === x.value) { eq.libero = ""; }
+vbGuardar(); pintarVoley();
+};
+});
+s = $("#vb-libero");
+if (s) {
+s.onchange = function () {
+Object.keys(eq.cancha).forEach(function (k) { if (eq.cancha[k] === s.value) { delete eq.cancha[k]; } });
+eq.libero = s.value; vbGuardar(); pintarVoley();
+};
+}
+$$("[data-vb-rot]").forEach(function (x) { x.onclick = function () { vb.rot = +x.dataset.vbRot; pintarVoley(); }; });
+b = $("#vb-vaciar");
+if (b) { b.onclick = function () { eq.cancha = {}; eq.libero = ""; vb.rot = 1; vbGuardar(); pintarVoley(); }; }
+b = $("#vb-usar-ia");
+if (b) { b.onclick = function () { vbUsarIA(eq); }; }
+b = $("#vb-usar-ia2");
+if (b) { b.onclick = function () { vbUsarIA(eq); }; }
+b = $("#vb-pedir");
+if (b) { b.onclick = function () { vbLeerFormEquipo(eq); vbGuardar(); vbPedir(eq); }; }
+}
+function vbNormalizarJugador(j) {
+j = j && typeof j === "object" ? j : {};
+var h = j.habilidades && typeof j.habilidades === "object" ? j.habilidades : {};
+return {
+id: /^[a-z0-9]{1,16}$/i.test(String(j.id || "")) ? String(j.id) : vbId(),
+nuevo: !!j.nuevo,
+nombre: String(j.nombre || "").slice(0, 40),
+numero: String(j.numero || "").replace(/\D/g, "").slice(0, 2),
+altura: +j.altura >= 100 && +j.altura <= 230 ? +j.altura : "",
+mano: ["derecha", "izquierda", "ambas"].indexOf(j.mano) >= 0 ? j.mano : "derecha",
+posiciones: (Array.isArray(j.posiciones) ? j.posiciones : []).filter(function (p) { return VB_POS.some(function (v) { return v[0] === p; }); }),
+habilidades: VB_HAB.reduce(function (o, x) { var v = Math.round(+h[x[0]] || 3); o[x[0]] = Math.max(1, Math.min(5, v)); return o; }, {}),
+fortalezas: String(j.fortalezas || "").slice(0, 300),
+unico: String(j.unico || "").slice(0, 300),
+disponible: j.disponible !== false
+};
+}
+async function vbPedir(eq) {
+vb.error = "";
+vb.cargando = true;
+iaAvanzarPasos(vb, 5, function () { if (arcadeActual === "voley") { pintarVoley(); } });
+pintarVoley();
+var r = await iaLlamar("/api/voleibol", "POST", {
+equipo: { nombre: eq.nombre, categoria: eq.categoria, rama: eq.rama, sistema: eq.sistema, objetivo: eq.objetivo, rival: eq.rival, notas: eq.notas },
+jugadores: eq.jugadores
+});
+vb.cargando = false;
+clearInterval(vb.pasoTimer);
+if (r.datos && typeof r.datos.usados === "number") { vb.cuota = { listo: true, usados: r.datos.usados, limite: r.datos.limite }; }
+if (!r.ok) {
+vb.error = r.datos.error || "No se pudo hacer el análisis.";
+} else {
+var a = r.datos;
+delete a.usados; delete a.limite;
+a.fecha = new Date().toISOString();
+eq.analisis = a;
+vbGuardar();
+}
+if (arcadeActual === "voley") { pintarVoley(); }
+else if (r.ok) { avisoToast("🏐 La IA terminó tu alineación (Actividades → Voleibol)."); }
 }
 /* ===================================================================
    ENTREGAS DE TAREAS · AVISOS AL CELULAR
