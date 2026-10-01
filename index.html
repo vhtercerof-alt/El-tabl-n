@@ -6736,6 +6736,32 @@ animation-duration: .01ms !important; animation-iteration-count: 1 !important; t
 .lg-practica details { padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: #ffffff08; font-size: 13px; }
 .lg-practica summary { cursor: pointer; font-weight: 750; }
 .lg-historial { display: grid; gap: 6px; }
+.lg-m.dudoso { text-decoration-style: dashed; }
+.lg-m:focus-visible { outline: 2px solid var(--cc); outline-offset: 2px; }
+.lg-detalle.activo { position: sticky; bottom: 10px; z-index: 6; background: #0d1733f2; box-shadow: 0 10px 30px #0008; backdrop-filter: blur(6px); }
+.lg-detalle .lg-cerrar { margin-left: auto; width: 30px; height: 30px; border: 1px solid var(--line); border-radius: 50%; background: #ffffff0d; color: inherit; cursor: pointer; font-weight: 900; }
+.lg-dudoso { padding: 8px 10px; border-radius: 10px; background: #ffd23f1a; color: #ffe08a; font-size: 12.5px !important; }
+.lg-nota-puntaje { margin: 10px 0 0; color: var(--muted); font-size: 11.5px; line-height: 1.45; }
+.lg-progreso { margin-bottom: 10px; font-size: 12px; font-weight: 750; }
+.lg-progreso div { display: flex; justify-content: space-between; }
+.lg-progreso u { display: block; height: 7px; margin-top: 4px; border-radius: 99px; background: #ffffff14; overflow: hidden; }
+.lg-progreso u i { display: block; height: 100%; border-radius: 99px; background: var(--ok); transition: width .3s; }
+.lg-item.descartada b { text-decoration: line-through; }
+.lg-ia-de { font-size: 14px; color: var(--muted); font-weight: 800; }
+.lg-midic-linea { margin: 8px 0 0; color: var(--muted); font-size: 11.5px; }
+.lg-enlace { padding: 0; border: 0; background: none; color: var(--accent); font: inherit; font-weight: 800; text-decoration: underline; cursor: pointer; }
+.lg-nav { display: flex; gap: 6px; flex-wrap: wrap; }
+.lg-envios { display: grid; gap: 8px; }
+.lg-envio { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 12px; align-items: center; padding: 10px 12px; border: 1px solid var(--line); border-radius: 14px; background: #ffffff08; color: inherit; text-align: left; cursor: pointer; }
+.lg-envio:hover { border-color: var(--bc); }
+.lg-envio-nota { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; border: 3px solid var(--bc); font-size: 17px; font-weight: 900; }
+.lg-envio-txt { display: grid; gap: 3px; min-width: 0; font-size: 13px; }
+.lg-envio-txt span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); }
+.lg-envio-txt small { color: var(--muted); font-weight: 750; }
+.lg-envio-panel { border-left: 4px solid var(--accent); }
+.lg-comentario { min-height: 110px; font-size: 14.5px; }
+.lg-coment-alumno { margin-top: 10px; padding: 12px 14px; border-radius: 12px; background: #52dfa814; border: 1px solid #52dfa840; font-size: 13.5px; line-height: 1.5; }
+.lg-coment-alumno p { margin: 4px 0 0; white-space: pre-wrap; }
 .lg-historial button { display: flex; justify-content: space-between; gap: 10px; padding: 9px 11px; border: 1px solid var(--line); border-radius: 11px; background: #ffffff08; color: inherit; cursor: pointer; text-align: left; font-size: 12.5px; }
 /* Voleibol */
 .vb-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
@@ -6801,6 +6827,8 @@ animation-duration: .01ms !important; animation-iteration-count: 1 !important; t
 #tablon-root.tb-light .ia-texto { background: #f4f6fc; color: #16203a; }
 #tablon-root.tb-light .lg-anillo div { background: #fff; }
 #tablon-root.tb-light .ia-aviso { color: #2a3558; }
+#tablon-root.tb-light .lg-detalle.activo { background: #fffffff5; box-shadow: 0 10px 30px #16203a33; }
+#tablon-root.tb-light .lg-dudoso { color: #7a5a00; }
 @media (max-width: 900px) {
 .ia-grid2, .vb-cancha-wrap { grid-template-columns: 1fr; }
 .lg-top { grid-template-columns: auto minmax(0, 1fr); }
@@ -15904,7 +15932,7 @@ var datos = arcadeDatos();
 var retos = retosPendientes().length;
 var tarjetas = [
 { id: "lengua", ico: "📝", color: "#ff5d73", titulo: "Profesor de lengua",
-texto: "Pega tu texto y el profesor subraya con colores cada error de ortografía, tildes, gramática y puntuación, te explica la regla, te da la versión corregida y estima si parece hecho con IA.",
+texto: "Pega tu texto y el profesor subraya con colores cada error de ortografía, tildes, gramática y puntuación, te explica la regla, te da la versión corregida y señala rasgos de estilo tipo IA.",
 pie: "Motor integrado · sin límites", accion: "Revisar →", badge: "NUEVO" },
 { id: "voley", ico: "🏐", color: "#ff9a3c", titulo: "Voleibol: alineaciones",
 texto: "Crea tu plantilla con los puntos fuertes de cada jugador, arma la cancha, mira cada rotación y obtén al instante la mejor alineación y un plan táctico.",
@@ -22546,7 +22574,7 @@ navigator.clipboard.writeText(texto).then(function () { avisoToast("📋 Copiado
 } else { avisoToast("Tu navegador no permite copiar automáticamente."); }
 }
 
-/* ---------- Profesor de lengua ---------- */
+/* ---------- Profesor de lengua (remasterizado) ---------- */
 var LG_CAT = {
 ortografia: { n: "Ortografía", c: "#ff5d73", ico: "🔤" },
 acentuacion: { n: "Tildes", c: "#ff9a3c", ico: "´" },
@@ -22566,8 +22594,33 @@ var LG_TIPOS = [["libre", "Texto libre"], ["ensayo", "Ensayo"], ["narracion", "N
 var LG_NIVELES = [["primaria", "Primaria"], ["secundaria", "Secundaria"], ["universidad", "Universidad"]];
 var LG_ENFOQUES = [["completo", "Revisión completa"], ["basico", "Ortografía y puntuación"], ["redaccion", "Redacción y estilo"]];
 var LG_MAX = 6000;
+// Regionalismos de uso común en Nicaragua que el motor acepta aunque el diccionario no los traiga.
+// El owner puede ampliar esta lista; cada estudiante tiene además su propio diccionario.
+var LG_REGIONALES = ("chavalo chavala chavalos chavalas chunche chunches chele chela cheles chelas maje majes " +
+"gallopinto nacatamal nacatamales pinol pinolillo vigorón quesillo quesillos güegüense nicaragüense nicaragüenses sos").split(" ");
+// Topónimos: se aceptan con mayúscula; en minúscula se marcan como error de mayúsculas.
+var LG_TOPONIMOS = {};
+("Nicaragua Managua Ocotal Dipilto Mozonte Macuelizo Somoto Estelí Jinotega Matagalpa Chinandega Masaya Carazo Rivas Boaco " +
+"Chontales Juigalpa Bluefields Bilwi Siuna Waspam Wiwilí Quilalí Telpaneca Palacagüina Condega Segovia Madriz Jalapa Bonanza Rosita León Granada")
+.split(" ").forEach(function (w) { LG_TOPONIMOS[w.toLowerCase()] = w; });
+// Estos topónimos también son palabras comunes (león, granada, rosita, bonanza, jalapa): en minúscula no se marcan.
+var LG_TOPO_COMUNES = ["león", "granada", "rosita", "bonanza", "jalapa"];
+var LG_ABREV = /^(etc|sr|sra|srta|dr|dra|lic|licda|ing|prof|profa|pág|págs|núm|aprox|ej|art|cap|vol|av|tel|cía|depto|dpto|ud|uds|vd|vds|lcdo|lcda)$/i;
 var lg = { texto: "", tipo: "libre", nivel: "secundaria", enfoque: "completo", cargando: false, error: "",
 res: null, analizado: "", marcas: [], sel: -1, filtro: {}, pestana: "marcado", cuota: null, cuotaPedida: false, verHistorial: false };
+function lgMiDic() { var d = iaLeerLocal("tb-lengua-midic", []); return Array.isArray(d) ? d : []; }
+function lgAgregarMiDic(palabra) {
+var w = String(palabra || "").toLowerCase().trim();
+if (!w) { return; }
+var d = lgMiDic().filter(function (x) { return x !== w; });
+d.unshift(w);
+iaGuardarLocal("tb-lengua-midic", d.slice(0, 300));
+}
+function lgAceptada(w) {
+var x = String(w || "").toLowerCase();
+if (LG_REGIONALES.indexOf(x) >= 0 || lgMiDic().indexOf(x) >= 0) { return true; }
+return !!LG_TOPONIMOS[x] && (w[0] !== w[0].toLowerCase() || LG_TOPO_COMUNES.indexOf(x) >= 0);
+}
 function lgColor(v) { return v >= 85 ? "#52dfa8" : v >= 70 ? "#8cc63f" : v >= 50 ? "#ffd23f" : "#ff7187"; }
 function lgConteo(texto) {
 var t = texto.trim();
@@ -22577,15 +22630,67 @@ return { palabras: palabras, caracteres: texto.length, oraciones: oraciones,
 parrafos: t ? t.split(/\n\s*\n/).filter(function (p) { return p.trim(); }).length : 0,
 lectura: Math.max(1, Math.round(palabras / 200)) };
 }
-// Ubica cada error en el texto, en orden y sin que se encimen.
+function lgContadorHtml(c) {
+return "<span><b>" + c.palabras + "</b> palabras</span><span><b>" + c.caracteres + "</b>/" + LG_MAX + " caracteres</span>" +
+"<span><b>" + c.oraciones + "</b> oraciones</span><span><b>" + c.parrafos + "</b> párrafos</span><span>⏱ " + c.lectura + " min de lectura</span>";
+}
+// Deja cualquier respuesta (motor integrado o IA) con la forma que espera la pantalla.
+function lgNormalizar(d, texto) {
+d = d && typeof d === "object" ? d : {};
+function num(v, def) { v = Number(v); return isFinite(v) ? Math.max(0, Math.min(100, Math.round(v))) : def; }
+function lista(v) { return Array.isArray(v) ? v.filter(function (x) { return x !== null && x !== undefined && x !== ""; }).map(String) : []; }
+var p = d.puntajes && typeof d.puntajes === "object" ? d.puntajes : {};
+var general = num(p.general, 0);
+d.puntajes = { general: general };
+LG_AREAS.forEach(function (a) { d.puntajes[a[0]] = num(p[a[0]], general); });
+d.errores = (Array.isArray(d.errores) ? d.errores : []).filter(function (e) {
+return e && typeof e.fragmento === "string" && e.fragmento.length > 0;
+}).map(function (e) {
+return { fragmento: e.fragmento, categoria: LG_CAT[e.categoria] ? e.categoria : "estilo",
+gravedad: /^(grave|moderado|leve)$/.test(e.gravedad) ? e.gravedad : "moderado",
+explicacion: String(e.explicacion || ""), sugerencia: typeof e.sugerencia === "string" ? e.sugerencia : e.fragmento,
+regla: e.regla ? String(e.regla) : "", dudoso: !!e.dudoso, aplicado: !!e.aplicado, ignorado: !!e.ignorado,
+a: typeof e.a === "number" ? e.a : undefined, b: typeof e.b === "number" ? e.b : undefined };
+});
+var ia = d.ia && typeof d.ia === "object" ? d.ia : {};
+d.ia = { porcentaje: num(ia.porcentaje, 0), veredicto: String(ia.veredicto || "Sin estimación"), senales: lista(ia.senales), nota: ia.nota ? String(ia.nota) : "" };
+d.fortalezas = lista(d.fortalezas);
+d.consejos = lista(d.consejos);
+d.practica = (Array.isArray(d.practica) ? d.practica : []).filter(function (x) { return x && x.enunciado; }).map(function (x) {
+return { enunciado: String(x.enunciado), respuesta: String(x.respuesta || "") };
+});
+d.resumen = String(d.resumen || "");
+d.nivel_texto = String(d.nivel_texto || "");
+d.texto_corregido = typeof d.texto_corregido === "string" && d.texto_corregido ? d.texto_corregido : texto;
+d.no_localizados = Number(d.no_localizados) || 0;
+d.motor = "local";
+d.total_palabras = Number(d.total_palabras) || Math.max(1, (texto.match(/[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+/g) || []).length);
+d.puntajes_originales = d.puntajes_originales && typeof d.puntajes_originales === "object" ? d.puntajes_originales : null;
+d.enviado = d.enviado || null;
+return d;
+}
+// Ubica cada observación en el texto. Usa primero las posiciones exactas
+// (motor integrado y correcciones aplicadas) y solo busca el fragmento cuando no las hay (IA).
 function lgUbicar(texto, errores) {
 var usados = [];
-var pos = 0;
 function libre(a, b) { return !usados.some(function (u) { return a < u[1] && b > u[0]; }); }
 var marcas = [];
+var ubicados = {};
 errores.forEach(function (e, i) {
-if (e.aplicado) { return; }
+if (e.ignorado) { e.perdido = false; return; }
+var f = e.aplicado ? e.sugerencia : e.fragmento;
+if (f && typeof e.a === "number" && typeof e.b === "number" && texto.slice(e.a, e.b) === f && libre(e.a, e.b)) {
+usados.push([e.a, e.b]);
+e.perdido = false;
+ubicados[i] = 1;
+marcas.push({ i: i, a: e.a, b: e.b });
+}
+});
+var pos = 0;
+errores.forEach(function (e, i) {
+if (e.ignorado || e.aplicado || ubicados[i]) { return; }
 var f = e.fragmento;
+if (!f) { e.perdido = true; return; }
 var desde = pos;
 var idx = -1;
 for (var intento = 0; intento < 2 && idx < 0; intento++) {
@@ -22596,12 +22701,35 @@ desde = 0;
 }
 if (idx < 0) { e.perdido = true; return; }
 e.perdido = false;
+e.a = idx; e.b = idx + f.length;
 usados.push([idx, idx + f.length]);
 marcas.push({ i: i, a: idx, b: idx + f.length });
 pos = idx + f.length;
 });
 return marcas.sort(function (x, y) { return x.a - y.a; });
 }
+// Aplica (o deshace) una corrección y desplaza las posiciones de las demás.
+function lgCambiar(i, deshacer) {
+var e = lg.res && lg.res.errores[i];
+if (!e || typeof e.a !== "number" || e.ignorado) { return false; }
+if (deshacer ? !e.aplicado : e.aplicado) { return false; }
+var actual = deshacer ? e.sugerencia : e.fragmento;
+var nuevo = deshacer ? e.fragmento : e.sugerencia;
+if (lg.analizado.slice(e.a, e.b) !== actual) { return false; }
+var finViejo = e.b;
+var delta = nuevo.length - actual.length;
+lg.analizado = lg.analizado.slice(0, e.a) + nuevo + lg.analizado.slice(e.b);
+e.b = e.a + nuevo.length;
+e.aplicado = !deshacer;
+lg.res.errores.forEach(function (o, k) {
+if (k !== i && typeof o.a === "number" && o.a >= finViejo) { o.a += delta; o.b += delta; }
+});
+return true;
+}
+function lgAplicar(i) { if (lgCambiar(i, false)) { lg.marcas = lgUbicar(lg.analizado, lg.res.errores); } }
+function lgDeshacer(i) { if (lgCambiar(i, true)) { lg.marcas = lgUbicar(lg.analizado, lg.res.errores); } }
+function lgCambia(e) { return !!(e && e.sugerencia && e.sugerencia !== e.fragmento); }
+function lgAplicable(e) { return lgCambia(e) && !e.aplicado && !e.ignorado && !e.perdido; }
 function lgHojaMarcada() {
 var t = lg.analizado;
 var html = "";
@@ -22611,8 +22739,9 @@ var e = lg.res.errores[m.i];
 var cat = LG_CAT[e.categoria] || LG_CAT.estilo;
 var oculto = lg.filtro[e.categoria] === false;
 html += escapeHtml(t.slice(pos, m.a)) +
-'<mark class="lg-m ' + e.gravedad + (oculto ? " oculto" : "") + (lg.sel === m.i ? " sel" : "") +
-'" style="--cc:' + cat.c + '" data-lg="' + m.i + '" title="' + escapeHtml(cat.n) + '">' +
+'<mark class="lg-m ' + e.gravedad + (oculto ? " oculto" : "") + (e.aplicado ? " hecho" : "") + (e.dudoso && !e.aplicado ? " dudoso" : "") +
+(lg.sel === m.i ? " sel" : "") + '" style="--cc:' + cat.c + '" data-lg="' + m.i + '" tabindex="0" role="button" title="' +
+escapeHtml(e.aplicado ? "Corrección aplicada" : cat.n) + '" aria-label="' + escapeHtml((e.aplicado ? "Corregido: " : cat.n + ": ") + t.slice(m.a, m.b)) + '">' +
 escapeHtml(t.slice(m.a, m.b)) + "</mark>";
 pos = m.b;
 });
@@ -22647,49 +22776,99 @@ return lista.map(function (o) {
 return '<option value="' + o[0] + '"' + (o[0] === valor ? " selected" : "") + ">" + escapeHtml(o[1]) + "</option>";
 }).join("");
 }
+// Recalcula el puntaje sin las observaciones que el estudiante descartó (falsos positivos).
+function lgRecalcular() {
+var r = lg.res;
+if (!r || lg.soloLectura) { return; }
+if (!r.puntajes_originales) { r.puntajes_originales = JSON.parse(JSON.stringify(r.puntajes)); }
+var vigentes = r.errores.filter(function (e) { return !e.ignorado; });
+var pn = lgPuntuar(vigentes, r.total_palabras);
+r.puntajes = pn.p;
+r.nivel_texto = pn.nivel;
+}
 function lgDetalle() {
-if (lg.sel < 0 || !lg.res.errores[lg.sel]) {
+var e = lg.sel >= 0 && lg.res.errores[lg.sel];
+if (!e) {
 return '<div class="lg-detalle"><p>👆 Toca cualquier parte subrayada para ver el error, la regla y cómo corregirlo.</p></div>';
 }
-var e = lg.res.errores[lg.sel];
 var cat = LG_CAT[e.categoria] || LG_CAT.estilo;
-var cambia = e.sugerencia && e.sugerencia !== e.fragmento;
-return '<div class="lg-detalle" style="--cc:' + cat.c + '">' +
+var cambia = lgCambia(e);
+var unaPalabra = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+$/.test(e.fragmento);
+var ro = lg.soloLectura;
+return '<div class="lg-detalle activo" style="--cc:' + cat.c + '">' +
 '<div class="ia-fila"><span class="ia-chip on" style="--cc:' + cat.c + '"><i></i>' + escapeHtml(cat.n) + "</span>" +
-'<small style="color:var(--muted);font-weight:800">' + (e.gravedad === "grave" ? "🔴 Grave" : e.gravedad === "moderado" ? "🟠 Moderado" : "🟡 Leve") + "</small></div>" +
+'<small style="color:var(--muted);font-weight:800">' + (e.gravedad === "grave" ? "🔴 Grave" : e.gravedad === "moderado" ? "🟠 Moderado" : "🟡 Leve") + "</small>" +
+'<button type="button" class="lg-cerrar" id="lg-cerrar" aria-label="Cerrar detalle">✕</button></div>' +
 '<div class="lg-cambio"><s>' + escapeHtml(e.fragmento) + "</s>" + (cambia ? " → <ins>" + escapeHtml(e.sugerencia) + "</ins>" : "") + "</div>" +
+(e.dudoso && !e.aplicado && !ro ? '<p class="lg-dudoso">⚠️ Sugerencia dudosa: puede ser un nombre propio, una palabra local o una corrección poco segura. Revísala antes de aplicarla; no se incluye en «Aplicar todas».</p>' : "") +
 "<p>" + escapeHtml(e.explicacion) + "</p>" +
 (e.regla ? '<p class="lg-regla">📘 <b>Regla:</b> ' + escapeHtml(e.regla) + "</p>" : "") +
 '<div class="ia-fila" style="margin-top:8px">' +
-(cambia && !e.aplicado && !e.perdido ? '<button type="button" class="tb-primary" id="lg-aplicar">✔ Aplicar corrección</button>' : "") +
-(e.aplicado ? '<span style="color:var(--ok);font-weight:800">✔ Corrección aplicada</span>' : "") +
+(!ro && cambia && !e.aplicado && !e.perdido ? '<button type="button" class="tb-primary" id="lg-aplicar">✔ Aplicar corrección</button>' : "") +
+(e.aplicado ? '<span style="color:var(--ok);font-weight:800">✔ Corrección aplicada</span>' + (!ro ? '<button type="button" class="tb-secondary" id="lg-deshacer">↩ Deshacer</button>' : "") : "") +
+(!ro && !e.aplicado ? '<button type="button" class="tb-secondary" id="lg-descartar" title="Quita esta observación y recalcula el puntaje">🚫 No es error</button>' : "") +
+(!ro && !e.aplicado && e.categoria === "ortografia" && unaPalabra ? '<button type="button" class="tb-secondary" id="lg-midic" title="No volverá a marcarse en tus revisiones">📖 Agregar a mi diccionario</button>' : "") +
 '<button type="button" class="tb-secondary" id="lg-ignorar">Siguiente →</button></div></div>';
+}
+function lgIaBloque(r) {
+var v = r.ia.porcentaje;
+var iaColor = v >= 60 ? "#ff7187" : v >= 30 ? "#ffd23f" : "#52dfa8";
+return '<div class="lg-ia"><small>🤖 ÍNDICE DE ESTILO TIPO IA</small>' +
+'<div class="lg-ia-num" style="color:' + iaColor + '">' + v + '<span class="lg-ia-de"> / 100</span></div>' +
+'<div class="lg-ia-barra"><i style="left:' + v + '%"></i></div>' +
+'<b style="font-size:13px">' + escapeHtml(r.ia.veredicto) + "</b>" +
+"<details><summary>¿Por qué?</summary>" +
+(r.ia.senales.length ? "<ul>" + r.ia.senales.map(function (s) { return "<li>" + escapeHtml(s) + "</li>"; }).join("") + "</ul>" : "<p>No se detectaron señales claras.</p>") +
+(r.ia.nota ? "<p>" + escapeHtml(r.ia.nota) + "</p>" : "") + "</details>" +
+"<small>Mide rasgos de estilo, no la autoría. Un texto bien escrito por una persona puede salir alto, y uno hecho con IA, bajo. No sirve como prueba.</small></div>";
+}
+function lgPanelEnvio() {
+var en = lg.envio;
+if (!lg.soloLectura || !en) { return ""; }
+var staff = isStaff();
+var fecha = new Date(en.created_at).toLocaleString("es-NI", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+var tipo = (LG_TIPOS.filter(function (t) { return t[0] === en.tipo; })[0] || ["", en.tipo])[1];
+return '<div class="ia-panel lg-envio-panel">' +
+'<div class="ia-fila" style="justify-content:space-between"><div>' +
+'<span class="lg-nivel">' + (staff ? "👩‍🏫 Revisión enviada por " : "📤 Tu envío") + (staff ? "<b>" + escapeHtml(lg.nombres[en.profile_id] || "Estudiante") + "</b>" : "") + "</span>" +
+'<p class="lg-nota-puntaje" style="margin:4px 0 0">' + escapeHtml(fecha) + " · " + escapeHtml(tipo || "") + " · Puntaje al enviar: <b>" + en.puntaje + "/100</b></p></div>" +
+'<button type="button" class="tb-secondary" id="lg-volver-lista">← Volver a la lista</button></div>' +
+'<p class="lg-nota-puntaje">Las marcas verdes son correcciones que el estudiante aplicó; las tachadas en la lista, observaciones que descartó.</p>' +
+(staff
+? '<label class="tb-field" style="margin-top:10px"><span>Comentario para el estudiante</span><textarea class="ia-texto lg-comentario" id="lg-comentario" maxlength="2000" placeholder="Escribe una devolución breve: qué hizo bien y qué debe practicar.">' + escapeHtml(en.comentario || "") + "</textarea></label>" +
+'<div class="ia-fila" style="margin-top:8px"><button type="button" class="tb-primary" id="lg-guardar-coment"' + (lg.guardando ? " disabled" : "") + ">💾 Guardar comentario</button>" +
+'<button type="button" class="tb-secondary" id="lg-borrar-envio">🗑 Eliminar envío</button>' +
+(en.revisado_at ? '<small style="color:var(--muted)">Comentado el ' + escapeHtml(new Date(en.revisado_at).toLocaleDateString("es-NI", { day: "numeric", month: "short" })) + "</small>" : "") + "</div>"
+: '<div class="lg-coment-alumno">' + (en.comentario ? "<b>💬 Comentario del profesor</b><p>" + escapeHtml(en.comentario) + "</p>" : "<p>⏳ El profesor todavía no ha comentado este texto.</p>") + "</div>" +
+'<div class="ia-fila" style="margin-top:8px"><button type="button" class="tb-secondary" id="lg-borrar-envio">🗑 Eliminar envío</button></div>') +
+"</div>";
 }
 function lgResultado() {
 var r = lg.res;
 var p = r.puntajes;
+var ro = lg.soloLectura;
 var conteoCat = {};
-r.errores.forEach(function (e) { conteoCat[e.categoria] = (conteoCat[e.categoria] || 0) + 1; });
-var pendientes = r.errores.filter(function (e) { return !e.aplicado && !e.perdido && e.sugerencia && e.sugerencia !== e.fragmento; }).length;
-var iaColor = r.ia.porcentaje >= 60 ? "#ff7187" : r.ia.porcentaje >= 30 ? "#ffd23f" : "#52dfa8";
-var html = '<div class="ia-panel"><div class="lg-top">' +
+r.errores.forEach(function (e) { if (!e.ignorado) { conteoCat[e.categoria] = (conteoCat[e.categoria] || 0) + 1; } });
+var pendientes = r.errores.filter(function (e) { return lgAplicable(e) && !e.dudoso; }).length;
+var dudosas = r.errores.filter(function (e) { return lgAplicable(e) && e.dudoso; }).length;
+var total = r.errores.length;
+var atendidas = r.errores.filter(function (e) { return e.aplicado || e.ignorado; }).length;
+var descartadas = r.errores.filter(function (e) { return e.ignorado; }).length;
+var ajustado = r.puntajes_originales && r.puntajes_originales.general !== p.general;
+var html = lgPanelEnvio() + '<div class="ia-panel"><div class="lg-top">' +
 '<div class="lg-anillo" style="--p:' + p.general + ";--ac:" + lgColor(p.general) + '"><div>' + p.general + "<small>DE 100</small></div></div>" +
-'<div><span class="lg-nivel">' + escapeHtml(r.nivel_texto) + "</span>" +
+"<div>" + (r.nivel_texto ? '<span class="lg-nivel">' + escapeHtml(r.nivel_texto) + "</span>" : "") +
 '<p class="lg-resumen">' + escapeHtml(r.resumen) + "</p>" +
-'<small style="color:var(--muted)">' + (r.motor === "ia" ? "🤖 IA de Google · " : "🧠 Motor integrado · ") + r.errores.length + " observación(es)" +
+'<small style="color:var(--muted)">🧠 Motor integrado · ' + total + " observación(es)" +
 (r.no_localizados ? " · " + r.no_localizados + " no se pudo(ieron) ubicar en el texto" : "") + "</small></div>" +
-'<div class="lg-ia"><small>🤖 ' + (r.motor === "ia" ? "PROBABILIDAD ESTIMADA DE IA" : "ÍNDICE DE ESTILO TIPO IA") + "</small>" +
-'<div class="lg-ia-num" style="color:' + iaColor + '">' + r.ia.porcentaje + "%</div>" +
-'<div class="lg-ia-barra"><i style="left:' + r.ia.porcentaje + '%"></i></div>' +
-"<b style=\"font-size:13px\">" + escapeHtml(r.ia.veredicto) + "</b>" +
-"<details><summary>¿Por qué?</summary>" +
-(r.ia.senales.length ? "<ul>" + r.ia.senales.map(function (s) { return "<li>" + escapeHtml(s) + "</li>"; }).join("") + "</ul>" : "<p>No se detectaron señales claras.</p>") +
-(r.ia.nota ? "<p>" + escapeHtml(r.ia.nota) + "</p>" : "") + "</details>" +
-"<small>Es una estimación orientativa, no una prueba. Ningún detector de IA es 100 % confiable.</small></div></div>" +
+lgIaBloque(r) + "</div>" +
 '<div class="lg-barras">' + LG_AREAS.map(function (a) {
 var v = p[a[0]];
 return '<div class="lg-barra" style="--bc:' + lgColor(v) + '"><div><span>' + a[1] + "</span><span>" + v + "</span></div><u><i style=\"width:" + v + '%"></i></u></div>';
-}).join("") + "</div></div>";
+}).join("") + "</div>" +
+'<p class="lg-nota-puntaje">' + (ajustado
+? "Puntaje ajustado: sin las " + descartadas + " observación(es) descartada(s) (antes " + r.puntajes_originales.general + "/100). Aplicar correcciones no cambia el puntaje: mide el texto tal como lo escribiste."
+: "El puntaje mide el texto tal como lo escribiste. Si descartas observaciones que no son errores, se recalcula.") + "</p></div>";
 html += '<div class="ia-grid2"><div class="ia-panel">' +
 '<div class="lg-tabs">' +
 [["marcado", "🖍️ Texto marcado"], ["corregido", "✅ Versión corregida"], ["comparar", "↔️ Comparar"]].map(function (t) {
@@ -22698,25 +22877,29 @@ return '<button type="button" class="ia-chip' + (lg.pestana === t[0] ? " on" : "
 if (lg.pestana === "marcado") {
 html += '<div class="ia-fila" style="margin-bottom:10px">' + Object.keys(LG_CAT).filter(function (k) { return conteoCat[k]; }).map(function (k) {
 var off = lg.filtro[k] === false;
-return '<button type="button" class="ia-chip ' + (off ? "off" : "on") + '" style="--cc:' + LG_CAT[k].c + '" data-lg-cat="' + k + '"><i></i>' +
+return '<button type="button" class="ia-chip ' + (off ? "off" : "on") + '" style="--cc:' + LG_CAT[k].c + '" data-lg-cat="' + k + '" aria-pressed="' + (!off) + '"><i></i>' +
 escapeHtml(LG_CAT[k].n) + " · " + conteoCat[k] + "</button>";
 }).join("") + "</div>" +
 '<div class="lg-hoja" id="lg-hoja">' + lgHojaMarcada() + "</div>" + lgDetalle();
 } else if (lg.pestana === "corregido") {
 html += '<div class="lg-hoja">' + escapeHtml(r.texto_corregido) + "</div>" +
+'<p class="lg-nota-puntaje">Las sugerencias dudosas (posibles nombres o palabras locales) no se cambian aquí: revísalas en «Texto marcado».</p>' +
 '<div class="ia-fila" style="margin-top:10px"><button type="button" class="tb-primary" id="lg-copiar-corr">📋 Copiar versión corregida</button>' +
-'<button type="button" class="tb-secondary" id="lg-usar-corr">✏️ Llevar al editor</button></div>';
+(!ro ? '<button type="button" class="tb-secondary" id="lg-usar-corr">✏️ Llevar al editor</button>' : "") + "</div>";
 } else {
 html += '<p style="margin:0 0 8px;color:var(--muted);font-size:12.5px"><span class="lg-del">tachado</span> = se quita · <span class="lg-ins">verde</span> = se agrega</p>' +
-'<div class="lg-hoja">' + lgDiff(lg.analizado, r.texto_corregido) + "</div>";
+'<div class="lg-hoja">' + lgDiff(lg.texto_original || lg.analizado, r.texto_corregido) + "</div>";
 }
 html += '</div><div class="ia-panel"><h3>📝 Observaciones</h3>' +
-(pendientes ? '<button type="button" class="tb-primary" id="lg-aplicar-todo" style="width:100%;margin-bottom:10px">✨ Aplicar las ' + pendientes + " correcciones</button>" : "") +
-'<div class="lg-lista">' + (r.errores.length ? r.errores.map(function (e, i) {
+(total ? '<div class="lg-progreso"><div><span>Atendidas</span><b>' + atendidas + " / " + total + "</b></div><u><i style=\"width:" + Math.round(atendidas / total * 100) + '%"></i></u></div>' : "") +
+(!ro && pendientes ? '<button type="button" class="tb-primary" id="lg-aplicar-todo" style="width:100%;margin-bottom:6px">✨ Aplicar las ' + pendientes + " correcciones seguras</button>" : "") +
+(!ro && dudosas ? '<p class="lg-nota-puntaje" style="margin:0 0 10px">⚠️ ' + dudosas + " sugerencia(s) dudosa(s) quedan para revisar una por una.</p>" : "") +
+'<div class="lg-lista" id="lg-lista">' + (total ? r.errores.map(function (e, i) {
 var cat = LG_CAT[e.categoria] || LG_CAT.estilo;
-return '<button type="button" class="lg-item' + (e.aplicado ? " hecho" : "") + (lg.sel === i ? " sel" : "") + '" style="--cc:' + cat.c + '" data-lg-item="' + i + '"><i></i><span><b>' +
-(e.aplicado ? "✔ " : "") + escapeHtml(e.fragmento) + (e.sugerencia && e.sugerencia !== e.fragmento ? " → " + escapeHtml(e.sugerencia) : "") + "</b><small>" +
-escapeHtml(cat.n) + (e.perdido && !e.aplicado ? " · no se pudo marcar en el texto" : "") + "</small></span></button>";
+var estado = e.aplicado ? " · corregida" : e.ignorado ? " · descartada" : e.perdido ? " · no se pudo marcar en el texto" : e.dudoso ? " · dudosa" : "";
+return '<button type="button" class="lg-item' + (e.aplicado || e.ignorado ? " hecho" : "") + (e.ignorado ? " descartada" : "") + (lg.sel === i ? " sel" : "") + '" style="--cc:' + cat.c + '" data-lg-item="' + i + '"><i></i><span><b>' +
+(e.aplicado ? "✔ " : e.ignorado ? "🚫 " : "") + escapeHtml(e.fragmento) + (lgCambia(e) ? " → " + escapeHtml(e.sugerencia) : "") + "</b><small>" +
+escapeHtml(cat.n) + estado + "</small></span></button>";
 }).join("") : "<p>🎉 ¡No se encontraron errores!</p>") + "</div></div></div>";
 html += '<div class="lg-tarjetas">' +
 '<div class="ia-panel"><h3>💪 Lo que haces bien</h3><ul>' + (r.fortalezas.map(function (s) { return "<li>" + escapeHtml(s) + "</li>"; }).join("") || "<li>—</li>") + "</ul></div>" +
@@ -22724,207 +22907,406 @@ html += '<div class="lg-tarjetas">' +
 '<div class="ia-panel"><h3>🏋️ Practica</h3><div class="lg-practica">' + (r.practica.map(function (x, i) {
 return "<details><summary>" + (i + 1) + ". " + escapeHtml(x.enunciado) + "</summary><p>✅ " + escapeHtml(x.respuesta) + "</p></details>";
 }).join("") || "<p>—</p>") + "</div></div></div>";
-html += '<div class="ia-fila"><button type="button" class="tb-secondary" id="lg-editar">✏️ Editar y volver a revisar</button>' +
+if (!ro) {
+html += '<div class="ia-fila"><button type="button" class="tb-primary" id="lg-editar">🔁 Editar mi versión y volver a revisar</button>' +
+(me && client ? (r.enviado
+? '<button type="button" class="tb-secondary" disabled>✔ Enviado al profesor</button>'
+: '<button type="button" class="tb-secondary" id="lg-enviar"' + (lg.enviando ? " disabled" : "") + ">📤 Enviar al profesor</button>") : "") +
 '<button type="button" class="tb-secondary" id="lg-informe">📋 Copiar informe</button>' +
 '<button type="button" class="tb-secondary" id="lg-nuevo">🆕 Texto nuevo</button></div>';
+} else {
+html += '<div class="ia-fila"><button type="button" class="tb-secondary" id="lg-informe">📋 Copiar informe</button></div>';
+}
 return html;
 }
-function lgHistorial() { return iaLeerLocal("tb-lengua-historial", []); }
+function lgHistorial() { var h = iaLeerLocal("tb-lengua-historial", []); return Array.isArray(h) ? h : []; }
 function lgGuardarHistorial() {
-var h = lgHistorial().filter(function (x) { return x.texto !== lg.analizado; });
-h.unshift({ fecha: new Date().toISOString(), texto: lg.analizado, tipo: lg.tipo, res: lg.res });
-while (h.length > 8 && !iaGuardarLocal("tb-lengua-historial", h.slice(0, 8))) { h.pop(); }
-iaGuardarLocal("tb-lengua-historial", h.slice(0, 8));
+var h = lgHistorial().filter(function (x) { return x && x.texto !== lg.analizado; });
+h.unshift({ fecha: new Date().toISOString(), texto: lg.analizado, tipo: lg.tipo, nivel: lg.nivel, enfoque: lg.enfoque, res: lg.res });
+h = h.slice(0, 8);
+// Si el almacenamiento se llena, se descartan las revisiones más antiguas hasta que quepa.
+while (h.length && !iaGuardarLocal("tb-lengua-historial", h)) { h.pop(); }
 }
 function lgEditor() {
 var c = lgConteo(lg.texto);
 var h = lgHistorial();
+var midic = lgMiDic();
 return '<div class="ia-panel">' +
 '<div class="ia-fila">' +
 '<label class="tb-field"><span>Tipo de texto</span><select id="lg-tipo">' + lgOpciones(LG_TIPOS, lg.tipo) + "</select></label>" +
 '<label class="tb-field"><span>Nivel</span><select id="lg-nivel">' + lgOpciones(LG_NIVELES, lg.nivel) + "</select></label>" +
 '<label class="tb-field"><span>¿Qué revisar?</span><select id="lg-enfoque">' + lgOpciones(LG_ENFOQUES, lg.enfoque) + "</select></label></div>" +
-'<textarea class="ia-texto" id="lg-texto" maxlength="' + LG_MAX + '" placeholder="Escribe o pega aquí tu texto (mínimo 5 palabras). El profesor lo revisará y subrayará cada error con un color según su tipo.">' +
+'<textarea class="ia-texto" id="lg-texto" maxlength="' + LG_MAX + '" spellcheck="false" placeholder="Escribe o pega aquí tu texto (mínimo 5 palabras). El profesor lo revisará y subrayará cada error con un color según su tipo.">' +
 escapeHtml(lg.texto) + "</textarea>" +
-'<div class="ia-fila" style="justify-content:space-between;margin-top:8px"><div class="ia-contador" id="lg-contador">' +
-"<span><b>" + c.palabras + "</b> palabras</span><span><b>" + c.caracteres + "</b>/" + LG_MAX + " caracteres</span>" +
-"<span><b>" + c.oraciones + "</b> oraciones</span><span><b>" + c.parrafos + "</b> párrafos</span><span>⏱ " + c.lectura + " min de lectura</span></div>" +
+'<div class="ia-fila" style="justify-content:space-between;margin-top:8px"><div class="ia-contador" id="lg-contador">' + lgContadorHtml(c) + "</div>" +
 '<div class="ia-fila"><button type="button" class="tb-secondary" id="lg-limpiar">🧹 Borrar</button>' +
-'<button type="button" class="tb-primary" id="lg-revisar"' + (lg.cargando ? " disabled" : "") + ">✨ Revisar texto</button>" +
-(lg.cuota && lg.cuota.listo ? '<button type="button" class="tb-secondary" id="lg-revisar-ia"' + (lg.cargando ? " disabled" : "") + ' title="Usa la IA de Google (requiere clave en Vercel)">🤖 Con IA de Google</button>' : "") +
-"</div></div>" +
-(lg.error ? '<div class="ia-aviso mal" style="margin-top:10px">' + escapeHtml(lg.error) + "</div>" : "") +
+'<button type="button" class="tb-primary" id="lg-revisar"' + (lg.cargando ? " disabled" : "") + ' title="Atajo: Ctrl + Enter">✨ Revisar texto</button></div></div>' +
+(lg.error ? '<div class="ia-aviso mal" style="margin-top:10px" role="alert">' + escapeHtml(lg.error) + "</div>" : "") +
 '<div class="ia-fila" style="margin-top:12px">' + Object.keys(LG_CAT).map(function (k) {
 return '<span class="ia-chip on" style="--cc:' + LG_CAT[k].c + ';cursor:default"><i></i>' + escapeHtml(LG_CAT[k].n) + "</span>";
 }).join("") + "</div>" +
-'<p style="margin:10px 0 0;color:var(--muted);font-size:11.5px">🧠 <b>Revisar texto</b> usa el motor integrado: funciona al instante, sin límites y tu texto no sale de tu dispositivo.' +
-(lg.cuota && lg.cuota.listo ? " 🤖 <b>Con IA de Google</b> envía el texto a Gemini: no incluyas datos personales." : "") + "</p></div>" +
+'<p style="margin:10px 0 0;color:var(--muted);font-size:11.5px">🧠 El motor integrado funciona al instante, sin límites, y tu texto no sale de tu dispositivo (salvo que tú lo envíes al profesor). Acepta el voseo y palabras de uso común en Nicaragua.</p>' +
+(lg.enfoque === "basico" ? '<p class="lg-nota-puntaje">Enfoque «Ortografía y puntuación»: se omiten las observaciones de estilo, vocabulario y repetición.</p>' : "") +
+(lg.enfoque === "redaccion" ? '<p class="lg-nota-puntaje">Enfoque «Redacción y estilo»: además de lo normal, se señalan muletillas y oraciones poco claras con más detalle.</p>' : "") +
+(midic.length ? '<p class="lg-midic-linea">📖 Mi diccionario: <b>' + midic.length + "</b> palabra(s) que no se marcan como error · " +
+'<button type="button" class="lg-enlace" id="lg-vaciar-midic">Vaciar</button></p>' : "") + "</div>" +
 (h.length ? '<div class="ia-panel"><h3>🕘 Revisiones recientes <small style="color:var(--muted);font-weight:600">(solo en este dispositivo)</small></h3><div class="lg-historial">' +
 h.map(function (x, i) {
-return '<button type="button" data-lg-hist="' + i + '"><span>' + escapeHtml(x.texto.slice(0, 70)) + (x.texto.length > 70 ? "…" : "") +
+return '<button type="button" data-lg-hist="' + i + '"><span>' + escapeHtml(String(x.texto || "").slice(0, 70)) + (String(x.texto || "").length > 70 ? "…" : "") +
 "</span><b>" + (x.res && x.res.puntajes ? x.res.puntajes.general : "—") + "/100 · " +
 escapeHtml(new Date(x.fecha).toLocaleDateString("es-NI", { day: "numeric", month: "short" })) + "</b></button>";
 }).join("") + '</div><button type="button" class="tb-secondary" id="lg-borrar-hist" style="margin-top:8px">Borrar historial</button></div>' : "");
 }
-function pintarLengua() {
+/* ---------- Envíos al profesor (Supabase: tb_lengua_revisiones) ---------- */
+var LG_TABLA = "tb_lengua_revisiones";
+var LG_SQL = "ACTIVAR-lengua-revisiones.sql";
+function lgMensajeError(error) {
+if (faltaTablaTb(error)) {
+return isOwner() ? "Para activar los envíos al profesor ejecuta supabase/" + LG_SQL + " en el SQL Editor de Supabase y recarga la página."
+: "Los envíos al profesor aún no están activados.";
+}
+return (error && error.message) || "No se pudo conectar con el servidor.";
+}
+async function lgEnviar() {
+if (!me || !client || !lg.res || lg.enviando) { return; }
+if (!window.confirm("Tu texto y su revisión se enviarán al profesor (y al equipo del tablón). ¿Enviar?")) { return; }
+lg.enviando = true;
+pintarLengua();
+var res = JSON.parse(JSON.stringify(lg.res));
+delete res.enviado;
+var r = await client.from(LG_TABLA).insert({
+profile_id: me.id, texto_original: lg.texto_original || lg.analizado, texto_final: lg.analizado,
+tipo: lg.tipo, nivel: lg.nivel, puntaje: lg.res.puntajes.general, resultado: res
+}).select("id").single();
+lg.enviando = false;
+if (r.error) { avisoToast("⚠️ " + lgMensajeError(r.error)); }
+else { lg.res.enviado = r.data.id; lg.lista = null; avisoToast("📤 Enviado. Verás el comentario del profesor en «Mis envíos»."); }
+pintarLengua();
+}
+async function lgCargarLista() {
+if (!me || !client) { lg.listaError = "Inicia sesión para ver los envíos."; return; }
+lg.listaCargando = true;
+lg.listaError = "";
+var q = client.from(LG_TABLA).select("id,profile_id,tipo,puntaje,comentario,revisado_at,created_at,texto_final")
+.order("created_at", { ascending: false }).limit(150);
+if (lg.vista === "envios") { q = q.eq("profile_id", me.id); }
+var r = await q;
+lg.listaCargando = false;
+if (r.error) { lg.listaError = lgMensajeError(r.error); lg.lista = []; return; }
+lg.lista = r.data || [];
+var faltan = lg.lista.map(function (x) { return x.profile_id; }).filter(function (id, i, a) { return a.indexOf(id) === i && !lg.nombres[id]; });
+if (faltan.length) {
+var pr = await client.from("profiles").select("id,display_name,username").in("id", faltan);
+(pr.data || []).forEach(function (pf) { lg.nombres[pf.id] = nombreDe(pf); });
+}
+}
+async function lgAbrirEnvio(id) {
+var r = await client.from(LG_TABLA).select("*").eq("id", id).single();
+if (r.error || !r.data) { avisoToast("⚠️ " + lgMensajeError(r.error)); return; }
+var en = r.data;
+lg.respaldo = { res: lg.res, analizado: lg.analizado, texto_original: lg.texto_original, marcas: lg.marcas, sel: lg.sel, filtro: lg.filtro, pestana: lg.pestana };
+lg.envio = en;
+lg.soloLectura = true;
+lg.vistaPrevia = lg.vista;
+lg.vista = "envio";
+lg.analizado = en.texto_final;
+lg.texto_original = en.texto_original;
+lgCargarRes(lgNormalizar(en.resultado, en.texto_final), true);
+pintarLengua();
+window.scrollTo({ top: 0, behavior: "smooth" });
+}
+function lgCerrarEnvio(destino) {
+if (lg.respaldo) {
+lg.res = lg.respaldo.res; lg.analizado = lg.respaldo.analizado; lg.texto_original = lg.respaldo.texto_original;
+lg.marcas = lg.respaldo.marcas; lg.sel = lg.respaldo.sel; lg.filtro = lg.respaldo.filtro; lg.pestana = lg.respaldo.pestana;
+}
+lg.respaldo = null; lg.envio = null; lg.soloLectura = false;
+lg.vista = destino || lg.vistaPrevia || "revisar";
+}
+async function lgGuardarComentario() {
+var area = $("#lg-comentario");
+if (!area || !lg.envio || lg.guardando) { return; }
+lg.guardando = true;
+var datos = { comentario: area.value.trim() || null, revisado_at: new Date().toISOString(), revisado_por: me.id };
+var r = await client.from(LG_TABLA).update(datos).eq("id", lg.envio.id);
+lg.guardando = false;
+if (r.error) { avisoToast("⚠️ " + lgMensajeError(r.error)); return; }
+lg.envio.comentario = datos.comentario; lg.envio.revisado_at = datos.revisado_at;
+lg.lista = null;
+avisoToast("💾 Comentario guardado.");
+pintarLengua();
+}
+async function lgBorrarEnvio() {
+if (!lg.envio || !window.confirm("¿Eliminar este envío? No se puede deshacer.")) { return; }
+var r = await client.from(LG_TABLA).delete().eq("id", lg.envio.id);
+if (r.error) { avisoToast("⚠️ " + lgMensajeError(r.error)); return; }
+lgCerrarEnvio();
+lg.lista = null;
+avisoToast("🗑 Envío eliminado.");
+pintarLengua();
+}
+function lgListaHtml() {
+var staff = lg.vista === "salon";
+if (lg.lista === null || lg.lista === undefined) {
+if (!lg.listaCargando) { lgCargarLista().then(function () { if (arcadeActual === "lengua") { pintarLengua(); } }); }
+return '<div class="ia-panel ia-cargando"><div class="ia-spin"></div><b>Cargando envíos…</b></div>';
+}
+if (lg.listaError) { return '<div class="ia-aviso mal" role="alert">' + escapeHtml(lg.listaError) + "</div>"; }
+var lista = lg.lista.filter(function (x) { return !staff || lg.filtroSalon !== "pendientes" || !x.revisado_at; });
+var pendientes = lg.lista.filter(function (x) { return !x.revisado_at; }).length;
+var cab = staff
+? '<div class="ia-fila" style="justify-content:space-between;margin-bottom:10px"><h3 style="margin:0">👩‍🏫 Revisiones del salón</h3><div class="ia-fila">' +
+[["pendientes", "Sin comentar · " + pendientes], ["todos", "Todos · " + lg.lista.length]].map(function (f) {
+return '<button type="button" class="ia-chip' + (lg.filtroSalon === f[0] ? " on" : "") + '" data-lg-fsalon="' + f[0] + '">' + escapeHtml(f[1]) + "</button>";
+}).join("") + '<button type="button" class="tb-secondary" id="lg-recargar">↻</button></div></div>'
+: '<div class="ia-fila" style="justify-content:space-between;margin-bottom:10px"><h3 style="margin:0">📤 Mis envíos</h3><button type="button" class="tb-secondary" id="lg-recargar">↻</button></div>';
+if (!lista.length) {
+return '<div class="ia-panel">' + cab + "<p>" + (staff ? (lg.filtroSalon === "pendientes" ? "🎉 No hay textos pendientes de comentar." : "Todavía nadie ha enviado textos.") :
+"Todavía no has enviado textos. Revisa uno y toca «📤 Enviar al profesor».") + "</p></div>";
+}
+return '<div class="ia-panel">' + cab + '<div class="lg-envios">' + lista.map(function (x) {
+var fecha = new Date(x.created_at).toLocaleDateString("es-NI", { day: "numeric", month: "short" });
+return '<button type="button" class="lg-envio" data-lg-envio="' + escapeHtml(x.id) + '" style="--bc:' + lgColor(x.puntaje) + '">' +
+'<span class="lg-envio-nota">' + x.puntaje + "</span><span class=\"lg-envio-txt\">" +
+(staff ? "<b>" + escapeHtml(lg.nombres[x.profile_id] || "Estudiante") + "</b>" : "") +
+"<span>" + escapeHtml(String(x.texto_final || "").slice(0, 110)) + (String(x.texto_final || "").length > 110 ? "…" : "") + "</span>" +
+"<small>" + escapeHtml(fecha) + " · " + (x.revisado_at ? (x.comentario ? "💬 Comentado" : "✔ Revisado") : "⏳ Sin comentar") + "</small></span></button>";
+}).join("") + "</div></div>";
+}
+function lgNavHtml() {
+if (!me || !client) { return ""; }
+var tabs = [["revisar", "✍️ Revisar"], ["envios", "📤 Mis envíos"]];
+if (isStaff()) { tabs.push(["salon", "👩‍🏫 Revisiones del salón"]); }
+var activa = lg.vista === "envio" ? lg.vistaPrevia : lg.vista;
+return '<div class="lg-nav">' + tabs.map(function (t) {
+return '<button type="button" class="ia-chip' + (activa === t[0] ? " on" : "") + '" data-lg-vista="' + t[0] + '">' + t[1] + "</button>";
+}).join("") + "</div>";
+}
+function pintarLengua(foco) {
 var caja = $("#tb-arcade");
 if (!caja) { return; }
-iaCargarCuota(lg, "/api/lengua", function () { if (arcadeActual === "lengua" && !lg.cargando) { pintarLengua(); } });
-var html = cabeceraArcade("Profesor de lengua", [["Motor", "Integrado"]].concat(lg.cuota && lg.cuota.listo ? [["IA de Google", iaUsos(lg)]] : [])) +
-'<div class="ia-wrap"><div class="ia-panel" style="padding:14px 18px"><h3 style="margin:0">📝 Profesor de lengua</h3>' +
-'<p style="margin:4px 0 0;color:var(--muted);font-size:13px">Pega tu texto: el profesor marca con colores los errores de ortografía, tildes, gramática, puntuación, estilo y más; te explica cada regla, te da la versión corregida y estima si el texto parece hecho con IA.</p></div>';
-if (lg.cargando) {
-html += lg.modo === "ia"
-? iaCargando("La IA de Google está leyendo tu texto…", ["Leyendo el texto", "Buscando errores de ortografía y tildes", "Revisando gramática y puntuación", "Analizando estilo y coherencia", "Estimando señales de IA", "Preparando la versión corregida"], lg.paso || 0)
-: iaCargando("Revisando tu texto…", ["Cargando el diccionario (solo la primera vez)", "Revisando ortografía, gramática y puntuación"], lg.paso || 0);
+if (!lg.vista) { lg.vista = "revisar"; }
+if (!lg.nombres) { lg.nombres = {}; }
+if (!lg.filtroSalon) { lg.filtroSalon = "pendientes"; }
+// Conserva el desplazamiento de la hoja y de la lista al volver a pintar.
+var hoja = $("#lg-hoja");
+var lista = $("#lg-lista");
+var scrollHoja = hoja ? hoja.scrollTop : 0;
+var scrollLista = lista ? lista.scrollTop : 0;
+var html = cabeceraArcade("Profesor de lengua", [["Motor", "Integrado"], ["Límite", "Sin límite"]]) +
+'<div class="ia-wrap"><div class="ia-panel lg-cabecera"><h3 style="margin:0">📝 Profesor de lengua</h3>' +
+'<p style="margin:4px 0 0;color:var(--muted);font-size:13px">Pega tu texto: el profesor marca con colores los errores de ortografía, tildes, gramática, puntuación, estilo y más; te explica cada regla, te da la versión corregida y señala rasgos de estilo parecidos a los de la IA.</p></div>' +
+lgNavHtml();
+if (lg.vista === "envios" || lg.vista === "salon") {
+html += lgListaHtml();
+} else if (lg.cargando) {
+html += iaCargando("Revisando tu texto…", ["Cargando el diccionario (solo la primera vez)", "Revisando ortografía, gramática y puntuación"], lg.paso || 0);
 } else if (lg.res) {
 html += lgResultado();
 } else {
 html += lgEditor();
 }
 caja.innerHTML = html + "</div>";
+hoja = $("#lg-hoja");
+lista = $("#lg-lista");
+if (hoja) { hoja.scrollTop = scrollHoja; }
+if (lista) { lista.scrollTop = scrollLista; }
 ligarVolver();
 ligarLengua();
+if (foco) {
+var nodo = $(foco);
+if (nodo && nodo.focus) { try { nodo.focus({ preventScroll: true }); } catch (e) { nodo.focus(); } }
+}
 }
 function lgIrA(i) {
 lg.sel = i;
 lg.pestana = "marcado";
-pintarLengua();
-var nodo = $('[data-lg="' + i + '"]');
+pintarLengua(i >= 0 ? '[data-lg="' + i + '"]' : null);
+var nodo = i >= 0 && $('[data-lg="' + i + '"]');
 if (nodo && nodo.scrollIntoView) { nodo.scrollIntoView({ block: "center", behavior: "smooth" }); }
 }
-function lgAplicar(i) {
-var e = lg.res.errores[i];
-var m = lg.marcas.filter(function (x) { return x.i === i; })[0];
-if (!e || !m || e.aplicado) { return; }
-lg.analizado = lg.analizado.slice(0, m.a) + e.sugerencia + lg.analizado.slice(m.b);
-e.aplicado = true;
-lg.marcas = lgUbicar(lg.analizado, lg.res.errores);
-}
+// Siguiente observación pendiente y visible, en el orden del texto.
 function lgSiguiente() {
-var orden = lg.marcas.map(function (m) { return m.i; });
-var k = orden.indexOf(lg.sel);
-return orden.length ? orden[(k + 1) % orden.length] : -1;
+var visibles = lg.marcas.filter(function (m) {
+var e = lg.res.errores[m.i];
+return !e.aplicado && lg.filtro[e.categoria] !== false;
+});
+if (!visibles.length) { return -1; }
+var actual = lg.marcas.filter(function (m) { return m.i === lg.sel; })[0];
+var desde = actual ? actual.a : -1;
+for (var k = 0; k < visibles.length; k++) {
+if (visibles[k].a > desde && visibles[k].i !== lg.sel) { return visibles[k].i; }
+}
+return visibles[0].i === lg.sel && visibles.length === 1 ? -1 : visibles[0].i;
+}
+function lgCargarRes(res, conservar) {
+lg.res = res;
+if (!conservar) { lg.res.errores.forEach(function (e) { e.aplicado = false; e.ignorado = false; }); }
+lg.marcas = lgUbicar(lg.analizado, lg.res.errores);
+lg.sel = -1; lg.filtro = {}; lg.pestana = "marcado";
 }
 function ligarLengua() {
 var area = $("#lg-texto");
 if (area) {
 area.oninput = function () {
 lg.texto = area.value;
-var c = lgConteo(lg.texto);
 var cont = $("#lg-contador");
-if (cont) {
-cont.innerHTML = "<span><b>" + c.palabras + "</b> palabras</span><span><b>" + c.caracteres + "</b>/" + LG_MAX + " caracteres</span>" +
-"<span><b>" + c.oraciones + "</b> oraciones</span><span><b>" + c.parrafos + "</b> párrafos</span><span>⏱ " + c.lectura + " min de lectura</span>";
-}
+if (cont) { cont.innerHTML = lgContadorHtml(lgConteo(lg.texto)); }
+};
+area.onkeydown = function (ev) {
+if ((ev.ctrlKey || ev.metaKey) && ev.key === "Enter") { ev.preventDefault(); lgRevisar(); }
 };
 }
 [["#lg-tipo", "tipo"], ["#lg-nivel", "nivel"], ["#lg-enfoque", "enfoque"]].forEach(function (par) {
 var s = $(par[0]);
-if (s) { s.onchange = function () { lg[par[1]] = s.value; }; }
+if (s) { s.onchange = function () { lg[par[1]] = s.value; if (par[1] === "enfoque") { pintarLengua(); } }; }
 });
-var boton = $("#lg-limpiar");
-if (boton) { boton.onclick = function () { lg.texto = ""; lg.error = ""; pintarLengua(); }; }
+$$("[data-lg-vista]").forEach(function (b) {
+b.onclick = function () {
+var v = b.dataset.lgVista;
+if (lg.vista === "envio") { lgCerrarEnvio(v); } else { lg.vista = v; }
+if (v !== "revisar") { lg.lista = null; }
+pintarLengua();
+};
+});
+$$("[data-lg-envio]").forEach(function (b) { b.onclick = function () { lgAbrirEnvio(b.dataset.lgEnvio); }; });
+$$("[data-lg-fsalon]").forEach(function (b) { b.onclick = function () { lg.filtroSalon = b.dataset.lgFsalon; pintarLengua(); }; });
+var boton = $("#lg-recargar");
+if (boton) { boton.onclick = function () { lg.lista = null; pintarLengua(); }; }
+boton = $("#lg-volver-lista");
+if (boton) { boton.onclick = function () { lgCerrarEnvio(); pintarLengua(); }; }
+boton = $("#lg-guardar-coment");
+if (boton) { boton.onclick = lgGuardarComentario; }
+boton = $("#lg-borrar-envio");
+if (boton) { boton.onclick = lgBorrarEnvio; }
+boton = $("#lg-enviar");
+if (boton) { boton.onclick = lgEnviar; }
+boton = $("#lg-limpiar");
+if (boton) { boton.onclick = function () { lg.texto = ""; lg.error = ""; pintarLengua("#lg-texto"); }; }
 boton = $("#lg-revisar");
-if (boton) { boton.onclick = function () { lgRevisar("local"); }; }
-boton = $("#lg-revisar-ia");
-if (boton) { boton.onclick = function () { lgRevisar("ia"); }; }
+if (boton) { boton.onclick = function () { lgRevisar(); }; }
+boton = $("#lg-vaciar-midic");
+if (boton) { boton.onclick = function () { iaGuardarLocal("tb-lengua-midic", []); avisoToast("📖 Tu diccionario quedó vacío."); pintarLengua(); }; }
 $$("[data-lg-hist]").forEach(function (b) {
 b.onclick = function () {
 var x = lgHistorial()[+b.dataset.lgHist];
 if (!x || !x.res) { return; }
-lg.texto = x.texto; lg.analizado = x.texto; lg.tipo = x.tipo || "libre";
-lg.res = x.res; lg.res.errores.forEach(function (e) { e.aplicado = false; });
-lg.marcas = lgUbicar(lg.analizado, lg.res.errores); lg.sel = -1; lg.filtro = {}; lg.pestana = "marcado";
+lg.texto = x.texto; lg.analizado = x.texto; lg.texto_original = x.texto;
+lg.tipo = x.tipo || "libre"; lg.nivel = x.nivel || lg.nivel; lg.enfoque = x.enfoque || lg.enfoque;
+lgCargarRes(lgNormalizar(x.res, x.texto));
+lg.res.enviado = null; lg.res.puntajes_originales = null;
 pintarLengua();
 };
 });
 boton = $("#lg-borrar-hist");
 if (boton) { boton.onclick = function () { iaGuardarLocal("tb-lengua-historial", []); pintarLengua(); }; }
-$$("[data-lg]").forEach(function (m) { m.onclick = function () { lg.sel = +m.dataset.lg; pintarLengua(); }; });
+$$("[data-lg]").forEach(function (m) {
+m.onclick = function () { var i = +m.dataset.lg; lg.sel = lg.sel === i ? -1 : i; pintarLengua(lg.sel >= 0 ? '[data-lg="' + i + '"]' : null); };
+m.onkeydown = function (ev) { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); m.onclick(); } };
+});
 $$("[data-lg-item]").forEach(function (b) { b.onclick = function () { lgIrA(+b.dataset.lgItem); }; });
 $$("[data-lg-cat]").forEach(function (b) {
 b.onclick = function () { var k = b.dataset.lgCat; lg.filtro[k] = lg.filtro[k] === false; pintarLengua(); };
 });
 $$("[data-lg-tab]").forEach(function (b) { b.onclick = function () { lg.pestana = b.dataset.lgTab; pintarLengua(); }; });
+boton = $("#lg-cerrar");
+if (boton) { boton.onclick = function () { lg.sel = -1; pintarLengua(); }; }
 boton = $("#lg-aplicar");
-if (boton) { boton.onclick = function () { var sig = lgSiguiente(); lgAplicar(lg.sel); lg.sel = lg.marcas.some(function (m) { return m.i === sig; }) ? sig : -1; pintarLengua(); }; }
+if (boton) { boton.onclick = function () { lgAplicar(lg.sel); lgIrA(lgSiguiente()); }; }
+boton = $("#lg-deshacer");
+if (boton) { boton.onclick = function () { var i = lg.sel; lgDeshacer(i); lgIrA(i); }; }
+boton = $("#lg-descartar");
+if (boton) {
+boton.onclick = function () {
+var sig = lgSiguiente();
+lg.res.errores[lg.sel].ignorado = true;
+lg.marcas = lgUbicar(lg.analizado, lg.res.errores);
+lgRecalcular();
+lgIrA(sig);
+};
+}
+boton = $("#lg-midic");
+if (boton) {
+boton.onclick = function () {
+var e = lg.res.errores[lg.sel];
+var w = e.fragmento.toLowerCase();
+var sig = lgSiguiente();
+lgAgregarMiDic(w);
+lg.res.errores.forEach(function (o) { if (o.categoria === "ortografia" && !o.aplicado && o.fragmento.toLowerCase() === w) { o.ignorado = true; } });
+lg.marcas = lgUbicar(lg.analizado, lg.res.errores);
+lgRecalcular();
+avisoToast("📖 «" + e.fragmento + "» se agregó a tu diccionario.");
+lgIrA(lg.res.errores[sig] && lg.res.errores[sig].ignorado ? lgSiguiente() : sig);
+};
+}
 boton = $("#lg-ignorar");
 if (boton) { boton.onclick = function () { lgIrA(lgSiguiente()); }; }
 boton = $("#lg-aplicar-todo");
 if (boton) {
 boton.onclick = function () {
-// De atrás hacia adelante para no mover las posiciones pendientes.
+// De atrás hacia adelante: lgCambiar desplaza solo lo que ya quedó atrás.
+var n = 0;
 lg.marcas.slice().sort(function (x, y) { return y.a - x.a; }).forEach(function (m) {
 var e = lg.res.errores[m.i];
-if (e.sugerencia && e.sugerencia !== e.fragmento) {
-lg.analizado = lg.analizado.slice(0, m.a) + e.sugerencia + lg.analizado.slice(m.b);
-e.aplicado = true;
-}
+if (lgAplicable(e) && !e.dudoso && lgCambiar(m.i, false)) { n++; }
 });
 lg.marcas = lgUbicar(lg.analizado, lg.res.errores);
 lg.sel = -1;
-avisoToast("✨ Correcciones aplicadas. Revisa el texto y, si quieres, vuelve a revisarlo.");
+avisoToast("✨ " + n + " correcciones aplicadas. Puedes deshacer cualquiera tocándola en el texto.");
 pintarLengua();
 };
 }
 boton = $("#lg-copiar-corr");
 if (boton) { boton.onclick = function () { iaCopiar(lg.res.texto_corregido); }; }
 boton = $("#lg-usar-corr");
-if (boton) { boton.onclick = function () { lg.texto = lg.res.texto_corregido; lg.res = null; pintarLengua(); }; }
+if (boton) { boton.onclick = function () { lg.texto = lg.res.texto_corregido; lg.res = null; pintarLengua("#lg-texto"); }; }
 boton = $("#lg-editar");
-if (boton) { boton.onclick = function () { lg.texto = lg.analizado; lg.res = null; pintarLengua(); }; }
+if (boton) { boton.onclick = function () { lg.texto = lg.analizado; lg.res = null; pintarLengua("#lg-texto"); }; }
 boton = $("#lg-nuevo");
-if (boton) { boton.onclick = function () { lg.texto = ""; lg.res = null; lg.error = ""; pintarLengua(); }; }
+if (boton) { boton.onclick = function () { lg.texto = ""; lg.res = null; lg.error = ""; pintarLengua("#lg-texto"); }; }
 boton = $("#lg-informe");
 if (boton) {
 boton.onclick = function () {
 var r = lg.res;
-iaCopiar("INFORME DEL PROFESOR DE LENGUA · El Tablón\n\nPuntaje general: " + r.puntajes.general + "/100 (" + r.nivel_texto + ")\n" +
+var vigentes = r.errores.filter(function (e) { return !e.ignorado; });
+iaCopiar("INFORME DEL PROFESOR DE LENGUA · El Tablón\n\nPuntaje general: " + r.puntajes.general + "/100" + (r.nivel_texto ? " (" + r.nivel_texto + ")" : "") + "\n" +
 LG_AREAS.map(function (a) { return "- " + a[1] + ": " + r.puntajes[a[0]]; }).join("\n") +
 "\n\nResumen: " + r.resumen + "\n\nObservaciones:\n" +
-r.errores.map(function (e, i) {
+(vigentes.length ? vigentes.map(function (e, i) {
 return (i + 1) + ". [" + (LG_CAT[e.categoria] || LG_CAT.estilo).n + "] «" + e.fragmento + "»" +
-(e.sugerencia !== e.fragmento ? " → «" + e.sugerencia + "»" : "") + ": " + e.explicacion;
-}).join("\n") +
-"\n\nProbabilidad estimada de IA: " + r.ia.porcentaje + "% (" + r.ia.veredicto + "). Estimación orientativa, no es una prueba.");
+(lgCambia(e) ? " → «" + e.sugerencia + "»" : "") + ": " + e.explicacion + (e.aplicado ? " (corregida)" : "");
+}).join("\n") : "Ninguna.") +
+(lg.envio && lg.envio.comentario ? "\n\nComentario del profesor: " + lg.envio.comentario : "") +
+"\n\nÍndice de estilo tipo IA: " + r.ia.porcentaje + "/100 (" + r.ia.veredicto + "). Mide rasgos de estilo, no la autoría; no es una prueba.");
 };
 }
 }
-async function lgRevisar(modo) {
+async function lgRevisar() {
+if (lg.cargando) { return; }
 var texto = lg.texto;
 var c = lgConteo(texto);
-if (c.palabras < 5) { lg.error = "Escribe al menos 5 palabras."; pintarLengua(); return; }
-if (texto.length > LG_MAX) { lg.error = "El texto es muy largo (máximo " + LG_MAX + " caracteres)."; pintarLengua(); return; }
+if (c.palabras < 5) { lg.error = "Escribe al menos 5 palabras."; pintarLengua("#lg-texto"); return; }
+if (texto.length > LG_MAX) { lg.error = "El texto es muy largo (máximo " + LG_MAX + " caracteres)."; pintarLengua("#lg-texto"); return; }
 lg.error = "";
-lg.modo = modo === "ia" ? "ia" : "local";
 lg.cargando = true;
 var repintar = function () { if (arcadeActual === "lengua") { pintarLengua(); } };
-iaAvanzarPasos(lg, lg.modo === "ia" ? 6 : 2, repintar);
+iaAvanzarPasos(lg, 2, repintar);
 pintarLengua();
 var r;
-if (lg.modo === "ia") {
-r = await iaLlamar("/api/lengua", "POST", { texto: texto, tipo: lg.tipo, nivel: lg.nivel, enfoque: lg.enfoque });
-if (r.datos && typeof r.datos.usados === "number") { lg.cuota = { listo: true, usados: r.datos.usados, limite: r.datos.limite }; }
-if (r.ok) { r.datos.motor = "ia"; }
-} else {
 try {
-r = { ok: true, datos: await lgMotorLocal(texto, lg.tipo) };
+r = { ok: true, datos: await lgMotorLocal(texto, lg.tipo, lg.enfoque) };
 } catch (e) {
 console.error("[lengua]", e);
 r = { ok: false, datos: { error: "No se pudo revisar el texto en este navegador. Actualiza la página e intenta de nuevo." } };
-}
 }
 lg.cargando = false;
 clearInterval(lg.pasoTimer);
 if (!r.ok) {
 lg.error = r.datos.error || "No se pudo revisar el texto.";
 } else {
-lg.res = r.datos;
 lg.analizado = texto;
-lg.res.errores.forEach(function (e) { e.aplicado = false; });
-lg.marcas = lgUbicar(texto, lg.res.errores);
-lg.sel = -1; lg.filtro = {}; lg.pestana = "marcado";
+lg.texto_original = texto;
+lgCargarRes(lgNormalizar(r.datos, texto));
 lgGuardarHistorial();
 }
 if (arcadeActual === "lengua") { pintarLengua(); }
@@ -22970,7 +23352,7 @@ return original[0] !== original[0].toLowerCase() ? nuevo[0].toUpperCase() + nuev
 }
 var LG_DIAS = "lunes|martes|miércoles|jueves|viernes|sábado|domingo|enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|setiembre|octubre|noviembre|diciembre";
 var LG_ANGLICISMOS = { ok: "de acuerdo", okay: "de acuerdo", full: "completamente", nice: "agradable", random: "al azar", cool: "genial", crush: "amor platónico", spoiler: "destripe" };
-var LG_PARTICIPIO = /(ado|ada|ido|ida|to|cho|so|sto)$/i;
+var LG_PARTICIPIO = /(ado|ada|[ií]do|[ií]da|to|cho|so|sto)$/i;
 // Reglas: { re, cat, grav, exp, regla, sug(m) } · sug devuelve el texto que reemplaza a m[0].
 var LG_REGLAS = [
 { re: lgRe("haiga(s|mos|n)?"), cat: "gramatica", grav: "grave",
@@ -22978,7 +23360,7 @@ exp: "«Haiga» es una forma vulgar del verbo haber.", regla: "El presente de su
 sug: function (m) { return lgMayus(m[0], "haya" + (m[1] || "")); } },
 { re: lgRe("(fu|dij|hic|v|tuv|estuv|pus|traj|com|viv|sal|beb|escrib|pud|quis|sup|dorm|ped|sent|le|o)(istes|ístes)"), cat: "gramatica", grav: "moderado",
 exp: "En pretérito, la segunda persona no lleva «s» final.", regla: "Se escribe fuiste, dijiste, hiciste (no fuistes, dijistes).",
-sug: function (m) { return m[0].replace(/s$/i, ""); } },
+sug: function (m) { return m[0].replace(/s$/i, "").replace(/^(o|le)iste$/i, function (x, r) { return r + "íste"; }); } },
 { re: lgRe("(lleg|habl|pens|mand|dej|pas|jug|compr|estudi|termin|mir|busc|olvid|entr|gan|tom|cant|bail|trabaj|esper|lleg|llam|cambi|empez|contest|pregunt)astes"), cat: "gramatica", grav: "moderado",
 exp: "En pretérito, la segunda persona no lleva «s» final.", regla: "Se escribe llegaste, hablaste (no llegastes, hablastes).",
 sug: function (m) { return m[0].replace(/s$/i, ""); } },
@@ -22986,7 +23368,7 @@ sug: function (m) { return m[0].replace(/s$/i, ""); } },
 exp: "Dequeísmo: sobra el «de» antes de «que».", regla: "Con verbos como pensar, creer u opinar se dice «pienso que», no «pienso de que».",
 sug: function (m) { return m[1] + " que"; } },
 { re: lgRe("(va|van|vamos|iba|iban) haber"), cat: "gramatica", grav: "grave",
-exp: "Falta la preposición «a»: la perífrasis es «ir a + infinitivo».", regla: "Se escribe «va a haber», «van a haber».",
+exp: "Falta la preposición «a»: la perífrasis es «ir a + infinitivo».", regla: "Se escribe «va a haber». Si «haber» indica existencia, va en singular: «va a haber problemas» (no «van a haber problemas»).",
 sug: function (m) { return m[1] + " a haber"; } },
 { re: lgRe("haber si"), cat: "gramatica", grav: "grave",
 exp: "Aquí corresponde la expresión «a ver» (del verbo ver), no el verbo haber.", regla: "«A ver si…» expresa expectativa; «haber» es un verbo (haber comido).",
@@ -22994,13 +23376,109 @@ sug: function (m) { return lgMayus(m[0], "a ver si"); } },
 { re: lgRe("a ver ([" + LG_L + "]+(?:ado|ido|ada|ida))"), cat: "gramatica", grav: "grave",
 exp: "Delante de un participio va el verbo «haber», no «a ver».", regla: "Se escribe «haber hecho», «haber comido».",
 sug: function (m) { return "haber " + m[1]; } },
-{ re: lgRe("más (mejor|peor|mayor|menor)"), cat: "gramatica", grav: "moderado",
-exp: "«Mejor», «peor», «mayor» y «menor» ya son comparativos: no se les antepone «más».", regla: "Se dice «mejor», no «más mejor».",
+{ re: lgRe("más (mejor|peor|menor)"), cat: "gramatica", grav: "moderado",
+exp: "«Mejor», «peor» y «menor» ya son comparativos: no se les antepone «más».", regla: "Se dice «mejor», no «más mejor». («Más mayor» sí se admite cuando significa «de más edad».)",
 sug: function (m) { return m[1]; } },
 { re: lgRe("(hubieron|habían|habrán|hubiesen|hubieran) ([" + LG_L + "]+)"), cat: "gramatica", grav: "moderado",
 filtro: function (m) { return !LG_PARTICIPIO.test(m[2]) && !/^(sido|que|de|a|en|se|le|lo|la|me|te|nos|ya|no)$/i.test(m[2]); },
 exp: "Cuando «haber» indica existencia es impersonal y va en singular.", regla: "Se dice «había muchas personas», «hubo problemas».",
 sug: function (m) { var s = { hubieron: "hubo", habían: "había", habrán: "habrá", hubiesen: "hubiese", hubieran: "hubiera" }[m[1].toLowerCase()]; return lgMayus(m[1], s) + " " + m[2]; } },
+/* ---- Reglas nuevas: homófonos, palabras pegadas, queísmo y otras ---- */
+{ re: lgRe("(he|has|ha|hemos|han|había|habías|habíamos|habían|haber|habría|hubiera|hubiese|hubo) echo"), cat: "ortografia", grav: "grave",
+exp: "Aquí es el participio del verbo hacer: «hecho», con h. «Echo» viene de echar (echar agua, echo de menos).", regla: "Hecho (de hacer): he hecho, de hecho. Echo (de echar): te echo de menos.",
+sug: function (m) { return m[1] + " hecho"; } },
+{ re: lgRe("(de|el|un) echo"), cat: "ortografia", grav: "grave",
+exp: "Se escribe «hecho», con h: «de hecho», «el hecho de que».", regla: "Hecho (sustantivo y participio de hacer) lleva h.",
+sug: function (m) { return m[1] + " hecho"; } },
+{ re: lgRe("(halla|aya|alla) ([" + LG_L + "]+)"), cat: "ortografia", grav: "grave",
+filtro: function (m, t) { return /(ado|[ií]do|cho|isto|uesto|ierto|crito|elto|uerto|oto)$/i.test(m[2]) && !/(^|\s)se\s+$/i.test(t.slice(Math.max(0, m.index - 4), m.index)); },
+exp: "Delante de un participio va «haya» (del verbo haber). «Halla» es de hallar (encontrar) y «allá» indica lugar.", regla: "Haya (haber): que haya llegado. Halla (hallar): se halla aquí. Allá (lugar).",
+sug: function (m) { return lgMayus(m[1], "haya") + " " + m[2]; } },
+{ re: lgRe("(ojalá|ojala) (halla|aya|alla)"), cat: "ortografia", grav: "grave",
+exp: "Después de «ojalá» va el verbo haber: «ojalá haya».", regla: "Haya (haber) / halla (hallar) / allá (lugar). «Ojalá» lleva tilde.",
+sug: function (m) { return lgMayus(m[1], "ojalá") + " haya"; } },
+{ re: lgRe("(ya|no|se|me|te|le|lo|la|nos|les|los|las|nunca|siempre|quien|él|ella|usted|todavía|aún) a ([" + LG_L + "]+)"), cat: "ortografia", grav: "grave",
+filtro: function (m) {
+return /(ado|[ií]do|dicho|hecho|visto|puesto|abierto|escrito|vuelto|muerto|roto|cubierto|resuelto|devuelto|descubierto|impreso|satisfecho|deshecho|frito)$/i.test(m[2]) &&
+!/^(lado|grado|agrado|cuidado|soldado|helado|pescado|mercado|pecado|cuñado|abogado|empleado|diputado|todo|nido|ruido|sonido|vestido|olvido|partido|sentido|apellido|marido|oído|pedido|tejido|bandido|cupido|latido|chillido|ladrido|silbido|gemido|crujido|alarido)$/i.test(m[2]); },
+exp: "Delante de un participio va «ha» (del verbo haber), con h: «ya ha llegado». «A» sin h es una preposición.", regla: "Ha + participio (ha comido, ha ido). A es preposición (voy a comer).",
+sug: function (m) { return m[1] + " ha " + m[2]; } },
+{ re: lgRe("(voy|vas|va|vamos|van|iba|ibas|íbamos|iban|ir|fue|fui|fueron|vino|vine|vinieron|empezó|empecé|empezaron|comenzó|comencé|aprendí|aprendió|enseñó|volví|volvió) ha ([" + LG_L + "]+(?:ar|er|ir))"), cat: "ortografia", grav: "grave",
+exp: "Delante de un infinitivo va la preposición «a», sin h: «voy a comer».", regla: "Ir a + infinitivo (va a llover). «Ha» es del verbo haber (ha llovido).",
+sug: function (m) { return m[1] + " a " + m[2]; } },
+{ re: lgRe("(otra|tal|cada|una|esta|alguna|ninguna|última|primera|segunda|tercera|rara|de) ves"), cat: "ortografia", grav: "grave",
+exp: "Aquí es el sustantivo «vez» (ocasión), con z. «Ves» es del verbo ver (tú ves).", regla: "Vez (ocasión): otra vez, tal vez, a la vez. Ves (ver): ¿lo ves?",
+sug: function (m) { return m[1] + " vez"; } },
+{ re: lgRe("(en ves de|a la ves)"), cat: "ortografia", grav: "grave",
+exp: "Se escribe con z: «en vez de», «a la vez».", regla: "Vez (ocasión) se escribe con z.",
+sug: function (m) { return lgMayus(m[0], m[0].toLowerCase().replace(/ves$/, "vez").replace(/ves de$/, "vez de")); } },
+{ re: lgRe("ay (un|una|unos|unas|muchos|muchas|mucho|mucha|varios|varias|algunos|algunas|algo|alguien|nada|nadie|pocos|pocas|poco|tantos|tantas|demasiados|demasiadas|más|menos|dos|tres|gente|tiempo|clases|clase|tarea|tareas|examen|problemas|cosas)"), cat: "ortografia", grav: "grave",
+filtro: function (m, t) { return t[m.index - 1] !== "¡"; },
+exp: "Para decir que algo existe se usa «hay» (del verbo haber). «Ay» es una exclamación de dolor o sorpresa.", regla: "Hay (existe), ahí (lugar), ay (exclamación).",
+sug: function (m) { return lgMayus(m[0], "hay") + " " + m[1]; } },
+{ re: lgRe("ay que ([" + LG_L + "]+(?:ar|er|ir))"), cat: "ortografia", grav: "grave",
+filtro: function (m, t) { return t[m.index - 1] !== "¡"; },
+exp: "La obligación se expresa con «hay que» + infinitivo.", regla: "Hay que estudiar (obligación). ¡Ay! (exclamación).",
+sug: function (m) { return lgMayus(m[0], "hay") + " que " + m[1]; } },
+{ re: lgRe("(está|están|estaba|estaban|estoy|por|de|hasta|desde|allí y|aquí y) ay"), cat: "ortografia", grav: "grave",
+exp: "Para indicar un lugar se escribe «ahí», con h y tilde.", regla: "Ahí (lugar), hay (existe), ay (exclamación).",
+sug: function (m) { return m[1] + " ahí"; } },
+{ re: /¿\s*porque(?![A-Za-zÁÉÍÓÚÜÑáéíóúüñ])/gi, cat: "acentuacion", grav: "moderado",
+exp: "En una pregunta se escribe «por qué», separado y con tilde.", regla: "«Por qué» pregunta; «porque» responde; «el porqué» es la causa.",
+sug: function (m) { var r = m[0].replace(/porque$/i, "por qué"); return lgInicioOracion(m.input, m.index) ? r.replace(/por/, "Por") : r; } },
+{ re: lgRe("el porque"), cat: "acentuacion", grav: "moderado",
+filtro: function (m, t) { return /^\s*(de|[.,;:!?]|$)/.test(t.slice(m.index + m[0].length)); },
+exp: "Cuando significa «la causa» es un sustantivo: «el porqué», junto y con tilde.", regla: "El porqué de las cosas (la causa).",
+sug: function (m) { return lgMayus(m[0], "el porqué"); } },
+{ re: lgRe("(no sé|no sabe|no saben|no sabía|no entiendo|no entiende|me pregunto|se preguntó|dime|explica|explícame) porque"), cat: "acentuacion", grav: "moderado", dudoso: true,
+exp: "Si introduce una pregunta indirecta («no sé por qué llegó tarde») se escribe «por qué». Si da una causa, «porque» es correcto.", regla: "Pregunta (directa o indirecta): por qué. Causa: porque.",
+sug: function (m) { return m[1] + " por qué"; } },
+{ re: lgRe("(osea|aveces|enserio|nose|porfavor|apesar|deacuerdo|encambio|atravez|atraves|alomejor|almenos|sinembargo|porsupuesto|talves|derrepente|sobretodo)"), cat: "ortografia", grav: "grave",
+exp: "Son dos (o más) palabras que se escriben separadas.", regla: "Se escribe separado: o sea, a veces, en serio, no sé, por favor, a pesar, de acuerdo, a través, sobre todo.",
+sug: function (m) { return lgMayus(m[0], { osea: "o sea", aveces: "a veces", enserio: "en serio", nose: "no sé", porfavor: "por favor", apesar: "a pesar", deacuerdo: "de acuerdo", encambio: "en cambio", atravez: "a través", atraves: "a través", alomejor: "a lo mejor", almenos: "al menos", sinembargo: "sin embargo", porsupuesto: "por supuesto", talves: "tal vez", derrepente: "de repente", sobretodo: "sobre todo" }[m[1].toLowerCase()]); } },
+{ re: lgRe("(me di|te diste|se dio|nos dimos|se dieron|darme|darte|darse|dándome|dándose) cuenta que"), cat: "gramatica", grav: "moderado",
+exp: "Queísmo: falta «de». Se dice «darse cuenta de algo», por eso «me di cuenta de que».", regla: "Darse cuenta DE que, acordarse DE que, estar seguro DE que.",
+sug: function (m) { return m[1] + " cuenta de que"; } },
+{ re: lgRe("(estoy|estás|está|estamos|están|estaba|estaban|estuve|estaré) (seguro|segura|seguros|seguras|convencido|convencida|convencidos|convencidas) que"), cat: "gramatica", grav: "moderado",
+exp: "Queísmo: se está seguro DE algo, por eso «estoy seguro de que».", regla: "Estar seguro de que, estar convencido de que.",
+sug: function (m) { return m[1] + " " + m[2] + " de que"; } },
+{ re: lgRe("(me|te|se|nos) (acuerdo|acuerdas|acuerda|acordamos|acuerdan|acordé|acordó|acordaba|olvidé|olvidó|olvido|olvidaste|olvidaron) que"), cat: "gramatica", grav: "moderado",
+exp: "Queísmo: con «acordarse» y «olvidarse» va «de»: «me acuerdo de que», «me olvidé de que».", regla: "Acordarse de algo; olvidarse de algo (pero «olvidé que», sin «me», también es correcto).",
+sug: function (m) { return m[1] + " " + m[2] + " de que"; } },
+{ re: lgRe("(a pesar|en caso) que"), cat: "gramatica", grav: "moderado",
+exp: "Falta «de»: «a pesar de que», «en caso de que».", regla: "Locuciones con «de»: a pesar de que, en caso de que.",
+sug: function (m) { return m[1] + " de que"; } },
+{ re: lgRe("(detrás|delante|encima|debajo|cerca|enfrente|alrededor) (mío|mía|míos|mías|tuyo|tuya|nuestro|nuestra)"), cat: "gramatica", grav: "leve",
+exp: "Con adverbios de lugar se recomienda la construcción con «de»: «detrás de mí», «cerca de ti».", regla: "Detrás de mí (mejor que «detrás mío»).",
+sug: function (m) { return m[1] + " " + ({ "mío": "de mí", "mía": "de mí", "míos": "de mí", "mías": "de mí", tuyo: "de ti", tuya: "de ti", nuestro: "de nosotros", nuestra: "de nosotros" }[m[2].toLowerCase()]); } },
+{ re: lgRe("(andé|andaste|andó|andaron)"), cat: "gramatica", grav: "moderado",
+exp: "El pretérito de «andar» es irregular: anduve, anduviste, anduvo, anduvieron.", regla: "Andar: yo anduve, tú anduviste, él anduvo, ellos anduvieron.",
+sug: function (m) { return lgMayus(m[0], { "andé": "anduve", andaste: "anduviste", "andó": "anduvo", andaron: "anduvieron" }[m[1].toLowerCase()]); } },
+{ re: lgRe("le (dije|dijo|di|dio|expliqué|explicó|pregunté|preguntó|conté|contó|pedí|pidió|mandé|mandó|escribí|escribió|regalé|regaló|enseñé|enseñó|avisé|avisó|traje|trajo|llevé|llevó) a (ellos|ellas|ustedes|todos|todas|mis|tus|sus|los|las|nuestros|nuestras)"), cat: "concordancia", grav: "moderado",
+exp: "El pronombre debe ir en plural porque se refiere a varias personas: «les dije a ellos».", regla: "Le (a él, a ella) / les (a ellos, a ellas, a ustedes).",
+sug: function (m) { return lgMayus(m[0], "les") + " " + m[1] + " a " + m[2]; } },
+{ re: /(?<![A-Za-zÁÉÍÓÚÜÑáéíóúüñ])(hola|gracias|adiós|buenos días|buenas tardes|buenas noches|bienvenidos|bienvenidas|bienvenido|bienvenida|felicidades|perdón) ([A-ZÁÉÍÓÚÑ][a-záéíóúüñ]+)(?![A-Za-zÁÉÍÓÚÜÑáéíóúüñ])/gi, cat: "puntuacion", grav: "leve",
+filtro: function (m) { return m[2][0] !== m[2][0].toLowerCase(); },
+exp: "El nombre de la persona a quien se habla (vocativo) se separa con coma: «Hola, Juan».", regla: "El vocativo va entre comas: «Gracias, María», «Buenos días, profesor».",
+sug: function (m) { return m[1] + ", " + m[2]; } },
+{ re: lgRe("y ((?:hi|i)[" + LG_L + "]*)"), cat: "gramatica", grav: "leve",
+filtro: function (m, t) { return !/^(hi|i)[aeouáéóú]/i.test(m[1]) && !lgInicioOracion(t, m.index) && !/[¿¡]\s*$/.test(t.slice(0, m.index)); },
+exp: "Delante de una palabra que empieza por el sonido «i» (i-, hi-), «y» se cambia por «e»: «padres e hijos».", regla: "Y → e ante i- o hi- (pero «agua y hielo», porque hie- suena «ye»).",
+sug: function (m) { return "e " + m[1]; } },
+{ re: lgRe("o ((?:ho|o)[" + LG_L + "]*)"), cat: "gramatica", grav: "leve",
+filtro: function (m, t) { return !lgInicioOracion(t, m.index); },
+exp: "Delante de una palabra que empieza por el sonido «o» (o-, ho-), «o» se cambia por «u»: «siete u ocho».", regla: "O → u ante o- u ho-: «uno u otro», «mujer u hombre».",
+sug: function (m) { return "u " + m[1]; } },
+{ re: /([A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9.,;:]+)[ \t]{2,}(?=[A-Za-zÁÉÍÓÚÜÑáéíóúüñ¿¡0-9])/g, cat: "puntuacion", grav: "leve",
+exp: "Hay dos o más espacios seguidos.", regla: "Entre palabras va un solo espacio.",
+sug: function (m) { return m[1] + " "; } },
+{ re: lgRe("(nicaragüenses?|hondureñ[oa]s?|salvadoreñ[oa]s?|guatemaltec[oa]s?|costarricenses?|panameñ[oa]s?|mexican[oa]s?|estadounidenses?|venezolan[oa]s?|colombian[oa]s?|cuban[oa]s?)"), cat: "mayusculas", grav: "leve", dudoso: true,
+filtro: function (m, t) {
+if (m[0][0] === m[0][0].toLowerCase() || lgInicioOracion(t, m.index)) { return false; }
+var antes = t.slice(0, m.index).match(/([A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+)\s+$/);
+return !(antes && antes[1][0] !== antes[1][0].toLowerCase() && !lgInicioOracion(t, m.index - antes[0].length)); },
+exp: "Los gentilicios (de dónde es alguien) se escriben con minúscula: «los nicaragüenses». Solo van con mayúscula dentro de un nombre propio (Instituto Nicaragüense de…).", regla: "Gentilicios con minúscula: nicaragüense, hondureño, mexicano.",
+sug: function (m) { return m[0].toLowerCase(); } },
 { re: lgRe("en base a"), cat: "estilo", grav: "leve",
 exp: "La expresión recomendada es «con base en» o «a partir de».", regla: "Se prefiere «con base en» o «sobre la base de».",
 sug: function (m) { return lgMayus(m[0], "con base en"); } },
@@ -23016,12 +23494,18 @@ sug: function (m) { var r = m[0].replace(/que$/i, "qué"); return lgInicioOracio
 { re: lgRe("el (es|fue|era|dijo|tiene|tenía|está|estaba|hizo|va|iba|quiere|sabe|puede|come|vive|piensa|cree|trabaja|juega|llegó|salió)"), cat: "acentuacion", grav: "moderado",
 exp: "Cuando es pronombre personal («él dijo») lleva tilde; «el» sin tilde es artículo.", regla: "Tilde diacrítica: él (pronombre) / el (artículo).",
 sug: function (m) { return lgMayus(m[0], "él") + " " + m[1]; } },
-{ re: lgRe("tu (eres|tienes|sabes|puedes|vas|estás|haces|quieres|dijiste|fuiste|sos|tenés|sabés|podés)"), cat: "acentuacion", grav: "moderado",
-exp: "Cuando es pronombre personal («tú eres») lleva tilde; «tu» sin tilde es posesivo (tu casa).", regla: "Tilde diacrítica: tú (pronombre) / tu (posesivo).",
-sug: function (m) { return lgMayus(m[0], "tú") + " " + m[1]; } },
-{ re: lgRe("esta (bien|mal|muy|siendo|haciendo|lloviendo|aquí|allí|allá|listo|lista|cerca|lejos|en)"), cat: "acentuacion", grav: "moderado",
+{ re: lgRe("tu (eres|tienes|sabes|puedes|vas|estás|estas|haces|quieres|dijiste|fuiste|sos|tenés|sabés|podés)"), cat: "acentuacion", grav: "moderado",
+exp: "Cuando es pronombre personal («tú eres») lleva tilde; «tu» sin tilde es posesivo (tu casa).", regla: "Tilde diacrítica: tú (pronombre) / tu (posesivo). «Estás» (verbo) también lleva tilde.",
+sug: function (m) { return lgMayus(m[0], "tú") + " " + (m[1].toLowerCase() === "estas" ? lgMayus(m[1], "estás") : m[1]); } },
+{ re: lgRe("esta (bien|mal|muy|siendo|haciendo|lloviendo|aquí|allí|allá|listo|lejos|en)"), cat: "acentuacion", grav: "moderado",
 exp: "Aquí es el verbo estar: se escribe «está», con tilde.", regla: "«Está» (verbo) lleva tilde; «esta» (esta casa) no.",
 sug: function (m) { return lgMayus(m[0], "está") + " " + m[1]; } },
+{ re: lgRe("estas (bien|mal|muy|aquí|allí|allá|listo|lista|seguro|segura|cansado|cansada|enojado|enojada|loco|loca|equivocado|equivocada|triste|feliz|siendo|haciendo|diciendo|jugando|estudiando|en)"), cat: "acentuacion", grav: "moderado",
+exp: "Aquí es el verbo estar: se escribe «estás», con tilde.", regla: "«Estás» (verbo: tú estás) lleva tilde; «estas» (estas casas) no.",
+sug: function (m) { return lgMayus(m[0], "estás") + " " + m[1]; } },
+{ re: lgRe("estas(?=\\s*[?!])"), cat: "acentuacion", grav: "moderado",
+exp: "Al final de una pregunta o exclamación es el verbo estar: «¿cómo estás?».", regla: "«Estás» (verbo: tú estás) lleva tilde; «estas» (estas casas) no.",
+sug: function (m) { return lgMayus(m[0], "estás"); } },
 { re: new RegExp("(?<![,;][ ]?)" + LG_ANTES + "mas" + LG_DESPUES, "gi"), cat: "acentuacion", grav: "leve",
 exp: "Si indica cantidad o comparación («más grande») lleva tilde. «Mas» sin tilde significa «pero» y casi no se usa.", regla: "Tilde diacrítica: más (cantidad) / mas (pero).",
 sug: function (m) { return lgMayus(m[0], "más"); } },
@@ -23050,7 +23534,7 @@ sug: function (m) { return m[0][0]; } },
 { re: /(?<!\.)\.\.(?!\.)/g, cat: "puntuacion", grav: "leve",
 exp: "Hay dos puntos seguidos: usa un punto o puntos suspensivos (tres).", regla: "Los puntos suspensivos son siempre tres (...).",
 sug: function () { return "..."; } },
-{ re: lgRe("(sin embargo|no obstante|es decir|por lo tanto|por consiguiente|en conclusión|en resumen|por último|en cambio|por ejemplo) ([" + LG_L + "]+)"), cat: "puntuacion", grav: "moderado",
+{ re: lgRe("(sin embargo|no obstante|es decir|por lo tanto|por consiguiente|en conclusión|en resumen|por último|en cambio|por ejemplo|además|en primer lugar|en segundo lugar|por otra parte|por otro lado|por un lado|de hecho|en fin|en general|por supuesto|al contrario|en realidad|en consecuencia) ([" + LG_L + "]+)"), cat: "puntuacion", grav: "moderado",
 filtro: function (m, t) { var antes = t.slice(Math.max(0, m.index - 3), m.index); return /(^|[.!?¿¡]\s*|\n\s*|,\s*|;\s*)$/.test(antes) || m.index === 0; },
 exp: "Este conector va seguido de coma.", regla: "Los conectores como «sin embargo», «es decir» o «por lo tanto» se separan con coma.",
 sug: function (m) { return m[1] + ", " + m[2]; } },
@@ -23058,9 +23542,17 @@ sug: function (m) { return m[1] + ", " + m[2]; } },
 filtro: function (m) { return !/^(no|sino|y|o|e|u|que|más|muy)$/i.test(m[1]); },
 exp: "Delante de «pero» normalmente se escribe coma.", regla: "Las oraciones unidas por pero, mas o sino se separan con coma («Quería ir, pero llovió»).",
 sug: function (m) { return m[1] + ", pero"; } },
-{ re: lgRe("(" + LG_DIAS + ")"), cat: "mayusculas", grav: "leve",
-filtro: function (m, t) { return m[0][0] !== m[0][0].toLowerCase() && !lgInicioOracion(t, m.index); },
-exp: "Los días de la semana y los meses se escriben con minúscula.", regla: "En español: lunes, marzo (no Lunes, Marzo), salvo al inicio de oración.",
+{ re: lgRe("(" + LG_DIAS + ")"), cat: "mayusculas", grav: "leve", dudoso: true,
+filtro: function (m, t) {
+if (m[0][0] === m[0][0].toLowerCase() || lgInicioOracion(t, m.index)) { return false; }
+var antes = t.slice(0, m.index).match(/([A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+)\s+$/);
+var despues = t.slice(m.index + m[0].length).match(/^\s+([A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+)/);
+// Parte de un nombre propio: Santo Domingo, Juan Domingo, Abril Pérez.
+if (antes && (/^(san|santo|santa)$/i.test(antes[1]) || (antes[1][0] !== antes[1][0].toLowerCase() && !lgInicioOracion(t, m.index - antes[0].length)))) { return false; }
+if (despues && despues[1][0] !== despues[1][0].toLowerCase()) { return false; }
+return true;
+},
+exp: "Los días de la semana y los meses se escriben con minúscula. (Si aquí es un nombre de persona o de lugar, como Abril o Santo Domingo, descarta esta observación.)", regla: "En español: lunes, marzo (no Lunes, Marzo), salvo al inicio de oración.",
 sug: function (m) { return m[0].toLowerCase(); } },
 { re: new RegExp(LG_ANTES + "([" + LG_L + "]+)\\s+\\1" + LG_DESPUES, "giu"), cat: "repeticion", grav: "moderado",
 filtro: function (m) { return m[1].length > 1; },
@@ -23076,14 +23568,75 @@ sug: function (m) { return m[0]; } },
 exp: "«A nivel de» solo es correcto cuando hay niveles reales; en otros casos di «en», «en cuanto a» o «entre».", regla: "Evita «a nivel de» cuando no hay jerarquía de niveles.",
 sug: function (m) { return m[0]; } }
 ];
+// Infinitivo probable de una forma de voseo (tenés → tener, vení → venir, decime → decir).
+function lgVoseoInfinitivo(w) {
+var m = w.match(/^([a-zñü]{2,})(ás|és|ís)$/);
+if (m) { return m[1] + { "ás": "ar", "és": "er", "ís": "ir" }[m[2]]; }
+m = w.match(/^([a-zñü]{2,})([áéí])$/);
+if (m) { return m[1] + { "á": "ar", "é": "er", "í": "ir" }[m[2]]; }
+m = w.match(/^([a-zñü]{2,})([aei])(me|te|lo|la|los|las|nos|le|les)$/);
+if (m) { return m[1] + m[2] + "r"; }
+return "";
+}
+// Puntajes por área a partir de las observaciones vigentes.
+function lgPuntuar(errores, total) {
+total = Math.max(1, total || 1);
+var peso = { grave: 1.5, moderado: 1, leve: 0.5 };
+function area(cats, factor) {
+var s = 0;
+errores.forEach(function (e) { if (cats.indexOf(e.categoria) >= 0) { s += peso[e.gravedad] || 1; } });
+return Math.max(15, Math.round(100 - (s / total) * 100 * factor));
+}
+var p = {
+ortografia: area(["ortografia", "acentuacion", "mayusculas"], 6),
+gramatica: area(["gramatica", "concordancia"], 8),
+puntuacion: area(["puntuacion"], 5),
+vocabulario: area(["lexico", "repeticion"], 5),
+coherencia: area(["coherencia"], 6),
+estilo: area(["estilo"], 5)
+};
+p.general = Math.round(p.ortografia * 0.25 + p.gramatica * 0.25 + p.puntuacion * 0.2 + p.vocabulario * 0.1 + p.coherencia * 0.1 + p.estilo * 0.1);
+var nivel = p.general >= 90 ? "Excelente" : p.general >= 80 ? "Muy bueno" : p.general >= 65 ? "Bueno" : p.general >= 50 ? "Regular" : "Necesita mejorar";
+return { p: p, nivel: nivel };
+}
+// Posición (dentro de la oración) donde empieza la pregunta o exclamación.
+function lgInicioPregunta(o, cierre) {
+var cuerpo = o.slice(0, o.lastIndexOf(cierre));
+var reInt = /(^|[\s,;:])(qué|cómo|dónde|adónde|cuándo|cuál|cuáles|quién|quiénes|cuánto|cuánta|cuántos|cuántas|por qué)(?![A-Za-zÁÉÍÓÚÜÑáéíóúüñ])/i;
+var mm = reInt.exec(cuerpo);
+if (mm) { return mm.index + mm[1].length; }
+var sep = cuerpo.search(/[,;:][^,;:]*$/);
+if (sep > 0 && cuerpo.slice(0, sep).trim().split(/\s+/).length <= 3) {
+var tras = cuerpo.slice(sep + 1).search(/[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]/);
+if (tras >= 0) { return sep + 1 + tras; }
+}
+var primera = cuerpo.search(/[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]/);
+return primera;
+}
+// Distancia de edición (para saber si una sugerencia del diccionario es segura).
+function lgDistancia(a, b) {
+a = a.toLowerCase(); b = b.toLowerCase();
+var prev = [];
+for (var j = 0; j <= b.length; j++) { prev.push(j); }
+for (var i = 1; i <= a.length; i++) {
+var cur = [i];
+for (j = 1; j <= b.length; j++) {
+cur.push(Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)));
+}
+prev = cur;
+}
+return prev[b.length];
+}
 function lgInicioOracion(t, i) {
 var antes = t.slice(0, i).replace(/[¿¡"«(\s]+$/, "");
 return !antes || /[.!?…:\n]$/.test(antes) || /\n\s*$/.test(t.slice(0, i));
 }
 var LG_VACIAS = "de la que el en y a los se del las un por con no una su para es al lo como más o pero sus le ha me si sin sobre este ya entre cuando todo esta ser son dos también fue había era muy años hasta desde está mi porque qué sólo solo han yo hay vez puede todos así nos ni parte tiene él uno donde bien tiempo mismo ese ahora cada e vida otro después te otros aunque esa eso hace otra gobierno tan durante siempre día tanto ella tres sí dijo sido gran país según menos mundo año antes estado quiero luego tenía mucho hacer cosas algo nada vos tu tú les".split(" ");
-var LG_FORMULAS = ["en conclusión", "es importante destacar", "cabe destacar", "cabe mencionar", "en resumen", "en la actualidad", "juega un papel", "desempeña un papel", "papel crucial", "papel fundamental", "no solo", "sino también", "por otro lado", "en definitiva", "un sinfín", "en el ámbito", "a lo largo de la historia", "en el mundo actual", "es fundamental", "es crucial", "es esencial", "foment", "abordar", "abordando", "en última instancia", "sin lugar a dudas", "en este sentido", "a su vez", "de manera significativa", "en términos de", "potenci", "enriquecedor", "multifacétic", "panorama", "adentr", "profundiz", "asimismo"];
+// Fórmulas frecuentes en textos generados. Se excluyen conectores que se enseñan en clase
+// (en conclusión, en resumen, por otro lado, asimismo, no solo… sino también) para no castigar a quien redacta bien.
+var LG_FORMULAS = ["es importante destacar", "cabe destacar", "cabe mencionar", "juega un papel", "desempeña un papel", "papel crucial", "un sinfín", "en el ámbito", "a lo largo de la historia", "en el mundo actual", "es crucial", "en última instancia", "sin lugar a dudas", "de manera significativa", "en términos de", "enriquecedor", "multifacétic", "panorama", "adentrarse", "adentrarnos", "nos adentramos", "en el vasto"];
 function lgOraciones(t) { return (t.match(/[^.!?…\n]+[.!?…]*/g) || []).map(function (o) { return o.trim(); }).filter(Boolean); }
-async function lgMotorLocal(texto, tipo) {
+async function lgMotorLocal(texto, tipo, enfoque) {
 var errores = [];
 var rangos = [];
 function libre(a, b) { return !rangos.some(function (r) { return a < r[1] && b > r[0]; }); }
@@ -23095,6 +23648,22 @@ e._a = a; e._b = b;
 if (typeof e.sugerencia !== "string") { e.sugerencia = e.fragmento; }
 errores.push(e);
 }
+// 0. Muletillas y énfasis repetido (más detalle con el enfoque «Redacción y estilo»).
+var cuentaMuy = 0;
+var reMuy = /(?<![A-Za-zÁÉÍÓÚÜÑáéíóúüñ])(muy|bastante|demasiado|realmente|básicamente|literalmente)(?![A-Za-zÁÉÍÓÚÜÑáéíóúüñ])/gi;
+var limiteMuy = enfoque === "redaccion" ? 3 : 4;
+var mm0;
+var vistasMuy = {};
+while ((mm0 = reMuy.exec(texto))) {
+var clm = mm0[1].toLowerCase();
+vistasMuy[clm] = (vistasMuy[clm] || 0) + 1;
+if (vistasMuy[clm] === limiteMuy) {
+cuentaMuy++;
+agregar(mm0.index, mm0.index + mm0[0].length, { categoria: "estilo", gravedad: "leve",
+explicacion: "Usas «" + mm0[1] + "» " + limiteMuy + " veces o más. Busca palabras más precisas (en vez de «muy grande»: enorme, inmenso).",
+regla: "Evita las muletillas: varía las palabras de intensidad.", sugerencia: mm0[0] });
+}
+}
 // 1. Reglas.
 LG_REGLAS.forEach(function (regla) {
 regla.re.lastIndex = 0;
@@ -23105,7 +23674,7 @@ if (m[0] === "") { regla.re.lastIndex++; continue; }
 if (regla.filtro && !regla.filtro(m, texto)) { continue; }
 n++;
 if (tipo === "poema" && regla.cat === "puntuacion") { continue; }
-agregar(m.index, m.index + m[0].length, { categoria: regla.cat, gravedad: regla.grav, explicacion: regla.exp, regla: regla.regla, sugerencia: regla.sug(m) });
+agregar(m.index, m.index + m[0].length, { categoria: regla.cat, gravedad: regla.grav, explicacion: regla.exp, regla: regla.regla, sugerencia: regla.sug(m), dudoso: !!regla.dudoso });
 }
 });
 // 2. Mayúscula al inicio de oración.
@@ -23113,23 +23682,37 @@ var reIni = /(^|[.!?…]\s+|\n\s*)([¿¡"«(]*)([a-záéíóúüñ][A-Za-zÁÉÍ
 var mi;
 while ((mi = reIni.exec(texto))) {
 if (tipo === "poema") { break; }
+var previo = texto.slice(0, mi.index + mi[1].length);
+// Tras puntos suspensivos la oración puede continuar en minúscula; tras abreviatura (etc., Sr.) no hay oración nueva.
+if (/(\.\.\.|…)\s*$/.test(previo)) { continue; }
+var abrev = previo.match(/([A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+)\.\s*$/);
+if (abrev && LG_ABREV.test(abrev[1])) { continue; }
 var ini = mi.index + mi[1].length + mi[2].length;
 agregar(ini, ini + mi[3].length, { categoria: "mayusculas", gravedad: "moderado",
 explicacion: "Toda oración empieza con mayúscula.", regla: "Se escribe con mayúscula la primera palabra de un texto y la que va después de punto.",
 sugerencia: mi[3][0].toUpperCase() + mi[3].slice(1) });
 }
-// 3. Signos de apertura ¿ ¡.
+// 3. Signos de apertura ¿ ¡ (en la palabra donde empieza la pregunta o exclamación).
+var desdeO = 0;
 lgOraciones(texto).forEach(function (o) {
+var pos = texto.indexOf(o, desdeO);
+if (pos < 0) { pos = texto.indexOf(o); }
+if (pos >= 0) { desdeO = pos + o.length; }
 [["?", "¿", "interrogación"], ["!", "¡", "exclamación"]].forEach(function (s) {
-if (o.indexOf(s[0]) >= 0 && o.indexOf(s[1]) < 0) {
-var pos = texto.indexOf(o);
-var mp = o.match(/[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+/);
-if (pos >= 0 && mp) {
-var a = pos + mp.index;
+if (o.indexOf(s[0]) >= 0 && o.indexOf(s[1]) < 0 && pos >= 0) {
+var ini = lgInicioPregunta(o, s[0]);
+if (ini < 0) { return; }
+var mp = o.slice(ini).match(/^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+/);
+if (!mp) { return; }
+var a = pos + ini;
+// Si la pregunta empieza con un interrogativo sin tilde (como, que, donde…), se corrige también la tilde.
+var TILDE_INT = { que: "qué", como: "cómo", donde: "dónde", cuando: "cuándo", cual: "cuál", cuales: "cuáles", quien: "quién", quienes: "quiénes", cuanto: "cuánto", cuanta: "cuánta", cuantos: "cuántos", cuantas: "cuántas" };
+var conTilde = TILDE_INT[mp[0].toLowerCase()];
+var palabraSug = conTilde ? lgMayus(mp[0], conTilde) : mp[0];
 agregar(a, a + mp[0].length, { categoria: "puntuacion", gravedad: "moderado",
-explicacion: "En español los signos de " + s[2] + " se abren y se cierran.", regla: "Se escribe «" + s[1] + "…" + s[0] + "»: el signo de apertura es obligatorio.",
-sugerencia: s[1] + mp[0] });
-}
+explicacion: "En español los signos de " + s[2] + " se abren y se cierran. El de apertura va donde empieza la " + (s[0] === "?" ? "pregunta" : "exclamación") + ", que no siempre es el inicio de la oración («Hola, ¿cómo estás?»).",
+regla: "Se escribe «" + s[1] + "…" + s[0] + "»: el signo de apertura es obligatorio.",
+sugerencia: s[1] + palabraSug });
 }
 });
 });
@@ -23147,7 +23730,7 @@ var pos = texto.indexOf(o);
 if (pos < 0 || pal.length < 3) { return; }
 var primeras = o.match(/^\S+\s+\S+\s+\S+/);
 if (!primeras) { return; }
-if (pal.length > 45) {
+if (pal.length > (enfoque === "redaccion" ? 35 : 45)) {
 agregar(pos, pos + primeras[0].length, { categoria: "coherencia", gravedad: "moderado",
 explicacion: "Esta oración tiene " + pal.length + " palabras: es difícil de seguir. Divídela en dos o tres oraciones.", regla: "Una oración clara suele tener menos de 30 o 35 palabras.", sugerencia: primeras[0] });
 } else if ((o.match(/(^|\s)y(\s|$)/g) || []).length >= 4) {
@@ -23182,10 +23765,23 @@ var aRevisar = {};
 palabras.forEach(function (p) {
 if (enUrl.some(function (r) { return p.i >= r[0] && p.i < r[1]; })) { return; }
 if (p.w.length > 1 && p.w === p.w.toUpperCase()) { return; }
+if (lgAceptada(p.w)) { return; }
 var inicio = lgInicioOracion(texto, p.i);
+// Topónimo escrito en minúscula: Managua, Ocotal, Estelí…
+var topo = LG_TOPONIMOS[p.w.toLowerCase()];
+if (topo && p.w === p.w.toLowerCase()) {
+agregar(p.i, p.i + p.w.length, { categoria: "mayusculas", gravedad: "moderado",
+explicacion: "Los nombres de lugares (ciudades, departamentos, países) se escriben con mayúscula inicial.", regla: "Nombres propios con mayúscula: Nicaragua, Ocotal, Estelí.", sugerencia: topo });
+return;
+}
+// Voseo (tenés, sabés, vení, decime): se acepta si el infinitivo existe en el diccionario.
+var inf = lgVoseoInfinitivo(p.w.toLowerCase());
+if (inf) { p.vos = inf; aRevisar[inf] = 1; }
 if (p.w[0] !== p.w[0].toLowerCase() && !inicio) { p.propio = true; return; }
 p.clave = inicio ? p.w.toLowerCase() : p.w;
 aRevisar[p.clave] = 1;
+// Al inicio de oración también se prueba con mayúscula: así «Nicaragua» o «María» no se marcan.
+if (inicio && p.w !== p.clave) { p.alt = p.w; aRevisar[p.w] = 1; }
 });
 var DET_PL = /^(unos|unas|muchos|muchas|varios|varias|algunos|algunas|mis|tus|sus|nuestros|nuestras|estos|estas|esos|esas)$/i;
 var DET_SG = /^(el|un|mi|tu|su|este|ese)$/i;
@@ -23205,12 +23801,13 @@ palabras.forEach(function (p, k) {
 var sig = palabras[k + 1];
 if (!sig || texto.slice(p.i + p.w.length, sig.i) !== " ") { return; }
 var s = sig.w.toLowerCase();
-if (DET_PL.test(p.w) && /[aeoáéó]$/i.test(s) && s.length >= 4 && bien(s) && bien(s + "s")) {
+if (DET_PL.test(p.w) && /[aeoáéó]$/i.test(s) && s.length >= 4 && bien(s) && bien(s + "s") &&
+!(/^(estas|esas)$/i.test(p.w) && /(ado|ada|[ií]do|[ií]da)$/i.test(s))) {
 agregar(p.i, sig.i + sig.w.length, { categoria: "concordancia", gravedad: "moderado",
 explicacion: "«" + p.w + "» está en plural y «" + sig.w + "» en singular: deben concordar en número.", regla: "El determinante y el sustantivo concuerdan en género y número (mis amigos, unos libros).",
 sugerencia: p.w + " " + sig.w + "s" });
 }
-if (DET_SG.test(p.w) && /[^s]s$/i.test(s) && s.length >= 5 && bien(s) && bien(s.slice(0, -1))) {
+if (DET_SG.test(p.w) && /[^s]s$/i.test(s) && s.length >= 5 && bien(s) && bien(s.slice(0, -1)) && !DET_PL.test(s)) {
 var pl = { el: "los", un: "unos", mi: "mis", tu: "tus", su: "sus", este: "estos", ese: "esos" }[p.w.toLowerCase()];
 agregar(p.i, sig.i + sig.w.length, { categoria: "concordancia", gravedad: "moderado",
 explicacion: "«" + p.w + "» está en singular y «" + sig.w + "» en plural: deben concordar en número.", regla: "El determinante y el sustantivo concuerdan en número (sus padres, los perros).",
@@ -23221,6 +23818,9 @@ palabras.forEach(function (p) {
 if (!p.clave) { return; }
 var r = dic[p.clave];
 if (!r || r.ok) { return; }
+if (p.alt && dic[p.alt] && dic[p.alt].ok) { return; }
+if (p.vos && dic[p.vos] && dic[p.vos].ok) { return; }
+var mayus = p.w[0] !== p.w[0].toLowerCase();
 var arreglar = function (w) { return w && p.w[0] !== p.w[0].toLowerCase() ? w[0].toUpperCase() + w.slice(1) : w; };
 if (r.acento) {
 agregar(p.i, p.i + p.w.length, { categoria: "acentuacion", gravedad: "moderado",
@@ -23228,10 +23828,13 @@ explicacion: "Falta la tilde (o está en la sílaba equivocada): se escribe «" 
 sugerencia: arreglar(r.acento) });
 } else {
 var sug = r.sug && r.sug[0] ? arreglar(r.sug[0]) : p.w;
-agregar(p.i, p.i + p.w.length, { categoria: "ortografia", gravedad: r.sug && r.sug.length ? "grave" : "moderado",
-explicacion: r.sug && r.sug.length
+// Dudosa: palabra con mayúscula (posible nombre), sin sugerencias o con una sugerencia muy distinta.
+var dudosa = mayus || !(r.sug && r.sug.length) || lgDistancia(p.w, sug) > 2 || p.w.length - sug.length >= 2;
+agregar(p.i, p.i + p.w.length, { categoria: "ortografia", gravedad: mayus ? "leve" : r.sug && r.sug.length ? "grave" : "moderado", dudoso: dudosa,
+explicacion: (r.sug && r.sug.length
 ? "Esta palabra no aparece en el diccionario. Quizás quisiste escribir: " + r.sug.map(arreglar).join(", ") + "."
-: "Esta palabra no aparece en el diccionario. Revisa cómo se escribe (si es un nombre propio o una palabra local, puedes ignorarlo).",
+: "Esta palabra no aparece en el diccionario. Revisa cómo se escribe.") +
+(dudosa ? " Si es un nombre propio o una palabra local, descártala o agrégala a tu diccionario." : ""),
 regla: "Revisa la escritura de la palabra en el diccionario de la RAE (dle.rae.es).", sugerencia: sug });
 }
 });
@@ -23240,26 +23843,21 @@ errores.sort(function (x, y) { return x._a - y._a; });
 // Versión corregida: se aplican los reemplazos de atrás hacia adelante.
 var corregido = texto;
 errores.slice().sort(function (x, y) { return y._a - x._a; }).forEach(function (e) {
-if (e.sugerencia !== e.fragmento) { corregido = corregido.slice(0, e._a) + e.sugerencia + corregido.slice(e._b); }
+if (e.sugerencia !== e.fragmento && !e.dudoso) { corregido = corregido.slice(0, e._a) + e.sugerencia + corregido.slice(e._b); }
 });
+// Enfoque «Ortografía y puntuación»: se dejan fuera estilo, vocabulario y repetición.
+if (enfoque === "basico") {
+errores = errores.filter(function (e) { return ["estilo", "lexico", "repeticion", "coherencia"].indexOf(e.categoria) < 0; });
+corregido = texto;
+errores.slice().sort(function (x, y) { return y._a - x._a; }).forEach(function (e) {
+if (e.sugerencia !== e.fragmento && !e.dudoso) { corregido = corregido.slice(0, e._a) + e.sugerencia + corregido.slice(e._b); }
+});
+}
 // Puntajes.
 var total = Math.max(1, palabras.length);
-var peso = { grave: 1.5, moderado: 1, leve: 0.5 };
-function area(cats, factor) {
-var s = 0;
-errores.forEach(function (e) { if (cats.indexOf(e.categoria) >= 0) { s += peso[e.gravedad] || 1; } });
-return Math.max(15, Math.round(100 - (s / total) * 100 * factor));
-}
-var p = {
-ortografia: area(["ortografia", "acentuacion", "mayusculas"], 6),
-gramatica: area(["gramatica", "concordancia"], 8),
-puntuacion: area(["puntuacion"], 5),
-vocabulario: area(["lexico", "repeticion"], 5),
-coherencia: area(["coherencia"], 6),
-estilo: area(["estilo"], 5)
-};
-p.general = Math.round(p.ortografia * 0.25 + p.gramatica * 0.25 + p.puntuacion * 0.2 + p.vocabulario * 0.1 + p.coherencia * 0.1 + p.estilo * 0.1);
-var nivel = p.general >= 90 ? "Excelente" : p.general >= 80 ? "Muy bueno" : p.general >= 65 ? "Bueno" : p.general >= 50 ? "Regular" : "Necesita mejorar";
+var pn = lgPuntuar(errores, total);
+var p = pn.p;
+var nivel = pn.nivel;
 var cuenta = {};
 errores.forEach(function (e) { cuenta[e.categoria] = (cuenta[e.categoria] || 0) + 1; });
 var orden = Object.keys(cuenta).sort(function (a, b) { return cuenta[b] - cuenta[a]; });
@@ -23277,7 +23875,7 @@ var voseo = /(?<![a-záéíóúñ])(vos|sos|tenés|sabés|podés|querés)(?![a-z
 var densidad = errores.length / total * 100;
 var ia = 12;
 var senales = [];
-if (formulas.length) { ia += Math.min(40, formulas.length * 8); senales.push("Frases muy usadas por la IA: «" + formulas.slice(0, 4).join("», «") + "»."); }
+if (formulas.length) { ia += Math.min(30, formulas.length * 6); senales.push("Frases muy repetidas en textos generados: «" + formulas.slice(0, 4).join("», «") + "»."); }
 if (largos.length >= 5 && cv < 0.35) { ia += 15; senales.push("Las oraciones tienen largos muy parecidos entre sí."); }
 if (largos.length >= 5 && cv > 0.6) { ia -= 8; }
 if (total >= 120 && densidad < 1) { ia += 15; senales.push("Casi no tiene errores en un texto largo."); }
@@ -23318,7 +23916,7 @@ if (conectores.length < 2 && total > 60) { consejos.push("Usa más conectores (a
 var practica = [];
 var vistasCat = {};
 errores.forEach(function (e) {
-if (practica.length >= 3 || vistasCat[e.categoria] || e.sugerencia === e.fragmento) { return; }
+if (practica.length >= 3 || vistasCat[e.categoria] || e.sugerencia === e.fragmento || e.dudoso) { return; }
 vistasCat[e.categoria] = 1;
 practica.push({ enunciado: "Corrige: «" + e.fragmento + "»", respuesta: e.sugerencia + " — " + e.regla });
 });
@@ -23328,20 +23926,21 @@ var resumen = errores.length
 if (sinDiccionario) { resumen += " (No se pudo cargar el diccionario: esta vez no se revisó la ortografía palabra por palabra.)"; }
 return {
 motor: "local",
+total_palabras: total,
 resumen: resumen,
 nivel_texto: nivel,
 puntajes: p,
 errores: errores.map(function (e) {
-return { fragmento: e.fragmento, categoria: e.categoria, gravedad: e.gravedad, explicacion: e.explicacion, sugerencia: e.sugerencia, regla: e.regla };
+return { fragmento: e.fragmento, categoria: e.categoria, gravedad: e.gravedad, explicacion: e.explicacion, sugerencia: e.sugerencia, regla: e.regla, a: e._a, b: e._b, dudoso: !!e.dudoso };
 }),
 no_localizados: 0,
 texto_corregido: corregido,
 ia: {
 porcentaje: ia,
-veredicto: ia < 30 ? "Probablemente humano" : ia < 60 ? "Mixto o dudoso" : "Probablemente IA",
+veredicto: ia < 30 ? "Pocas señales de estilo tipo IA" : ia < 60 ? "Algunas señales de estilo tipo IA" : "Muchas señales de estilo tipo IA",
 senales: senales,
 nota: (total < 100 ? "El texto es corto: la estimación es poco precisa. " : "") +
-"Se calcula con patrones de escritura (frases típicas, ritmo de las oraciones, errores y referencias personales), no con un detector externo."
+"Se calcula con patrones de escritura (frases típicas, ritmo de las oraciones, errores y referencias personales), no con un detector externo. No indica quién escribió el texto."
 },
 fortalezas: fortalezas.slice(0, 5),
 consejos: consejos.slice(0, 4),

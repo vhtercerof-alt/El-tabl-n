@@ -14,6 +14,7 @@
 | Activar Analytics | ⏳ **Falta** (paso C.2) |
 | Borrar el proyecto duplicado vacío `el-tablon` (Settings → Delete Project) | ⏳ **Falta** |
 | Profesor de lengua y Voleibol: funcionan solos con el **motor integrado**. Falta ejecutar `ACTIVAR-4-permisos-roles.sql` para dar el permiso del voleibol a otros roles. `GEMINI_API_KEY` es **opcional** (paso C.4) | ⏳ Falta el SQL |
+| Profesor de lengua · «Enviar al profesor» y «Revisiones del salón»: ejecutar `ACTIVAR-lengua-revisiones.sql` | ⏳ **Falta** |
 
 
 Esta guía tiene tres partes. Hazlas en orden y una sola vez:
