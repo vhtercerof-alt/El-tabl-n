@@ -6660,6 +6660,131 @@ animation-duration: .01ms !important; animation-iteration-count: 1 !important; t
 .tb-toast.fuera { opacity: 0; transform: translate(-50%, 12px); }
 @keyframes tbToastIn { from { opacity: 0; transform: translate(-50%, 12px); } to { opacity: 1; transform: translateX(-50%); } }
 #tb-push-card p { margin: 6px 0 10px; color: #b0bad0; font-size: 13.5px; line-height: 1.5; }
+/* ===== Logros: cumpleaños, misiones e insignias ===== */
+@keyframes tbLgBloques { to { background-position: 70px 0; } }
+@keyframes tbLgConfeti { to { background-position: 12px 24px, 18px 30px, 0 0; } }
+@keyframes tbLgVaiven { 0%, 100% { background-position: 0% 50%, 0 0; } 50% { background-position: 100% 50%, 0 0; } }
+@keyframes tbGloboSube { from { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-62vh) rotate(4deg); } to { transform: translateY(-125vh) rotate(-3deg); } }
+@keyframes tbGloboVaiven { 0%, 100% { margin-left: 0; } 50% { margin-left: 18px; } }
+@keyframes tbConfetiCae { from { transform: translate(0, -20px) rotate(0); opacity: 1; } to { transform: translate(var(--x), 105vh) rotate(720deg); opacity: .2; } }
+@keyframes tbBandera { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
+@keyframes tbLlama { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(.82) translateY(1px); } }
+@keyframes tbPremioGira { to { transform: rotate(360deg); } }
+@keyframes tbToastEntra { from { transform: translate(-50%, 30px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
+/* Modal del cumpleaños y del premio */
+.tb-cumple-modal { position: fixed; inset: 0; z-index: 9000; display: grid; place-items: center; padding: 18px; background: #050817cc; backdrop-filter: blur(6px); }
+.tb-cumple-card { position: relative; width: min(420px, 100%); display: grid; gap: 12px; justify-items: center; padding: 26px 22px 20px; border: 1px solid #ff7ad955; border-radius: 26px; text-align: center; overflow: hidden;
+background: radial-gradient(120% 80% at 50% 0%, #ff7ad92e, transparent 60%), linear-gradient(160deg, #1b2450, #0a1028); box-shadow: 0 30px 80px #0009; }
+.tb-cumple-card h2 { margin: 0; font-size: 22px; }
+.tb-cumple-card p { margin: 0; font-size: 13.5px; line-height: 1.5; }
+.tb-cumple-pastel { width: 110px; }
+.tb-cumple-pastel svg { width: 100%; height: auto; display: block; }
+.tb-cumple-pastel .tb-llama path { transform-origin: center bottom; transform-box: fill-box; animation: tbLlama .9s ease-in-out infinite; }
+.tb-cumple-pastel.mini { width: 54px; flex: none; }
+.tb-cumple-campos { display: grid; grid-template-columns: 1fr 1.6fr; gap: 10px; width: 100%; text-align: left; }
+.tb-cumple-campos select { width: 100%; }
+.tb-cumple-aviso { min-height: 0; color: var(--danger); font-size: 12.5px !important; }
+.tb-cumple-aviso:empty { display: none; }
+.tb-cumple-card .tb-primary { width: 100%; }
+.tb-cumple-luego { border: 0; background: none; color: var(--muted); font-weight: 750; cursor: pointer; text-decoration: underline; }
+.tb-cumple-card small { font-size: 11.5px; line-height: 1.4; }
+.tb-premio-card { border-color: #ffcf5c66; }
+.tb-premio-rayos { position: absolute; inset: -50%; z-index: -1; background: repeating-conic-gradient(#ffcf5c14 0 10deg, transparent 10deg 20deg); animation: tbPremioGira 18s linear infinite; }
+.tb-premio-kicker { color: #ffcf5c; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
+.tb-premio-banner { width: 100%; height: 86px; border-radius: 16px; border: 1px solid #ffffff22; }
+.tb-premio-marco { position: relative; width: 92px; height: 92px; display: grid; place-items: center; border-radius: 22px; background: #0b1430; }
+.tb-premio-marco .tb-frame { position: absolute; inset: 0; border-radius: inherit; }
+.tb-premio-marco span { font-size: 34px; font-weight: 900; }
+.tb-fiesta-botones { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+/* Tema de fiesta (solo para quien cumple años) */
+#tablon-root.tb-fiesta { --accent: #ff7ad9; --accent2: #ffd23f; }
+#tablon-root.tb-fiesta .tb-glass, #tablon-root.tb-fiesta .tb-card { box-shadow: 0 0 0 1px #ff7ad922, 0 10px 30px #ff7ad914; }
+#tablon-root.tb-fiesta .tb-primary { background: linear-gradient(120deg, #ff7ad9, #ffb02e); color: #2a0820; }
+#tablon-root.tb-fiesta .tb-welcome h1::after { content: " 🎉"; }
+.tb-fiesta-capa { position: fixed; inset: 0; z-index: 8000; pointer-events: none; overflow: hidden; }
+.tb-fiesta-capa::before { content: ""; position: absolute; inset: 0; opacity: .5;
+background: radial-gradient(circle, #ff7ad955 0 2px, transparent 3px) 0 0/46px 46px, radial-gradient(circle, #ffd23f44 0 2px, transparent 3px) 23px 23px/46px 46px; }
+.tb-banderines { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; padding: 0 6px; }
+.tb-banderines::before { content: ""; position: absolute; top: 4px; left: 0; right: 0; height: 2px; background: #ffffff55; }
+.tb-banderines i { width: 18px; height: 24px; margin-top: 4px; background: var(--c); clip-path: polygon(0 0, 100% 0, 50% 100%); transform-origin: top center; animation: tbBandera 3s ease-in-out infinite; opacity: .9; }
+.tb-banderines i:nth-child(2n) { animation-delay: -1.5s; }
+.tb-globo { position: absolute; bottom: -130px; width: var(--tam); animation: tbGloboSube var(--dur) linear infinite, tbGloboVaiven 4s ease-in-out infinite; animation-delay: var(--ret), 0s; filter: drop-shadow(0 6px 10px #0005); opacity: .92; }
+.tb-globo svg { width: 100%; height: auto; display: block; }
+.tb-fiesta-capa.tb-sin-globos .tb-globos { display: none; }
+.tb-confeti b { position: absolute; top: -20px; width: 8px; height: 13px; border-radius: 2px; background: var(--c); animation: tbConfetiCae 3.6s cubic-bezier(.3, .6, .5, 1) forwards; animation-delay: var(--ret); }
+.tb-fiesta-aviso { position: fixed; z-index: 8500; left: 50%; bottom: 18px; transform: translateX(-50%); width: min(560px, calc(100% - 24px)); display: flex; align-items: center; gap: 12px; padding: 12px 14px;
+border: 1px solid #ff7ad966; border-radius: 20px; background: linear-gradient(120deg, #3a0f36f2, #1b1a4af2); box-shadow: 0 18px 50px #0009; animation: tbToastEntra .5s ease-out; }
+.tb-fiesta-aviso > div:nth-child(2) { flex: 1; min-width: 0; display: grid; }
+.tb-fiesta-aviso b { font-size: 16px; }
+.tb-fiesta-aviso small { color: #ffd6f3; }
+.tb-fiesta-pastel { width: 52px; flex: none; }
+.tb-fiesta-pastel svg { width: 100%; display: block; }
+.tb-fiesta-aviso.tb-plegado { width: auto; padding: 8px; cursor: pointer; }
+.tb-fiesta-aviso.tb-plegado > div:not(.tb-fiesta-pastel) { display: none; }
+@media (max-width: 560px) { .tb-fiesta-aviso { flex-wrap: wrap; } .tb-fiesta-botones { width: 100%; } .tb-fiesta-botones .tb-primary { flex: 1; } }
+@media (prefers-reduced-motion: reduce) {
+.tb-globo, .tb-banderines i, .tb-confeti b, .tb-premio-rayos, .tb-cumple-pastel .tb-llama path { animation: none !important; }
+.tb-globo { bottom: auto; top: calc(20% + var(--tam)); }
+.tb-confeti { display: none; }
+}
+/* Vista Logros */
+.tb-logro-cumple { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; padding: 14px 16px; border: 1px solid #ff7ad944; border-radius: 20px; background: linear-gradient(120deg, #ff7ad91a, #ffd23f12); }
+.tb-logro-cumple > div:nth-child(2) { flex: 1; display: grid; }
+.tb-logro-cumple small { color: var(--muted); }
+.tb-logro-cumple.hoy { border-color: #ffd23f; box-shadow: 0 0 24px #ffd23f33; }
+.tb-logros-sec { margin-bottom: 16px; }
+.tb-logros-head { display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; align-items: center; }
+.tb-mis-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 10px; }
+.tb-mis { display: grid; grid-template-columns: 46px minmax(0, 1fr) auto; grid-template-areas: "ico cuerpo premio" "ico cuerpo boton"; gap: 6px 12px; align-items: center; padding: 12px; border: 1px solid var(--line); border-radius: 18px; background: #ffffff08; }
+.tb-mis.cosmetica { border-color: #ff9a3c55; background: linear-gradient(140deg, #ff9a3c14, #ffffff06); }
+.tb-mis.lista { border-color: var(--ok); box-shadow: 0 0 18px #52dfa833; }
+.tb-mis.hecha { opacity: .6; }
+.tb-mis-ico { grid-area: ico; display: grid; place-items: center; width: 46px; height: 46px; border-radius: 14px; background: #ffffff10; font-size: 24px; }
+.tb-mis-cuerpo { grid-area: cuerpo; min-width: 0; }
+.tb-mis h4 { margin: 0; font-size: 14.5px; }
+.tb-mis p { margin: 2px 0 6px; color: var(--muted); font-size: 12.5px; line-height: 1.4; }
+.tb-mis-barra { height: 7px; border-radius: 99px; background: #ffffff14; overflow: hidden; }
+.tb-mis-barra i { display: block; height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--accent), var(--ok)); transition: width .4s; }
+.tb-mis-premio { grid-area: premio; display: flex; align-items: center; gap: 6px; justify-self: end; font-weight: 900; }
+.tb-mis-premio.cosm { max-width: 150px; }
+.tb-mis-premio.cosm .tb-premio-banner { width: 46px; height: 28px; border-radius: 8px; flex: none; }
+.tb-mis-premio.cosm .tb-premio-marco { width: 34px; height: 34px; border-radius: 10px; flex: none; }
+.tb-mis-premio.cosm .tb-premio-marco span { font-size: 14px; }
+.tb-mis-premio.cosm > span { display: grid; font-size: 12px; line-height: 1.2; }
+.tb-mis-premio.cosm small { color: #ff9a3c; font-weight: 800; font-size: 10.5px; }
+.tb-mis > .tb-primary, .tb-mis-ok { grid-area: boton; justify-self: end; padding: 6px 14px; font-size: 12.5px; }
+.tb-mis-ok { color: var(--ok); font-weight: 900; }
+.tb-logros-filtros { display: flex; flex-wrap: wrap; gap: 6px; }
+.tb-chip-filtro { padding: 5px 11px; border: 1px solid var(--line); border-radius: 999px; background: #ffffff0a; font-size: 12px; font-weight: 800; cursor: pointer; }
+.tb-chip-filtro.on { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 22%, transparent); }
+.tb-insignias-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; }
+.tb-insignia { position: relative; display: grid; justify-items: center; gap: 4px; padding: 16px 12px 12px; border: 1px solid var(--line); border-radius: 20px; background: #ffffff07; text-align: center; transition: transform .2s; }
+.tb-insignia.ok:hover { transform: translateY(-3px); }
+.tb-insignia.ok.oro { box-shadow: 0 0 22px #f0b42922; }
+.tb-insignia.ok.epica { box-shadow: 0 0 24px #b07aff33; border-color: #b07aff66; }
+.tb-insignia-svg { width: 78px; height: 78px; filter: drop-shadow(0 6px 10px #0006); }
+.tb-insignia.bloqueada .tb-insignia-svg { filter: grayscale(1) brightness(.55); opacity: .75; }
+.tb-insignia h4 { margin: 4px 0 0; font-size: 14px; }
+.tb-insignia p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.4; }
+.tb-insignia .tb-mis-barra { width: 100%; margin-top: 6px; }
+.tb-insignia-tier { position: absolute; top: 8px; right: 10px; font-size: 10px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.tb-insignia.ok.oro .tb-insignia-tier { color: #f0b429; }
+.tb-insignia.ok.epica .tb-insignia-tier { color: #c9a0ff; }
+.tb-insignia-hecha { color: var(--ok); font-weight: 900; }
+.tb-insignias-perfil { margin: 10px 0; }
+.tb-insignias-perfil small { color: var(--muted); font-weight: 900; letter-spacing: .1em; font-size: 10.5px; }
+.tb-insignias-perfil > div { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.tb-insignia-mini { width: 38px; height: 38px; }
+.tb-insignia-mini svg { width: 100%; height: 100%; }
+.tb-insignia-toast { position: fixed; z-index: 9100; left: 50%; top: 18px; transform: translateX(-50%); display: flex; align-items: center; gap: 12px; width: min(420px, calc(100% - 24px)); padding: 12px 14px; border: 1px solid #ffcf5c88; border-radius: 18px;
+background: linear-gradient(120deg, #2b2208f5, #14183af5); box-shadow: 0 18px 50px #000a; cursor: pointer; animation: tbToastEntra .45s ease-out; transition: opacity .5s, transform .5s; }
+.tb-insignia-toast.tb-sale { opacity: 0; transform: translate(-50%, -20px); }
+.tb-insignia-toast svg { width: 58px; height: 58px; flex: none; }
+.tb-insignia-toast div { display: grid; }
+.tb-insignia-toast small { color: #ffcf5c; font-weight: 900; letter-spacing: .12em; font-size: 10.5px; }
+.tb-insignia-toast span { color: var(--muted); font-size: 12px; }
+#tablon-root.tb-light .tb-mis, #tablon-root.tb-light .tb-insignia { background: #ffffffcc; }
+#tablon-root.tb-light .tb-cumple-card { background: radial-gradient(120% 80% at 50% 0%, #ff7ad92e, transparent 60%), linear-gradient(160deg, #ffffff, #f2f4fb); color: #16203a; }
 /* ===== Herramientas con IA: Profesor de lengua y Voleibol ===== */
 .ia-wrap { display: grid; gap: 14px; }
 .ia-panel { padding: 18px; border: 1px solid var(--line); border-radius: 20px; background: linear-gradient(150deg, #17274bcc, #080f22dd); }
@@ -7107,6 +7232,10 @@ caracteres y lo puedes cambiar cuando quieras desde Personalizar.
 <button class="tb-rail-btn" data-view="arcade" title="Actividades">
 🎮<span class="tb-rail-label">Juegos</span>
 </button>
+<button class="tb-rail-btn" data-view="logros" title="Logros: misiones e insignias">
+🏅<span class="tb-rail-label">Logros</span>
+<span class="tb-badge tb-logros-badge tb-hidden"></span>
+</button>
 <button class="tb-rail-btn" data-view="ranking" title="Ranking">
 🏆<span class="tb-rail-label">Ranking</span>
 </button>
@@ -7156,6 +7285,7 @@ caracteres y lo puedes cambiar cuando quieras desde Personalizar.
 </button>
 <button class="tb-nav" data-view="juego">🏐 Camino al Ídolo</button>
 <button class="tb-nav" data-view="arcade">🎮 Actividades</button>
+<button class="tb-nav" data-view="logros">🏅 Logros<span class="tb-badge tb-logros-badge tb-hidden"></span></button>
 <button class="tb-nav" data-view="ranking">🏆 Ranking</button>
 <button class="tb-nav" data-view="mascota">🐾 Mascota</button>
 <button class="tb-nav tb-staff-only" data-view="redaccion">✍ Redacción</button>
@@ -7402,6 +7532,15 @@ Canje de Belis
 </div>
 </div>
 <div id="tb-arcade"></div>
+</section>
+<section id="tb-view-logros" class="tb-view">
+<div class="tb-welcome">
+<div>
+<h1>Logros 🏅</h1>
+<p>Misiones de la semana, insignias y tu cumpleaños.</p>
+</div>
+</div>
+<div id="tb-logros"></div>
 </section>
 <section id="tb-view-redaccion" class="tb-view tb-staff-only">
 <div class="tb-welcome">
@@ -9224,7 +9363,7 @@ if (spinningKind || !collectionSupported(kind)) { return; }
 if (!idsRuleta(kind).length) { return; }
 spinningKind = kind;
 var pedido = tbRpc("tb_girar", { p_kind: kind }).then(
-function (datos) { return { datos: datos }; },
+function (datos) { misionEvento("ruleta_girar", 1); return { datos: datos }; },
 function (error) { return { error: error }; }
 );
 var paso = 360 / RUEDA_CASILLAS;
@@ -10153,7 +10292,7 @@ rachaMiniHtml(profile) +
 '<div class="tb-stat"><strong>' + (profile.completed_tasks || 0) +
 "</strong><small>TAREAS CUMPLIDAS</small></div>" +
 '<div class="tb-stat"><strong>' + escapeHtml(profile.role) + "</strong><small>ROL</small></div>" +
-"</div>" +
+"</div>" + insigniasHtmlPerfil(profile) +
 '<button type="button" class="tb-secondary tb-modal-close-bottom" data-close-modal>Cerrar perfil</button>';
 $("#tb-modal-content").scrollTop = 0;
 $("#tb-profile-modal").classList.remove("tb-hidden");
@@ -12005,6 +12144,7 @@ if (!me) { mascDecirDe(mascActiva, MASC_ACCESO[mascActiva]); }
 }
 function acariciar() {
 if (portalAbierto) { return; }
+misionEvento("mascota_mimos", 1);
 var guardian = $("#tb-guardian");
 var anillo = root.querySelector(".tb-g-anillo");
 caricias += 1;
@@ -16230,6 +16370,8 @@ var datos = arcadeDatos();
 var record = datos.tetris || 0;
 var nuevo = tetris.puntos > record;
 if (nuevo) { await guardarArcade({ tetris: tetris.puntos }); }
+misionEvento("tetris_partida", 1);
+if (tetris.puntos > 0) { misionEvento("tetris_puntos", tetris.puntos); }
 var aviso = $("#tb-tetris-aviso");
 if (aviso) {
 aviso.innerHTML = '<div class="tb-vf-nota"><b>Fin del juego.</b> Hiciste ' +
@@ -16460,6 +16602,7 @@ racha: racha, mejorRacha: Math.max(racha, previo.mejorRacha || 0),
 jugadas: (previo.jugadas || 0) + (yaJugadoHoy ? 0 : 1),
 ganadas: (previo.ganadas || 0) + (yaJugadoHoy ? 0 : (gano ? 1 : 0))
 } });
+if (gano && !yaJugadoHoy) { misionEvento("wordle_ganar", 1); }
 }
 pintarWordle();
 }
@@ -16571,6 +16714,7 @@ return preferirMiVoto(arcadeDatos()) === null ? "Vota la de hoy" : "Ya votaste h
 async function preferirVotar(opcion) {
 if (preferirMiVoto(arcadeDatos()) !== null) { return; }
 await guardarArcade({ prefiere: { fecha: hoyISO(), opcion: opcion } });
+misionEvento("prefiere_votar", 1);
 await preferirCargar();
 pintarPreferir();
 }
@@ -16890,6 +17034,9 @@ if (c) { c.onclick = function () { pinCancelar(est.id); }; }
 }
 function pinPintarFin(caja, est) {
 var gane = est.ganador === me.id;
+if (est.id && (est.retador === me.id || est.rival === me.id || est.rival_id === me.id || est.retador_id === me.id || gane)) {
+misionUnaVez("pin-" + est.id, function () { misionEvento("pin_jugar", 1); if (gane) { misionEvento("pin_ganar", 1); } });
+}
 var empate = !est.ganador;
 caja.innerHTML = cabeceraArcade("Pinturillo", [
 ["RONDAS", est.max_rondas],
@@ -17286,6 +17433,7 @@ vf.seguidas = 0;
 if (vf.indice === vf.lista.length - 1) {
 vf.fin = true;
 detenerVF();
+if (vf.aciertos) { misionEvento("vf_aciertos", vf.aciertos); }
 var datos = arcadeDatos();
 var registros = vfRecords(datos);
 if (vf.puntos > (registros[vf.sector] || 0)) {
@@ -17514,6 +17662,8 @@ parche.gatoP = (datos.gatoP || 0) + 1;
 mascDecirDe("leon", ["leon_juego_perdio"]);
 }
 await guardarArcade(parche);
+misionEvento("gato_jugar", 1);
+if (ganador === miSimbolo) { misionEvento("gato_ganar", 1); }
 }
 async function jugarGato(casilla) {
 var p = partidaActivaGato();
@@ -18276,7 +18426,7 @@ var result = await client.from("encuesta_votos").insert({
 encuesta_id: encuestaId, opcion_id: opcionId, profile_id: me.id
 });
 encuestaEnviando = false;
-if (result.error) { console.error("[encuestas] votar:", result.error); }
+if (result.error) { console.error("[encuestas] votar:", result.error); } else { misionEvento("encuesta_votar", 1); }
 encuestaError = (result.error && !encuestaMiVotoDe(encuestaId)) ? traducirErrorEncuesta(result.error) : "";
 await cargarVotosEncuestas();
 pintarEncuestas();
@@ -18858,6 +19008,7 @@ pintarMemes();
 return;
 }
 memeVista = "galeria";
+misionEvento("meme_enviar", 1);
 await cargarMemes();
 pintarMemes();
 } catch (e) {
@@ -19130,7 +19281,7 @@ button.classList.toggle("active", button.dataset.view === name);
 var titles = {
 home: "Resumen", tasks: "Tareas", semana: "Semana", profiles: "Perfiles", cosmetics: "Temas",
 shop: "Tienda", inventory: "Personalizar", gifts: "Regalos",
-noticias: "Noticias", juego: "Camino al Ídolo", arcade: "Actividades",
+noticias: "Noticias", juego: "Camino al Ídolo", arcade: "Actividades", logros: "Logros",
 redaccion: "Redacción", ranking: "Ranking", mascota: "Tu mascota",
 manage: "Administrar tareas", entregas: "Entregas", roles: "Roles", owner: "Panel del owner", showcase: "Mi vitrina", ideas: "Buzón de ideas", epic: "Cartas Épicas"
 };
@@ -19153,6 +19304,7 @@ setTimeout(function () { mascDecirDe("leon", ["leon_tienda_canje"]); }, 700);
 }
 if (name === "juego") { renderJuego(); }
 if (name === "arcade") { abrirArcade("hub"); }
+if (name === "logros") { renderLogros(); }
 pintarFondo(name);
 menuLateral(false);
 movePill(true);
@@ -19253,6 +19405,7 @@ await revisarVersion();
 await revisarNiveles();
 await revisarRacha();
 await revisarRecompensaDiaria();
+iniciarLogros();
 }
 $$("[data-auth]").forEach(function (button) {
 button.onclick = function () { switchAuth(button.dataset.auth); };
@@ -21761,6 +21914,9 @@ function bnPintarBatalla(caja, est) {
 var p = est.partida;
 var miTurno = p.estado === "jugando" && p.turno === me.id;
 var terminada = p.estado === "terminada";
+if (terminada && p.id && bn.abierta !== "ia") {
+misionUnaVez("bn-" + p.id, function () { misionEvento("naval_jugar", 1); if (p.ganador === me.id) { misionEvento("naval_ganar", 1); } });
+}
 var rival = bnNombre(est.rival_id);
 var hundidosRival = (est.hundidos_rival || []).map(function (h) { return h.i; });
 var celdasMias = bnCeldasFlota(est.mi_flota || []);
@@ -22425,6 +22581,12 @@ if (ok) { stpRefrescar(); }
 });
 }
 function stpPintarFinal(caja, est) {
+if (me && est && est.sala && (est.jugadores || []).some(function (j) { return j.id === me.id; })) {
+misionUnaVez("stop-" + est.sala.id + "-" + (est.sala.ronda || 0), function () {
+misionEvento("stop_jugar", 1);
+if (est.jugadores[0] && est.jugadores[0].id === me.id && est.jugadores[0].puntos > 0) { misionEvento("stop_ganar", 1); }
+});
+}
 var podio = est.jugadores.slice(0, 3);
 var orden = [1, 0, 2].filter(function (i) { return podio[i]; });
 caja.innerHTML = stpCabecera() +
@@ -22496,6 +22658,594 @@ if (s.estado === "espera") { stpPintarEspera(caja, stp.est); return; }
 if (s.estado === "jugando") { stpPintarJuego(caja, stp.est); return; }
 if (s.estado === "revision") { stpPintarRevision(caja, stp.est); return; }
 stpPintarFinal(caja, stp.est);
+}
+/* ===================================================================
+   LOGROS · CUMPLEAÑOS, MISIONES SEMANALES E INSIGNIAS
+   Requiere supabase/ACTIVAR-logros.sql (columnas cumple y misiones_total
+   en profiles, tablas de misiones y funciones tb_misiones_*, tb_regalo_cumple).
+   =================================================================== */
+var LOGROS_SQL = "ACTIVAR-logros.sql";
+if (!RARITY_COLORS["Exclusivo"]) { RARITY_COLORS["Exclusivo"] = "#ff9a3c"; }
+var MESES_ES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+var DIAS_MES = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+// Fecha de hoy en Nicaragua (America/Managua), sin depender de la zona del dispositivo.
+function hoyManagua() {
+try {
+var partes = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Managua", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(new Date());
+var d = {};
+partes.forEach(function (p) { d[p.type] = p.value; });
+return { anio: +d.year, mes: +d.month, dia: +d.day, md: d.month + "-" + d.day };
+} catch (e) {
+var f = new Date(Date.now() - 6 * 3600000);
+var mm = String(f.getUTCMonth() + 1).padStart(2, "0"), dd = String(f.getUTCDate()).padStart(2, "0");
+return { anio: f.getUTCFullYear(), mes: +mm, dia: +dd, md: mm + "-" + dd };
+}
+}
+function esBisiesto(a) { return (a % 4 === 0 && a % 100 !== 0) || a % 400 === 0; }
+function cumpleTexto(md) {
+if (!md || !/^\d{2}-\d{2}$/.test(md)) { return ""; }
+return (+md.slice(3)) + " de " + MESES_ES[+md.slice(0, 2) - 1];
+}
+
+/* ---------- Cumpleaños ---------- */
+function cumpleSoportado() { return !!me && has(me, "cumple"); }
+// El 29 de febrero se celebra el 28 en los años que no son bisiestos.
+function esCumpleDe(perfil) {
+if (!perfil || !perfil.cumple) { return false; }
+var h = hoyManagua();
+if (perfil.cumple === h.md) { return true; }
+return perfil.cumple === "02-29" && h.md === "02-28" && !esBisiesto(h.anio);
+}
+function revisarCumple() {
+if (!cumpleSoportado()) { return; }
+var terminos = $("#tb-terms");
+if (terminos && !terminos.classList.contains("tb-hidden")) {
+setTimeout(revisarCumple, 1500);
+return;
+}
+if (esCumpleDe(me)) { activarFiesta(); return; }
+if (!me.cumple) {
+var omitido = false;
+try { omitido = window.sessionStorage.getItem("tb-cumple-luego-" + me.id) === "1"; } catch (e) { /* sin sessionStorage se pregunta siempre */ }
+if (!omitido) { setTimeout(mostrarModalCumple, 900); }
+}
+}
+function mostrarModalCumple() {
+if (!me || me.cumple || $("#tb-cumple-modal")) { return; }
+var h = hoyManagua();
+var capa = document.createElement("div");
+capa.id = "tb-cumple-modal";
+capa.className = "tb-cumple-modal";
+capa.setAttribute("role", "dialog");
+capa.setAttribute("aria-modal", "true");
+capa.setAttribute("aria-labelledby", "tb-cumple-titulo");
+capa.innerHTML = '<article class="tb-cumple-card">' +
+'<div class="tb-cumple-pastel" aria-hidden="true">' + pastelSvg() + "</div>" +
+'<h2 id="tb-cumple-titulo">¿Cuándo es tu cumpleaños?</h2>' +
+'<p class="tb-muted">Solo el día y el mes. Ese día El Tablón se vestirá de fiesta, solo para ti, y te espera un regalo.</p>' +
+'<div class="tb-cumple-campos">' +
+'<label class="tb-field"><span>Día</span><select id="tb-cumple-dia">' +
+Array.from({ length: 31 }, function (_, i) { return '<option value="' + (i + 1) + '"' + (i + 1 === h.dia ? " selected" : "") + ">" + (i + 1) + "</option>"; }).join("") +
+"</select></label>" +
+'<label class="tb-field"><span>Mes</span><select id="tb-cumple-mes">' +
+MESES_ES.map(function (m, i) { return '<option value="' + (i + 1) + '"' + (i + 1 === h.mes ? " selected" : "") + ">" + m.charAt(0).toUpperCase() + m.slice(1) + "</option>"; }).join("") +
+"</select></label></div>" +
+'<p class="tb-cumple-aviso" id="tb-cumple-aviso" role="alert"></p>' +
+'<button type="button" class="tb-primary" id="tb-cumple-guardar">🎂 Guardar mi cumpleaños</button>' +
+'<button type="button" class="tb-cumple-luego" id="tb-cumple-luego">Ahora no</button>' +
+'<small class="tb-muted">Una vez guardado no se puede cambiar. Si te equivocas, pídele al owner que lo corrija.</small>' +
+"</article>";
+root.appendChild(capa);
+var dia = $("#tb-cumple-dia"), mes = $("#tb-cumple-mes");
+function ajustarDias() {
+var max = DIAS_MES[+mes.value - 1];
+Array.prototype.forEach.call(dia.options, function (o) { o.disabled = +o.value > max; });
+if (+dia.value > max) { dia.value = String(max); }
+}
+mes.onchange = ajustarDias;
+ajustarDias();
+dia.focus();
+$("#tb-cumple-luego").onclick = function () {
+try { window.sessionStorage.setItem("tb-cumple-luego-" + me.id, "1"); } catch (e) { /* nada */ }
+capa.remove();
+};
+$("#tb-cumple-guardar").onclick = guardarCumple;
+}
+async function guardarCumple() {
+var boton = $("#tb-cumple-guardar");
+var aviso = $("#tb-cumple-aviso");
+var md = String($("#tb-cumple-mes").value).padStart(2, "0") + "-" + String($("#tb-cumple-dia").value).padStart(2, "0");
+var texto = cumpleTexto(md);
+if (!window.confirm("¿Tu cumpleaños es el " + texto + "? Después no podrás cambiarlo.")) { return; }
+boton.disabled = true;
+var r = await client.from("profiles").update({ cumple: md }).eq("id", me.id);
+if (r.error) {
+boton.disabled = false;
+aviso.textContent = faltaTablaTb(r.error) || /cumple/.test(r.error.message || "")
+? "Falta activar esta función (" + LOGROS_SQL + ")." : (r.error.message || "No se pudo guardar.");
+return;
+}
+me.cumple = md;
+var perfil = profiles.find(function (p) { return p.id === me.id; });
+if (perfil) { perfil.cumple = md; }
+var capa = $("#tb-cumple-modal");
+if (capa) { capa.remove(); }
+avisoToast("🎂 ¡Anotado! Te esperamos el " + texto + ".");
+renderLogros();
+revisarInsigniasNuevas();
+if (esCumpleDe(me)) { activarFiesta(); }
+}
+function globoSvg(color) {
+return '<svg viewBox="0 0 60 110" aria-hidden="true"><defs><radialGradient id="g' + color.slice(1) + '" cx="35%" cy="30%" r="70%">' +
+'<stop offset="0" stop-color="#fff" stop-opacity=".75"/><stop offset=".35" stop-color="' + color + '"/><stop offset="1" stop-color="' + color + '" stop-opacity=".85"/></radialGradient></defs>' +
+'<path d="M30 4C14 4 4 17 4 32c0 18 15 32 26 36 11-4 26-18 26-36C56 17 46 4 30 4z" fill="url(#g' + color.slice(1) + ')"/>' +
+'<path d="M26 68l4 6 4-6z" fill="' + color + '"/>' +
+'<path d="M30 74c-4 8 4 14 0 22s4 10 1 14" stroke="#ffffffaa" stroke-width="1.4" fill="none"/></svg>';
+}
+function pastelSvg() {
+return '<svg viewBox="0 0 120 110"><rect x="18" y="58" width="84" height="40" rx="8" fill="#ff7ad9"/>' +
+'<path d="M18 70q10 10 21 0t21 0 21 0 21 0v-4H18z" fill="#fff4fb"/>' +
+'<rect x="26" y="34" width="68" height="28" rx="7" fill="#ffd23f"/>' +
+'<path d="M26 44q8 8 17 0t17 0 17 0 17 0v-4H26z" fill="#fff8d6"/>' +
+'<rect x="10" y="96" width="100" height="8" rx="4" fill="#7ae8ff"/>' +
+'<g fill="#9fb4ff"><rect x="40" y="16" width="5" height="18" rx="2"/><rect x="58" y="12" width="5" height="22" rx="2"/><rect x="76" y="16" width="5" height="18" rx="2"/></g>' +
+'<g class="tb-llama" fill="#ffb02e"><path d="M42.5 6c3 4 3 7 0 9-3-2-3-5 0-9z"/><path d="M60.5 2c3 4 3 7 0 9-3-2-3-5 0-9z"/><path d="M78.5 6c3 4 3 7 0 9-3-2-3-5 0-9z"/></g></svg>';
+}
+function activarFiesta() {
+if (!me || root.classList.contains("tb-fiesta")) { return; }
+root.classList.add("tb-fiesta");
+var capa = document.createElement("div");
+capa.id = "tb-fiesta-capa";
+capa.className = "tb-fiesta-capa";
+capa.setAttribute("aria-hidden", "true");
+var colores = ["#ff7ad9", "#ffd23f", "#7ae8ff", "#52dfa8", "#b07aff", "#ff9a3c", "#ff5d73", "#5ec8ff"];
+var globos = "";
+for (var i = 0; i < 12; i++) {
+var c = colores[i % colores.length];
+globos += '<span class="tb-globo" style="left:' + (4 + (i * 8.3) % 92).toFixed(1) + "%;--dur:" + (11 + (i * 3.7) % 9).toFixed(1) + "s;--ret:" + (-(i * 2.3) % 14).toFixed(1) + "s;--tam:" + (38 + (i * 13) % 26) + 'px">' + globoSvg(c) + "</span>";
+}
+var banderines = "";
+for (var b = 0; b < 26; b++) { banderines += '<i style="--c:' + colores[b % colores.length] + '"></i>'; }
+var confeti = "";
+for (var k = 0; k < 40; k++) {
+confeti += '<b style="left:' + ((k * 37) % 100) + "%;--c:" + colores[k % colores.length] + ";--ret:" + ((k * 0.13) % 1.6).toFixed(2) + "s;--x:" + (((k * 29) % 60) - 30) + 'px"></b>';
+}
+capa.innerHTML = '<div class="tb-banderines">' + banderines + "</div>" + '<div class="tb-globos">' + globos + "</div>" + '<div class="tb-confeti">' + confeti + "</div>";
+root.appendChild(capa);
+setTimeout(function () { var cf = capa.querySelector(".tb-confeti"); if (cf) { cf.remove(); } }, 6000);
+var aviso = document.createElement("div");
+aviso.id = "tb-fiesta-aviso";
+aviso.className = "tb-fiesta-aviso";
+aviso.setAttribute("role", "status");
+var nombre = String(me.display_name || me.username || "").split(" ")[0];
+aviso.innerHTML = '<div class="tb-fiesta-pastel">' + pastelSvg() + "</div>" +
+'<div><b>¡Feliz cumpleaños, ' + escapeHtml(nombre) + "!</b><small>Hoy El Tablón se vistió de fiesta solo para ti.</small></div>" +
+'<div class="tb-fiesta-botones"><button type="button" class="tb-primary" id="tb-fiesta-regalo">🎁 Abrir mi regalo</button>' +
+'<button type="button" class="tb-secondary" id="tb-fiesta-globos" title="Quitar o poner los globos">🎈</button>' +
+'<button type="button" class="tb-secondary" id="tb-fiesta-cerrar" aria-label="Ocultar el aviso">✕</button></div>';
+root.appendChild(aviso);
+$("#tb-fiesta-regalo").onclick = abrirRegaloCumple;
+$("#tb-fiesta-cerrar").onclick = function () { aviso.classList.add("tb-plegado"); };
+aviso.onclick = function (ev) { if (aviso.classList.contains("tb-plegado") && ev.target === aviso) { aviso.classList.remove("tb-plegado"); } };
+$("#tb-fiesta-globos").onclick = function () { capa.classList.toggle("tb-sin-globos"); };
+try { if (window.localStorage.getItem("tb-cumple-regalo-" + me.id) === String(hoyManagua().anio)) { marcarRegaloAbierto(); } } catch (e) { /* nada */ }
+}
+function marcarRegaloAbierto() {
+var b = $("#tb-fiesta-regalo");
+if (b) { b.disabled = true; b.textContent = "🎁 Regalo abierto"; }
+}
+async function abrirRegaloCumple() {
+var b = $("#tb-fiesta-regalo");
+if (b) { b.disabled = true; }
+var datos;
+try { datos = await tbRpc("tb_regalo_cumple"); }
+catch (error) {
+if (b) { b.disabled = false; }
+alert(/ya/i.test(error.message || "") ? "Ya abriste tu regalo de este año 🎁" : errorEconomia(error));
+if (/ya/i.test(error.message || "")) { marcarRegaloAbierto(); }
+return;
+}
+try { window.localStorage.setItem("tb-cumple-regalo-" + me.id, String(hoyManagua().anio)); } catch (e) { /* nada */ }
+marcarRegaloAbierto();
+pintarBelis();
+if (datos && datos.regalo) { await abrirRegaloLogro(datos.regalo, "border", "cumple_confeti", "+" + (datos.belis || 0) + " Belis y un contorno exclusivo"); }
+}
+// Abre (con el flujo normal de regalos) un cosmético otorgado por el servidor y lo muestra.
+async function abrirRegaloLogro(regaloId, kind, itemId, subtitulo) {
+var datos = null;
+try { datos = await tbRpc("tb_abrir_regalo", { p_regalo: String(regaloId) }); }
+catch (error) {
+avisoToast("🎁 Tu premio quedó en Regalos: ábrelo desde ahí.");
+try { await loadGifts(); renderGifts(); } catch (e) { /* nada */ }
+return;
+}
+try { await loadGifts(); } catch (e) { /* nada */ }
+renderGifts(); renderInventory(); renderShop(); renderMyProfile(); renderProfiles(); pintarBelis();
+mostrarPremio(kind, itemId, datos && datos.nuevo === false ? "Ya lo tenías: se convirtió en Belis." : subtitulo);
+}
+function vistaPreviaItem(kind, itemId) {
+var it = (COLLECTIONS[kind] && COLLECTIONS[kind].items[itemId]) || null;
+if (!it) { return ""; }
+if (kind === "banner") { return '<div class="tb-premio-banner" style="background:' + it.css + '"></div>'; }
+if (kind === "motion") { return '<div class="tb-premio-banner" style="background:' + it.css + ";background-size:" + it.size + ";animation:" + it.anim + '"></div>'; }
+if (kind === "border") { return '<div class="tb-premio-marco"><div class="tb-frame ' + it.cls + '" style="' + it.style + '"></div><span>' + escapeHtml((me.display_name || "?").charAt(0).toUpperCase()) + "</span></div>"; }
+return "";
+}
+function mostrarPremio(kind, itemId, subtitulo) {
+var it = (COLLECTIONS[kind] && COLLECTIONS[kind].items[itemId]) || { name: "Premio" };
+var capa = document.createElement("div");
+capa.className = "tb-cumple-modal tb-premio-modal";
+capa.setAttribute("role", "dialog");
+capa.setAttribute("aria-modal", "true");
+capa.innerHTML = '<article class="tb-cumple-card tb-premio-card"><span class="tb-premio-rayos" aria-hidden="true"></span>' +
+'<small class="tb-premio-kicker">' + escapeHtml((COLLECTIONS[kind] || {}).label || "Cosmético") + " · Exclusivo</small>" +
+"<h2>" + escapeHtml(it.name) + "</h2>" + vistaPreviaItem(kind, itemId) +
+'<p class="tb-muted">' + escapeHtml(subtitulo || "") + "</p>" +
+'<div class="tb-fiesta-botones" style="justify-content:center"><button type="button" class="tb-primary" data-premio-ir>🎒 Equipar en Personalizar</button>' +
+'<button type="button" class="tb-secondary" data-premio-ok>Genial</button></div></article>';
+root.appendChild(capa);
+capa.querySelector("[data-premio-ok]").onclick = function () { capa.remove(); };
+capa.querySelector("[data-premio-ir]").onclick = function () { capa.remove(); showView("inventory"); };
+}
+
+/* ---------- Cosméticos exclusivos de misiones y del cumpleaños ---------- */
+Object.assign(BANNERS, {
+mis_wordle: { name: "Cuadrícula verde", rarity: "Exclusivo", weight: 0, color: "#538d4e", soloRegalo: true,
+css: "repeating-linear-gradient(0deg,#0e1a12 0 4px,transparent 4px 38px),repeating-linear-gradient(90deg,#538d4e 0 34px,#0e1a12 34px 38px,#c9b458 38px 72px,#0e1a12 72px 76px,#538d4e 76px 110px,#0e1a12 110px 114px,#3a3a3c 114px 148px,#0e1a12 148px 152px)" },
+mis_stop: { name: "¡Alto total!", rarity: "Exclusivo", weight: 0, color: "#e0102f", soloRegalo: true,
+css: "radial-gradient(circle at 88% 50%,#fff 0 7px,transparent 8px),radial-gradient(circle at 88% 50%,#e0102f 0 26px,#fff 27px 30px,transparent 31px),repeating-linear-gradient(135deg,#8f0016 0 18px,#c4001f 18px 36px)" },
+mis_tinta: { name: "Tinta y pluma", rarity: "Exclusivo", weight: 0, color: "#2b3f9e", soloRegalo: true,
+css: "radial-gradient(40% 120% at 88% 20%,#1c2a6b66,transparent 70%),linear-gradient(90deg,transparent 0 46px,#ff8a8a 46px 48px,transparent 48px),repeating-linear-gradient(0deg,transparent 0 17px,#9fb4e8 17px 18px),linear-gradient(#fbf7ec,#efe6cf)" }
+});
+Object.assign(MOTIONS, {
+mis_radar: { name: "Radar naval", rarity: "Exclusivo", weight: 0, color: "#3fffb7", soloRegalo: true,
+css: "linear-gradient(90deg,transparent 0 42%,#3fffb766 50%,transparent 58%),repeating-radial-gradient(circle at 50% 50%,transparent 0 22px,#3fffb733 22px 23px),linear-gradient(#021a14,#043226)",
+size: "300% 100%, 100% 100%, 100% 100%", anim: "tbFlow 5s linear infinite" },
+mis_vf: { name: "Verdad o mito", rarity: "Exclusivo", weight: 0, color: "#52dfa8", soloRegalo: true,
+css: "linear-gradient(115deg,#1f9e6b88 0,transparent 42%,transparent 58%,#e0455f88 100%),linear-gradient(115deg,#06281b 0 49%,#f5f7ff 49% 51%,#2c0610 51%)",
+size: "220% 220%, 100% 100%", anim: "tbLgVaiven 6s ease-in-out infinite" }
+});
+Object.assign(BORDERS, {
+mis_tetris: { name: "Pieza perfecta", rarity: "Exclusivo", weight: 0, color: "#00e5ff", soloRegalo: true, cls: "tb-frame-mask",
+style: "background:repeating-linear-gradient(90deg,#00e5ff 0 14px,#ffd500 14px 28px,#b04dff 28px 42px,#3fe07a 42px 56px,#ff4d4d 56px 70px);animation:tbLgBloques 2.4s linear infinite" },
+mis_pincel: { name: "Pincelada", rarity: "Exclusivo", weight: 0, color: "#ff5d73", soloRegalo: true, cls: "tb-frame-mask",
+style: "background:linear-gradient(90deg,#ff5d73,#ffd23f,#52dfa8,#5ec8ff,#b07aff,#ff5d73);background-size:300% 100%;animation:tbFlow 6s linear infinite" },
+mis_gato: { name: "Tres en raya", rarity: "Exclusivo", weight: 0, color: "#ff9ad2", soloRegalo: true, cls: "",
+style: "border:3px solid #ff9ad2;box-shadow:0 0 0 3px #0b1024,0 0 0 6px #7ae8ff,0 0 18px #7ae8ff66" },
+mis_puntual: { name: "Puntualidad dorada", rarity: "Exclusivo", weight: 0, color: "#ffcf5c", soloRegalo: true, cls: "",
+style: "border:5px double #ffcf5c;box-shadow:0 0 14px #ffcf5c88,inset 0 0 10px #ffcf5c44" },
+cumple_confeti: { name: "Confeti de cumpleaños", rarity: "Exclusivo", weight: 0, color: "#ff7ad9", soloRegalo: true, cls: "tb-frame-mask",
+style: "background:radial-gradient(circle,#ff7ad9 0 2px,transparent 2.6px) 0 0/12px 12px,radial-gradient(circle,#ffd23f 0 2px,transparent 2.6px) 6px 6px/12px 12px,linear-gradient(135deg,#7ae8ff,#b07aff);animation:tbLgConfeti 3s linear infinite" }
+});
+
+/* ---------- Misiones semanales ---------- */
+// El servidor elige cada semana 4 misiones de Belis y 2 de cosmético (las mismas para todo el salón).
+// Este catálogo se sincroniza solo cuando entra el owner (tb_sincronizar_misiones).
+var MISIONES = {
+tetris_jugar: { t: "Calentando motores", d: "Juega 5 partidas de Tetris.", ico: "🟦", ev: "tetris_partida", meta: 5, belis: 60 },
+tetris_2000: { t: "Torre alta", d: "Haz 2.000 puntos en una sola partida de Tetris.", ico: "📈", ev: "tetris_puntos", modo: "maximo", meta: 2000, belis: 80 },
+wordle_3: { t: "Detective de palabras", d: "Adivina 3 Wordles.", ico: "🟩", ev: "wordle_ganar", meta: 3, belis: 70 },
+gato_3: { t: "Duelo amistoso", d: "Juega 3 partidas de X y O.", ico: "⭕", ev: "gato_jugar", meta: 3, belis: 50 },
+vf_30: { t: "Cerebro encendido", d: "Acierta 30 preguntas en Verdadero o falso.", ico: "🧠", ev: "vf_aciertos", meta: 30, belis: 60 },
+stop_2: { t: "¡Stop!", d: "Juega 2 rondas completas de Stop.", ico: "✋", ev: "stop_jugar", meta: 2, belis: 60 },
+pin_2: { t: "Artista invitado", d: "Termina 2 partidas de Pinturillo.", ico: "🎨", ev: "pin_jugar", meta: 2, belis: 60 },
+naval_2: { t: "Zarpamos", d: "Termina 2 batallas navales contra alguien del salón.", ico: "⚓", ev: "naval_jugar", meta: 2, belis: 60 },
+prefiere_4: { t: "Opinión firme", d: "Vota 4 días en ¿Qué preferirías?", ico: "🤔", ev: "prefiere_votar", meta: 4, belis: 40 },
+encuesta_1: { t: "Tu voz cuenta", d: "Vota en una encuesta del salón.", ico: "🗳️", ev: "encuesta_votar", meta: 1, belis: 30 },
+meme_1: { t: "Humor del salón", d: "Envía un meme al tablón.", ico: "🖼️", ev: "meme_enviar", meta: 1, belis: 40 },
+lengua_2: { t: "Pluma cuidadosa", d: "Revisa 2 textos con el Profesor de lengua.", ico: "📝", ev: "lengua_revisar", meta: 2, belis: 70 },
+ruleta_5: { t: "Girar y girar", d: "Gira 5 veces cualquier ruleta.", ico: "🎡", ev: "ruleta_girar", meta: 5, belis: 40 },
+entrega_1: { t: "Al día", d: "Sube una entrega de tarea.", ico: "📥", ev: "entrega_subir", meta: 1, belis: 80 },
+mimos_10: { t: "Mejores amigos", d: "Acaricia 10 veces a tu mascota.", ico: "🐾", ev: "mascota_mimos", meta: 10, belis: 30 },
+// Misiones de cosmético: el premio es un objeto exclusivo de esa actividad.
+c_tetris: { t: "Maestro de bloques", d: "Haz 5.000 puntos en una sola partida de Tetris.", ico: "🧱", ev: "tetris_puntos", modo: "maximo", meta: 5000, kind: "border", item: "mis_tetris" },
+c_wordle: { t: "Racha de letras", d: "Adivina 5 Wordles.", ico: "🔠", ev: "wordle_ganar", meta: 5, kind: "banner", item: "mis_wordle" },
+c_stop: { t: "Rey del Stop", d: "Gana una ronda de Stop (primer lugar).", ico: "🛑", ev: "stop_ganar", meta: 1, kind: "banner", item: "mis_stop" },
+c_pin: { t: "Pincel de oro", d: "Gana 2 partidas de Pinturillo.", ico: "🖌️", ev: "pin_ganar", meta: 2, kind: "border", item: "mis_pincel" },
+c_naval: { t: "Almirante", d: "Gana 2 batallas navales contra alguien del salón.", ico: "📡", ev: "naval_ganar", meta: 2, kind: "motion", item: "mis_radar" },
+c_gato: { t: "Tres en línea", d: "Gana 3 partidas de X y O.", ico: "❌", ev: "gato_ganar", meta: 3, kind: "border", item: "mis_gato" },
+c_lengua: { t: "Escritor en formación", d: "Revisa 4 textos con el Profesor de lengua.", ico: "🖋️", ev: "lengua_revisar", meta: 4, kind: "banner", item: "mis_tinta" },
+c_vf: { t: "Cazador de mitos", d: "Acierta 60 preguntas en Verdadero o falso.", ico: "⚖️", ev: "vf_aciertos", meta: 60, kind: "motion", item: "mis_vf" },
+c_entrega: { t: "Puntualidad", d: "Sube 3 entregas de tareas.", ico: "⏰", ev: "entrega_subir", meta: 3, kind: "border", item: "mis_puntual" }
+};
+var mis = { estado: "nada", error: "", semana: "", lista: [], reclamando: null };
+function misSoportado() { return mis.estado === "lista"; }
+function sincronizarMisiones() {
+if (!client || !isOwner()) { return Promise.resolve(); }
+var filas = Object.keys(MISIONES).map(function (id) {
+var m = MISIONES[id];
+return { id: id, evento: m.ev, modo: m.modo || "sumar", meta: m.meta, belis: m.belis || 0, premio_kind: m.kind || null, premio_item: m.item || null };
+});
+return client.rpc("tb_sincronizar_misiones", { p_items: filas }).then(function (r) {
+if (r.error && !faltaTablaTb(r.error)) { console.warn("[misiones] sincronizar:", r.error.message); }
+});
+}
+async function cargarMisiones() {
+if (!client || !me) { return; }
+mis.estado = "cargando";
+var r = await client.rpc("tb_misiones_semana");
+if (r.error) {
+mis.estado = "error";
+mis.error = faltaTablaTb(r.error)
+? (isOwner() ? "Para activar misiones e insignias ejecuta supabase/" + LOGROS_SQL + " en el SQL Editor de Supabase." : "Las misiones aún no están activadas.")
+: (r.error.message || "No se pudieron cargar las misiones.");
+} else {
+misAplicar(r.data);
+mis.estado = "lista";
+}
+pintarInsigniaLogros();
+}
+function misAplicar(datos) {
+if (!datos) { return; }
+mis.semana = datos.semana || mis.semana;
+mis.lista = (datos.misiones || []).filter(function (m) { return MISIONES[m.id]; });
+}
+function misReclamables() { return mis.lista.filter(function (m) { return !m.reclamada && m.progreso >= m.meta; }).length; }
+function pintarInsigniaLogros() {
+var n = misReclamables();
+$$(".tb-logros-badge").forEach(function (b) { b.textContent = n; b.classList.toggle("tb-hidden", !n); });
+}
+// Registra un evento de actividad. Solo llama al servidor si alguna misión de esta semana lo usa.
+function misionEvento(evento, cantidad) {
+if (!misSoportado() || !client) { return; }
+var afectadas = mis.lista.filter(function (m) { return !m.reclamada && m.progreso < m.meta && MISIONES[m.id].ev === evento; });
+if (!afectadas.length) { return; }
+var cant = Math.max(1, Math.round(Number(cantidad) || 1));
+var antes = {};
+mis.lista.forEach(function (m) { antes[m.id] = m.progreso >= m.meta; });
+client.rpc("tb_mision_avanzar", { p_evento: evento, p_cantidad: cant }).then(function (r) {
+if (r.error) { console.warn("[misiones] avanzar:", r.error.message); return; }
+misAplicar(r.data);
+mis.lista.forEach(function (m) {
+if (!antes[m.id] && m.progreso >= m.meta && !m.reclamada) {
+avisoToast("✅ Misión completada: " + MISIONES[m.id].t + ". Reclama tu premio en Logros.");
+}
+});
+pintarInsigniaLogros();
+if ($("#tb-view-logros") && $("#tb-view-logros").classList.contains("active")) { renderLogros(); }
+});
+}
+// Evita contar dos veces la misma partida (Stop, Pinturillo, Batalla naval).
+function misionUnaVez(clave, fn) {
+if (!me || !clave) { return; }
+var k = "tb-mis-vistos-" + me.id;
+var vistos = [];
+try { vistos = JSON.parse(window.localStorage.getItem(k) || "[]"); } catch (e) { vistos = []; }
+if (vistos.indexOf(clave) >= 0) { return; }
+vistos.push(clave);
+try { window.localStorage.setItem(k, JSON.stringify(vistos.slice(-300))); } catch (e) { /* nada */ }
+fn();
+}
+async function reclamarMision(id) {
+if (mis.reclamando) { return; }
+mis.reclamando = id;
+renderLogros();
+var datos;
+try { datos = await tbRpc("tb_mision_reclamar", { p_mision: id }); }
+catch (error) { mis.reclamando = null; alert(errorEconomia(error)); renderLogros(); return; }
+mis.reclamando = null;
+misAplicar(datos);
+pintarBelis();
+pintarInsigniaLogros();
+var m = MISIONES[id];
+if (datos && datos.regalo) {
+await abrirRegaloLogro(datos.regalo, m.kind, m.item, "Premio de la misión «" + m.t + "».");
+} else {
+avisoBelis("+" + (datos && datos.belis ? datos.belis : m.belis) + " Belis · " + m.t);
+}
+renderLogros();
+revisarInsigniasNuevas();
+}
+function finDeSemanaTexto() {
+// Las misiones cambian el lunes a las 00:00 (hora de Nicaragua).
+var a = new Date(Date.now() - 6 * 3600000);
+var dow = (a.getUTCDay() + 6) % 7;
+var resto = Date.UTC(a.getUTCFullYear(), a.getUTCMonth(), a.getUTCDate() + 7 - dow) - a.getTime();
+var dias = Math.floor(resto / 86400000), horas = Math.floor((resto % 86400000) / 3600000);
+return dias > 0 ? dias + " d " + horas + " h" : horas + " h";
+}
+function misionTarjeta(m) {
+var def = MISIONES[m.id];
+var pct = Math.min(100, Math.round(m.progreso / Math.max(1, m.meta) * 100));
+var lista = !m.reclamada && m.progreso >= m.meta;
+var premio = def.kind
+? '<div class="tb-mis-premio cosm">' + vistaPreviaItem(def.kind, def.item) + "<span>" + escapeHtml(COLLECTIONS[def.kind].items[def.item].name) + "<small>" + escapeHtml(COLLECTIONS[def.kind].label) + " exclusivo</small></span></div>"
+: '<div class="tb-mis-premio"><span class="tb-belis-coin">B</span><b>+' + def.belis + "</b></div>";
+var fmt = function (n) { return Number(n).toLocaleString("es"); };
+return '<article class="tb-mis' + (def.kind ? " cosmetica" : "") + (m.reclamada ? " hecha" : "") + (lista ? " lista" : "") + '">' +
+'<div class="tb-mis-ico" aria-hidden="true">' + def.ico + "</div>" +
+'<div class="tb-mis-cuerpo"><h4>' + escapeHtml(def.t) + "</h4><p>" + escapeHtml(def.d) + "</p>" +
+'<div class="tb-mis-barra" role="progressbar" aria-valuemin="0" aria-valuemax="' + m.meta + '" aria-valuenow="' + m.progreso + '"><i style="width:' + pct + '%"></i></div>' +
+'<small class="tb-muted">' + fmt(Math.min(m.progreso, m.meta)) + " / " + fmt(m.meta) + "</small></div>" +
+premio +
+(m.reclamada ? '<span class="tb-mis-ok">✔ Reclamada</span>'
+: '<button type="button" class="tb-primary" data-mis-reclamar="' + escapeHtml(m.id) + '"' + (lista && mis.reclamando !== m.id ? "" : " disabled") + ">" +
+(mis.reclamando === m.id ? "…" : lista ? "Reclamar" : "En curso") + "</button>") +
+"</article>";
+}
+
+/* ---------- Insignias ---------- */
+// Cada insignia se calcula con datos públicos del perfil, así se ve también en los perfiles ajenos.
+function totalCosmeticos(p) {
+return Object.keys(COLLECTIONS).reduce(function (n, kind) {
+var lista = p[COLLECTIONS[kind].owned];
+return n + (Array.isArray(lista) ? lista.length : 0);
+}, 0);
+}
+function exclusivosDe(p) {
+return Object.keys(COLLECTIONS).reduce(function (n, kind) {
+var lista = p[COLLECTIONS[kind].owned];
+var items = COLLECTIONS[kind].items;
+return n + (Array.isArray(lista) ? lista.filter(function (id) { return items[id] && items[id].rarity === "Exclusivo"; }).length : 0);
+}, 0);
+}
+function arcadeDe(p) { return p && p.arcade && typeof p.arcade === "object" ? p.arcade : {}; }
+function vfMejorDe(p) { try { return vfMejorGlobal(arcadeDe(p)); } catch (e) { return 0; } }
+var INSIGNIAS = [
+{ id: "tarea1", n: "Primer paso", cat: "Tareas", tier: "bronce", forma: "escudo", glifo: "check", c: "Cumpliste tu primera tarea. Todo gran camino empieza con una entrega.", v: function (p) { return p.completed_tasks || 0; }, meta: 1 },
+{ id: "tarea10", n: "Constante", cat: "Tareas", tier: "plata", forma: "escudo", glifo: "libro", c: "Diez tareas cumplidas. La constancia vale más que el talento.", v: function (p) { return p.completed_tasks || 0; }, meta: 10 },
+{ id: "tarea30", n: "Imparable", cat: "Tareas", tier: "oro", forma: "escudo", glifo: "rayo", c: "Treinta tareas cumplidas. Nada te detiene.", v: function (p) { return p.completed_tasks || 0; }, meta: 30 },
+{ id: "tarea75", n: "Leyenda del tablón", cat: "Tareas", tier: "epica", forma: "escudo", glifo: "corona", c: "Setenta y cinco tareas cumplidas. Tu nombre queda en la historia del salón.", v: function (p) { return p.completed_tasks || 0; }, meta: 75 },
+{ id: "racha7", n: "Llama encendida", cat: "Racha", tier: "plata", forma: "gota", glifo: "llama", c: "Siete días seguidos entrando al tablón.", v: function (p) { return p.streak_best || 0; }, meta: 7 },
+{ id: "racha30", n: "Fuego eterno", cat: "Racha", tier: "oro", forma: "gota", glifo: "llama", c: "Un mes entero de racha. Disciplina pura.", v: function (p) { return p.streak_best || 0; }, meta: 30 },
+{ id: "tetris5k", n: "Arquitecto de bloques", cat: "Juegos", tier: "plata", forma: "circulo", glifo: "bloques", c: "5.000 puntos en una partida de Tetris.", v: function (p) { return arcadeDe(p).tetris || 0; }, meta: 5000 },
+{ id: "tetris15k", n: "Gran maestro del Tetris", cat: "Juegos", tier: "oro", forma: "circulo", glifo: "bloques", c: "15.000 puntos en una sola partida. Las piezas obedecen.", v: function (p) { return arcadeDe(p).tetris || 0; }, meta: 15000 },
+{ id: "wordle10", n: "Detective de palabras", cat: "Juegos", tier: "plata", forma: "circulo", glifo: "lupa", c: "Diez Wordles adivinados.", v: function (p) { var w = arcadeDe(p).wordle; return w && w.ganadas || 0; }, meta: 10 },
+{ id: "wordle7", n: "Racha verde", cat: "Juegos", tier: "oro", forma: "circulo", glifo: "cuadros", c: "Siete Wordles seguidos sin fallar un día.", v: function (p) { var w = arcadeDe(p).wordle; return w && w.mejorRacha || 0; }, meta: 7 },
+{ id: "gato10", n: "Estratega", cat: "Juegos", tier: "plata", forma: "circulo", glifo: "xo", c: "Diez victorias en X y O.", v: function (p) { return arcadeDe(p).gatoG || 0; }, meta: 10 },
+{ id: "vf2000", n: "Sabelotodo", cat: "Juegos", tier: "oro", forma: "circulo", glifo: "bombilla", c: "2.000 puntos en una partida de Verdadero o falso.", v: vfMejorDe, meta: 2000 },
+{ id: "col20", n: "Coleccionista", cat: "Colección", tier: "bronce", forma: "hexagono", glifo: "gema", c: "Veinte cosméticos en tu colección.", v: totalCosmeticos, meta: 20 },
+{ id: "col60", n: "Museo andante", cat: "Colección", tier: "oro", forma: "hexagono", glifo: "gema", c: "Sesenta cosméticos. Tu inventario parece una galería.", v: totalCosmeticos, meta: 60 },
+{ id: "excl3", n: "Cazador de exclusivos", cat: "Colección", tier: "epica", forma: "hexagono", glifo: "estrella", c: "Tres cosméticos exclusivos, de los que no salen en la ruleta.", v: exclusivosDe, meta: 3 },
+{ id: "mis1", n: "Misión cumplida", cat: "Misiones", tier: "bronce", forma: "estrella", glifo: "bandera", c: "Reclamaste tu primera misión semanal.", v: function (p) { return p.misiones_total || 0; }, meta: 1 },
+{ id: "mis10", n: "Agente especial", cat: "Misiones", tier: "plata", forma: "estrella", glifo: "diana", c: "Diez misiones semanales reclamadas.", v: function (p) { return p.misiones_total || 0; }, meta: 10 },
+{ id: "mis30", n: "Leyenda en misiones", cat: "Misiones", tier: "oro", forma: "estrella", glifo: "medalla", c: "Treinta misiones reclamadas. Ninguna semana se te escapa.", v: function (p) { return p.misiones_total || 0; }, meta: 30 },
+{ id: "cumple", n: "Día especial", cat: "Especiales", tier: "bronce", forma: "rombo", glifo: "pastel", c: "Registraste tu cumpleaños. Ese día el tablón será tuyo.", v: function (p) { return p.cumple ? 1 : 0; }, meta: 1 },
+{ id: "estilo", n: "Con estilo propio", cat: "Especiales", tier: "plata", forma: "rombo", glifo: "pincel", c: "Biografía escrita y avatar, banner y contorno equipados.", v: function (p) {
+return (p.bio ? 1 : 0) + (equippedOf(p, "avatar") ? 1 : 0) + ((equippedOf(p, "banner") || equippedOf(p, "motion")) ? 1 : 0) + (equippedOf(p, "border") ? 1 : 0); }, meta: 4 },
+{ id: "staff", n: "Guardián del tablón", cat: "Especiales", tier: "epica", forma: "rombo", glifo: "escudo", c: "Forma parte del equipo que cuida El Tablón.", v: function (p) { return p.role === "owner" || p.role === "admin" ? 1 : 0; }, meta: 1, oculta: true }
+];
+var TIER_COL = {
+bronce: ["#f0b27a", "#a0522d", "#5a2a10"], plata: ["#f3f6ff", "#9aa7c7", "#4a5573"],
+oro: ["#fff1a8", "#f0b429", "#7a4b00"], epica: ["#ffc8f2", "#b07aff", "#3d1670"]
+};
+var TIER_NOMBRE = { bronce: "Bronce", plata: "Plata", oro: "Oro", epica: "Épica" };
+var GLIFOS = {
+check: '<path d="M-14 0l9 9 19-20" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>',
+libro: '<path d="M-17-12q9-4 17 2v24q-8-6-17-2zM17-12q-9-4-17 2v24q8-6 17-2z" fill="#fff"/>',
+rayo: '<path d="M4-20L-12 3h10l-4 17L14-5H3z" fill="#fff"/>',
+corona: '<path d="M-18 10l-3-20 11 9 10-14 10 14 11-9-3 20z" fill="#fff"/><rect x="-18" y="12" width="36" height="5" rx="2" fill="#fff"/>',
+llama: '<path d="M0-21C6-12 15-6 15 5a15 15 0 01-30 0c0-6 3-10 7-13 0 5 2 8 5 9C-3-6 1-12 0-21z" fill="#fff"/><path d="M0 0c3 4 6 6 6 10a6 6 0 01-12 0c0-3 3-6 6-10z" fill="#ffb02e"/>',
+bloques: '<g fill="#fff"><rect x="-18" y="-4" width="11" height="11" rx="2"/><rect x="-6" y="-4" width="11" height="11" rx="2"/><rect x="-6" y="-16" width="11" height="11" rx="2"/><rect x="6" y="8" width="11" height="11" rx="2"/><rect x="-6" y="8" width="11" height="11" rx="2"/></g>',
+lupa: '<circle cx="-4" cy="-4" r="11" fill="none" stroke="#fff" stroke-width="5"/><path d="M4 4l12 12" stroke="#fff" stroke-width="6" stroke-linecap="round"/>',
+cuadros: '<g fill="#fff"><rect x="-18" y="-18" width="16" height="16" rx="3"/><rect x="2" y="-18" width="16" height="16" rx="3" opacity=".55"/><rect x="-18" y="2" width="16" height="16" rx="3" opacity=".55"/><rect x="2" y="2" width="16" height="16" rx="3"/></g>',
+xo: '<path d="M-17-17l12 12m0-12l-12 12" stroke="#fff" stroke-width="5" stroke-linecap="round"/><circle cx="9" cy="9" r="8" fill="none" stroke="#fff" stroke-width="5"/>',
+bombilla: '<path d="M0-21a13 13 0 00-8 23v5h16v-5A13 13 0 000-21z" fill="#fff"/><rect x="-7" y="10" width="14" height="4" rx="2" fill="#fff"/><rect x="-5" y="16" width="10" height="4" rx="2" fill="#fff"/>',
+gema: '<path d="M-18-6l8-11h20l8 11L0 20z" fill="#fff"/><path d="M-18-6h36M-10-17L0-6l10-11M0-6v26" stroke="#0004" stroke-width="2" fill="none"/>',
+estrella: '<path d="M0-21l6 13 14 2-10 10 3 14L0 11l-13 7 3-14-10-10 14-2z" fill="#fff"/>',
+bandera: '<path d="M-12-20v40" stroke="#fff" stroke-width="5" stroke-linecap="round"/><path d="M-10-19h26l-6 9 6 9h-26z" fill="#fff"/>',
+diana: '<circle r="19" fill="none" stroke="#fff" stroke-width="4"/><circle r="11" fill="none" stroke="#fff" stroke-width="4"/><circle r="4" fill="#fff"/>',
+medalla: '<path d="M-10-21l10 14 10-14" stroke="#fff" stroke-width="5" fill="none"/><circle cy="6" r="13" fill="#fff"/><path d="M0-2l2.5 5 5.5.8-4 3.8 1 5.4L0 10.5-5 13l1-5.4-4-3.8 5.5-.8z" fill="#0005"/>',
+pastel: '<rect x="-17" y="0" width="34" height="18" rx="4" fill="#fff"/><rect x="-12" y="-11" width="24" height="12" rx="3" fill="#fff" opacity=".8"/><rect x="-2" y="-22" width="4" height="11" rx="2" fill="#fff"/><path d="M0-28c3 3 3 5 0 7-3-2-3-4 0-7z" fill="#ffd23f"/>',
+pincel: '<path d="M12-20l8 8-17 17-8-8z" fill="#fff"/><path d="M-6 0l8 8c-2 9-9 12-20 12 1-10 4-18 12-20z" fill="#fff" opacity=".8"/>',
+escudo: '<path d="M0-21l17 6v9c0 13-8 22-17 26-9-4-17-13-17-26v-9z" fill="#fff"/><path d="M-7 1l5 5 10-11" stroke="#0005" stroke-width="4" fill="none" stroke-linecap="round"/>'
+};
+var FORMAS = {
+escudo: "M50 6l36 12v26c0 25-16 42-36 50C30 86 14 69 14 44V18z",
+circulo: "M50 6a44 44 0 110 88 44 44 0 010-88z",
+hexagono: "M50 5l39 22.5v45L50 95 11 72.5v-45z",
+estrella: "M50 4l12 28 30 3-23 20 7 30-26-16-26 16 7-30L8 35l30-3z",
+gota: "M50 4c18 22 38 40 38 60a38 38 0 01-76 0C12 44 32 26 50 4z",
+rombo: "M50 4l44 46-44 46L6 50z"
+};
+function insigniaSvg(b, bloqueada) {
+var col = TIER_COL[b.tier];
+var gid = "ig-" + b.id + (bloqueada ? "-l" : "");
+return '<svg class="tb-insignia-svg" viewBox="0 0 100 100" role="img" aria-label="' + escapeHtml(b.n) + '">' +
+"<defs><linearGradient id=\"" + gid + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="' + col[0] + '"/><stop offset=".55" stop-color="' + col[1] + '"/><stop offset="1" stop-color="' + col[2] + '"/></linearGradient></defs>' +
+'<path d="' + FORMAS[b.forma] + '" fill="url(#' + gid + ')" stroke="' + col[2] + '" stroke-width="3"/>' +
+'<path d="' + FORMAS[b.forma] + '" fill="none" stroke="#ffffff66" stroke-width="1.5" transform="translate(50 50) scale(.86) translate(-50 -50)"/>' +
+'<g transform="translate(50 ' + (b.forma === "estrella" ? 54 : b.forma === "escudo" ? 48 : 50) + ') scale(' + (b.forma === "estrella" ? 0.8 : 1) + ')">' + GLIFOS[b.glifo] + "</g>" +
+(bloqueada ? '<g transform="translate(74 76)"><circle r="13" fill="#0b1024"/><rect x="-6" y="-2" width="12" height="9" rx="2" fill="#97a5bf"/><path d="M-4-2v-3a4 4 0 018 0v3" stroke="#97a5bf" stroke-width="2.4" fill="none"/></g>' : "") +
+"</svg>";
+}
+function insigniasDe(p) {
+return INSIGNIAS.map(function (b) {
+var v = 0;
+try { v = Number(b.v(p)) || 0; } catch (e) { v = 0; }
+return { b: b, v: v, ok: v >= b.meta };
+});
+}
+function insigniasHtmlPerfil(p) {
+var ok = insigniasDe(p).filter(function (x) { return x.ok; });
+if (!ok.length) { return ""; }
+var orden = { epica: 0, oro: 1, plata: 2, bronce: 3 };
+ok.sort(function (a, b) { return orden[a.b.tier] - orden[b.b.tier]; });
+return '<div class="tb-insignias-perfil"><small>INSIGNIAS · ' + ok.length + "</small><div>" +
+ok.map(function (x) { return '<span class="tb-insignia-mini" title="' + escapeHtml(x.b.n + " — " + x.b.c) + '">' + insigniaSvg(x.b, false) + "</span>"; }).join("") +
+"</div></div>";
+}
+// Avisa cuando se desbloquea una insignia nueva (se compara con las ya vistas en este dispositivo).
+function revisarInsigniasNuevas() {
+if (!me) { return; }
+var k = "tb-insignias-vistas-" + me.id;
+var vistas = null;
+try { vistas = JSON.parse(window.localStorage.getItem(k) || "null"); } catch (e) { vistas = null; }
+var ahora = insigniasDe(me).filter(function (x) { return x.ok; }).map(function (x) { return x.b.id; });
+try { window.localStorage.setItem(k, JSON.stringify(ahora)); } catch (e) { /* nada */ }
+if (!vistas) { return; }
+var nuevas = ahora.filter(function (id) { return vistas.indexOf(id) < 0; });
+nuevas.slice(0, 2).forEach(function (id, i) {
+var b = INSIGNIAS.filter(function (x) { return x.id === id; })[0];
+setTimeout(function () { mostrarInsigniaNueva(b); }, 600 + i * 3200);
+});
+}
+function mostrarInsigniaNueva(b) {
+var nodo = document.createElement("div");
+nodo.className = "tb-insignia-toast";
+nodo.setAttribute("role", "status");
+nodo.innerHTML = insigniaSvg(b, false) + "<div><small>¡NUEVA INSIGNIA!</small><b>" + escapeHtml(b.n) + "</b><span>" + escapeHtml(b.c) + "</span></div>";
+nodo.onclick = function () { nodo.remove(); showView("logros"); };
+root.appendChild(nodo);
+setTimeout(function () { nodo.classList.add("tb-sale"); }, 4200);
+setTimeout(function () { nodo.remove(); }, 4800);
+}
+
+/* ---------- Vista Logros ---------- */
+var logrosFiltro = "todas";
+function renderLogros() {
+var caja = $("#tb-logros");
+if (!caja || !me) { return; }
+var cumple = cumpleSoportado()
+? (me.cumple
+? '<div class="tb-logro-cumple' + (esCumpleDe(me) ? " hoy" : "") + '"><div class="tb-cumple-pastel mini" aria-hidden="true">' + pastelSvg() + "</div><div><b>" +
+(esCumpleDe(me) ? "¡Hoy es tu cumpleaños! 🎉" : "Tu cumpleaños: " + escapeHtml(cumpleTexto(me.cumple))) + "</b><small>" +
+(esCumpleDe(me) ? "Disfruta tu tablón de fiesta y abre tu regalo." : "Ese día el tablón se pondrá de fiesta solo para ti.") + "</small></div></div>"
+: '<div class="tb-logro-cumple"><div class="tb-cumple-pastel mini" aria-hidden="true">' + pastelSvg() + '</div><div><b>Registra tu cumpleaños</b><small>Solo día y mes. Ese día te espera un regalo.</small></div><button type="button" class="tb-primary" id="tb-logros-cumple">🎂 Agregar</button></div>')
+: "";
+var misHtml;
+if (mis.estado === "lista") {
+misHtml = '<div class="tb-card-head tb-logros-head"><h3>Misiones de la semana</h3><small class="tb-muted">Se renuevan en ' + escapeHtml(finDeSemanaTexto()) + "</small></div>" +
+(mis.lista.length ? '<div class="tb-mis-grid">' + mis.lista.slice().sort(function (a, b) {
+var da = MISIONES[a.id].kind ? 1 : 0, db = MISIONES[b.id].kind ? 1 : 0;
+return da - db;
+}).map(misionTarjeta).join("") + "</div>" : '<p class="tb-muted">No hay misiones esta semana.</p>');
+} else if (mis.estado === "error") {
+misHtml = '<div class="tb-card-head tb-logros-head"><h3>Misiones de la semana</h3></div><p class="tb-muted">' + escapeHtml(mis.error) + "</p>";
+} else {
+misHtml = '<div class="tb-card-head tb-logros-head"><h3>Misiones de la semana</h3></div><p class="tb-muted">Cargando misiones…</p>';
+if (mis.estado === "nada") { cargarMisiones().then(renderLogros); }
+}
+var todas = insigniasDe(me).filter(function (x) { return !x.b.oculta || x.ok; });
+var ganadas = todas.filter(function (x) { return x.ok; }).length;
+var cats = ["todas"].concat(todas.map(function (x) { return x.b.cat; }).filter(function (c, i, a) { return a.indexOf(c) === i; }));
+var visibles = todas.filter(function (x) { return logrosFiltro === "todas" || x.b.cat === logrosFiltro; });
+var fmt = function (n) { return Number(n).toLocaleString("es"); };
+var insHtml = '<div class="tb-card-head tb-logros-head"><h3>Insignias <span class="tb-muted">' + ganadas + " / " + todas.length + '</span></h3><div class="tb-logros-filtros">' +
+cats.map(function (c) { return '<button type="button" class="tb-chip-filtro' + (logrosFiltro === c ? " on" : "") + '" data-logros-cat="' + escapeHtml(c) + '">' + escapeHtml(c === "todas" ? "Todas" : c) + "</button>"; }).join("") +
+"</div></div>" +
+'<div class="tb-insignias-grid">' + visibles.map(function (x) {
+var pct = Math.min(100, Math.round(x.v / x.b.meta * 100));
+return '<article class="tb-insignia ' + x.b.tier + (x.ok ? " ok" : " bloqueada") + '">' +
+insigniaSvg(x.b, !x.ok) +
+'<span class="tb-insignia-tier">' + TIER_NOMBRE[x.b.tier] + "</span>" +
+"<h4>" + escapeHtml(x.b.n) + "</h4><p>" + escapeHtml(x.b.c) + "</p>" +
+(x.ok ? '<small class="tb-insignia-hecha">✔ Desbloqueada</small>'
+: '<div class="tb-mis-barra"><i style="width:' + pct + '%"></i></div><small class="tb-muted">' + fmt(Math.min(x.v, x.b.meta)) + " / " + fmt(x.b.meta) + "</small>") +
+"</article>";
+}).join("") + "</div>";
+caja.innerHTML = cumple + '<section class="tb-card tb-logros-sec">' + misHtml + "</section>" + '<section class="tb-card tb-logros-sec">' + insHtml + "</section>";
+$$("[data-mis-reclamar]").forEach(function (b) { b.onclick = function () { reclamarMision(b.dataset.misReclamar); }; });
+$$("[data-logros-cat]").forEach(function (b) { b.onclick = function () { logrosFiltro = b.dataset.logrosCat; renderLogros(); }; });
+var bc = $("#tb-logros-cumple");
+if (bc) { bc.onclick = mostrarModalCumple; }
+}
+// Se llama al terminar de cargar el tablón.
+async function iniciarLogros() {
+try { await sincronizarMisiones(); } catch (e) { /* sin catálogo se reintenta al próximo ingreso */ }
+await cargarMisiones();
+revisarCumple();
+setTimeout(revisarInsigniasNuevas, 2500);
 }
 /* ===================================================================
    HERRAMIENTAS CON IA · PROFESOR DE LENGUA Y VOLEIBOL
@@ -23308,6 +24058,7 @@ lg.analizado = texto;
 lg.texto_original = texto;
 lgCargarRes(lgNormalizar(r.datos, texto));
 lgGuardarHistorial();
+misionEvento("lengua_revisar", 1);
 }
 if (arcadeActual === "lengua") { pintarLengua(); }
 else if (r.ok) { avisoToast("📝 El Profesor de lengua terminó de revisar tu texto (Actividades → Profesor de lengua)."); }
@@ -25089,6 +25840,7 @@ entregaCerrar();
 await entregasCargar();
 entregasRender();
 notificar("entrega_nueva", r.data && r.data.id);
+if (!previa) { misionEvento("entrega_subir", 1); }
 alert("¡Listo! Tu entrega quedó en revisión. Te avisaremos cuando la califiquen.");
 } catch (e) {
 if (subido) { client.storage.from("entregas").remove([subido]).catch(function () {}); }
