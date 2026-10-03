@@ -5,6 +5,7 @@
 integrity="sha384-Rj26LVGvoeRVR6+mwQmFfcR3QOBEwT+ZmuCWpuiqeTzJpCs0ER4ITAWGb4Hiy3Ok"
 crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Rye&family=Orbitron:wght@500;800&family=Caveat:wght@500;700&family=Audiowide&family=Shojumaru&family=Josefin+Sans:wght@400;700&family=Fredoka:wght@400;600&family=Share+Tech+Mono&family=Special+Elite&family=MedievalSharp&family=Almendra&family=Cinzel:wght@400;700&family=Kaushan+Script&family=Cinzel+Decorative:wght@400;700&family=Michroma&family=IM+Fell+English&family=Marcellus&family=Pirata+One&family=Uncial+Antiqua&display=swap');
@@ -6967,6 +6968,135 @@ background: linear-gradient(120deg, #2b2208f5, #14183af5); box-shadow: 0 18px 50
 .lg-hoja { padding: 14px; font-size: 15.5px; }
 .vb-zona { min-height: 92px; }
 .vb-zona b { font-size: 11px; }
+}
+/* ===== Pinturillo en salas · pizarra ===== */
+.pz-titulo { font-family: 'Caveat', 'Comic Sans MS', cursive; font-size: 30px; font-weight: 700; color: #f6f5ee; text-shadow: 0 0 6px #ffffff33; }
+.pz-hero { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 18px; align-items: center; margin-bottom: 16px; padding: 16px; border: 1px solid var(--line); border-radius: 20px; background: linear-gradient(150deg, #17274bcc, #080f22dd); }
+.pz-hero h2 { margin: 0 0 6px; }
+.pz-hero p { margin: 0; color: var(--muted); font-size: 13.5px; }
+.pz-hero-pizarra { position: relative; height: 110px; padding: 8px; border-radius: 10px; background: linear-gradient(135deg, #a0703f, #6e4824); box-shadow: 0 8px 20px #0006; }
+.pz-hero-pizarra span { display: grid; place-items: center; height: 100%; border-radius: 6px; background: radial-gradient(ellipse at 30% 25%, #3f7556, #2b5540 55%, #1f4130); color: #f6f5ee; font: 700 28px/1 'Caveat', 'Comic Sans MS', cursive; text-shadow: 0 0 3px #ffffff66; transform: rotate(-3deg); }
+.pz-hero-pizarra i { position: absolute; left: 22px; bottom: -4px; width: 30px; height: 7px; border-radius: 3px; background: #f6f5ee; box-shadow: 40px 0 0 #ffe066, 80px 0 0 #ff8fab; }
+.pz-lobby { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; align-items: start; }
+.pz-panel { padding: 16px; border: 1px solid var(--line); border-radius: 18px; background: linear-gradient(150deg, #17274bcc, #080f22dd); }
+.pz-panel h3 { margin: 0 0 10px; font-size: 16px; }
+.pz-panel h3 small { color: var(--muted); font-weight: 600; font-size: 12px; }
+.pz-fila2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
+.pz-grande { width: 100%; padding: 13px; font-size: 15px; }
+.pz-volver { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.pz-codigo-in { display: flex; gap: 8px; margin-bottom: 16px; }
+.pz-codigo-in input { flex: 1; min-width: 0; padding: 12px; border: 1px solid #9bb0ff2e; border-radius: 12px; background: #081226; color: #fff; font: 800 22px/1 monospace; letter-spacing: .35em; text-transform: uppercase; text-align: center; }
+.pz-sala-fila { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line); }
+.pz-sala-fila small { display: block; color: var(--muted); font-size: 12px; }
+.pz-sala-botones { display: flex; gap: 6px; flex-shrink: 0; }
+.pz-sala-botones button { padding: 8px 12px; }
+/* Pizarra */
+.pz-escena { display: grid; gap: 14px; }
+.pz-espera { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: start; }
+.pz-pizarra { position: relative; padding: 16px 16px 0; border-radius: 14px; background: linear-gradient(180deg, #b07b45, #8a5a2e 40%, #6e4520); box-shadow: inset 0 2px 0 #ffffff33, inset 0 -3px 0 #0003, 0 18px 40px #0007; }
+.pz-pizarra::before { content: ""; position: absolute; inset: 6px; border-radius: 10px; background: repeating-linear-gradient(90deg, #ffffff08 0 3px, transparent 3px 11px); pointer-events: none; }
+.pz-board { position: relative; overflow: hidden; border-radius: 6px; background:
+radial-gradient(ellipse 60% 40% at 25% 20%, #ffffff12, transparent 70%),
+radial-gradient(ellipse 50% 30% at 80% 75%, #ffffff0c, transparent 70%),
+repeating-linear-gradient(115deg, #ffffff05 0 2px, transparent 2px 9px),
+radial-gradient(ellipse at 40% 30%, #3f7556 0, #2d5a43 50%, #1f4130 100%);
+box-shadow: inset 0 0 0 3px #00000033, inset 0 0 40px #0006; }
+.pz-board::after { content: "El Tablón"; position: absolute; right: 14px; bottom: 8px; color: #ffffff1a; font: 700 22px/1 'Caveat', 'Comic Sans MS', cursive; transform: rotate(-4deg); pointer-events: none; }
+.pz-board canvas { display: block; width: 100%; height: auto; aspect-ratio: 8 / 5; touch-action: none; }
+.pz-pizarra.activa canvas { cursor: crosshair; }
+.pz-board-texto { display: grid; place-items: center; align-content: center; gap: 8px; min-height: 260px; padding: 24px; text-align: center; color: #f6f5ee; font-family: 'Caveat', 'Comic Sans MS', cursive; text-shadow: 0 0 3px #ffffff55; }
+.pz-board-texto small { font-size: 20px; opacity: .8; }
+.pz-board-texto p { margin: 0; font-size: 20px; opacity: .85; }
+.pz-board-texto h2 { margin: 0; font-size: 46px; }
+.pz-codigo { display: flex; gap: 10px; }
+.pz-codigo b { display: grid; place-items: center; width: 62px; height: 72px; border: 3px dashed #f6f5eeaa; border-radius: 10px; font-size: 52px; }
+.pz-telon, .pz-quien { position: absolute; pointer-events: none; color: #f6f5ee; font-family: 'Caveat', 'Comic Sans MS', cursive; text-shadow: 0 0 4px #ffffff66; }
+.pz-telon { inset: 0; display: grid; place-items: center; align-content: center; background: #1f4130cc; animation: pzAparecer .4s ease-out; }
+.pz-telon small { font-size: 24px; opacity: .85; }
+.pz-telon b { font-size: 58px; color: #ffe066; }
+.pz-quien { left: 12px; top: 8px; font-size: 20px; opacity: .8; }
+@keyframes pzAparecer { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: none; } }
+/* Bandeja de tizas */
+.pz-bandeja { position: relative; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-height: 48px; margin: 8px -16px 0; padding: 8px 16px 10px; border-radius: 0 0 14px 14px; background: linear-gradient(180deg, #7a4f27, #5c3a1b); box-shadow: inset 0 3px 4px #0005; }
+.pz-bandeja.decorativa { justify-content: flex-start; }
+.pz-tiza { width: 34px; height: 11px; padding: 0; border: 0; border-radius: 4px; background: linear-gradient(180deg, color-mix(in srgb, var(--tc) 70%, #fff), var(--tc) 60%, color-mix(in srgb, var(--tc) 75%, #000)); box-shadow: 0 2px 2px #0006; cursor: pointer; transition: transform .15s; }
+.pz-tiza:disabled { cursor: default; }
+.pz-tiza.on { transform: translateY(-5px) rotate(-6deg); box-shadow: 0 0 0 2px #fff, 0 5px 8px #0008; }
+.pz-tiza:not(:disabled):hover { transform: translateY(-3px); }
+.pz-sep { width: 1px; height: 26px; background: #ffffff22; }
+.pz-grosor { display: grid; place-items: center; width: 32px; height: 32px; padding: 0; border: 1px solid #ffffff22; border-radius: 50%; background: #00000022; cursor: pointer; }
+.pz-grosor i { display: block; border-radius: 50%; background: #f6f5ee; }
+.pz-grosor.on { border-color: #ffe066; background: #ffe06622; }
+.pz-borrador { display: inline-grid; place-items: end center; width: 54px; height: 26px; padding: 0; border: 0; border-radius: 4px; background: linear-gradient(180deg, #c9a46c 0 45%, #3a3a44 45%); box-shadow: 0 2px 3px #0007; cursor: pointer; }
+.pz-borrador span { display: none; }
+.pz-borrador.on { box-shadow: 0 0 0 2px #ffe066, 0 3px 6px #0008; transform: translateY(-3px); }
+.pz-bandeja.decorativa .pz-borrador { cursor: default; margin-left: auto; }
+.pz-mini { padding: 6px 10px; border: 1px solid #ffffff2a; border-radius: 10px; background: #00000026; color: #f6f5ee; font-size: 12px; font-weight: 800; cursor: pointer; }
+.pz-mini:hover { background: #ffffff14; }
+/* Barra superior y lateral */
+.pz-barra { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 10px 14px; border: 1px solid var(--line); border-radius: 16px; background: linear-gradient(150deg, #17274bcc, #080f22dd); }
+.pz-reloj { --p: 100; display: grid; place-items: center; width: 54px; height: 54px; border-radius: 50%; background: conic-gradient(#95e06c calc(var(--p) * 1%), #ffffff14 0); }
+.pz-reloj span { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; background: #0b1430; font-weight: 900; font-size: 17px; }
+.pz-reloj.urgente { background: conic-gradient(#ff6b6b calc(var(--p) * 1%), #ffffff14 0); animation: pzLatido 1s infinite; }
+@keyframes pzLatido { 50% { transform: scale(1.06); } }
+.pz-palabra { text-align: center; }
+.pz-palabra small { display: block; color: var(--muted); font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.pz-palabra b { font-size: 24px; letter-spacing: .04em; }
+.pz-palabra.mia b { color: #ffe066; }
+.pz-palabra.revelada b { color: #95e06c; }
+.pz-guiones { display: inline-flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+.pz-guiones span { display: inline-grid; place-items: end center; width: 20px; height: 30px; border-bottom: 3px solid #f6f5eecc; font-size: 22px; line-height: 1; }
+.pz-guiones span.esp { width: 10px; border: 0; }
+.pz-info { text-align: right; }
+.pz-info b, .pz-info small { display: block; }
+.pz-info small { color: var(--muted); font-size: 12px; }
+.pz-juego { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 14px; align-items: start; }
+.pz-lado { display: grid; gap: 12px; }
+.pz-marcador { margin: 0; padding: 0; list-style: none; display: grid; gap: 5px; }
+.pz-marcador li { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto auto; gap: 8px; align-items: center; padding: 7px 10px; border-radius: 10px; background: #ffffff08; font-size: 13.5px; }
+.pz-marcador li em { color: var(--muted); font-style: normal; font-weight: 800; }
+.pz-marcador li span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pz-marcador li small { color: var(--muted); font-size: 10.5px; }
+.pz-marcador li b { font-size: 15px; }
+.pz-marcador li.yo { outline: 1px solid #8fa6ff66; }
+.pz-marcador li.dibuja { background: #ffe0661a; }
+.pz-marcador li.acerto { background: #95e06c1f; }
+.pz-chat { height: 220px; overflow-y: auto; padding-right: 4px; font-size: 13px; }
+.pz-chat p { margin: 0 0 5px; overflow-wrap: anywhere; }
+.pz-chat p.ok { color: #95e06c; }
+.pz-chat p.sis { color: var(--muted); font-style: italic; }
+.pz-chat-vacio { color: var(--muted); font-size: 12.5px; }
+.pz-adivinar { display: flex; gap: 6px; margin-top: 10px; }
+.pz-adivinar input { flex: 1; min-width: 0; padding: 11px 12px; border: 1px solid #9bb0ff2e; border-radius: 12px; background: #081226; color: #fff; }
+.pz-nota { margin: 10px 0 0; padding: 9px 11px; border-radius: 10px; background: #ffffff0a; font-size: 12.5px; }
+.pz-nota.ok { background: #95e06c1f; color: #c6f5ad; }
+.pz-aviso { margin: 8px 0 0; font-weight: 800; font-size: 13px; }
+.pz-acciones { display: grid; gap: 8px; margin-top: 14px; }
+.pz-final h2 { color: #ffe066; }
+.pz-podio { display: flex; gap: 14px; align-items: flex-end; justify-content: center; margin-top: 10px; }
+.pz-podio div { display: grid; justify-items: center; gap: 2px; min-width: 90px; padding: 10px; border: 2px dashed #f6f5ee66; border-radius: 10px; }
+.pz-podio div.p1 { padding-bottom: 30px; }
+.pz-podio span { font-size: 34px; }
+.pz-podio b { font-size: 24px; }
+.pz-podio small { font-size: 18px; }
+#tablon-root.tb-light .pz-panel, #tablon-root.tb-light .pz-barra, #tablon-root.tb-light .pz-hero { background: #ffffffee; color: #16203a; }
+#tablon-root.tb-light .pz-reloj span { background: #fff; }
+#tablon-root.tb-light .pz-guiones span { border-bottom-color: #16203a; }
+@media (max-width: 900px) {
+.pz-juego, .pz-espera, .pz-lobby { grid-template-columns: 1fr; }
+.pz-chat { height: 160px; }
+}
+@media (max-width: 560px) {
+.pz-hero { grid-template-columns: 1fr; }
+.pz-hero-pizarra { height: 90px; }
+.pz-fila2 { grid-template-columns: 1fr; }
+.pz-barra { grid-template-columns: auto minmax(0, 1fr); }
+.pz-info { grid-column: 1 / -1; text-align: center; }
+.pz-pizarra { padding: 10px 10px 0; }
+.pz-bandeja { margin: 8px -10px 0; padding: 8px 10px 10px; gap: 6px; }
+.pz-tiza { width: 26px; }
+.pz-codigo b { width: 46px; height: 56px; font-size: 38px; }
+.pz-telon b { font-size: 40px; }
 }
 </style>
 <style id="tb-halloween-theme">
@@ -16387,7 +16517,7 @@ arcadeActual = "hub";
 caja.classList.remove("bn-escena", "stp-escena");
 if (me && client && Date.now() - (bn.hubPedido || 0) > 30000) {
 bn.hubPedido = Date.now();
-Promise.all([bnCargarLista(), stpCargarSalas()]).then(function () {
+Promise.all([bnCargarLista(), stpCargarSalas(), pinCargarSalas()]).then(function () {
 if (arcadeActual === "hub") { renderArcade(); }
 });
 }
@@ -16432,7 +16562,7 @@ pie: "Racha: " + ((wordleDatos(datos).racha) || 0) + " días", accion: "Jugar �
 texto: "Una disyuntiva nueva cada día. Votá y mirá qué elige el resto del salón, en vivo.",
 pie: preferirPie(), accion: "Votar →" },
 { id: "pinturillo", ico: "🎨", color: "#ff9ad2", titulo: "Pinturillo",
-texto: "Retá a alguien del salón: uno dibuja en el lienzo y el otro adivina la palabra en tiempo real.",
+texto: "Juego en salas de 2 a 12 personas: por turnos, uno dibuja en la pizarra y los demás adivinan. También se puede entrar a mirar.",
 pie: pinPie(), accion: "Jugar →", badge: pinBadge() },
 { id: "carrera", ico: "🏐", color: "#ffd27a", titulo: "Camino al Ídolo",
 texto: "Tu carrera completa en el vóleibol: entrená, decidí y hacé crecer tu carta.",
@@ -17072,105 +17202,137 @@ $$("[data-pref]").forEach(function (boton) {
 boton.onclick = function () { preferirVotar(parseInt(boton.dataset.pref, 10)); };
 });
 }
+/* ===================================================================
+   PINTURILLO EN SALAS · multijugador por turnos, pizarra y espectadores
+   Requiere supabase/ACTIVAR-pinturillo-salas.sql.
+   =================================================================== */
+var PIN_SQL = "ACTIVAR-pinturillo-salas.sql";
+var PIN_TIZAS = [
+{ c: "#f6f5ee", n: "Blanca" }, { c: "#ffe066", n: "Amarilla" }, { c: "#ff8fab", n: "Rosada" },
+{ c: "#7cc6fe", n: "Celeste" }, { c: "#95e06c", n: "Verde" }, { c: "#ffa94d", n: "Naranja" }, { c: "#ff6b6b", n: "Roja" }
+];
+var PIN_GROSORES = [3, 6, 11, 18];
 var pin = {
-lista: [], listaLista: false, errorLista: "",
-abierta: null, est: null, version: -1,
-canal: null, ocupado: false, filtro: "",
-color: "#1c1c28", grosor: 6, adivinanza: "", aviso: ""
+salas: [], cuentas: {}, mias: [], listo: false, error: "",
+sala: null, est: null, offset: 0, espectador: false,
+canal: null, sondeo: null, tick: null, ocupado: false, avanzarPedido: 0,
+color: "#f6f5ee", grosor: 6, borrador: false, adivinanza: "", aviso: "",
+form: { nombre: "", rondas: 2, segundos: 80 }, codigo: "",
+trazando: false, pendiente: false, mirando: 0, ultimaVersion: -1, vivo: null
 };
-var pinTimer = null;
-var PIN_COLORES = ["#1c1c28", "#ff5c5c", "#3a86ff", "#2ecc71", "#ffd23f", "#ffffff"];
 function pinError(error) {
-var msg = (error && error.message) || String(error || "Error de conexión. Intentá de nuevo.");
-if (/pinturillo_[a-z_]+/.test(msg) && /(does not exist|could not find|schema cache|no existe)/i.test(msg)) {
-return "Falta activar este juego: ejecutá TABLON-pinturillo.sql en el SQL Editor de Supabase y recargá la página.";
+var msg = (error && error.message) || String(error || "Error de conexión. Intenta de nuevo.");
+if (/pin_sala|pin_jugadores/.test(msg) && /(does not exist|could not find|schema cache|no existe)/i.test(msg)) {
+return isOwner() ? "Falta activar el Pinturillo en salas: ejecuta supabase/" + PIN_SQL + " en el SQL Editor de Supabase y recarga la página."
+: "El Pinturillo todavía no está activado. Avísale al profe.";
 }
 return msg;
 }
-function pinPendientes() {
-return pin.lista.filter(function (p) {
-if (!me) { return false; }
-if (p.estado === "invitacion") { return p.rival === me.id; }
-if (p.estado === "jugando") { return p.turno === me.id; }
-return false;
-});
-}
+function pinAhora() { return Date.now() + pin.offset; }
 function pinPie() {
-var ganadas = pin.lista.filter(function (p) { return p.estado === "terminada" && me && p.ganador === me.id; }).length;
-return ganadas ? ganadas + (ganadas === 1 ? " victoria" : " victorias") : "Dibujá y adiviná en vivo";
+var abiertas = pin.salas.filter(function (s) { return s.estado === "espera"; }).length;
+var jugando = pin.salas.filter(function (s) { return s.estado === "jugando"; }).length;
+if (abiertas || jugando) { return (abiertas ? abiertas + " esperando" : "") + (abiertas && jugando ? " · " : "") + (jugando ? jugando + " en juego" : ""); }
+return "De 2 a 12 jugadores · se puede mirar";
 }
 function pinBadge() {
-var n = pinPendientes().length;
-return n ? n + (n === 1 ? " te espera" : " te esperan") : "";
+var n = pin.salas.filter(function (s) { return s.estado !== "terminada" && pin.mias.indexOf(s.id) >= 0; }).length;
+return n ? (n === 1 ? "Tu sala te espera" : n + " salas tuyas") : "";
 }
-function pinEstadoTexto(p) {
-var otro = p.retador === me.id ? p.rival : p.retador;
-if (p.estado === "invitacion") { return p.rival === me.id ? "Te retó a Pinturillo" : "Esperando que acepte"; }
-if (p.estado === "jugando") { return p.turno === me.id ? "Te toca dibujar" : "Adiviná: dibuja " + bnNombre(otro); }
-if (p.estado === "terminada") { return p.ganador === me.id ? "Ganaste" : (p.ganador ? "Perdiste" : "Empate"); }
-return p.estado === "rechazada" ? "Reto rechazado" : "Reto cancelado";
-}
-async function pinCargarLista() {
+async function pinCargarSalas() {
 if (!client || !me) { return; }
-var r = await client.from("pinturillo_partidas").select("*")
-.or("retador.eq." + me.id + ",rival.eq." + me.id)
-.order("actualizada", { ascending: false }).limit(40);
-pin.listaLista = !r.error;
-pin.errorLista = r.error ? pinError(r.error) : "";
-pin.lista = r.data || [];
+var desde = new Date(Date.now() - 3 * 3600000).toISOString();
+var r = await client.from("pin_salas").select("id,codigo,nombre,anfitrion,estado,fase,vuelta,rondas,segundos,orden,actualizada")
+.neq("estado", "terminada").gt("actualizada", desde).order("actualizada", { ascending: false }).limit(30);
+pin.listo = !r.error;
+pin.error = r.error ? pinError(r.error) : "";
+pin.salas = r.data || [];
+pin.cuentas = {}; pin.mias = [];
+if (pin.salas.length) {
+var j = await client.from("pin_jugadores").select("sala,jugador").in("sala", pin.salas.map(function (s) { return s.id; }));
+(j.data || []).forEach(function (f) {
+pin.cuentas[f.sala] = (pin.cuentas[f.sala] || 0) + 1;
+if (f.jugador === me.id) { pin.mias.push(f.sala); }
+});
+}
 }
 async function pinCargarEstado() {
-if (!pin.abierta) { return; }
-var r = await client.rpc("pinturillo_estado", { p_partida: pin.abierta });
-if (r.error) { pin.errorLista = pinError(r.error); pin.abierta = null; pin.est = null; return; }
-pin.est = r.data;
-pin.version = r.data.version;
-}
-async function pinRefrescar(forzar) {
-if (arcadeActual !== "pinturillo") { return; }
-await pinCargarLista();
-if (!pin.abierta) { pintarPinturillo(); return; }
-var fila = pin.lista.find(function (p) { return p.id === pin.abierta; });
-if (!forzar && fila && fila.version === pin.version) { return; }
-var previo = pin.est;
-await pinCargarEstado();
-if (!pin.est) { pintarPinturillo(); return; }
-if (previo && previo.estado === "jugando" && pin.est.estado === "jugando" &&
-previo.ronda === pin.est.ronda && previo.soy_turno === pin.est.soy_turno) {
-pinCanvasRedibujar();
+if (!pin.sala) { return; }
+var r = await client.rpc("pin_sala_estado", { p_sala: pin.sala });
+if (r.error) {
+pin.error = pinError(r.error);
+pin.sala = null; pin.est = null;
+pinSoltarCanal();
 return;
 }
+pin.est = r.data;
+pin.offset = new Date(r.data.ahora).getTime() - Date.now();
+}
+async function pinRefrescar() {
+if (arcadeActual !== "pinturillo") { return; }
+if (!pin.sala) { await pinCargarSalas(); if (!pinEscribiendo()) { pintarPinturillo(); } return; }
+var antes = pin.est && pin.est.sala ? pin.est.sala.version : -1;
+await pinCargarEstado();
+if (!pin.est) { pintarPinturillo(); return; }
+if (pin.est.sala.version === antes && pin.ultimaVersion === antes) {
+// Sin cambios en la sala: solo se actualizan el reloj y la pista (revela letras con el tiempo).
+pinActualizarReloj();
+var pista = $("#pz-pista");
+if (pista && pin.est.sala.fase === "dibujando") { pista.innerHTML = pinPista(pin.est); }
+return;
+}
+if (pin.trazando) { pin.pendiente = true; return; }
 pintarPinturillo();
 }
-function iniciarPinturillo() {
-pinCargarLista().then(function () { if (arcadeActual === "pinturillo") { pinRefrescar(true); } });
-if (client && !pin.canal) {
+function pinSuscribir() {
+if (!client || !pin.sala) { return; }
+if (pin.canal && pin.canal._sala === pin.sala) { return; }
+pinSoltarCanal();
 try {
-pin.canal = client.channel("tb-pin-" + me.id)
-.on("postgres_changes", { event: "*", schema: "public", table: "pinturillo_partidas" }, function () {
-pinRefrescar(false);
-if (arcadeActual === "hub") { pinCargarLista().then(renderArcade); }
-})
-.subscribe();
+var canal = client.channel("pin-sala-" + pin.sala, { config: { presence: { key: me.id }, broadcast: { self: false } } });
+canal.on("postgres_changes", { event: "*", schema: "public", table: "pin_salas", filter: "id=eq." + pin.sala }, function () { pinRefrescar(); });
+canal.on("broadcast", { event: "vivo" }, function (m) { pinDibujarVivo(m && m.payload); });
+try { canal.on("presence", { event: "sync" }, function () { pinContarMirando(); }); } catch (e) { /* sin presencia */ }
+var rol = pin.espectador ? "espectador" : "jugador";
+canal.subscribe(function (estado) {
+if (estado === "SUBSCRIBED") { try { canal.track({ rol: rol }); } catch (e) { /* nada */ } }
+});
+canal._sala = pin.sala;
+pin.canal = canal;
 } catch (e) { pin.canal = null; }
 }
-if (!pinTimer) {
-pinTimer = setInterval(function () {
-if (arcadeActual === "pinturillo" && pin.abierta && pin.est && pin.est.estado === "jugando" && !pin.est.soy_turno) {
-pintarPinturillo();
-}
-}, 4000);
-}
-}
-function detenerPinturillo() {
+function pinSoltarCanal() {
 if (pin.canal && client) { try { client.removeChannel(pin.canal); } catch (e) { /* nada */ } }
 pin.canal = null;
-if (pinTimer) { clearInterval(pinTimer); pinTimer = null; }
 }
-function pinAbrir(id) {
-pin.abierta = id; pin.est = null; pin.version = -1; pin.adivinanza = ""; pin.aviso = "";
-pintarPinturillo();
-pinRefrescar(true);
+function pinContarMirando() {
+var n = 0;
+try {
+var estado = pin.canal && pin.canal.presenceState ? pin.canal.presenceState() : {};
+Object.keys(estado).forEach(function (k) {
+if ((estado[k] || []).some(function (m) { return m && m.rol === "espectador"; })) { n++; }
+});
+} catch (e) { n = 0; }
+pin.mirando = n;
+var el = $("#pz-mirando");
+if (el) { el.textContent = n ? "👁 " + n + (n === 1 ? " mirando" : " mirando") : ""; }
+}
+function iniciarPinturillo() {
+pinRefrescar();
+pinSuscribir();
+if (!pin.sondeo) {
+pin.sondeo = setInterval(function () { if (arcadeActual === "pinturillo") { pinRefrescar(); } }, 2500);
+}
+if (!pin.tick) { pin.tick = setInterval(pinTick, 250); }
+}
+function detenerPinturillo() {
+if (pin.sondeo) { clearInterval(pin.sondeo); pin.sondeo = null; }
+if (pin.tick) { clearInterval(pin.tick); pin.tick = null; }
+pinSoltarCanal();
+}
+function pinEscribiendo() {
+var a = document.activeElement;
+return !!(a && a.closest && a.closest(".pz-escena") && /INPUT|TEXTAREA|SELECT/.test(a.tagName) && a.id !== "pz-adivinar");
 }
 async function pinAccion(nombre, args) {
 if (pin.ocupado) { return null; }
@@ -17178,278 +17340,409 @@ pin.ocupado = true;
 try {
 var r = await client.rpc(nombre, args);
 if (r.error) { throw r.error; }
-return r.data || {};
+return r.data === null ? {} : r.data;
 } catch (e) { alert(pinError(e)); return null; } finally { pin.ocupado = false; }
 }
-async function pinRetar(rivalId) {
-if (pin.ocupado) { return; }
-pin.ocupado = true;
-try {
-var r = await client.rpc("pinturillo_retar", { p_rival: rivalId });
-if (r.error) { throw r.error; }
-pinAbrir(r.data);
-} catch (e) { alert(pinError(e)); } finally { pin.ocupado = false; }
-}
-async function pinAceptar(id) {
-var d = await pinAccion("pinturillo_aceptar", { p_partida: id });
-if (d) { pin.est = d; pin.version = d.version; pin.abierta = id; pintarPinturillo(); }
-}
-async function pinRechazar(id) {
-await pinAccion("pinturillo_rechazar", { p_partida: id });
-pin.abierta = null;
-await pinCargarLista();
+function pinEntrar(id, espectador) {
+pinSoltarCanal();
+pin.espectador = !!espectador;
+pin.sala = id; pin.est = null; pin.adivinanza = ""; pin.aviso = ""; pin.ultimaVersion = -1; pin.vivo = null;
+pinSuscribir();
 pintarPinturillo();
+pinRefrescar();
 }
-async function pinCancelar(id) {
-await pinAccion("pinturillo_cancelar", { p_partida: id });
-pin.abierta = null;
-await pinCargarLista();
-pintarPinturillo();
+function pinSalirVista() {
+pinSoltarCanal();
+pin.sala = null; pin.est = null; pin.espectador = false;
+pinCargarSalas().then(pintarPinturillo);
 }
-async function pinEnviarTrazo(trazo) {
-if (!pin.abierta) { return; }
-var d = await pinAccion("pinturillo_trazo", { p_partida: pin.abierta, p_trazo: trazo });
-if (d) { pin.est = d; pin.version = d.version; pinCanvasRedibujar(); }
+// Reloj y avance automático de turnos.
+function pinTick() {
+if (arcadeActual !== "pinturillo" || !pin.est || !pin.est.sala) { return; }
+var s = pin.est.sala;
+pinActualizarReloj();
+if (s.estado !== "jugando") { return; }
+var limite = s.fase === "dibujando" ? s.turno_fin : s.fase === "pausa" ? s.pausa_fin : null;
+if (limite && pinAhora() >= new Date(limite).getTime() && Date.now() - pin.avanzarPedido > 1500) {
+pin.avanzarPedido = Date.now();
+client.rpc("pin_sala_avanzar", { p_sala: s.id }).then(function () { pinRefrescar(); });
 }
-async function pinAdivinar() {
-var texto = (pin.adivinanza || "").trim();
-if (!texto) { return; }
-var d = await pinAccion("pinturillo_adivinar", { p_partida: pin.abierta, p_texto: texto });
-if (!d) { return; }
-pin.adivinanza = "";
-pin.aviso = d.correcto ? "¡Correcto! Era " + d.palabra_anterior + "." : "No es esa palabra, seguí intentando.";
-if (d.correcto) { pin.est = d; pin.version = d.version; }
-pintarPinturillo();
 }
-async function pinPasar() {
-var d = await pinAccion("pinturillo_pasar", { p_partida: pin.abierta });
-if (!d) { return; }
-pin.aviso = "La palabra era " + d.revelada + ".";
-pin.est = d; pin.version = d.version;
-pintarPinturillo();
+function pinRestante() {
+var s = pin.est && pin.est.sala;
+if (!s || s.fase !== "dibujando" || !s.turno_fin) { return null; }
+return Math.max(0, Math.ceil((new Date(s.turno_fin).getTime() - pinAhora()) / 1000));
 }
-function pinCanvasRedibujar() {
-var cv = $("#pin-canvas");
+function pinActualizarReloj() {
+var el = $("#pz-reloj");
+var r = pinRestante();
+if (el) {
+el.textContent = r === null ? "—" : r;
+el.parentNode.classList.toggle("urgente", r !== null && r <= 10);
+var s = pin.est.sala;
+var total = Math.max(1, s.segundos || 80);
+el.parentNode.style.setProperty("--p", r === null ? 0 : Math.round(r / total * 100));
+}
+}
+/* ---------- Pizarra ---------- */
+function pinPintarTrazo(ctx, t, desde) {
+if (!t || !t.p || t.p.length < 2) { return; }
+ctx.save();
+ctx.lineCap = "round";
+ctx.lineJoin = "round";
+if (t.e) {
+ctx.globalCompositeOperation = "destination-out";
+ctx.strokeStyle = "#000";
+ctx.lineWidth = (t.g || 6) * 3;
+} else {
+ctx.globalCompositeOperation = "source-over";
+ctx.strokeStyle = t.c || "#f6f5ee";
+ctx.lineWidth = t.g || 6;
+ctx.globalAlpha = 0.9;
+ctx.shadowColor = t.c || "#f6f5ee";
+ctx.shadowBlur = 2;
+}
+var i0 = Math.max(1, desde || 1);
+ctx.beginPath();
+ctx.moveTo(t.p[i0 - 1][0], t.p[i0 - 1][1]);
+for (var i = i0; i < t.p.length; i++) { ctx.lineTo(t.p[i][0], t.p[i][1]); }
+ctx.stroke();
+ctx.restore();
+}
+function pinRedibujar() {
+var cv = $("#pz-canvas");
 if (!cv || !pin.est) { return; }
 var ctx = cv.getContext("2d");
 ctx.clearRect(0, 0, cv.width, cv.height);
-(pin.est.trazos || []).forEach(function (t) {
-if (t.clear) { ctx.clearRect(0, 0, cv.width, cv.height); return; }
-if (!t.p || t.p.length < 2) { return; }
-ctx.strokeStyle = t.c || "#1c1c28";
-ctx.lineWidth = t.g || 6;
-ctx.lineCap = "round";
-ctx.lineJoin = "round";
-ctx.beginPath();
-ctx.moveTo(t.p[0][0], t.p[0][1]);
-for (var i = 1; i < t.p.length; i++) { ctx.lineTo(t.p[i][0], t.p[i][1]); }
-ctx.stroke();
-});
+(pin.est.sala.trazos || []).forEach(function (t) { pinPintarTrazo(ctx, t); });
+pin.vivo = null;
+}
+// Trazo en vivo que llega por el canal (solo de quien dibuja; no se guarda).
+function pinDibujarVivo(d) {
+var s = pin.est && pin.est.sala;
+if (!d || !s || s.fase !== "dibujando" || d.u !== s.dibujante || d.u === me.id) { return; }
+var cv = $("#pz-canvas");
+if (!cv || !Array.isArray(d.p) || !d.p.length) { return; }
+if (d.clear) { cv.getContext("2d").clearRect(0, 0, cv.width, cv.height); return; }
+var previo = pin.vivo && pin.vivo.s === d.s ? pin.vivo.ultimo : null;
+var puntos = previo ? [previo].concat(d.p) : d.p;
+pinPintarTrazo(cv.getContext("2d"), { c: String(d.c || "#f6f5ee").slice(0, 9), g: Math.min(30, +d.g || 6), e: !!d.e, p: puntos.slice(0, 400) });
+pin.vivo = { s: d.s, ultimo: d.p[d.p.length - 1] };
 }
 function pinCanvasEventos() {
-var cv = $("#pin-canvas");
-if (!cv) { return; }
-var trazando = false;
-var actual = null;
+var cv = $("#pz-canvas");
+if (!cv || !pin.est || !pin.est.soy_dibujante) { return; }
+var actual = null, enviados = 0, envioT = null, idTrazo = 0, dibujando = false;
 function posDe(e) {
 var rect = cv.getBoundingClientRect();
 var t = (e.touches && e.touches[0]) || e;
-var x = (t.clientX - rect.left) / rect.width * cv.width;
-var y = (t.clientY - rect.top) / rect.height * cv.height;
-return [Math.round(x), Math.round(y)];
+return [Math.round((t.clientX - rect.left) / rect.width * cv.width), Math.round((t.clientY - rect.top) / rect.height * cv.height)];
+}
+function enviarVivo() {
+envioT = null;
+if (!actual || !pin.canal) { return; }
+var nuevos = actual.p.slice(enviados);
+if (!nuevos.length) { return; }
+enviados = actual.p.length;
+try { pin.canal.send({ type: "broadcast", event: "vivo", payload: { u: me.id, s: idTrazo, c: actual.c, g: actual.g, e: actual.e ? 1 : 0, p: nuevos } }); } catch (err) { /* nada */ }
 }
 function empezar(e) {
-if (!pin.est || !pin.est.soy_turno || pin.est.estado !== "jugando") { return; }
+if (!pin.est || !pin.est.soy_dibujante) { return; }
 e.preventDefault();
-trazando = true;
+dibujando = true;
+pin.trazando = true;
+pin.terminarActual = terminar;
+idTrazo = Date.now();
+enviados = 0;
 actual = { c: pin.color, g: pin.grosor, p: [posDe(e)] };
+if (pin.borrador) { actual.e = 1; }
 }
 function mover(e) {
-if (!trazando) { return; }
+if (!dibujando || !actual) { return; }
 e.preventDefault();
-actual.p.push(posDe(e));
-var ctx = cv.getContext("2d");
-var n = actual.p.length;
-if (n < 2) { return; }
-ctx.strokeStyle = actual.c; ctx.lineWidth = actual.g; ctx.lineCap = "round"; ctx.lineJoin = "round";
-ctx.beginPath();
-ctx.moveTo(actual.p[n - 2][0], actual.p[n - 2][1]);
-ctx.lineTo(actual.p[n - 1][0], actual.p[n - 1][1]);
-ctx.stroke();
+var p = posDe(e);
+var ult = actual.p[actual.p.length - 1];
+if (Math.abs(p[0] - ult[0]) + Math.abs(p[1] - ult[1]) < 2) { return; }
+actual.p.push(p);
+pinPintarTrazo(cv.getContext("2d"), actual, actual.p.length - 1);
+if (!envioT) { envioT = setTimeout(enviarVivo, 90); }
+if (actual.p.length >= 1200) { terminar(); empezar(e); }
 }
 function terminar() {
-if (!trazando) { return; }
-trazando = false;
-if (actual && actual.p.length > 1) { pinEnviarTrazo(actual); }
+if (!dibujando) { return; }
+dibujando = false;
+pin.trazando = false;
+pin.terminarActual = null;
+if (envioT) { clearTimeout(envioT); }
+enviarVivo();
+var t = actual;
 actual = null;
+if (t && t.p.length > 1) {
+pin.est.sala.trazos = (pin.est.sala.trazos || []).concat([t]);
+client.rpc("pin_sala_trazo", { p_sala: pin.sala, p_trazo: t }).then(function (r) {
+if (r.error) { pin.aviso = pinError(r.error); pintarPinturillo(); }
+});
 }
-cv.onmousedown = empezar; cv.onmousemove = mover; cv.onmouseup = terminar; cv.onmouseleave = terminar;
-cv.ontouchstart = empezar; cv.ontouchmove = mover; cv.ontouchend = terminar;
+if (pin.pendiente) { pin.pendiente = false; pintarPinturillo(); }
 }
-function pinPintarLista(caja) {
-var activas = pin.lista.filter(function (p) { return ["invitacion", "jugando"].indexOf(p.estado) >= 0; });
-var viejas = pin.lista.filter(function (p) { return p.estado === "terminada"; }).slice(0, 6);
-var pend = pinPendientes().map(function (p) { return p.id; });
-var ganadas = pin.lista.filter(function (p) { return p.estado === "terminada" && p.ganador === me.id; }).length;
-var jugadas = pin.lista.filter(function (p) { return p.estado === "terminada"; }).length;
-var fila = function (p) {
-var otro = p.retador === me.id ? p.rival : p.retador;
-var urgente = pend.indexOf(p.id) >= 0;
-return '<button type="button" class="bn-fila' + (urgente ? " urgente" : "") + '" data-pin-abrir="' + escapeHtml(p.id) + '">' +
-'<span class="bn-fila-nombre">' + escapeHtml(bnNombre(otro)) + "</span>" +
-'<span class="bn-fila-estado">' + escapeHtml(pinEstadoTexto(p)) + "</span></button>";
+cv.onmousedown = empezar; cv.onmousemove = mover; cv.onmouseleave = terminar;
+if (!pin.soltarGlobal) {
+pin.soltarGlobal = true;
+window.addEventListener("mouseup", function () { if (pin.terminarActual) { pin.terminarActual(); } });
+}
+cv.ontouchstart = empezar; cv.ontouchmove = mover; cv.ontouchend = terminar; cv.ontouchcancel = terminar;
+}
+/* ---------- Pantallas ---------- */
+function pinCabecera() {
+return '<div class="tb-arcade-head"><button type="button" class="tb-secondary" id="tb-arcade-volver">← Actividades</button>' +
+'<div class="pz-titulo">🎨 Pinturillo</div></div>';
+}
+function pinPintarLobby(caja) {
+var f = pin.form;
+var mias = pin.salas.filter(function (s) { return pin.mias.indexOf(s.id) >= 0; });
+caja.innerHTML = pinCabecera() +
+'<section class="pz-hero"><div class="pz-hero-pizarra" aria-hidden="true"><span>¿Qué es?</span><i></i></div>' +
+"<div><h2>Pinturillo en salas</h2><p>Crea una sala o entra con un código. Por turnos, cada jugador dibuja en la pizarra y los demás adivinan: mientras más rápido aciertes, más puntos. Quien no juega puede entrar a mirar.</p></div></section>" +
+(pin.listo ? "" : '<p class="bn-aviso-error">' + escapeHtml(pin.error || "Cargando salas…") + "</p>") +
+(mias.length ? '<div class="pz-volver">' + mias.map(function (s) {
+return '<button type="button" class="tb-primary" data-pz-entrar="' + escapeHtml(s.id) + '">Volver a tu sala ' + escapeHtml(s.codigo) + "</button>";
+}).join("") + "</div>" : "") +
+'<div class="pz-lobby">' +
+'<section class="pz-panel"><h3>Crear una sala</h3>' +
+'<label class="tb-field"><span>Nombre de la sala</span><input id="pz-nombre" maxlength="40" placeholder="Dibujos de 10mo A" value="' + attrHtml(f.nombre) + '"></label>' +
+'<div class="pz-fila2"><label class="tb-field"><span>Vueltas (cada jugador dibuja una vez por vuelta)</span><select id="pz-rondas">' + [1, 2, 3, 4, 5].map(function (n) {
+return "<option" + (f.rondas === n ? " selected" : "") + ">" + n + "</option>"; }).join("") + "</select></label>" +
+'<label class="tb-field"><span>Segundos por turno</span><select id="pz-segundos">' + [60, 80, 100, 120, 150].map(function (n) {
+return "<option" + (f.segundos === n ? " selected" : "") + ">" + n + "</option>"; }).join("") + "</select></label></div>" +
+'<button type="button" class="tb-primary pz-grande" id="pz-crear">Crear sala</button></section>' +
+'<section class="pz-panel"><h3>Entrar con código</h3>' +
+'<div class="pz-codigo-in"><input id="pz-codigo" maxlength="4" autocomplete="off" autocapitalize="characters" placeholder="ABCD" value="' + attrHtml(pin.codigo) + '">' +
+'<button type="button" class="tb-primary" id="pz-unirse">Entrar</button></div>' +
+"<h3>Salas abiertas</h3>" +
+(pin.salas.length ? pin.salas.map(function (s) {
+var yaEstoy = pin.mias.indexOf(s.id) >= 0;
+return '<div class="pz-sala-fila"><span><b>' + escapeHtml(s.nombre) + "</b><small>" +
+escapeHtml(bnNombre(s.anfitrion)) + " · " + (pin.cuentas[s.id] || 0) + " jugador(es) · " +
+(s.estado === "espera" ? "en espera" : "vuelta " + s.vuelta + " de " + s.rondas) + "</small></span>" +
+'<span class="pz-sala-botones">' + (yaEstoy ? "" : '<button type="button" class="tb-secondary" data-pz-mirar="' + escapeHtml(s.id) + '">👁 Mirar</button>') +
+'<button type="button" class="tb-primary" data-pz-' + (yaEstoy ? "entrar" : "unir") + '="' + (yaEstoy ? escapeHtml(s.id) : attrHtml(s.codigo)) + '">' +
+(yaEstoy ? "Volver" : "Jugar") + "</button></span></div>";
+}).join("") : '<p class="bn-vacio">No hay salas abiertas. Crea una y comparte el código.</p>') +
+"</section></div>";
+ligarVolver();
+$("#pz-nombre").oninput = function () { f.nombre = this.value; };
+$("#pz-rondas").onchange = function () { f.rondas = parseInt(this.value, 10); };
+$("#pz-segundos").onchange = function () { f.segundos = parseInt(this.value, 10); };
+$("#pz-crear").onclick = async function () {
+var id = await pinAccion("pin_sala_crear", { p_nombre: f.nombre, p_rondas: f.rondas, p_segundos: f.segundos });
+if (id && typeof id === "string") { pinEntrar(id); }
 };
-var q = pin.filtro.trim().toLowerCase();
-var rivales = profilesOrdenados().filter(function (p) {
-return p.id !== me.id && (!q || (nombreDe(p) + " " + (p.username || "")).toLowerCase().indexOf(q) >= 0);
-}).slice(0, 60);
-caja.innerHTML = cabeceraArcade("Pinturillo", [["VICTORIAS", ganadas], ["PARTIDAS", jugadas]]) +
-'<p class="tb-muted" style="margin:0 0 14px">Retá a alguien: uno dibuja, el otro adivina. Se turnan cada ronda.</p>' +
-(pin.listaLista ? "" : '<p class="bn-aviso-error">' + escapeHtml(pin.errorLista || "Cargando partidas…") + "</p>") +
-'<div class="bn-puerto">' +
-'<section class="bn-panel"><h3>Tus partidas</h3>' +
-(activas.length ? activas.map(fila).join("") : '<p class="bn-vacio">No tenés partidas abiertas. Retá a alguien de la lista.</p>') +
-(viejas.length ? "<h4>Terminadas</h4>" + viejas.map(fila).join("") : "") +
-"</section>" +
-'<section class="bn-panel"><h3>Retar a alguien</h3>' +
-'<input type="search" class="bn-buscar" id="pin-buscar" placeholder="Buscar por nombre" value="' + attrHtml(pin.filtro) + '">' +
-'<div class="bn-rivales">' + (rivales.length ? rivales.map(function (p) {
-return '<div class="bn-rival"><span><b>' + escapeHtml(nombreDe(p)) + "</b><small>@" + escapeHtml(p.username || "") +
-"</small></span><button type=\"button\" class=\"bn-btn chico\" data-pin-retar=\"" + p.id + "\">Retar</button></div>";
-}).join("") : '<p class="bn-vacio">Nadie coincide con esa búsqueda.</p>') + "</div>" +
-"</section>" +
-"</div>";
-ligarVolver();
-$$("[data-pin-abrir]").forEach(function (b) { b.onclick = function () { pinAbrir(b.dataset.pinAbrir); }; });
-$$("[data-pin-retar]").forEach(function (b) { b.onclick = function () { pinRetar(b.dataset.pinRetar); }; });
-var buscar = $("#pin-buscar");
-if (buscar) {
-buscar.oninput = function () {
-pin.filtro = buscar.value;
-var pos = buscar.selectionStart;
-pintarPinturillo();
-var nuevo = $("#pin-buscar");
-if (nuevo) { nuevo.focus(); try { nuevo.setSelectionRange(pos, pos); } catch (e) { /* nada */ } }
+var unirse = async function (codigo) {
+var cod = String(codigo || "").trim().toUpperCase();
+if (!/^[A-Z]{4}$/.test(cod)) { alert("El código tiene 4 letras."); return; }
+var id = await pinAccion("pin_sala_unirse", { p_codigo: cod });
+if (id && typeof id === "string") { pin.codigo = ""; pinEntrar(id); }
 };
+$("#pz-codigo").oninput = function () { pin.codigo = this.value.toUpperCase(); };
+$("#pz-codigo").onkeydown = function (e) { if (e.key === "Enter") { unirse(this.value); } };
+$("#pz-unirse").onclick = function () { unirse($("#pz-codigo").value); };
+$$("[data-pz-unir]").forEach(function (b) { b.onclick = function () { unirse(b.dataset.pzUnir); }; });
+$$("[data-pz-entrar]").forEach(function (b) { b.onclick = function () { pinEntrar(b.dataset.pzEntrar); }; });
+$$("[data-pz-mirar]").forEach(function (b) { b.onclick = function () { pinEntrar(b.dataset.pzMirar, true); }; });
 }
+function pinMarcador(est) {
+var s = est.sala;
+return '<ol class="pz-marcador">' + est.jugadores.map(function (j, i) {
+var dibuja = s.fase === "dibujando" && j.id === s.dibujante;
+var acerto = (s.adivinaron || []).indexOf(j.id) >= 0;
+return '<li class="' + (j.id === me.id ? "yo " : "") + (dibuja ? "dibuja " : "") + (acerto ? "acerto" : "") + '">' +
+'<em>' + (i + 1) + "</em><span>" + escapeHtml(bnNombre(j.id)) + (j.id === s.anfitrion ? " <small>anfitrión</small>" : "") + "</span>" +
+(dibuja ? '<i title="Está dibujando">✏️</i>' : acerto ? '<i title="Adivinó">✅</i>' : "") + "<b>" + j.puntos + "</b></li>";
+}).join("") + "</ol>";
 }
-function pinPintarInvitacion(caja, est) {
-var soyRetador = est.retador === me.id;
-var otro = soyRetador ? est.rival : est.retador;
-caja.innerHTML = cabeceraArcade("Pinturillo", []) +
-'<div style="text-align:center;padding:20px 0">' +
-'<div style="font-size:42px">🎨</div>' +
-"<h2>" + (soyRetador ? "Esperando a " + escapeHtml(bnNombre(otro)) : escapeHtml(bnNombre(otro)) + " te retó") + "</h2>" +
-'<p class="tb-muted">Uno dibuja, el otro adivina. Se turnan cada ronda hasta completar ' + est.max_rondas + ".</p>" +
-(soyRetador ?
-'<button type="button" class="tb-secondary" id="pin-cancelar">Cancelar reto</button>' :
-'<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">' +
-'<button type="button" class="tb-primary" id="pin-aceptar">Aceptar</button>' +
-'<button type="button" class="tb-secondary" id="pin-rechazar">Rechazar</button></div>') +
-"</div>";
-ligarVolver();
-var a = $("#pin-aceptar");
-var r = $("#pin-rechazar");
-var c = $("#pin-cancelar");
-if (a) { a.onclick = function () { pinAceptar(est.id); }; }
-if (r) { r.onclick = function () { pinRechazar(est.id); }; }
-if (c) { c.onclick = function () { pinCancelar(est.id); }; }
+function pinMensajes(est) {
+var lista = (est.sala.mensajes || []).slice(-30);
+if (!lista.length) { return '<p class="pz-chat-vacio">Aquí aparecerán los intentos.</p>'; }
+return lista.map(function (m) {
+var quien = escapeHtml(bnNombre(m.de));
+if (m.t === "acierto") { return '<p class="ok">✅ <b>' + quien + "</b> adivinó " + escapeHtml(m.x) + "</p>"; }
+if (m.t === "revela") { return '<p class="sis">📣 La palabra era <b>' + escapeHtml(m.x) + "</b></p>"; }
+if (m.t === "sistema") { return '<p class="sis">✏️ Ahora dibuja <b>' + quien + "</b></p>"; }
+if (m.t === "entra") { return '<p class="sis">👋 ' + quien + " entró a la sala</p>"; }
+if (m.t === "sale") { return '<p class="sis">🚪 ' + quien + " salió</p>"; }
+return "<p><b>" + quien + ":</b> " + escapeHtml(m.x) + "</p>";
+}).join("");
 }
-function pinPintarFin(caja, est) {
-var gane = est.ganador === me.id;
-if (est.id && (est.retador === me.id || est.rival === me.id || est.rival_id === me.id || est.retador_id === me.id || gane)) {
-misionUnaVez("pin-" + est.id, function () { misionEvento("pin_jugar", 1); if (gane) { misionEvento("pin_ganar", 1); } });
+function pinPista(est) {
+var s = est.sala;
+if (s.fase === "pausa") { return '<div class="pz-palabra revelada"><small>La palabra era</small><b>' + escapeHtml(s.revelada || "") + "</b></div>"; }
+if (est.soy_dibujante) { return '<div class="pz-palabra mia"><small>Dibuja</small><b>' + escapeHtml(est.palabra || "") + "</b></div>"; }
+var p = est.pista || "";
+var letras = p.replace(/ /g, "").length;
+return '<div class="pz-palabra"><small>' + (est.ya_adivine ? "¡La adivinaste!" : "Adivina · " + letras + " letras") + '</small><b class="pz-guiones">' +
+p.split("").map(function (c) { return c === " " ? '<span class="esp"></span>' : "<span>" + (c === "_" ? "" : escapeHtml(c)) + "</span>"; }).join("") + "</b></div>";
 }
-var empate = !est.ganador;
-caja.innerHTML = cabeceraArcade("Pinturillo", [
-["RONDAS", est.max_rondas],
-["TUS ACIERTOS", est.retador === me.id ? est.aciertos_retador : est.aciertos_rival],
-["RIVAL", est.retador === me.id ? est.aciertos_rival : est.aciertos_retador]
-]) +
-'<div style="text-align:center;padding:20px 0">' +
-'<div style="font-size:42px">' + (empate ? "🤝" : (gane ? "🏆" : "🎨")) + "</div>" +
-"<h2>" + (empate ? "Empate" : (gane ? "¡Ganaste!" : "Perdiste")) + "</h2>" +
-'<button type="button" class="tb-secondary" id="pin-volver-lista">← Mis partidas</button>' +
-"</div>";
-ligarVolver();
-var v = $("#pin-volver-lista");
-if (v) { v.onclick = function () { pin.abierta = null; pintarPinturillo(); }; }
+function pinPintarEspera(caja, est) {
+var s = est.sala, anfitrion = s.anfitrion === me.id;
+caja.innerHTML = pinCabecera() +
+'<div class="pz-escena pz-espera">' +
+'<div class="pz-pizarra chica"><div class="pz-board pz-board-texto"><small>Código de la sala</small><div class="pz-codigo">' +
+s.codigo.split("").map(function (c) { return "<b>" + escapeHtml(c) + "</b>"; }).join("") + "</div>" +
+"<p>Compártelo para que entren desde Actividades → Pinturillo.</p></div>" + pinBandeja(false) + "</div>" +
+'<div class="pz-panel"><h3>' + escapeHtml(s.nombre) + "</h3>" +
+'<p class="tb-muted">' + s.rondas + " vuelta(s) · " + s.segundos + " segundos por turno · cada jugador dibuja una vez por vuelta</p>" +
+"<h3>Jugadores · " + est.jugadores.length + " <small id=\"pz-mirando\"></small></h3>" + pinMarcador(est) +
+'<div class="pz-acciones">' +
+(pin.espectador ? '<p class="tb-muted">Estás mirando. La partida empieza cuando ' + escapeHtml(bnNombre(s.anfitrion)) + " la inicie.</p>"
+: anfitrion ? '<button type="button" class="tb-primary pz-grande" id="pz-empezar"' + (est.jugadores.length < 2 ? " disabled" : "") + ">" +
+(est.jugadores.length < 2 ? "Esperando más jugadores" : "Empezar partida") + "</button>"
+: '<p class="tb-muted">Esperando que ' + escapeHtml(bnNombre(s.anfitrion)) + " empiece la partida.</p>") +
+'<button type="button" class="tb-secondary" id="pz-salir">' + (pin.espectador ? "Dejar de mirar" : "Salir de la sala") + "</button>" +
+"</div></div></div>";
+pinLigarComun();
+var em = $("#pz-empezar");
+if (em) { em.onclick = async function () { if (await pinAccion("pin_sala_empezar", { p_sala: s.id })) { pinRefrescar(); } }; }
+}
+function pinBandeja(conHerramientas) {
+var tizas = PIN_TIZAS.map(function (t) {
+return '<button type="button" class="pz-tiza' + (conHerramientas && !pin.borrador && pin.color === t.c ? " on" : "") + '"' +
+(conHerramientas ? ' data-pz-color="' + t.c + '"' : " disabled") + ' style="--tc:' + t.c + '" title="Tiza ' + t.n + '" aria-label="Tiza ' + t.n + '"></button>';
+}).join("");
+if (!conHerramientas) { return '<div class="pz-bandeja decorativa">' + tizas + '<span class="pz-borrador" aria-hidden="true"></span></div>'; }
+return '<div class="pz-bandeja">' + tizas +
+'<span class="pz-sep"></span>' + PIN_GROSORES.map(function (g) {
+return '<button type="button" class="pz-grosor' + (pin.grosor === g ? " on" : "") + '" data-pz-grosor="' + g + '" title="Grosor ' + g + '"><i style="width:' + Math.max(4, g) + "px;height:" + Math.max(4, g) + 'px"></i></button>';
+}).join("") +
+'<span class="pz-sep"></span>' +
+'<button type="button" class="pz-borrador' + (pin.borrador ? " on" : "") + '" id="pz-borrador" title="Borrador"><span>Borrador</span></button>' +
+'<button type="button" class="pz-mini" id="pz-limpiar" title="Borrar toda la pizarra">🧽 Limpiar</button>' +
+'<button type="button" class="pz-mini" id="pz-saltar" title="Saltar mi turno">⏭ Saltar</button></div>';
 }
 function pinPintarJuego(caja, est) {
-var otro = est.retador === me.id ? est.rival : est.retador;
-var soyTurno = est.soy_turno;
-var segundos = Math.max(0, Math.floor((Date.now() - new Date(est.ronda_inicio).getTime()) / 1000));
-var puedePasar = segundos >= 20;
-var paletaHtml = PIN_COLORES.map(function (c) {
-return '<button type="button" class="pin-color' + (pin.color === c ? " on" : "") + '" data-pin-color="' + c +
-'" style="--pc:' + c + '"></button>';
-}).join("");
-var herramientas = soyTurno ?
-'<div class="pin-herramientas"><div class="pin-paleta">' + paletaHtml + "</div>" +
-'<div class="pin-grosores">' + [3, 6, 12].map(function (g) {
-return '<button type="button" class="pin-grosor' + (pin.grosor === g ? " on" : "") + '" data-pin-grosor="' + g + '">●</button>';
-}).join("") + "</div>" +
-'<button type="button" class="tb-secondary chico" id="pin-limpiar">Limpiar</button></div>' : "";
-var zonaInferior = soyTurno ?
-'<p class="tb-muted" style="text-align:center;margin-top:10px">Dibujá <b>' + escapeHtml(est.palabra || "") +
-"</b> (" + (est.letras || 0) + " letras) — que adivinen antes de que se acabe el tiempo.</p>" :
-'<div class="tb-word-entrada" style="margin-top:12px">' +
-'<input id="pin-adivinar" autocomplete="off" placeholder="¿Qué es? (' + (est.letras || 0) + ' letras)" value="' +
-escapeHtml(pin.adivinanza) + '">' +
-'<button type="button" class="tb-primary" id="pin-enviar-adivinar">Adivinar</button></div>';
-caja.innerHTML = cabeceraArcade("Pinturillo", [
-["RONDA", est.ronda + "/" + est.max_rondas],
-["TUS ACIERTOS", est.retador === me.id ? est.aciertos_retador : est.aciertos_rival],
-["RIVAL", est.retador === me.id ? est.aciertos_rival : est.aciertos_retador]
-]) +
-'<p class="tb-muted" style="text-align:center;margin:0 0 10px">' +
-(soyTurno ? "Te toca dibujar" : escapeHtml(bnNombre(otro)) + " está dibujando · adiviná abajo") + "</p>" +
-'<div class="pin-lienzo-caja"><canvas id="pin-canvas" width="500" height="500"></canvas></div>' +
-herramientas + zonaInferior +
-(pin.aviso ? '<p class="tb-muted" style="text-align:center;margin-top:10px">' + escapeHtml(pin.aviso) + "</p>" : "") +
-'<div style="text-align:center;margin-top:12px">' +
-'<button type="button" class="tb-secondary chico" id="pin-pasar"' + (puedePasar ? "" : " disabled") + ">Pasar</button></div>";
-ligarVolver();
-pinCanvasRedibujar();
+var s = est.sala;
+var total = (s.orden || []).length;
+var puedeAdivinar = est.soy_jugador && !est.soy_dibujante && !est.ya_adivine && s.fase === "dibujando";
+var abajo;
+if (pin.espectador || !est.soy_jugador) {
+abajo = '<p class="pz-nota">👁 Estás mirando la partida. Solo los jugadores pueden adivinar.</p>';
+} else if (est.soy_dibujante) {
+abajo = '<p class="pz-nota">✏️ Te toca dibujar. No escribas letras ni la palabra en la pizarra.</p>';
+} else if (puedeAdivinar) {
+abajo = '<div class="pz-adivinar"><input id="pz-adivinar" autocomplete="off" maxlength="60" placeholder="Escribe tu respuesta…" value="' + attrHtml(pin.adivinanza) + '">' +
+'<button type="button" class="tb-primary" id="pz-enviar">Adivinar</button></div>';
+} else if (est.ya_adivine) {
+abajo = '<p class="pz-nota ok">✅ ¡Adivinaste! Espera a que los demás terminen.</p>';
+} else {
+abajo = '<p class="pz-nota">Preparando el siguiente turno…</p>';
+}
+caja.innerHTML = pinCabecera() +
+'<div class="pz-escena">' +
+'<div class="pz-barra">' +
+'<div class="pz-reloj"><span id="pz-reloj">—</span></div><div id="pz-pista">' + pinPista(est) + "</div>" +
+'<div class="pz-info"><b>Vuelta ' + s.vuelta + "/" + s.rondas + "</b><small>Turno " + Math.min(total, s.turno_idx + 1) + " de " + total + '</small><small id="pz-mirando"></small></div></div>' +
+'<div class="pz-juego">' +
+'<div class="pz-pizarra' + (est.soy_dibujante ? " activa" : "") + '"><div class="pz-board">' +
+'<canvas id="pz-canvas" width="800" height="500" aria-label="Pizarra de dibujo"></canvas>' +
+(s.fase === "pausa" ? '<div class="pz-telon"><small>La palabra era</small><b>' + escapeHtml(s.revelada || "") + "</b></div>" : "") +
+(s.fase === "dibujando" && !est.soy_dibujante ? '<div class="pz-quien">✏️ Dibuja ' + escapeHtml(bnNombre(s.dibujante)) + "</div>" : "") +
+"</div>" + pinBandeja(est.soy_dibujante) + "</div>" +
+'<aside class="pz-lado"><div class="pz-panel"><h3>Puntos</h3>' + pinMarcador(est) + "</div>" +
+'<div class="pz-panel pz-chat-caja"><h3>Intentos</h3><div class="pz-chat" id="pz-chat">' + pinMensajes(est) + "</div>" + abajo +
+(pin.aviso ? '<p class="pz-aviso">' + escapeHtml(pin.aviso) + "</p>" : "") + "</div>" +
+'<button type="button" class="tb-secondary" id="pz-salir">' + (pin.espectador || !est.soy_jugador ? "Dejar de mirar" : "Salir de la partida") + "</button></aside>" +
+"</div></div>";
+pinLigarComun();
+pinRedibujar();
 pinCanvasEventos();
-$$("[data-pin-color]").forEach(function (b) { b.onclick = function () { pin.color = b.dataset.pinColor; pintarPinturillo(); }; });
-$$("[data-pin-grosor]").forEach(function (b) { b.onclick = function () { pin.grosor = parseInt(b.dataset.pinGrosor, 10); pintarPinturillo(); }; });
-var limpiar = $("#pin-limpiar");
-if (limpiar) { limpiar.onclick = function () { pinEnviarTrazo({ clear: true }); }; }
-var pasar = $("#pin-pasar");
-if (pasar) { pasar.onclick = pinPasar; }
-var input = $("#pin-adivinar");
+pinActualizarReloj();
+var chat = $("#pz-chat");
+if (chat) { chat.scrollTop = chat.scrollHeight; }
+$$("[data-pz-color]").forEach(function (b) { b.onclick = function () { pin.color = b.dataset.pzColor; pin.borrador = false; pintarPinturillo(); }; });
+$$("[data-pz-grosor]").forEach(function (b) { b.onclick = function () { pin.grosor = parseInt(b.dataset.pzGrosor, 10); pintarPinturillo(); }; });
+var borr = $("#pz-borrador");
+if (borr) { borr.onclick = function () { pin.borrador = !pin.borrador; pintarPinturillo(); }; }
+var limpiar = $("#pz-limpiar");
+if (limpiar) {
+limpiar.onclick = function () {
+if (!window.confirm("¿Borrar toda la pizarra?")) { return; }
+pin.est.sala.trazos = [];
+pinRedibujar();
+try { pin.canal && pin.canal.send({ type: "broadcast", event: "vivo", payload: { u: me.id, s: Date.now(), clear: 1, p: [[0, 0]] } }); } catch (e) { /* nada */ }
+client.rpc("pin_sala_trazo", { p_sala: s.id, p_trazo: { clear: true } });
+};
+}
+var saltar = $("#pz-saltar");
+if (saltar) { saltar.onclick = async function () { if (window.confirm("¿Saltar tu turno? Se revelará la palabra.")) { await pinAccion("pin_sala_saltar", { p_sala: s.id }); pinRefrescar(); } }; }
+var input = $("#pz-adivinar");
 if (input) {
 input.oninput = function () { pin.adivinanza = input.value; };
 input.onkeydown = function (e) { if (e.key === "Enter") { pinAdivinar(); } };
+if (pin.focoAdivinar) { input.focus(); try { input.setSelectionRange(input.value.length, input.value.length); } catch (e) { /* nada */ } }
 }
-var enviar = $("#pin-enviar-adivinar");
+var enviar = $("#pz-enviar");
 if (enviar) { enviar.onclick = pinAdivinar; }
+}
+async function pinAdivinar() {
+var texto = (pin.adivinanza || "").trim();
+if (!texto || !pin.est) { return; }
+pin.adivinanza = "";
+pin.focoAdivinar = true;
+var d = await pinAccion("pin_sala_adivinar", { p_sala: pin.sala, p_texto: texto });
+if (!d) { pintarPinturillo(); return; }
+pin.aviso = d.correcto ? "🎉 ¡Correcto! +" + d.puntos + " puntos" : d.cerca ? "🔥 ¡Casi! Estás muy cerca." : "";
+pinRefrescar();
+}
+function pinPintarFin(caja, est) {
+var s = est.sala;
+var gane = (s.ganadores || []).indexOf(me.id) >= 0;
+if (est.soy_jugador) {
+misionUnaVez("pins-" + s.id, function () { misionEvento("pin_jugar", 1); if (gane) { misionEvento("pin_ganar", 1); } });
+}
+var podio = est.jugadores.slice(0, 3);
+caja.innerHTML = pinCabecera() +
+'<div class="pz-escena"><div class="pz-pizarra"><div class="pz-board pz-board-texto pz-final">' +
+"<small>" + escapeHtml(s.nombre) + "</small>" +
+"<h2>" + (gane ? "¡Ganaste! 🏆" : (s.ganadores || []).length ? "¡Fin de la partida!" : "Fin de la partida") + "</h2>" +
+'<div class="pz-podio">' + podio.map(function (j, i) {
+return '<div class="p' + (i + 1) + '"><span>' + ["🥇", "🥈", "🥉"][i] + "</span><b>" + escapeHtml(bnNombre(j.id)) + "</b><small>" + j.puntos + " pts</small></div>";
+}).join("") + "</div></div>" + pinBandeja(false) + "</div>" +
+'<div class="pz-panel"><h3>Resultados</h3>' + pinMarcador(est) +
+'<div class="pz-acciones"><button type="button" class="tb-primary" id="pz-salir">← Volver a las salas</button></div></div></div>';
+ligarVolver();
+var sal = $("#pz-salir");
+if (sal) { sal.onclick = pinSalirVista; }
+}
+function pinLigarComun() {
+ligarVolver();
+var sal = $("#pz-salir");
+if (sal) {
+sal.onclick = async function () {
+if (!pin.espectador && pin.est && pin.est.soy_jugador) {
+if (pin.est.sala.estado === "jugando" && !window.confirm("¿Salir de la partida? Perderás tu lugar.")) { return; }
+await pinAccion("pin_sala_salir", { p_sala: pin.sala });
+}
+pinSalirVista();
+};
+}
+pinContarMirando();
 }
 function pintarPinturillo() {
 var caja = $("#tb-arcade");
 if (!caja) { return; }
-if (!pin.abierta) { pinPintarLista(caja); return; }
+var activo = document.activeElement;
+pin.focoAdivinar = pin.focoAdivinar || !!(activo && activo.id === "pz-adivinar");
+if (!pin.sala) { pinPintarLobby(caja); pin.focoAdivinar = false; return; }
 if (!pin.est) {
-caja.innerHTML = cabeceraArcade("Pinturillo", []) + '<p class="tb-muted">Cargando…</p>';
+caja.innerHTML = pinCabecera() + '<p class="tb-muted">Cargando la sala…</p>';
 ligarVolver();
 return;
 }
-var est = pin.est;
-if (est.estado === "invitacion") { pinPintarInvitacion(caja, est); return; }
-if (est.estado === "rechazada" || est.estado === "cancelada") {
-caja.innerHTML = cabeceraArcade("Pinturillo", []) +
-'<p class="tb-muted" style="text-align:center">' +
-(est.estado === "rechazada" ? "Este reto fue rechazado." : "Este reto fue cancelado.") + "</p>" +
-'<div style="text-align:center;margin-top:14px">' +
-'<button type="button" class="tb-secondary" id="pin-volver-lista">← Mis partidas</button></div>';
-ligarVolver();
-var v = $("#pin-volver-lista");
-if (v) { v.onclick = function () { pin.abierta = null; pintarPinturillo(); }; }
-return;
-}
-if (est.estado === "terminada") { pinPintarFin(caja, est); return; }
-pinPintarJuego(caja, est);
+pin.ultimaVersion = pin.est.sala.version;
+var s = pin.est.sala;
+if (s.estado === "espera") { pinPintarEspera(caja, pin.est); }
+else if (s.estado === "terminada") { pinPintarFin(caja, pin.est); }
+else { pinPintarJuego(caja, pin.est); }
+pin.focoAdivinar = false;
 }
 var VF_BANCO = {
 geografia: {

@@ -16,6 +16,7 @@
 | Profesor de lengua y Voleibol: funcionan solos con el **motor integrado**. Falta ejecutar `ACTIVAR-4-permisos-roles.sql` para dar el permiso del voleibol a otros roles. `GEMINI_API_KEY` es **opcional** (paso C.4) | ⏳ Falta el SQL |
 | Profesor de lengua · «Enviar al profesor» y «Revisiones del salón»: ejecutar `ACTIVAR-lengua-revisiones.sql` | ⏳ **Falta** |
 | Logros (cumpleaños, misiones semanales e insignias): ejecutar `ACTIVAR-logros.sql` (después de `TABLON-economia-segura.sql`) y entrar una vez como owner | ⏳ **Falta** |
+| Pinturillo en salas (2 a 12 jugadores, turnos, pizarra y espectadores): ejecutar `ACTIVAR-pinturillo-salas.sql` | ⏳ **Falta** |
 
 
 Esta guía tiene tres partes. Hazlas en orden y una sola vez:
