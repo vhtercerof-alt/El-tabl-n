@@ -178,6 +178,7 @@ El texto de cada aviso lo arma siempre el servidor. Nadie puede usar el sistema 
 ## Mantenimiento
 
 - **Actualizar la app:** edita `index.html`, haz commit y push a `main`. Vercel vuelve a publicar solo.
+- **Bloques de código extra:** si `index.html` trae `<script id="…">` (como los de Halloween), `scripts/build.mjs` los publica como archivos propios (`/id.js`) en el mismo lugar, porque la CSP no permite código suelto en el HTML.
 - **Volver atrás:** Vercel → Deployments → elige una versión anterior → ⋯ → **Promote to Production**.
 - **Espacio de almacenamiento:** las fotos y PDF de las entregas ocupan espacio en Supabase. Revisa de vez en cuando **Supabase → Storage → entregas** y el uso del plan.
 - **Si cambias de proyecto Supabase:** cambia la dirección en `index.html`, en `vercel.json` (`connect-src` y `media-src`) y en la variable `SUPABASE_URL`.
