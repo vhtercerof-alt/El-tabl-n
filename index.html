@@ -7098,6 +7098,49 @@ box-shadow: inset 0 0 0 3px #00000033, inset 0 0 40px #0006; }
 .pz-codigo b { width: 46px; height: 56px; font-size: 38px; }
 .pz-telon b { font-size: 40px; }
 }
+/* ===== Halloween · inicio de sesión: noche en el cementerio (solo en temporada) ===== */
+.hw-cementerio { display: none; }
+html.hw-temporada .tb-space .tb-stars-2, html.hw-temporada .tb-space .tb-stars-3,
+html.hw-temporada .tb-space .tb-comet, html.hw-temporada .tb-space .tb-orb { display: none; }
+html.hw-temporada .tb-space { background: linear-gradient(180deg, #0b0818 0%, #1c1233 45%, #2e1a3a 70%, #140c22 100%); }
+html.hw-temporada .tb-space .tb-stars-1 { opacity: .45; }
+html.hw-temporada .hw-cementerio { display: block; position: absolute; inset: 0; overflow: hidden; }
+.hw-luna { position: absolute; top: 7%; right: 9%; width: clamp(110px, 16vw, 230px); aspect-ratio: 1; border-radius: 50%;
+background: radial-gradient(circle at 38% 36%, #fff6dc 0, #ffe2a6 45%, #f2b866 100%);
+box-shadow: 0 0 60px 18px #ffcf7a55, 0 0 180px 60px #ff9a3c22; }
+.hw-luna::before, .hw-luna::after { content: ""; position: absolute; border-radius: 50%; background: #e7a85a55; }
+.hw-luna::before { width: 22%; height: 22%; left: 24%; top: 30%; }
+.hw-luna::after { width: 14%; height: 14%; left: 58%; top: 56%; }
+.hw-nube { position: absolute; height: clamp(26px, 3.4vw, 48px); border-radius: 999px; background: #2a1f42e6; filter: blur(1px);
+box-shadow: 40px -14px 0 4px #2a1f42e6, 90px 2px 0 0 #2a1f42e6; }
+.hw-nube-1 { top: 15%; right: -20%; width: clamp(140px, 18vw, 260px); animation: hwNube 70s linear infinite; }
+.hw-nube-2 { top: 26%; right: -30%; width: clamp(110px, 13vw, 200px); opacity: .8; animation: hwNube 95s linear infinite -40s; }
+@keyframes hwNube { to { transform: translateX(-160vw); } }
+.hw-murcis { position: absolute; top: 4%; right: 2%; width: clamp(220px, 30vw, 420px); height: auto; }
+.hw-murci { transform-box: fill-box; transform-origin: center; animation: hwAleteo .35s ease-in-out infinite alternate; }
+.hw-murci-1 { translate: 70px 60px; }
+.hw-murci-2 { translate: 210px 30px; animation-delay: -.12s; scale: .8; }
+.hw-murci-3 { translate: 300px 110px; animation-delay: -.22s; scale: .65; }
+@keyframes hwAleteo { from { transform: scaleY(1); } to { transform: scaleY(.45); } }
+.hw-suelo { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: clamp(230px, 46vh, 520px); }
+.hw-cara { animation: hwVela 2.6s ease-in-out infinite; }
+.hw-brillos { animation: hwVela 2.6s ease-in-out infinite; }
+@keyframes hwVela { 0%, 100% { opacity: 1; } 40% { opacity: .78; } 55% { opacity: .95; } 70% { opacity: .82; } }
+.hw-niebla { position: absolute; left: -20%; right: -20%; bottom: 0; height: 30vh; pointer-events: none;
+background: radial-gradient(ellipse 30% 40% at 20% 80%, #b9a7d633, transparent 70%), radial-gradient(ellipse 35% 45% at 60% 90%, #b9a7d62b, transparent 70%), radial-gradient(ellipse 25% 35% at 90% 85%, #b9a7d626, transparent 70%);
+animation: hwNiebla 26s ease-in-out infinite alternate; }
+@keyframes hwNiebla { to { transform: translateX(8%); } }
+html.hw-temporada .tb-intro h1, html.hw-temporada .tb-intro p { text-shadow: 0 2px 12px #000c; }
+@media (max-width: 900px) {
+html.hw-temporada #tablon-root .tb-auth { padding-bottom: 230px; }
+.hw-luna { top: 14px; right: 12px; width: 84px; }
+.hw-suelo { height: 300px; }
+.hw-murcis { width: 200px; top: 6px; right: 0; }
+.hw-nube { height: 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+.hw-nube, .hw-murci, .hw-cara, .hw-brillos, .hw-niebla { animation: none; }
+}
 </style>
 <style id="tb-halloween-theme">
 /* HALLOWEEN: presentation only; application scripts remain unchanged. */
@@ -7498,6 +7541,73 @@ Acarícialo tres veces para abrir El tablón.
 <div class="tb-comet"></div>
 <div class="tb-comet tb-comet-2"></div>
 <div class="tb-comet tb-comet-3"></div>
+<div class="hw-cementerio" aria-hidden="true">
+<div class="hw-luna"></div>
+<div class="hw-nube hw-nube-1"></div>
+<div class="hw-nube hw-nube-2"></div>
+<svg class="hw-murcis" viewBox="0 0 400 200" preserveAspectRatio="xMidYMid meet"><g fill="#0b0814">
+<path class="hw-murci hw-murci-1" d="M0 10c6-8 14-9 20-2 3-4 6-5 8-2 2-3 5-2 8 2 6-7 14-6 20 2-6-1-11 1-14 6-3-2-6-2-8 1-2-3-5-3-8-1-4-5-9-7-14-6z"/>
+<path class="hw-murci hw-murci-2" d="M0 10c6-8 14-9 20-2 3-4 6-5 8-2 2-3 5-2 8 2 6-7 14-6 20 2-6-1-11 1-14 6-3-2-6-2-8 1-2-3-5-3-8-1-4-5-9-7-14-6z"/>
+<path class="hw-murci hw-murci-3" d="M0 10c6-8 14-9 20-2 3-4 6-5 8-2 2-3 5-2 8 2 6-7 14-6 20 2-6-1-11 1-14 6-3-2-6-2-8 1-2-3-5-3-8-1-4-5-9-7-14-6z"/>
+</g></svg>
+<svg class="hw-suelo" viewBox="0 0 1600 520" preserveAspectRatio="xMidYMax slice">
+<defs>
+<radialGradient id="hwBrillo" cx="50%" cy="55%" r="50%"><stop offset="0" stop-color="#ffd36b"/><stop offset=".55" stop-color="#ff9a2e"/><stop offset="1" stop-color="#ff7a1a" stop-opacity="0"/></radialGradient>
+<linearGradient id="hwLapida" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#4a4766"/><stop offset="1" stop-color="#26243a"/></linearGradient>
+<linearGradient id="hwCalabaza" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#ff9a3c"/><stop offset="1" stop-color="#c8540f"/></linearGradient>
+<g id="hwCal">
+<ellipse cx="0" cy="0" rx="46" ry="36" fill="url(#hwCalabaza)"/>
+<ellipse cx="-20" cy="0" rx="22" ry="34" fill="#e06b17" opacity=".55"/>
+<ellipse cx="20" cy="0" rx="22" ry="34" fill="#e06b17" opacity=".55"/>
+<ellipse cx="0" cy="0" rx="14" ry="35" fill="#ff8a2a" opacity=".6"/>
+<path d="M-4-34c0-10 4-16 12-18l3 4c-6 2-8 7-8 14z" fill="#3f6b2a"/>
+<path class="hw-cara" d="M-26-8l12-10 8 12zM26-8l-12-10-8 12zM-4 2l4-8 4 8zM-28 10c10 14 46 14 56 0l-6 8-6-6-6 8-8-6-8 6-6-8-6 6z" fill="#ffd36b"/>
+</g>
+</defs>
+<path d="M0 300C180 250 320 270 470 240S760 200 900 230 1180 280 1330 245 1520 220 1600 235V520H0Z" fill="#1d1534"/>
+<g fill="#140f26">
+<path d="M196 330c4-60-8-110-34-160l10-4c18 30 26 60 30 90 12-36 34-66 66-90l8 8c-34 26-56 60-64 104 22-20 48-30 78-30v10c-36 2-62 18-78 44l-2 30z"/>
+<path d="M166 172c-16-14-34-20-54-18l-2-10c22-2 42 4 60 18zM228 112c10-20 26-32 46-36l2 10c-18 4-32 14-40 32z"/>
+</g>
+<g stroke="#0f0b1d" stroke-width="5" fill="none">
+<path d="M520 330h560M520 300h560"/>
+<path d="M540 352v-80M580 352v-80M620 352v-80M660 352v-80M700 352v-80M740 352v-80M780 352v-80M820 352v-80M860 352v-80M900 352v-80M940 352v-80M980 352v-80M1020 352v-80M1060 352v-80"/>
+</g>
+<g fill="#0f0b1d"><path d="M534 272l6-14 6 14zM574 272l6-14 6 14zM614 272l6-14 6 14zM654 272l6-14 6 14zM694 272l6-14 6 14zM734 272l6-14 6 14zM774 272l6-14 6 14zM814 272l6-14 6 14zM854 272l6-14 6 14zM894 272l6-14 6 14zM934 272l6-14 6 14zM974 272l6-14 6 14zM1014 272l6-14 6 14zM1054 272l6-14 6 14z"/></g>
+<path d="M0 380C200 340 380 360 560 345S900 330 1060 350 1400 370 1600 340V520H0Z" fill="#110c20"/>
+<g stroke="#5b5878" stroke-width="2">
+<path d="M330 400v-92a46 46 0 0 1 92 0v92z" fill="url(#hwLapida)"/>
+<path d="M610 392v-70h22v-22h22v22h22v24h-22v46z" fill="url(#hwLapida)"/>
+<path d="M1000 404v-80l30-30 30 30v80z" fill="url(#hwLapida)"/>
+<path d="M1260 410v-104a52 52 0 0 1 104 0v104z" fill="url(#hwLapida)"/>
+<path d="M760 396v-60h44v-16a22 22 0 0 1 44 0v76z" fill="url(#hwLapida)"/>
+<path d="M90 420v-70a34 34 0 0 1 68 0v70z" fill="url(#hwLapida)"/>
+<path d="M1460 416v-64h18v-18h18v18h18v18h-18v46z" fill="url(#hwLapida)"/>
+</g>
+<g fill="#1b1830" font-family="Georgia,serif" font-weight="700" text-anchor="middle">
+<text x="376" y="342" font-size="24">R.I.P.</text>
+<text x="1312" y="350" font-size="26">R.I.P.</text>
+<text x="124" y="378" font-size="16">RIP</text>
+</g>
+<g stroke="#1b1830" stroke-width="3"><path d="M352 360h48M352 372h40M1284 370h56M1284 384h46M1015 340h30M1015 352h24"/></g>
+<path d="M0 440C220 410 420 425 640 418S1040 410 1260 425 1500 432 1600 420V520H0Z" fill="#0a0716"/>
+<g fill="#1f3a22"><path d="M300 440l6-16 4 16 6-12 2 12zM700 432l5-14 4 14 5-10 2 10zM1180 440l6-16 4 16 6-12 2 12zM1540 436l5-14 4 14 5-10 2 10z"/></g>
+<g class="hw-brillos">
+<ellipse cx="470" cy="436" rx="80" ry="40" fill="url(#hwBrillo)" opacity=".35"/>
+<ellipse cx="900" cy="446" rx="90" ry="44" fill="url(#hwBrillo)" opacity=".35"/>
+<ellipse cx="1150" cy="440" rx="70" ry="36" fill="url(#hwBrillo)" opacity=".3"/>
+<ellipse cx="230" cy="450" rx="70" ry="34" fill="url(#hwBrillo)" opacity=".3"/>
+<ellipse cx="1420" cy="452" rx="80" ry="38" fill="url(#hwBrillo)" opacity=".32"/>
+</g>
+<use href="#hwCal" transform="translate(470 438) scale(1.05)"/>
+<use href="#hwCal" transform="translate(900 448) scale(1.3)"/>
+<use href="#hwCal" transform="translate(975 462) scale(.7)"/>
+<use href="#hwCal" transform="translate(1150 442) scale(.85)"/>
+<use href="#hwCal" transform="translate(230 452) scale(.9)"/>
+<use href="#hwCal" transform="translate(1420 454) scale(1.1)"/>
+</svg>
+<div class="hw-niebla"></div>
+</div>
 </div>
 <div class="tb-intro">
 <div class="tb-brand"><span class="tb-logo" role="img" aria-label="Logo de El Tablón"></span> El tablón</div>
