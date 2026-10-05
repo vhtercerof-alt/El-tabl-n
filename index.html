@@ -370,6 +370,7 @@ radial-gradient(circle at 18% 12%, color-mix(in srgb, var(--materia) 40%, transp
 radial-gradient(circle at 88% 88%, #37b4d944 0, transparent 55%);
 background-size: 190% 190%;
 animation: tbTaskGlow 20s ease-in-out infinite alternate;
+will-change: background-position; transform: translateZ(0);
 }
 .tb-task::after {
 content: ""; position: absolute; inset: 0; z-index: -1;
@@ -7217,10 +7218,13 @@ html:not(.hw-temporada) :is(.hw-banner,.hw-kicker){display:none!important}
 #tablon-root .tb-ep26-halloween .tb-shiny-art :is(.tb-sh-fig,.tb-sh-p1,.tb-sh-p2){display:none}
 /* Jack en el perfil: arte a sangre por toda la tarjeta, como las demás épicas */
 #tablon-root :is(.tb-profile-card,.tb-modal-card).tb-ep26-halloween{--ep26-letter:var(--ep26_halloween-perfil);--ep26-letter-still:var(--ep26_halloween-perfil-still)}
-#tablon-root .tb-ep26-halloween.tb-profile-card:not(.tb-carta-shiny),#tablon-root .tb-ep26-halloween.tb-modal-card:not(.tb-carta-shiny){background-image:var(--ep26_halloween-perfil)!important;background-color:#0b0a14!important}
+#tablon-root .tb-ep26-halloween.tb-profile-card:not(.tb-carta-shiny),#tablon-root .tb-ep26-halloween.tb-modal-card:not(.tb-carta-shiny){background-image:var(--ep26_halloween-perfil-still)!important;background-color:#0b0a14!important}
 #tablon-root .tb-art-pausa.tb-ep26-halloween.tb-profile-card:not(.tb-carta-shiny),#tablon-root.tb-modal-abierto #tb-app .tb-ep26-halloween.tb-profile-card:not(.tb-carta-shiny){background-image:var(--ep26_halloween-perfil-still)!important}
 #tablon-root .tb-ep26-halloween .tb-shiny-art{background-image:var(--ep26_halloween-sbase);background-size:cover;background-position:center top;background-repeat:no-repeat}
 #tablon-root .tb-art-pausa.tb-ep26-halloween .tb-shiny-art{background-image:var(--ep26_halloween-sbase-still)}
+#tablon-root .tb-art-pausa.tb-ep26-halloween,#tablon-root.tb-modal-abierto #tb-app .tb-ep26-halloween{--ep26_halloween-banner:var(--ep26_halloween-still);--ep26_halloween-card:var(--ep26_halloween-card-still);--ep26_halloween-letter:var(--ep26_halloween-letter-still);--ep26_halloween-perfil:var(--ep26_halloween-perfil-still);--ep26_halloween-sbase:var(--ep26_halloween-sbase-still)}
+/* Modo reposo: sin interacción (2 min) o con la ventana sin foco, las animaciones se congelan donde están y el arte épico usa su versión fija. Se reanuda al instante con cualquier interacción. */
+#tablon-root.tb-reposo :is(*,::before,::after){animation-play-state:paused!important}
 #tablon-root .tb-ep26-halloween .tb-profile-body{background:linear-gradient(180deg,#0b0a1400 0%,#0b0a1466 18%,#0d0b18e6 40%,#0d0b18f2)}
 #tablon-root .tb-ep26-halloween:not(.tb-carta-shiny) :is(.tb-banner,.tb-modal-banner){background:none!important;border:0!important;box-shadow:none!important;animation:none!important}
 #tablon-root .tb-ep26-halloween.tb-modal-card:not(.tb-carta-shiny) .tb-modal-banner{height:190px}
@@ -20883,7 +20887,7 @@ finally { if (button.isConnected) { button.disabled = false; } }
 }
 (function () {
 var selector = '.tb-ep26-card,.tb-carta-epica';
-var io = null, ratios = new Map(), lite = false;
+var io = null, ratios = new Map(), lite = false, reposo = false, tReposo = 0, ultimo = 0;
 try { lite = sessionStorage.getItem('tb-lite') === '1'; } catch (e) {}
 function aplicar() {
 var foco = null, mejor = 0;
@@ -20892,7 +20896,7 @@ if (!el.isConnected) { ratios.delete(el); return; }
 if (r > mejor) { mejor = r; foco = el; }
 });
 ratios.forEach(function (r, el) {
-el.classList.toggle('tb-art-pausa', r <= 0 || (lite && el !== foco));
+el.classList.toggle('tb-art-pausa', reposo || r <= 0 || (lite && el !== foco));
 });
 }
 if ('IntersectionObserver' in window) {
@@ -20921,6 +20925,31 @@ aplicar();
 }
 requestAnimationFrame(paso);
 }
+function ponerReposo(v) {
+if (reposo === v) { return; }
+reposo = v;
+root.classList.toggle('tb-reposo', v);
+root.querySelectorAll('#tb-profile-modal :is(' + selector + ')').forEach(function (el) { el.classList.toggle('tb-art-pausa', v); });
+aplicar();
+}
+function armarReposo() {
+clearTimeout(tReposo);
+tReposo = setTimeout(function () { ponerReposo(true); }, 120000);
+}
+function actividad() {
+var n = Date.now();
+if (!reposo && n - ultimo < 1000) { return; }
+ultimo = n;
+ponerReposo(false);
+armarReposo();
+}
+['pointermove', 'pointerdown', 'keydown', 'wheel', 'touchstart', 'scroll'].forEach(function (ev) {
+window.addEventListener(ev, actividad, { passive: true, capture: true });
+});
+window.addEventListener('focus', actividad);
+window.addEventListener('blur', function () { clearTimeout(tReposo); ponerReposo(true); });
+document.addEventListener('visibilitychange', function () { if (document.hidden) { ponerReposo(true); } else { actividad(); } });
+armarReposo();
 if (lite) { root.classList.add('tb-lite'); }
 setTimeout(medir, 4000);
 setInterval(medir, 20000);
@@ -23865,7 +23894,38 @@ var INSIGNIAS = [
 { id: "cumple", n: "Día especial", cat: "Especiales", tier: "bronce", forma: "rombo", glifo: "pastel", c: "Registraste tu cumpleaños. Ese día el tablón será tuyo.", v: function (p) { return p.cumple ? 1 : 0; }, meta: 1 },
 { id: "estilo", n: "Con estilo propio", cat: "Especiales", tier: "plata", forma: "rombo", glifo: "pincel", c: "Biografía escrita y avatar, banner y contorno equipados.", v: function (p) {
 return (p.bio ? 1 : 0) + (equippedOf(p, "avatar") ? 1 : 0) + ((equippedOf(p, "banner") || equippedOf(p, "motion")) ? 1 : 0) + (equippedOf(p, "border") ? 1 : 0); }, meta: 4 },
-{ id: "staff", n: "Guardián del tablón", cat: "Especiales", tier: "epica", forma: "rombo", glifo: "escudo", c: "Forma parte del equipo que cuida El Tablón.", v: function (p) { return p.role === "owner" || p.role === "admin" ? 1 : 0; }, meta: 1, oculta: true }
+{ id: "staff", n: "Guardián del tablón", cat: "Especiales", tier: "epica", forma: "rombo", glifo: "escudo", c: "Forma parte del equipo que cuida El Tablón.", v: function (p) { return p.role === "owner" || p.role === "admin" ? 1 : 0; }, meta: 1, oculta: true },
+// Tareas
+{ id: "tarea5", n: "En marcha", cat: "Tareas", tier: "bronce", forma: "escudo", glifo: "lapiz", c: "Cinco tareas cumplidas. Ya agarraste ritmo.", v: function (p) { return p.completed_tasks || 0; }, meta: 5 },
+{ id: "tarea50", n: "Medio centenar", cat: "Tareas", tier: "oro", forma: "escudo", glifo: "trofeo", c: "Cincuenta tareas cumplidas. Eres ejemplo para el salón.", v: function (p) { return p.completed_tasks || 0; }, meta: 50 },
+{ id: "tarea100", n: "Centenario", cat: "Tareas", tier: "epica", forma: "escudo", glifo: "cien", c: "Cien tareas cumplidas. Una marca que pocos alcanzan.", v: function (p) { return p.completed_tasks || 0; }, meta: 100 },
+// Racha
+{ id: "racha3", n: "Chispa", cat: "Racha", tier: "bronce", forma: "gota", glifo: "chispa", c: "Tres días seguidos entrando al tablón.", v: function (p) { return p.streak_best || 0; }, meta: 3 },
+{ id: "racha14", n: "Dos semanas al hilo", cat: "Racha", tier: "plata", forma: "gota", glifo: "calendario", c: "Catorce días seguidos sin faltar.", v: function (p) { return p.streak_best || 0; }, meta: 14 },
+{ id: "racha60", n: "Llama legendaria", cat: "Racha", tier: "epica", forma: "gota", glifo: "llama", c: "Sesenta días de racha. Tu constancia ilumina el tablón.", v: function (p) { return p.streak_best || 0; }, meta: 60 },
+// Nivel
+{ id: "nivel5", n: "Aprendiz", cat: "Nivel", tier: "bronce", forma: "hexagono", glifo: "nivel", c: "Llegaste al nivel 5.", v: function (p) { return p.level || 1; }, meta: 5 },
+{ id: "nivel15", n: "Veterano", cat: "Nivel", tier: "plata", forma: "hexagono", glifo: "nivel", c: "Llegaste al nivel 15.", v: function (p) { return p.level || 1; }, meta: 15 },
+{ id: "nivel30", n: "Experto", cat: "Nivel", tier: "oro", forma: "hexagono", glifo: "nivel", c: "Llegaste al nivel 30.", v: function (p) { return p.level || 1; }, meta: 30 },
+{ id: "nivel50", n: "Maestro del tablón", cat: "Nivel", tier: "epica", forma: "hexagono", glifo: "corona", c: "Llegaste al nivel 50. Pocos llegan tan lejos.", v: function (p) { return p.level || 1; }, meta: 50 },
+// Juegos
+{ id: "tetris1k", n: "Primeros bloques", cat: "Juegos", tier: "bronce", forma: "circulo", glifo: "bloques", c: "1.000 puntos en una partida de Tetris.", v: function (p) { return arcadeDe(p).tetris || 0; }, meta: 1000 },
+{ id: "wordle1", n: "Primera palabra", cat: "Juegos", tier: "bronce", forma: "circulo", glifo: "lupa", c: "Adivinaste tu primer Wordle.", v: function (p) { var w = arcadeDe(p).wordle; return w && w.ganadas || 0; }, meta: 1 },
+{ id: "wordle30", n: "Diccionario viviente", cat: "Juegos", tier: "epica", forma: "circulo", glifo: "libro", c: "Treinta Wordles adivinados.", v: function (p) { var w = arcadeDe(p).wordle; return w && w.ganadas || 0; }, meta: 30 },
+{ id: "gato1", n: "Primera victoria", cat: "Juegos", tier: "bronce", forma: "circulo", glifo: "xo", c: "Ganaste tu primera partida de X y O.", v: function (p) { return arcadeDe(p).gatoG || 0; }, meta: 1 },
+{ id: "gato30", n: "Gran estratega", cat: "Juegos", tier: "epica", forma: "circulo", glifo: "corona", c: "Treinta victorias en X y O.", v: function (p) { return arcadeDe(p).gatoG || 0; }, meta: 30 },
+{ id: "vf500", n: "Curioso", cat: "Juegos", tier: "bronce", forma: "circulo", glifo: "bombilla", c: "500 puntos en una partida de Verdadero o falso.", v: vfMejorDe, meta: 500 },
+// Colección
+{ id: "col5", n: "Primeros tesoros", cat: "Colección", tier: "bronce", forma: "hexagono", glifo: "cofre", c: "Cinco cosméticos en tu colección.", v: totalCosmeticos, meta: 5 },
+{ id: "col100", n: "Coleccionista legendario", cat: "Colección", tier: "epica", forma: "hexagono", glifo: "gema", c: "Cien cosméticos. Una colección de museo.", v: totalCosmeticos, meta: 100 },
+{ id: "epica1", n: "Carta épica", cat: "Colección", tier: "epica", forma: "estrella", glifo: "naipe", c: "Tienes una Carta Épica completa, de las casi imposibles.", v: function (p) { return (Array.isArray(p.cards) ? p.cards : []).filter(function (id) { return /^carta_ep26_/.test(id); }).length; }, meta: 1 },
+{ id: "shiny1", n: "Brillo imposible", cat: "Colección", tier: "epica", forma: "estrella", glifo: "estrella", c: "Tienes una carta Shiny, diez veces más rara que una épica.", v: function (p) { return (Array.isArray(p.cards) ? p.cards : []).filter(function (id) { return /^shiny_ep26_/.test(id); }).length; }, meta: 1 },
+// Misiones
+{ id: "mis5", n: "Constancia semanal", cat: "Misiones", tier: "bronce", forma: "estrella", glifo: "diana", c: "Cinco misiones semanales reclamadas.", v: function (p) { return p.misiones_total || 0; }, meta: 5 },
+{ id: "mis60", n: "Agente legendario", cat: "Misiones", tier: "epica", forma: "estrella", glifo: "corona", c: "Sesenta misiones reclamadas. Ninguna se te resiste.", v: function (p) { return p.misiones_total || 0; }, meta: 60 },
+// Especiales
+{ id: "bio", n: "Tengo algo que decir", cat: "Especiales", tier: "bronce", forma: "rombo", glifo: "globo", c: "Escribiste tu biografía en el perfil.", v: function (p) { return p.bio ? 1 : 0; }, meta: 1 },
+{ id: "cosecha", n: "Señor de la Cosecha", cat: "Especiales", tier: "epica", forma: "rombo", glifo: "calabaza", c: "Tienes la carta de Jack, la leyenda de Halloween.", v: function (p) { return (Array.isArray(p.cards) ? p.cards : []).filter(function (id) { return /_ep26_halloween$/.test(id); }).length; }, meta: 1 }
 ];
 var TIER_COL = {
 bronce: ["#f0b27a", "#a0522d", "#5a2a10"], plata: ["#f3f6ff", "#9aa7c7", "#4a5573"],
@@ -23890,7 +23950,17 @@ diana: '<circle r="19" fill="none" stroke="#fff" stroke-width="4"/><circle r="11
 medalla: '<path d="M-10-21l10 14 10-14" stroke="#fff" stroke-width="5" fill="none"/><circle cy="6" r="13" fill="#fff"/><path d="M0-2l2.5 5 5.5.8-4 3.8 1 5.4L0 10.5-5 13l1-5.4-4-3.8 5.5-.8z" fill="#0005"/>',
 pastel: '<rect x="-17" y="0" width="34" height="18" rx="4" fill="#fff"/><rect x="-12" y="-11" width="24" height="12" rx="3" fill="#fff" opacity=".8"/><rect x="-2" y="-22" width="4" height="11" rx="2" fill="#fff"/><path d="M0-28c3 3 3 5 0 7-3-2-3-4 0-7z" fill="#ffd23f"/>',
 pincel: '<path d="M12-20l8 8-17 17-8-8z" fill="#fff"/><path d="M-6 0l8 8c-2 9-9 12-20 12 1-10 4-18 12-20z" fill="#fff" opacity=".8"/>',
-escudo: '<path d="M0-21l17 6v9c0 13-8 22-17 26-9-4-17-13-17-26v-9z" fill="#fff"/><path d="M-7 1l5 5 10-11" stroke="#0005" stroke-width="4" fill="none" stroke-linecap="round"/>'
+escudo: '<path d="M0-21l17 6v9c0 13-8 22-17 26-9-4-17-13-17-26v-9z" fill="#fff"/><path d="M-7 1l5 5 10-11" stroke="#0005" stroke-width="4" fill="none" stroke-linecap="round"/>',
+lapiz: '<path d="M10-20l10 10-22 22-13 3 3-13z" fill="#fff"/><path d="M5-15l10 10" stroke="#0005" stroke-width="3"/>',
+trofeo: '<path d="M-12-18h24v10a12 12 0 01-24 0z" fill="#fff"/><path d="M-12-14h-6a6 6 0 006 10M12-14h6a6 6 0 01-6 10" stroke="#fff" stroke-width="3" fill="none"/><rect x="-3" y="4" width="6" height="8" fill="#fff"/><rect x="-10" y="12" width="20" height="5" rx="2" fill="#fff"/>',
+cien: '<text y="8" text-anchor="middle" font-family="Georgia,serif" font-weight="900" font-size="23" fill="#fff">100</text>',
+chispa: '<path d="M0-21l4 14 14 4-14 4-4 14-4-14-14-4 14-4z" fill="#fff"/>',
+calendario: '<rect x="-17" y="-14" width="34" height="31" rx="5" fill="#fff"/><rect x="-17" y="-14" width="34" height="9" rx="4" fill="#0004"/><path d="M-9-20v8M9-20v8" stroke="#fff" stroke-width="4" stroke-linecap="round"/><text y="13" text-anchor="middle" font-family="Arial,sans-serif" font-weight="900" font-size="14" fill="#0006">14</text>',
+nivel: '<path d="M-16 4l16-12 16 12M-16 16l16-12 16 12" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M-16-8l16-12 16 12" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".55"/>',
+cofre: '<path d="M-18-4a18 12 0 0136 0v20h-36z" fill="#fff"/><path d="M-18-2h36" stroke="#0005" stroke-width="3"/><rect x="-4" y="-4" width="8" height="9" rx="2" fill="#0005"/>',
+naipe: '<rect x="-13" y="-19" width="26" height="38" rx="4" fill="#fff"/><path d="M0-9l7 9-7 9-7-9z" fill="#0005"/>',
+globo: '<path d="M-18-14h36v22h-20l-10 9v-9h-6z" fill="#fff" stroke-linejoin="round"/><path d="M-10-5h20M-10 1h12" stroke="#0005" stroke-width="3" stroke-linecap="round"/>',
+calabaza: '<ellipse cx="0" cy="4" rx="19" ry="15" fill="#fff"/><path d="M-6 4c0-8 0-15 6-15s6 7 6 15" stroke="#0003" stroke-width="2" fill="none"/><path d="M-2-11c0-5 2-8 6-9" stroke="#fff" stroke-width="4" stroke-linecap="round" fill="none"/><path d="M-11 0l5-4 3 5zM11 0l-5-4-3 5zM-9 9c5 5 13 5 18 0l-3 3-3-2-3 2-3-2-3 2z" fill="#0006"/>'
 };
 var FORMAS = {
 escudo: "M50 6l36 12v26c0 25-16 42-36 50C30 86 14 69 14 44V18z",
