@@ -7752,6 +7752,32 @@ background: #ffffff06; cursor: pointer; text-align: center;
 .td-visor-cerrar { width: 46px; height: 46px; font-size: 24px; background: #ffffff1f; }
 #tablon-root #tb-task-notify:disabled + * , #tablon-root label:has(#tb-task-notify:disabled) { opacity: .55; }
 </style>
+<style id="tb-movil-rendimiento">
+/* ═══ RENDIMIENTO EN CELULAR ═══
+   En pantallas táctiles el desenfoque (backdrop-filter) sobre el fondo fijo,
+   los brillos animados de cada tarjeta y los latidos infinitos obligan a
+   repintar todo en cada cuadro del scroll. Aquí se apagan solo en celular. */
+@media (hover: none) and (pointer: coarse), (max-width: 720px) {
+#tablon-root :is(.tb-card, .tb-rail, .tb-side, .tb-top, .tb-glass, .tb-modal, .tb-ent-modal, .tb-cumple-modal, .hw-banner, .tb-masc-burbuja) {
+-webkit-backdrop-filter: none !important;
+backdrop-filter: none !important;
+}
+#tablon-root .tb-task::before { animation: none !important; will-change: auto; transform: none; background-size: 100% 100%; }
+#tablon-root .tb-task {
+content-visibility: auto;
+contain-intrinsic-size: auto 300px;
+animation-duration: .28s;
+animation-delay: 0s;
+}
+#tablon-root .tb-task:hover { transform: none; box-shadow: none; }
+#tablon-root :is(.tb-task-urgente, .td-f-hoy, .tb-due-today, .tb-due-late)::before { animation: none !important; }
+#tablon-root .tb-task .hw-bicho, #tablon-root .tb-task .hw-tela { transition: none; }
+#tablon-root .tb-bg-layer { transform: none !important; transition: opacity .4s ease; }
+}
+/* el modo ligero que ya detecta la página también aplica estas reglas en computadoras lentas */
+#tablon-root.tb-lite :is(.tb-card, .tb-rail, .tb-side, .tb-top, .tb-glass) { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+#tablon-root.tb-lite .tb-task::before { animation: none !important; will-change: auto; }
+</style>
 <div id="tablon-root" class="tb-theme-midnight">
 <div id="tb-ent-modal" class="tb-ent-modal tb-hidden" role="dialog" aria-modal="true" aria-labelledby="tb-ent-titulo">
 <form class="tb-card tb-ent-caja" id="tb-ent-form">
