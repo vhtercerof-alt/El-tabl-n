@@ -7458,6 +7458,241 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 })();
 </script>
+<style id="tb-tareas-v2">
+/* ═══ TAREAS v2 · tarjetas, grupos, filtros, detalle y pizarra ═══ */
+html.td-sin-scroll { overflow: hidden; }
+/* decoración de temporada más discreta para que no tape el texto */
+#tablon-root .tb-task .hw-tela { opacity: .1; }
+#tablon-root .tb-task:hover .hw-tela { opacity: .18; }
+#tablon-root .tb-task .tb-task-marca { font-size: 70px; opacity: .5; }
+#tablon-root .tb-task.td-quieto { animation: none; }
+#tablon-root .td-card-tarea { cursor: pointer; }
+#tablon-root .td-card-tarea .tb-task-body { padding-bottom: 12px; }
+/* chips */
+.td-chip-hecha, .td-chip-borrador {
+display: inline-flex; align-items: center; gap: 6px;
+padding: 5px 10px; border-radius: 99px;
+font-size: 10.5px; font-weight: 850; white-space: nowrap;
+}
+.td-chip-hecha { border: 1px solid #52dfa855; background: #52dfa81f; color: #8ff0c6; }
+.td-chip-borrador { border: 1px dashed #ffffff40; color: var(--muted); }
+/* título como botón (accesible con teclado) */
+.td-abrir {
+appearance: none; border: 0; background: none; padding: 0; margin: 0;
+font: inherit; color: inherit; letter-spacing: inherit; text-align: left; cursor: pointer;
+}
+.td-abrir:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+/* línea de fecha: siempre en el mismo lugar, color según urgencia */
+.td-fecha {
+display: flex; flex-wrap: wrap; align-items: center; gap: 2px 10px;
+margin: 0 0 9px; font-size: 12.5px; color: var(--muted);
+}
+.td-fecha::before {
+content: ""; width: 7px; height: 7px; border-radius: 50%; flex: 0 0 auto;
+background: currentColor; opacity: .9;
+}
+.td-fecha b { font-weight: 800; }
+.td-fecha span { opacity: .85; }
+.td-f-late { color: #ff9aaa; }
+.td-f-hoy { color: #ffb36b; }
+.td-f-hoy::before { box-shadow: 0 0 8px currentColor; animation: tbLatido 1.9s ease-in-out infinite; }
+.td-f-pronto { color: #ffd27a; }
+.td-f-ok { color: #7fe6b8; }
+#tablon-root.tb-light .td-f-late { color: #c0344d; }
+#tablon-root.tb-light .td-f-hoy { color: #b35a12; }
+#tablon-root.tb-light .td-f-pronto { color: #8a6500; }
+#tablon-root.tb-light .td-f-ok { color: #13845a; }
+/* estados de la tarjeta */
+#tablon-root .td-vencida { filter: saturate(.6); }
+#tablon-root .td-hecha { opacity: .7; }
+#tablon-root .td-hecha:hover, #tablon-root .td-hecha:focus-within { opacity: 1; }
+#tablon-root .td-hecha .td-abrir { text-decoration: line-through; text-decoration-thickness: 2px; text-decoration-color: #52dfa8aa; }
+.td-extras { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.td-mini {
+display: inline-flex; align-items: center; gap: 5px;
+padding: 3px 9px; border-radius: 99px;
+border: 1px solid #ffffff14; background: #ffffff0d;
+color: var(--muted); font-size: 11.5px; font-weight: 650; white-space: nowrap;
+}
+.td-mini-ok { color: #8ff0c6; border-color: #52dfa840; }
+#tablon-root.tb-light .td-mini { border-color: #1b223318; background: #1b22330a; }
+#tablon-root.tb-light .td-mini-ok { color: #13845a; }
+/* pie con botones */
+.td-pie { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 0 18px 15px 21px; }
+#tablon-root .td-pie .tb-react { padding: 0; margin-left: auto; }
+.td-btn {
+display: inline-flex; align-items: center; gap: 7px;
+min-height: 36px; padding: 6px 14px; border-radius: 99px;
+border: 1px solid color-mix(in srgb, var(--materia, #9fb4ff) 45%, transparent);
+background: color-mix(in srgb, var(--materia, #9fb4ff) 12%, transparent);
+color: var(--text); font: inherit; font-size: 12.5px; font-weight: 750;
+cursor: pointer; white-space: nowrap;
+transition: background-color .15s ease, transform .15s ease;
+}
+.td-btn:hover { background: color-mix(in srgb, var(--materia, #9fb4ff) 24%, transparent); }
+.td-btn:active { transform: scale(.96); }
+.td-btn-hecha::before {
+content: ""; width: 13px; height: 13px; box-sizing: border-box;
+border: 1.8px solid currentColor; border-radius: 4px;
+}
+.td-btn-hecha.on { background: #52dfa8; border-color: #52dfa8; color: #0d2219; }
+.td-btn-hecha.on::before { display: none; }
+.td-btn-aviso { border-color: #ffb36b80; background: #ffb36b1f; }
+/* grupos */
+.td-grupo { margin: 0 0 24px; }
+.td-grupo:last-child { margin-bottom: 0; }
+.td-grupo-tit {
+display: flex; align-items: center; gap: 9px;
+margin: 0 0 12px; font-size: 14.5px; font-weight: 800; color: var(--text);
+}
+.td-grupo-tit span {
+min-width: 24px; padding: 1px 8px; border-radius: 99px;
+background: #ffffff12; color: var(--muted);
+font-size: 11.5px; text-align: center;
+}
+#tablon-root.tb-light .td-grupo-tit span { background: #1b22330f; }
+details.td-grupo > summary { cursor: pointer; list-style: none; padding: 8px 0; border-top: 1px solid var(--line); }
+details.td-grupo > summary::-webkit-details-marker { display: none; }
+details.td-grupo > summary::after {
+content: "Mostrar"; margin-left: auto;
+font-size: 12px; font-weight: 750; color: var(--muted);
+}
+details.td-grupo[open] > summary::after { content: "Ocultar"; }
+details.td-grupo > summary:focus-visible { outline: 2px solid #d1a0ff; outline-offset: 4px; }
+.td-archivo { margin: 16px 0 0; font-size: 12px; color: var(--muted); }
+.td-limpiar { margin-top: 10px; }
+/* filtros */
+#tb-task-filtros { margin: 0 0 20px; }
+.td-filtros { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-bottom: 10px; }
+.td-filtros-fila { display: flex; flex-wrap: wrap; gap: 7px; }
+.td-materias { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; scrollbar-width: thin; }
+.td-fchip {
+display: inline-flex; align-items: center; gap: 7px; flex: 0 0 auto;
+min-height: 36px; padding: 5px 13px; border-radius: 99px;
+border: 1px solid var(--line); background: #ffffff08;
+color: var(--muted); font: inherit; font-size: 12.5px; font-weight: 750;
+cursor: pointer; white-space: nowrap;
+}
+.td-fchip small { font-weight: 650; opacity: .75; }
+.td-fchip i { width: 8px; height: 8px; border-radius: 2px; transform: rotate(45deg); background: var(--materia); }
+.td-fchip[aria-pressed="true"] {
+color: var(--text);
+border-color: color-mix(in srgb, var(--materia, #d1a0ff) 65%, transparent);
+background: color-mix(in srgb, var(--materia, #d1a0ff) 18%, transparent);
+}
+.td-buscar { flex: 1 1 220px; max-width: 320px; margin-left: auto; }
+#tablon-root .td-buscar input {
+width: 100%; min-height: 38px; padding: 8px 15px; border-radius: 99px;
+border: 1px solid var(--line); font: inherit; font-size: 16px;
+}
+@media (max-width: 600px) { .td-buscar { max-width: none; margin-left: 0; } }
+/* ── Detalle ── */
+#tablon-root .td-card {
+--materia: #d1a0ff;
+width: min(700px, 100%); max-height: 92vh;
+padding: 24px 26px 26px 30px;
+box-shadow: inset 6px 0 0 var(--materia), 0 30px 80px #000a;
+overflow-x: hidden;
+}
+.td-d-cab { display: flex; align-items: flex-start; gap: 12px; }
+#tablon-root .td-d-chips { flex: 1 1 auto; padding: 0; }
+.td-d-cab .tb-close { flex: 0 0 auto; color: var(--text); }
+.td-d-titulo {
+margin: 14px 0 8px;
+font-family: Georgia, "Times New Roman", serif; font-weight: 600;
+font-size: clamp(24px, 4.2vw, 31px); line-height: 1.15; letter-spacing: -.01em;
+overflow-wrap: anywhere;
+}
+.td-d-autor {
+display: flex; align-items: center; flex-wrap: wrap; gap: 6px 12px;
+margin: 4px 0 18px; font-size: 12.5px; color: var(--muted);
+}
+.td-d-quien { display: inline-flex; align-items: center; gap: 7px; color: var(--text); font-weight: 700; }
+.td-d-texto {
+margin: 0 0 22px; padding-top: 18px;
+border-top: 1px solid var(--line);
+white-space: pre-wrap; overflow-wrap: anywhere;
+font-size: 15.5px; line-height: 1.68; color: var(--text);
+}
+.td-d-texto a, .td-piz-texto a { color: #d1a0ff; text-decoration: underline; text-underline-offset: 3px; }
+#tablon-root.tb-light .td-d-texto a { color: #7a3fb5; }
+.td-d-lista {
+margin: 0 0 22px; padding: 14px 16px 10px; border-radius: 16px;
+border: 1px solid var(--line); background: #ffffff07;
+}
+.td-d-lista h3 {
+display: flex; justify-content: space-between; align-items: baseline; gap: 10px;
+margin: 0 0 6px; font-size: 14px;
+}
+.td-d-lista h3 small { color: var(--muted); font-weight: 650; }
+.td-d-lista ul { list-style: none; margin: 0; padding: 0; }
+.td-d-lista label {
+display: flex; align-items: flex-start; gap: 11px;
+padding: 8px 2px; cursor: pointer; font-size: 14.5px; line-height: 1.4;
+}
+.td-d-lista li + li { border-top: 1px dashed var(--line); }
+#tablon-root .td-d-lista input { width: 19px; height: 19px; margin: 0; flex: 0 0 auto; accent-color: #52dfa8; }
+.td-d-lista li.on span { text-decoration: line-through; color: var(--muted); }
+.td-d-acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 10px; }
+.td-d-grupo { margin: 0 0 6px; font-size: 12.5px; color: var(--muted); }
+/* ── Pizarra de respuesta con el gato y el león profesores ── */
+.td-pizarra { position: relative; margin: 26px 0 0; padding-bottom: 14px; }
+.td-piz-marco {
+position: relative; min-height: 150px;
+padding: 18px 22px 112px;
+border: 10px solid #7a4e2d; border-radius: 14px;
+background:
+radial-gradient(ellipse at 18% 12%, #ffffff14, transparent 55%),
+radial-gradient(ellipse at 85% 85%, #ffffff0b, transparent 50%),
+linear-gradient(160deg, #2e4d3f, #213a2f 60%, #1b3128);
+box-shadow: inset 0 0 0 1px #0005, inset 0 0 34px #0008, 0 14px 30px #0006;
+color: #eef3ea;
+}
+.td-piz-marco::after {
+content: ""; position: absolute; left: -16px; right: -16px; bottom: -22px; height: 14px;
+border-radius: 3px 3px 8px 8px;
+background: linear-gradient(#a06c41, #6b4426);
+box-shadow: 0 5px 10px #0007;
+}
+.td-piz-marco::before {
+content: ""; position: absolute; left: 50%; bottom: -16px; z-index: 1;
+width: 30px; height: 7px; border-radius: 3px;
+background: #f3f1e6; transform: translateX(-60%) rotate(-3deg);
+box-shadow: 18px 1px 0 -1px #f5c9d6;
+}
+.td-piz-marco h3 {
+display: inline-block; margin: 0 0 12px; padding-bottom: 4px;
+border-bottom: 2px dashed #f3f1e64d;
+color: #d9ecd0; font-size: 15px; font-weight: 800; letter-spacing: .02em;
+}
+.td-piz-texto {
+white-space: pre-wrap; overflow-wrap: anywhere;
+font-size: 16px; line-height: 1.7; text-shadow: 0 0 1px #fff7;
+}
+.td-piz-nota { margin: 14px 0 0; font-size: 12.5px; color: #ffd694; }
+.td-piz-bloqueo { display: flex; align-items: center; gap: 12px; }
+.td-piz-bloqueo p { margin: 0; font-size: 14.5px; line-height: 1.55; color: #d6e4cf; }
+.td-piz-candado { font-size: 22px; }
+.td-piz-masc {
+position: absolute; bottom: 0; z-index: 2;
+width: 134px; height: 134px; pointer-events: none;
+filter: drop-shadow(0 6px 5px #0009);
+animation: tdAsoma .6s cubic-bezier(.34, 1.5, .5, 1) .1s backwards;
+}
+.td-piz-masc svg { width: 100%; height: 100%; overflow: visible; display: block; }
+.td-piz-gato { left: 2px; }
+.td-piz-leon { right: 2px; animation-delay: .22s; }
+@keyframes tdAsoma { from { opacity: 0; transform: translateY(26px) scale(.9); } }
+@media (max-width: 520px) {
+#tablon-root .td-card { padding: 20px 18px 22px 22px; }
+.td-piz-marco { padding: 16px 16px 78px; border-width: 8px; }
+.td-piz-masc { width: 96px; height: 96px; }
+}
+@media (prefers-reduced-motion: reduce) {
+.td-piz-masc, .td-f-hoy::before { animation: none; }
+.td-btn { transition: none; }
+}
+</style>
 <div id="tablon-root" class="tb-theme-midnight">
 <div id="tb-ent-modal" class="tb-ent-modal tb-hidden" role="dialog" aria-modal="true" aria-labelledby="tb-ent-titulo">
 <form class="tb-card tb-ent-caja" id="tb-ent-form">
@@ -7474,6 +7709,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <button type="button" class="tb-secondary" id="tb-ent-cancelar">Cancelar</button>
 </div>
 </form>
+</div>
+<div id="tb-td-modal" class="tb-modal td-modal tb-hidden" role="dialog" aria-modal="true" aria-labelledby="td-titulo">
+<article class="tb-modal-card tb-glass td-card" id="td-card"></article>
 </div>
 <div class="tb-portal" id="tb-portal">
 <div class="tb-portal-caja">
@@ -7930,7 +8168,8 @@ title="Tu racha diaria"></span>
 <p>Todas las actividades publicadas por el equipo.</p>
 </div>
 </div>
-<div id="tb-all-tasks" class="tb-task-list"></div>
+<div id="tb-task-filtros"></div>
+<div id="tb-all-tasks"></div>
 </section>
 <section id="tb-view-semana" class="tb-view">
 <div class="tb-welcome">
@@ -8276,6 +8515,22 @@ Arrastra por ⠿ o usa las flechas. Los roles marcados como
 <span>Descripción</span>
 <textarea id="tb-task-description" maxlength="1000" required></textarea>
 </label>
+<label class="tb-field wide">
+<span>Lista de materiales o pasos (opcional, uno por línea)</span>
+<textarea id="tb-task-checklist" maxlength="2000" placeholder="Imagen de un hospital&#10;Imagen de una carretera&#10;Pegamento y tijeras"></textarea>
+</label>
+<label class="tb-field wide">
+<span>Respuesta de la tarea (opcional)</span>
+<textarea id="tb-task-respuesta" maxlength="4000" placeholder="Si la escribes, aparece en la pizarra del gato y el león cuando abran la tarea. Si la dejas vacía, no se muestra pizarra."></textarea>
+</label>
+<label class="tb-field">
+<span>¿Cuándo pueden ver la respuesta?</span>
+<select id="tb-task-resp-modo">
+<option value="al_vencer">Cuando pase la fecha de entrega</option>
+<option value="inmediata">Visible desde ya</option>
+<option value="oculta">Oculta (la publico yo después)</option>
+</select>
+</label>
 <label class="tb-field">
 <span>Fecha de entrega</span>
 <input id="tb-task-due" type="date">
@@ -8303,7 +8558,10 @@ Publicar inmediatamente
 </span>
 </label>
 </div>
+<div class="tb-actions">
 <button class="tb-primary">Guardar tarea</button>
+<button type="button" class="tb-secondary" id="tb-task-preview">Vista previa</button>
+</div>
 </form>
 <div class="tb-card">
 <div class="tb-card-head"><h3>Tareas existentes</h3></div>
@@ -10258,56 +10516,68 @@ var perfil = profiles.find(function (p) { return p.id === task.created_by; });
 return perfil ? perfil.display_name : "El tablón";
 }
 function taskCard(task, managementMode, index) {
-var due = dueInfo(task.due_date);
+var f = tdFecha(task);
 var priority = task.priority || "normal";
 var color = colorDeMateria(task.subject);
 var publicada = tiempoRelativo(task.created_at);
+var hecha = tdEsHecha(task);
+var id = escapeHtml(task.id);
 var controls = "";
 if (managementMode && isStaff()) {
-controls = '<div class="tb-actions">' +
-'<button class="tb-secondary" data-edit-task="' + escapeHtml(task.id) + '">Editar</button>' +
-'<button class="tb-danger" data-delete-task="' + escapeHtml(task.id) + '">Borrar</button></div>';
+controls = '<div class="tb-actions td-admin">' +
+'<button type="button" class="tb-secondary" data-edit-task="' + id + '">Editar</button>' +
+'<button type="button" class="tb-secondary" data-dup-task="' + id + '">Duplicar</button>' +
+'<button type="button" class="tb-danger" data-delete-task="' + id + '">Borrar</button></div>';
 }
-var urgente = priority === "alta"
+var urgente = priority === "alta" && f.estado !== "late" && !hecha
 ? '<span class="tb-task-urgente">Urgente</span>'
 : "";
-var autor = autorDe(task);
-var perfil = perfilDe(task);
-var foto = perfil
-? avatarHtml(perfil, "tb-autor-foto")
-: '<span class="tb-autor-foto">' +
-escapeHtml((autor.trim().charAt(0) || "?").toUpperCase()) + "</span>";
+var estado = hecha ? '<span class="td-chip-hecha">✓ Hecha</span>' : "";
+if (managementMode && !task.published) { estado += '<span class="td-chip-borrador">Borrador</span>'; }
 var marca = String(task.subject || "").trim().slice(0, 2).toUpperCase();
-return '<article class="tb-card tb-task tb-task-prio-' + escapeHtml(priority) +
+var bicho = ["arana", "", "murcielago"][(index || 0) % 3];
+var lista = tdChecklist(task);
+var extras = [];
+if (lista.length) {
+var marcados = tdChecks(task).filter(function (n) { return n < lista.length; }).length;
+extras.push('<span class="td-mini">☑ ' + marcados + " de " + lista.length + " en la lista</span>");
+}
+if (task.respuesta_modo) { extras.push('<span class="td-mini">💡 Trae respuesta</span>'); }
+var grupo = tdProgresoGrupo(task, false);
+if (grupo) { extras.push('<span class="td-mini">👥 ' + escapeHtml(grupo) + "</span>"); }
+return '<article class="tb-card tb-task td-card-tarea tb-task-prio-' + escapeHtml(priority) +
+(hecha ? " td-hecha" : "") + (f.estado === "late" ? " td-vencida" : "") + (td.quieto ? " td-quieto" : "") +
 '" style="--i:' + (index || 0) + ';--materia:' + color + '">' +
 '<i class="tb-task-franja"></i><i class="tb-task-sheen"></i>' +
 '<i class="tb-task-trama"></i>' +
 '<i class="hw-tela" aria-hidden="true"></i>' +
-'<i class="hw-bicho hw-bicho-' + ["arana", "fantasma", "murcielago"][(index || 0) % 3] + '" aria-hidden="true"></i>' +
-'<span class="tb-task-marca">' + escapeHtml(marca) + "</span>" +
+(bicho ? '<i class="hw-bicho hw-bicho-' + bicho + '" aria-hidden="true"></i>' : "") +
+'<span class="tb-task-marca" aria-hidden="true">' + escapeHtml(marca) + "</span>" +
 '<div class="tb-task-head">' +
-'<span class="tb-chip">' + escapeHtml(task.subject) + "</span>" +
-urgente +
-'<span class="tb-due ' + due.cls + '">' + escapeHtml(due.text) + "</span>" +
+'<span class="tb-chip">' + escapeHtml(task.subject) + "</span>" + urgente + estado +
 "</div>" +
 '<div class="tb-task-body">' +
-"<h3>" + escapeHtml(task.title) + "</h3>" +
+'<h3><button type="button" class="td-abrir" data-task-open="' + id + '">' + escapeHtml(task.title) + "</button></h3>" +
+'<p class="td-fecha td-f-' + f.estado + '">' + tdFechaHtml(f) + "</p>" +
 '<p class="tb-task-desc">' + escapeHtml(task.description) + "</p>" +
-'<div class="tb-task-foot">' +
-'<span class="tb-autor">' + foto + escapeHtml(autor) + "</span>" +
+(extras.length ? '<div class="td-extras">' + extras.join("") + "</div>" : "") +
+'<div class="tb-task-foot">' + tdAutorHtml(task, "tb-autor") +
 (publicada ? '<span class="tb-task-estado">' + escapeHtml(publicada) + "</span>" : "") +
 "</div>" +
-"</div>" + barraReacciones(task) + controls + "</article>";
+"</div>" +
+'<div class="td-pie">' + (managementMode ? "" : tdBotonesHtml(task)) + barraReacciones(task) + "</div>" +
+controls + "</article>";
 }
-function renderTasks() {
+function renderTasks(sinDetalle) {
 var published = tasks.filter(function (task) { return task.published; });
-$("#tb-task-count").textContent = published.length + " tareas";
-$("#tb-all-tasks").innerHTML = published.length
-? published.map(function (task, i) { return taskCard(task, false, i); }).join("")
-: emptyState("Todavía no se han publicado tareas.");
+var visibles = tdVisibles();
+var porHacer = visibles.filter(function (t) { return !tdEsHecha(t) && tdFecha(t).estado !== "late"; }).length;
+$("#tb-task-count").textContent = porHacer ? porHacer + " por hacer"
+: (visibles.length ? "Al día" : published.length + " tareas");
+tdPintarFiltros(visibles);
+tdPintarSoloLista();
 $("#tb-home-tasks").innerHTML = published.length
-? '<div class="tb-task-list">' +
-published.map(function (task, i) { return taskCard(task, false, i); }).join("") + "</div>"
+? tdListaHtml(visibles, false, 0)
 : emptyState("Cuando el owner o un admin publique una tarea aparecerá aquí.");
 $("#tb-manage-tasks").innerHTML = tasks.length
 ? '<div class="tb-task-list">' +
@@ -10315,7 +10585,649 @@ tasks.map(function (task, i) { return taskCard(task, true, i); }).join("") + "</
 : emptyState("Crea la primera tarea desde el formulario.");
 renderSemana();
 bindTaskActions();
+if (!sinDetalle && td.abierta !== null && !td.vista) { tdPintarDetalle(); }
 }
+/* ===================================================================
+   TAREAS v2 · grupos por fecha, filtros, "Ya la hice", lista de
+   materiales, vista de detalle y pizarra de respuesta (opcional).
+   Para guardar en la nube hay que ejecutar ACTIVAR-tareas-v2.sql.
+   Sin ese SQL todo funciona igual, pero el progreso se guarda solo
+   en este dispositivo y las tareas se guardan sin lista ni respuesta.
+   =================================================================== */
+var TD_SQL = "ACTIVAR-tareas-v2.sql (carpeta supabase)";
+var TD_ARCHIVO_DIAS = 14;
+var TD_DIAS = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
+var TD_MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio",
+"agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+var td = {
+prog: {}, progLocal: false,
+conteo: {}, conteoListo: false,
+sol: {}, solLista: false,
+colsListas: true,
+filtro: { estado: "todas", materia: "", q: "" },
+verVencidas: false,
+abierta: null, vista: null, activador: null,
+quieto: false
+};
+/* Gato y león con ropa de profesor (solo para la pizarra de respuestas). */
+var TD_GATO_PROFE = '<svg viewBox="0 0 200 200">' +
+'<path d="M124 158 C150 162 168 146 162 126 C158 113 142 113 141 125" fill="none" stroke="#282032" stroke-width="11" stroke-linecap="round"/>' +
+'<ellipse cx="96" cy="146" rx="36" ry="30" fill="#4a3a7a"/>' +
+'<path d="M66 140 Q96 150 126 140 M64 152 Q96 162 128 152" stroke="#3a2d63" stroke-width="3" fill="none" opacity=".8"/>' +
+'<path d="M83 125 L96 147 L109 125 Z" fill="#f4efe4"/>' +
+'<path d="M96 135 L83 128 L83 142 Z M96 135 L109 128 L109 142 Z" fill="#e0565b"/>' +
+'<circle cx="96" cy="135" r="3.8" fill="#b83d44"/>' +
+'<ellipse cx="72" cy="174" rx="13" ry="8" fill="#2a2140"/>' +
+'<ellipse cx="114" cy="176" rx="13" ry="8" fill="#2a2140"/>' +
+'<path d="M68 62 L60 30 L92 50 Z" fill="#342841"/>' +
+'<path d="M72 56 L67 38 L85 49 Z" fill="#ff9ec4" opacity=".85"/>' +
+'<path d="M120 58 L130 28 L142 56 Z" fill="#342841"/>' +
+'<path d="M123 53 L129 37 L137 52 Z" fill="#ff9ec4" opacity=".85"/>' +
+'<ellipse cx="100" cy="90" rx="44" ry="39" fill="#47334f"/>' +
+'<ellipse cx="107" cy="104" rx="24" ry="17" fill="#9a80ff" opacity=".38"/>' +
+'<ellipse cx="86" cy="88" rx="9" ry="10.5" fill="#0d0a1e"/>' +
+'<ellipse cx="118" cy="86" rx="8.5" ry="10" fill="#0d0a1e"/>' +
+'<ellipse cx="86" cy="88" rx="2.8" ry="8" fill="#c9f56a"/>' +
+'<ellipse cx="118" cy="86" rx="2.6" ry="7.6" fill="#c9f56a"/>' +
+'<circle cx="89" cy="83" r="2.4" fill="#fff"/><circle cx="121" cy="81" r="2.2" fill="#fff"/>' +
+'<g fill="#ffffff14" stroke="#ffd27a" stroke-width="2.6"><circle cx="86" cy="88" r="13"/><circle cx="118" cy="86" r="12.5"/></g>' +
+'<path d="M99 87 Q102 83.5 105.5 86 M73 86 L60 80 M130.5 85 L142 78" stroke="#ffd27a" stroke-width="2.4" fill="none" stroke-linecap="round"/>' +
+'<circle cx="68" cy="104" r="7" fill="#ff8fae" opacity=".5"/>' +
+'<circle cx="132" cy="102" r="6" fill="#ff8fae" opacity=".38"/>' +
+'<path d="M96 104 L106 104 L101 110 Z" fill="#ff9ec4"/>' +
+'<path d="M101 110 L101 113 M101 113 Q95 118 89 113 M101 113 Q107 118 113 113" stroke="#0d0a1e" stroke-width="2.4" fill="none" stroke-linecap="round"/>' +
+'<g stroke="#d9ccff" stroke-width="1.8" stroke-linecap="round" opacity=".72"><path d="M72 108 L52 103 M72 113 L54 117 M128 106 L146 101 M128 111 L146 112"/></g>' +
+'<path d="M76 144 C62 142 50 134 48 122" fill="none" stroke="#3a2d63" stroke-width="13" stroke-linecap="round"/>' +
+'<rect x="39" y="96" width="6" height="20" rx="2.5" fill="#f6f3e8" transform="rotate(-18 42 106)"/>' +
+'<circle cx="48" cy="120" r="9" fill="#47334f"/>' +
+'<circle cx="45" cy="116" r="2.4" fill="#ff9ec4" opacity=".8"/><circle cx="51" cy="115" r="2.4" fill="#ff9ec4" opacity=".8"/>' +
+'<ellipse cx="120" cy="166" rx="12" ry="8" fill="#2a2140"/>' +
+'<path d="M80 48 L80 59 Q100 67 122 59 L122 48 L100 56 Z" fill="#2a2240"/>' +
+'<path d="M100 30 L142 44 L100 57 L58 44 Z" fill="#1d1830" stroke="#ffd27a" stroke-opacity=".35" stroke-width="1.2"/>' +
+'<circle cx="100" cy="43.5" r="2.6" fill="#ffd27a"/>' +
+'<path d="M100 43.5 L134 48 L136 66" stroke="#ffd27a" stroke-width="2.2" fill="none" stroke-linecap="round"/>' +
+'<path d="M132.5 64 L139.5 64 L138 74 L134 74 Z" fill="#ffd27a"/>' +
+'</svg>';
+var TD_LEON_PROFE = '<svg viewBox="0 0 200 200">' +
+'<path d="M132 158 C156 162 172 148 166 130" fill="none" stroke="#535c43" stroke-width="10" stroke-linecap="round"/>' +
+'<ellipse cx="168" cy="123" rx="9" ry="11" fill="#535c43" transform="rotate(18 168 123)"/>' +
+'<ellipse cx="100" cy="152" rx="34" ry="28" fill="#33405f"/>' +
+'<path d="M86 126 L100 152 L114 126 Z" fill="#f4efe4"/>' +
+'<path d="M86 126 L100 152 L80 142 Z M114 126 L100 152 L120 142 Z" fill="#26304a"/>' +
+'<path d="M96 129 L104 129 L102.5 134 L97.5 134 Z" fill="#b5452f"/>' +
+'<path d="M97.5 134 L102.5 134 L106 150 L100 157 L94 150 Z" fill="#d8573d"/>' +
+'<rect x="110" y="140" width="8" height="5" rx="1.5" fill="#ffe08a" opacity=".85"/>' +
+'<ellipse cx="78" cy="176" rx="13" ry="8" fill="#2b2f38"/>' +
+'<ellipse cx="120" cy="178" rx="13" ry="8" fill="#2b2f38"/>' +
+'<g fill="#535c43">' +
+'<ellipse cx="100" cy="40" rx="19" ry="16"/>' +
+'<ellipse cx="140" cy="54" rx="19" ry="16" transform="rotate(38 140 54)"/>' +
+'<ellipse cx="150" cy="92" rx="19" ry="16" transform="rotate(78 150 92)"/>' +
+'<ellipse cx="60" cy="54" rx="19" ry="16" transform="rotate(-38 60 54)"/>' +
+'<ellipse cx="50" cy="92" rx="19" ry="16" transform="rotate(-78 50 92)"/>' +
+'<ellipse cx="62" cy="126" rx="18" ry="15" transform="rotate(-128 62 126)"/>' +
+'<ellipse cx="138" cy="126" rx="18" ry="15" transform="rotate(128 138 126)"/>' +
+'</g><g fill="#9ebd75">' +
+'<ellipse cx="102" cy="50" rx="15" ry="12"/>' +
+'<ellipse cx="134" cy="64" rx="15" ry="12" transform="rotate(38 134 64)"/>' +
+'<ellipse cx="66" cy="64" rx="15" ry="12" transform="rotate(-38 66 64)"/>' +
+'<ellipse cx="140" cy="100" rx="15" ry="12" transform="rotate(78 140 100)"/>' +
+'<ellipse cx="60" cy="100" rx="15" ry="12" transform="rotate(-78 60 100)"/>' +
+'</g>' +
+'<ellipse cx="100" cy="88" rx="42" ry="38" fill="#b4cf88"/>' +
+'<path d="M80 62 Q100 54 120 62" stroke="#9ebd75" stroke-width="4" fill="none" stroke-linecap="round"/>' +
+'<ellipse cx="104" cy="104" rx="27" ry="19" fill="#d4ddb0"/>' +
+'<path d="M78 89 Q86 82 94 89" stroke="#0d0a1e" stroke-width="4" fill="none" stroke-linecap="round"/>' +
+'<ellipse cx="118" cy="87" rx="8.5" ry="10" fill="#0d0a1e"/>' +
+'<ellipse cx="118" cy="87" rx="2.8" ry="7.6" fill="#ffe08a"/>' +
+'<circle cx="121" cy="82" r="2.2" fill="#fff"/>' +
+'<g fill="#ffffff18" stroke="#3b3326" stroke-width="2.6"><rect x="73" y="80" width="24" height="16" rx="6"/><rect x="106" y="78" width="24" height="17" rx="6"/></g>' +
+'<path d="M97 87 Q101.5 83.5 106 86" stroke="#3b3326" stroke-width="2.4" fill="none" stroke-linecap="round"/>' +
+'<path d="M82 79 Q86 74 92 77 M110 76 Q117 71 124 74" stroke="#535c43" stroke-width="3" fill="none" stroke-linecap="round"/>' +
+'<circle cx="72" cy="106" r="6.5" fill="#ff5f4d" opacity=".45"/>' +
+'<circle cx="132" cy="104" r="6" fill="#ff5f4d" opacity=".35"/>' +
+'<path d="M97 101 L107 101 L102 107 Z" fill="#535c43"/>' +
+'<path d="M102 107 L102 110 M102 110 Q96 115 90 110 M102 110 Q110 117 118 109" stroke="#0d0a1e" stroke-width="2.4" fill="none" stroke-linecap="round"/>' +
+'<g stroke="#ffe6c8" stroke-width="1.8" stroke-linecap="round" opacity=".75"><path d="M78 109 L56 104 M78 114 L58 118 M130 107 L150 101"/></g>' +
+'<path d="M158 116 L186 56" stroke="#8a5a35" stroke-width="4.5" stroke-linecap="round"/>' +
+'<circle cx="186.5" cy="55" r="3.4" fill="#f6f3e8"/>' +
+'<path d="M124 144 C140 142 152 134 154 122" fill="none" stroke="#33405f" stroke-width="13" stroke-linecap="round"/>' +
+'<circle cx="154" cy="120" r="9" fill="#b4cf88"/>' +
+'<circle cx="151" cy="116" r="2.4" fill="#d4ddb0"/><circle cx="157" cy="115" r="2.4" fill="#d4ddb0"/>' +
+'<ellipse cx="78" cy="166" rx="12" ry="8" fill="#2b2f38"/>' +
+'<g transform="rotate(-8 66 150)"><rect x="50" y="140" width="34" height="24" rx="3" fill="#c65b3a"/>' +
+'<rect x="53" y="143" width="28" height="18" rx="2" fill="#f4efe4"/><path d="M67 143 L67 161" stroke="#c65b3a" stroke-width="1.6"/>' +
+'<path d="M56 148 H64 M56 152 H63 M70 148 H78 M70 152 H77" stroke="#9aa3b5" stroke-width="1.2"/></g>' +
+'</svg>';
+function tdMayus(texto) { return texto ? texto.charAt(0).toUpperCase() + texto.slice(1) : ""; }
+function tdNormal(texto) {
+return String(texto || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+function tdFecha(task) {
+var f = fechaDesdeYMD(task && task.due_date);
+if (!f) { return { estado: "sin", dias: null, fecha: "", rel: "" }; }
+f.setHours(0, 0, 0, 0);
+var hoy = new Date();
+hoy.setHours(0, 0, 0, 0);
+var d = Math.round((f - hoy) / 86400000);
+var fecha = TD_DIAS[f.getDay()] + " " + f.getDate() + " de " + TD_MESES[f.getMonth()];
+if (d < -1) { return { estado: "late", dias: d, fecha: fecha, rel: "venció hace " + (-d) + " días" }; }
+if (d === -1) { return { estado: "late", dias: d, fecha: fecha, rel: "venció ayer" }; }
+if (d === 0) { return { estado: "hoy", dias: d, fecha: fecha, rel: "vence hoy" }; }
+if (d === 1) { return { estado: "hoy", dias: d, fecha: fecha, rel: "vence mañana" }; }
+if (d <= 3) { return { estado: "pronto", dias: d, fecha: fecha, rel: "faltan " + d + " días" }; }
+return { estado: "ok", dias: d, fecha: fecha, rel: "faltan " + d + " días" };
+}
+function tdFechaHtml(f) {
+if (f.estado === "sin") { return "<b>Sin fecha de entrega</b>"; }
+return "<b>" + escapeHtml(tdMayus(f.fecha)) + "</b><span>" + escapeHtml(f.rel) + "</span>";
+}
+function tdEsHecha(task) {
+var v = td.prog[String(task.id)];
+return !!(v && v.hecha);
+}
+function tdChecklist(task) {
+var lista = task && task.checklist;
+if (typeof lista === "string") { try { lista = JSON.parse(lista); } catch (e) { lista = []; } }
+return Array.isArray(lista) ? lista.filter(function (x) {
+return typeof x === "string" && x.trim();
+}) : [];
+}
+function tdChecks(task) {
+var v = td.prog[String(task.id)];
+return v && Array.isArray(v.checks) ? v.checks : [];
+}
+function tdTotalEstudiantes() {
+return profiles.filter(function (p) { return p.role !== "owner" && p.role !== "admin"; }).length;
+}
+function tdProgresoGrupo(task, siempre) {
+if (!td.conteoListo) { return ""; }
+var n = td.conteo[String(task.id)] || 0;
+var total = tdTotalEstudiantes();
+if (!total || (!n && !siempre)) { return ""; }
+if (!n) { return "Nadie la ha marcado como hecha todavía."; }
+return n + " de " + total + (n === 1 ? " ya la hizo" : " ya la hicieron");
+}
+// Escapa el texto y convierte los enlaces en <a> clicables.
+function tdEnlaces(texto) {
+return escapeHtml(texto).replace(/https?:\/\/[^\s<]+?(?=[.,;:!?)]*(?:\s|<|$))/g, function (url) {
+return '<a href="' + url + '" target="_blank" rel="noopener noreferrer">' + url + "</a>";
+});
+}
+function tdEntregaInfo(task) {
+if (isStaff() || typeof ent === "undefined" || !ent || !ent.listas) { return null; }
+return { e: entregaMia(task.id) || null };
+}
+function tdBotonesHtml(task) {
+var id = escapeHtml(task.id);
+var hecha = tdEsHecha(task);
+var html = '<button type="button" class="td-btn td-btn-hecha' + (hecha ? " on" : "") +
+'" data-td-hecha="' + id + '" aria-pressed="' + hecha + '">' +
+(hecha ? "✓ Hecha" : "Ya la hice") + "</button>";
+var info = tdEntregaInfo(task);
+if (info) {
+var e = info.e;
+if (!e) {
+html += '<button type="button" class="td-btn" data-td-entregar="' + id + '">📤 Entregar</button>';
+} else if (e.estado === "devuelta") {
+html += '<button type="button" class="td-btn td-btn-aviso" data-td-entregar="' + id + '">↩️ Corregir entrega</button>';
+} else if (e.estado === "pendiente") {
+html += '<span class="td-mini">⏳ Entrega en revisión</span>';
+} else if (e.estado === "aprobada") {
+html += '<span class="td-mini td-mini-ok">✅ Aprobada' +
+(e.nota !== null && e.nota !== undefined ? " · Nota " + escapeHtml(e.nota) : "") + "</span>";
+}
+}
+return html;
+}
+function tdAutorHtml(task, clase) {
+var autor = autorDe(task);
+var perfil = perfilDe(task);
+var foto = perfil ? avatarHtml(perfil, "tb-autor-foto")
+: '<span class="tb-autor-foto">' + escapeHtml((autor.trim().charAt(0) || "?").toUpperCase()) + "</span>";
+return '<span class="' + clase + '">' + foto + escapeHtml(autor) + "</span>";
+}
+/* ---------- Carga y guardado ---------- */
+function tdLocalClave() { return "tb-td-prog-" + (me ? me.id : "anon"); }
+function tdLocalLeer() {
+try { return JSON.parse(window.localStorage.getItem(tdLocalClave()) || "{}") || {}; }
+catch (e) { return {}; }
+}
+function tdLocalGuardar() {
+try { window.localStorage.setItem(tdLocalClave(), JSON.stringify(td.prog)); } catch (e) { /* sin almacenamiento */ }
+}
+async function tdCargar() {
+if (!client || !me) { return; }
+var seguro = function (consulta) {
+return Promise.resolve(consulta).catch(function (error) { return { error: error || {} }; });
+};
+var res = await Promise.all([
+seguro(client.from("tb_tarea_progreso").select("task_id,hecha,checks").eq("user_id", me.id)),
+seguro(client.rpc("tb_progreso_conteo")),
+seguro(client.from("tb_tarea_solucion").select("task_id,texto"))
+]);
+var p = res[0], c = res[1], s = res[2];
+if (p.error) {
+td.progLocal = true;
+td.prog = tdLocalLeer();
+} else {
+td.progLocal = false;
+td.prog = {};
+(p.data || []).forEach(function (fila) {
+td.prog[String(fila.task_id)] = { hecha: !!fila.hecha, checks: Array.isArray(fila.checks) ? fila.checks : [] };
+});
+}
+td.conteo = {};
+td.conteoListo = !c.error;
+(c.data || []).forEach(function (fila) { td.conteo[String(fila.task_id)] = fila.hechas || 0; });
+td.sol = {};
+td.solLista = !s.error;
+(s.data || []).forEach(function (fila) { td.sol[String(fila.task_id)] = fila.texto || ""; });
+}
+async function tdPersistir(task) {
+var v = td.prog[String(task.id)] || { hecha: false, checks: [] };
+if (td.progLocal) { tdLocalGuardar(); return true; }
+var r = await client.from("tb_tarea_progreso").upsert({
+user_id: me.id, task_id: task.id, hecha: v.hecha, checks: v.checks,
+updated_at: new Date().toISOString()
+}, { onConflict: "user_id,task_id" });
+if (!r.error) { return true; }
+if (faltaTablaTb(r.error)) { td.progLocal = true; tdLocalGuardar(); return true; }
+avisoToast("⚠️ No se pudo guardar tu progreso: " + r.error.message);
+return false;
+}
+function tdRender(quieto) {
+td.quieto = !!quieto;
+renderTasks();
+td.quieto = false;
+}
+async function tdAlternarHecha(taskId) {
+var task = tasks.find(function (t) { return mismoId(t.id, taskId); });
+if (!task) { return; }
+var clave = String(task.id);
+var antes = td.prog[clave] ? { hecha: td.prog[clave].hecha, checks: td.prog[clave].checks.slice() } : null;
+var ahora = !tdEsHecha(task);
+td.prog[clave] = { hecha: ahora, checks: antes ? antes.checks : [] };
+var cuenta = td.conteoListo && !td.progLocal && !isStaff();
+if (cuenta) { td.conteo[clave] = Math.max(0, (td.conteo[clave] || 0) + (ahora ? 1 : -1)); }
+tdRender(true);
+if (ahora) { try { mascDecirDe(mascActiva, MASC_TAREA[mascActiva]); } catch (e) { /* sin mascota */ } }
+var ok = await tdPersistir(task);
+if (!ok) {
+td.prog[clave] = antes || { hecha: false, checks: [] };
+if (cuenta) { td.conteo[clave] = Math.max(0, (td.conteo[clave] || 0) + (ahora ? -1 : 1)); }
+tdRender(true);
+}
+}
+/* ---------- Lista: filtros y grupos ---------- */
+function tdVisibles() {
+return tasks.filter(function (t) {
+if (!t.published) { return false; }
+var f = tdFecha(t);
+return !(f.estado === "late" && f.dias < -TD_ARCHIVO_DIAS);
+});
+}
+function tdFiltrar(lista) {
+var q = tdNormal(td.filtro.q).trim();
+return lista.filter(function (t) {
+var hecha = tdEsHecha(t);
+if (td.filtro.estado === "pendientes" && hecha) { return false; }
+if (td.filtro.estado === "hechas" && !hecha) { return false; }
+if (td.filtro.materia && t.subject !== td.filtro.materia) { return false; }
+if (q && tdNormal(t.title + " " + t.description + " " + t.subject).indexOf(q) < 0) { return false; }
+return true;
+});
+}
+function tdAgrupar(lista) {
+var g = { pronto: [], luego: [], vencidas: [] };
+lista.forEach(function (t) {
+var f = tdFecha(t);
+if (f.estado === "late") { g.vencidas.push(t); }
+else if (f.dias !== null && f.dias <= 7) { g.pronto.push(t); }
+else { g.luego.push(t); }
+});
+var porFecha = function (a, b) {
+var ha = tdEsHecha(a) ? 1 : 0, hb = tdEsHecha(b) ? 1 : 0;
+if (ha !== hb) { return ha - hb; }
+var fa = a.due_date ? String(a.due_date).slice(0, 10) : "9999";
+var fb = b.due_date ? String(b.due_date).slice(0, 10) : "9999";
+if (fa !== fb) { return fa < fb ? -1 : 1; }
+return String(b.created_at || "").localeCompare(String(a.created_at || ""));
+};
+g.pronto.sort(porFecha);
+g.luego.sort(porFecha);
+g.vencidas.sort(function (a, b) { return String(b.due_date).localeCompare(String(a.due_date)); });
+return g;
+}
+function tdListaHtml(lista, conFiltros, archivadas) {
+var g = tdAgrupar(lista);
+var i = 0;
+var rejilla = function (arr) {
+return '<div class="tb-task-list">' + arr.map(function (t) { return taskCard(t, false, i++); }).join("") + "</div>";
+};
+var html = "";
+if (g.pronto.length) {
+html += '<section class="td-grupo"><h4 class="td-grupo-tit">Próximos 7 días <span>' +
+g.pronto.length + "</span></h4>" + rejilla(g.pronto) + "</section>";
+}
+if (g.luego.length) {
+html += '<section class="td-grupo"><h4 class="td-grupo-tit">Más adelante <span>' +
+g.luego.length + "</span></h4>" + rejilla(g.luego) + "</section>";
+}
+if (g.vencidas.length) {
+var abierto = td.verVencidas || (!g.pronto.length && !g.luego.length);
+html += '<details class="td-grupo td-grupo-vencidas" data-td-vencidas' + (abierto ? " open" : "") +
+'><summary class="td-grupo-tit">Ya vencieron <span>' + g.vencidas.length + "</span></summary>" +
+rejilla(g.vencidas) + "</details>";
+}
+if (!html) {
+html = conFiltros
+? '<div class="tb-empty"><b>Nada por aquí</b>Ninguna tarea coincide con los filtros. ' +
+'<button type="button" class="tb-secondary td-limpiar" data-td-limpiar>Quitar filtros</button></div>'
+: emptyState("No hay tareas recientes.");
+}
+if (archivadas && conFiltros) {
+html += '<p class="td-archivo">' + archivadas + (archivadas === 1 ? " tarea vencida hace" : " tareas vencidas hace") +
+" más de " + TD_ARCHIVO_DIAS + " días se archivaron solas. El staff las sigue viendo en Administrar tareas.</p>";
+}
+return html;
+}
+function tdPintarFiltros(visibles) {
+var caja = $("#tb-task-filtros");
+if (!caja) { return; }
+if (!$("#td-q")) {
+caja.innerHTML = '<div class="td-filtros">' +
+'<div class="td-filtros-fila" id="td-f-estado" role="group" aria-label="Filtrar por estado"></div>' +
+'<label class="td-buscar"><input id="td-q" type="search" placeholder="Buscar por título o tema" ' +
+'aria-label="Buscar tareas" autocomplete="off" maxlength="60"></label></div>' +
+'<div class="td-filtros-fila td-materias" id="td-f-materia" role="group" aria-label="Filtrar por materia"></div>';
+$("#td-q").addEventListener("input", function () {
+td.filtro.q = this.value;
+td.quieto = true;
+tdPintarSoloLista();
+td.quieto = false;
+});
+}
+var estados = [["todas", "Todas"], ["pendientes", "Pendientes"], ["hechas", "Hechas"]];
+$("#td-f-estado").innerHTML = estados.map(function (e) {
+var n = e[0] === "todas" ? visibles.length : visibles.filter(function (t) {
+return e[0] === "hechas" ? tdEsHecha(t) : !tdEsHecha(t);
+}).length;
+return '<button type="button" class="td-fchip" data-td-estado="' + e[0] + '" aria-pressed="' +
+(td.filtro.estado === e[0]) + '">' + e[1] + " <small>" + n + "</small></button>";
+}).join("");
+var cuenta = {};
+visibles.forEach(function (t) { if (t.subject) { cuenta[t.subject] = (cuenta[t.subject] || 0) + 1; } });
+var materias = Object.keys(cuenta).sort(function (a, b) { return a.localeCompare(b, "es"); });
+if (td.filtro.materia && !cuenta[td.filtro.materia]) { td.filtro.materia = ""; }
+$("#td-f-materia").innerHTML = materias.length < 2 ? "" :
+'<button type="button" class="td-fchip" data-td-materia="" aria-pressed="' + (!td.filtro.materia) +
+'">Todas las materias</button>' +
+materias.map(function (m) {
+return '<button type="button" class="td-fchip" style="--materia:' + colorDeMateria(m) +
+'" data-td-materia="' + escapeHtml(m) + '" aria-pressed="' + (td.filtro.materia === m) + '"><i></i>' +
+escapeHtml(m) + " <small>" + cuenta[m] + "</small></button>";
+}).join("");
+}
+function tdPintarSoloLista() {
+var caja = $("#tb-all-tasks");
+if (!caja) { return; }
+var published = tasks.filter(function (t) { return t.published; });
+var visibles = tdVisibles();
+caja.innerHTML = published.length
+? tdListaHtml(tdFiltrar(visibles), true, published.length - visibles.length)
+: emptyState("Todavía no se han publicado tareas.");
+bindTaskActions();
+}
+/* ---------- Vista de detalle ---------- */
+function tdPizarraHtml(task, texto) {
+var modo = task.respuesta_modo;
+if (!modo) { return ""; }
+var tieneTexto = typeof texto === "string" && texto.trim() !== "";
+var cuerpo, nota = "";
+if (tieneTexto) {
+cuerpo = '<div class="td-piz-texto">' + tdEnlaces(texto.trim()) + "</div>";
+if (isStaff() && modo !== "inmediata") {
+nota = '<p class="td-piz-nota">' + (modo === "al_vencer"
+? "Solo el staff la ve hasta que pase la fecha de entrega."
+: "Oculta para los estudiantes. Edita la tarea y elige «Visible desde ya» cuando quieras publicarla.") + "</p>";
+}
+} else {
+var f = tdFecha(task);
+var msg = modo === "al_vencer"
+? (f.estado === "sin" ? "La respuesta se publicará más adelante."
+: "La respuesta aparecerá aquí cuando pase la fecha de entrega (" + f.fecha + ").")
+: modo === "oculta" ? "Tu profe publicará la respuesta más adelante."
+: td.solLista ? "Todavía no hay respuesta escrita." : "No se pudo cargar la respuesta. Intenta de nuevo en un momento.";
+cuerpo = '<div class="td-piz-bloqueo"><span class="td-piz-candado" aria-hidden="true">🔒</span><p>' +
+escapeHtml(msg) + "</p></div>";
+}
+return '<section class="td-pizarra' + (tieneTexto ? "" : " td-piz-cerrada") + '" aria-labelledby="td-piz-tit">' +
+'<div class="td-piz-marco"><h3 id="td-piz-tit">Respuesta</h3>' + cuerpo + nota + "</div>" +
+'<div class="td-piz-masc td-piz-gato" aria-hidden="true">' + TD_GATO_PROFE + "</div>" +
+'<div class="td-piz-masc td-piz-leon" aria-hidden="true">' + TD_LEON_PROFE + "</div></section>";
+}
+function tdDetalleHtml(task, preview, respuesta) {
+var f = tdFecha(task);
+var id = escapeHtml(task.id);
+var hecha = !preview && tdEsHecha(task);
+var urgente = (task.priority || "normal") === "alta" && f.estado !== "late" && !hecha
+? '<span class="tb-task-urgente">Urgente</span>' : "";
+var publicada = tiempoRelativo(task.created_at);
+var lista = tdChecklist(task);
+var checks = preview ? [] : tdChecks(task);
+var marcados = checks.filter(function (n) { return n < lista.length; }).length;
+var h = '<div class="td-d-cab"><div class="tb-task-head td-d-chips">' +
+'<span class="tb-chip">' + escapeHtml(task.subject || "Sin materia") + "</span>" + urgente +
+(hecha ? '<span class="td-chip-hecha">✓ Hecha</span>' : "") +
+(preview ? '<span class="td-chip-borrador">Vista previa</span>' : "") + "</div>" +
+'<button type="button" class="tb-close" data-td-cerrar aria-label="Cerrar detalle">×</button></div>' +
+'<h2 id="td-titulo" class="td-d-titulo">' + escapeHtml(task.title || "Sin título") + "</h2>" +
+'<p class="td-fecha td-f-' + f.estado + '">' + tdFechaHtml(f) + "</p>" +
+'<div class="td-d-autor">' + tdAutorHtml(task, "td-d-quien") +
+(publicada ? "<small>" + escapeHtml(publicada) + "</small>" : "") + "</div>" +
+'<div class="td-d-texto">' + tdEnlaces(task.description || "") + "</div>";
+if (lista.length) {
+h += '<section class="td-d-lista" aria-labelledby="td-lista-tit"><h3 id="td-lista-tit">Lista de materiales y pasos ' +
+'<small id="td-lista-cuenta">' + marcados + " de " + lista.length + "</small></h3><ul>" +
+lista.map(function (item, n) {
+var on = checks.indexOf(n) >= 0;
+return '<li class="' + (on ? "on" : "") + '"><label><input type="checkbox" data-td-check="' + n + '"' +
+(on ? " checked" : "") + (preview ? " disabled" : "") + "><span>" + escapeHtml(item) + "</span></label></li>";
+}).join("") + "</ul></section>";
+}
+if (!preview) {
+h += '<div class="td-d-acciones">' + tdBotonesHtml(task) +
+(isStaff() ? '<button type="button" class="tb-secondary" data-td-editar="' + id + '">Editar</button>' +
+'<button type="button" class="tb-secondary" data-td-duplicar="' + id + '">Duplicar</button>' : "") + "</div>";
+var grupo = tdProgresoGrupo(task, true);
+if (grupo) { h += '<p class="td-d-grupo">👥 ' + escapeHtml(grupo) + "</p>"; }
+}
+return h + tdPizarraHtml(task, respuesta);
+}
+function tdPintarDetalle() {
+var card = $("#td-card");
+if (!card || td.abierta === null) { return; }
+var task, respuesta, preview = !!td.vista;
+if (preview) {
+task = td.vista.task;
+respuesta = td.vista.respuesta;
+} else {
+task = tasks.find(function (t) { return mismoId(t.id, td.abierta); });
+if (!task) { tdCerrar(); return; }
+respuesta = td.sol[String(task.id)];
+}
+card.style.setProperty("--materia", colorDeMateria(task.subject));
+card.innerHTML = tdDetalleHtml(task, preview, respuesta);
+}
+function tdAbrir(taskId, activador) {
+td.vista = null;
+td.abierta = String(taskId);
+td.activador = activador || document.activeElement;
+tdPintarDetalle();
+if (td.abierta === null) { return; }
+$("#tb-td-modal").classList.remove("tb-hidden");
+document.documentElement.classList.add("td-sin-scroll");
+$("#td-card").scrollTop = 0;
+var cerrar = $("#td-card [data-td-cerrar]");
+if (cerrar) { cerrar.focus(); }
+}
+function tdCerrar() {
+var modal = $("#tb-td-modal");
+if (!modal || modal.classList.contains("tb-hidden")) { td.abierta = null; td.vista = null; return; }
+modal.classList.add("tb-hidden");
+document.documentElement.classList.remove("td-sin-scroll");
+td.abierta = null;
+td.vista = null;
+if (td.activador && document.contains(td.activador)) { td.activador.focus(); }
+td.activador = null;
+}
+function tdLeerLista() {
+return $("#tb-task-checklist").value.split("\n").map(function (x) { return x.trim().slice(0, 140); })
+.filter(Boolean).slice(0, 30);
+}
+function tdAbrirVistaPrevia() {
+var titulo = $("#tb-task-title").value.trim();
+if (!titulo) { alert("Escribe al menos el título para ver la vista previa."); $("#tb-task-title").focus(); return; }
+var respuesta = $("#tb-task-respuesta").value.trim();
+td.vista = {
+task: {
+id: "vista-previa", title: titulo,
+subject: $("#tb-task-subject").value.trim(),
+description: $("#tb-task-description").value.trim(),
+due_date: $("#tb-task-due").value || null,
+priority: $("#tb-task-priority").value,
+created_by: me ? me.id : null,
+created_at: new Date().toISOString(),
+checklist: tdLeerLista(),
+respuesta_modo: respuesta ? $("#tb-task-resp-modo").value : null
+},
+respuesta: respuesta
+};
+td.abierta = "vista-previa";
+td.activador = $("#tb-task-preview");
+tdPintarDetalle();
+$("#tb-td-modal").classList.remove("tb-hidden");
+document.documentElement.classList.add("td-sin-scroll");
+$("#td-card").scrollTop = 0;
+$("#td-card [data-td-cerrar]").focus();
+}
+/* ---------- Formulario del staff ---------- */
+function tdEditar(taskId, duplicar) {
+var task = tasks.find(function (t) { return mismoId(t.id, taskId); });
+if (!task) { return; }
+if (!$("#tb-view-manage") || !$("#tb-view-manage").classList.contains("active")) { showView("manage"); }
+$("#tb-task-id").value = duplicar ? "" : task.id;
+$("#tb-task-title").value = duplicar ? (task.title + " (copia)").slice(0, 100) : task.title;
+setSubjectValue(task.subject);
+$("#tb-task-description").value = task.description || "";
+$("#tb-task-due").value = duplicar || !task.due_date ? "" : String(task.due_date).slice(0, 10);
+$("#tb-task-week").value = "";
+$("#tb-task-priority").value = task.priority || "normal";
+$("#tb-task-published").checked = duplicar ? true : !!task.published;
+$("#tb-task-checklist").value = tdChecklist(task).join("\n");
+$("#tb-task-respuesta").value = td.sol[String(task.id)] || "";
+$("#tb-task-resp-modo").value = task.respuesta_modo || "al_vencer";
+$("#tb-task-form-title").textContent = duplicar ? "Nueva tarea (copia)" : "Editar tarea";
+$("#tb-task-cancel").classList.remove("tb-hidden");
+$("#tb-task-form").scrollIntoView({ behavior: "smooth", block: "start" });
+$("#tb-task-title").focus({ preventScroll: true });
+}
+async function tdGuardarTarea(taskId, datos) {
+var intento = function (d) {
+return taskId
+? client.from("tasks").update(d).eq("id", taskId)
+: client.from("tasks").insert(Object.assign({ created_by: me.id }, d)).select("id").single();
+};
+var r = await intento(datos);
+if (r.error && /checklist|respuesta_modo/i.test(r.error.message || "")) {
+td.colsListas = false;
+var copia = Object.assign({}, datos);
+delete copia.checklist;
+delete copia.respuesta_modo;
+r = await intento(copia);
+if (!r.error) { avisoToast("⚠️ Tarea guardada sin lista ni respuesta: falta ejecutar " + TD_SQL + " en Supabase."); }
+} else if (!r.error) {
+td.colsListas = true;
+}
+return r;
+}
+async function tdGuardarRespuesta(taskId, texto, eraEdicion) {
+var r = null;
+if (texto) {
+r = await client.from("tb_tarea_solucion").upsert({
+task_id: taskId, texto: texto.slice(0, 4000), updated_at: new Date().toISOString()
+}, { onConflict: "task_id" });
+} else if (eraEdicion) {
+r = await client.from("tb_tarea_solucion").delete().eq("task_id", taskId);
+}
+if (r && r.error && (texto || !faltaTablaTb(r.error))) {
+avisoToast("⚠️ La tarea se guardó, pero la respuesta no: " +
+(faltaTablaTb(r.error) ? "falta ejecutar " + TD_SQL + "." : r.error.message));
+}
+}
+/* ---------- Eventos (una sola vez, por delegación) ---------- */
+document.addEventListener("click", function (ev) {
+var t = ev.target;
+if (!t || !t.closest) { return; }
+var b;
+if ((b = t.closest("[data-td-hecha]"))) { tdAlternarHecha(b.dataset.tdHecha); return; }
+if ((b = t.closest("[data-td-entregar]"))) { tdCerrar(); entregaAbrir(b.dataset.tdEntregar); return; }
+if ((b = t.closest("[data-td-estado]"))) { td.filtro.estado = b.dataset.tdEstado; tdRender(true); return; }
+if ((b = t.closest("[data-td-materia]"))) { td.filtro.materia = b.dataset.tdMateria; tdRender(true); return; }
+if (t.closest("[data-td-limpiar]")) {
+td.filtro = { estado: "todas", materia: "", q: "" };
+if ($("#td-q")) { $("#td-q").value = ""; }
+tdRender(true);
+return;
+}
+if (t.closest("[data-td-cerrar]")) { tdCerrar(); return; }
+if ((b = t.closest("[data-td-editar]"))) { var e1 = b.dataset.tdEditar; tdCerrar(); tdEditar(e1, false); return; }
+if ((b = t.closest("[data-td-duplicar]"))) { var e2 = b.dataset.tdDuplicar; tdCerrar(); tdEditar(e2, true); return; }
+if ((b = t.closest("[data-task-open]"))) { tdAbrir(b.dataset.taskOpen, b); return; }
+if (t.id === "tb-td-modal") { tdCerrar(); return; }
+if (t.closest("button,a,input,label,select,textarea,summary,.tb-react,[role=dialog] .td-card")) { return; }
+var card = t.closest(".td-card-tarea");
+if (card) {
+var abrir = card.querySelector("[data-task-open]");
+if (abrir) { tdAbrir(abrir.dataset.taskOpen, abrir); }
+}
+});
+document.addEventListener("change", function (ev) {
+var c = ev.target;
+if (!c || !c.matches || !c.matches("input[data-td-check]") || td.vista) { return; }
+var task = tasks.find(function (t) { return mismoId(t.id, td.abierta); });
+if (!task) { return; }
+var clave = String(task.id);
+var antes = td.prog[clave] || { hecha: false, checks: [] };
+var n = parseInt(c.dataset.tdCheck, 10);
+var checks = antes.checks.filter(function (x) { return x !== n; });
+if (c.checked) { checks.push(n); }
+checks.sort(function (a, b) { return a - b; });
+td.prog[clave] = { hecha: antes.hecha, checks: checks };
+var li = c.closest("li");
+if (li) { li.classList.toggle("on", c.checked); }
+var total = tdChecklist(task).length;
+var cuenta = $("#td-lista-cuenta");
+if (cuenta) { cuenta.textContent = checks.filter(function (x) { return x < total; }).length + " de " + total; }
+td.quieto = true;
+renderTasks(true);
+td.quieto = false;
+tdPersistir(task).then(function (ok) {
+if (ok) { return; }
+td.prog[clave] = antes;
+tdRender(true);
+});
+});
+document.addEventListener("toggle", function (ev) {
+if (ev.target && ev.target.matches && ev.target.matches("[data-td-vencidas]")) {
+td.verVencidas = ev.target.open;
+}
+}, true);
+document.addEventListener("keydown", function (ev) {
+if (ev.key === "Escape" && td.abierta !== null) { tdCerrar(); }
+});
+if ($("#tb-task-preview")) { $("#tb-task-preview").onclick = tdAbrirVistaPrevia; }
 function setSubjectValue(value) {
 var select = $("#tb-task-subject");
 var exists = false;
@@ -10332,20 +11244,10 @@ select.value = value || "";
 }
 function bindTaskActions() {
 $$("[data-edit-task]").forEach(function (button) {
-button.onclick = function () {
-var task = tasks.find(function (item) { return item.id === button.dataset.editTask; });
-if (!task) { return; }
-$("#tb-task-id").value = task.id;
-$("#tb-task-title").value = task.title;
-setSubjectValue(task.subject);
-$("#tb-task-description").value = task.description;
-$("#tb-task-due").value = task.due_date || "";
-$("#tb-task-week").value = "";
-$("#tb-task-priority").value = task.priority;
-$("#tb-task-published").checked = task.published;
-$("#tb-task-form-title").textContent = "Editar tarea";
-$("#tb-task-cancel").classList.remove("tb-hidden");
-};
+button.onclick = function () { tdEditar(button.dataset.editTask, false); };
+});
+$$("[data-dup-task]").forEach(function (button) {
+button.onclick = function () { tdEditar(button.dataset.dupTask, true); };
 });
 $$("[data-react-list]").forEach(function (button) {
 button.onclick = function () {
@@ -10375,6 +11277,7 @@ alert(result.error.message);
 return;
 }
 tasks = result.data || [];
+await tdCargar();
 renderTasks();
 }
 var EMOJIS = [
@@ -20080,6 +20983,7 @@ await cargarPartidasGato();
 await cargarEncuestasActivas();
 await cargarMemes();
 try { await entregasCargar(); } catch (error) { console.warn("[entregas]", error); }
+try { await tdCargar(); } catch (error) { console.warn("[tareas]", error); }
 renderTasks();
 renderProfiles();
 renderMyProfile();
@@ -20340,6 +21244,7 @@ $("#tb-task-due").onchange = function () { $("#tb-task-week").value = ""; };
 $("#tb-task-form").onsubmit = async function (event) {
 event.preventDefault();
 var taskId = $("#tb-task-id").value;
+var respuesta = $("#tb-task-respuesta").value.trim();
 var taskData = {
 title: $("#tb-task-title").value.trim(),
 subject: $("#tb-task-subject").value.trim(),
@@ -20347,21 +21252,22 @@ description: $("#tb-task-description").value.trim(),
 due_date: $("#tb-task-due").value || null,
 priority: $("#tb-task-priority").value,
 published: $("#tb-task-published").checked,
+checklist: tdLeerLista(),
+respuesta_modo: respuesta ? $("#tb-task-resp-modo").value : null,
 updated_at: new Date().toISOString()
 };
-var result;
-if (taskId) {
-result = await client.from("tasks").update(taskData).eq("id", taskId);
-} else {
-taskData.created_by = me.id;
-result = await client.from("tasks").insert(taskData).select("id").single();
-}
+var boton = this.querySelector("button.tb-primary");
+if (boton) { boton.disabled = true; }
+try {
+var result = await tdGuardarTarea(taskId, taskData);
 if (result.error) {
 alert(result.error.message);
 return;
 }
+var guardadaId = taskId || (result.data && result.data.id);
+if (td.colsListas && guardadaId) { await tdGuardarRespuesta(guardadaId, respuesta, !!taskId); }
 if (taskData.published) {
-notificar("tarea_nueva", taskId || (result.data && result.data.id)).then(function (r) {
+notificar("tarea_nueva", guardadaId).then(function (r) {
 if (!r) { return; }
 if (r.fallo) {
 avisoToast("⚠️ Tarea publicada, pero no se pudo enviar el aviso: " + (r.error || "error desconocido") +
@@ -20377,6 +21283,9 @@ avisoToast("📣 Aviso de la tarea enviado a " + r.enviados + " dispositivo(s)."
 }
 $("#tb-task-cancel").click();
 await refreshTasks();
+} finally {
+if (boton) { boton.disabled = false; }
+}
 };
 function perfilCumplimiento() {
 return profiles.find(function (p) { return p.id === $("#tb-comp-user").value; });
@@ -26671,6 +27580,7 @@ client.storage.from("entregas").remove([previa.archivo_path]).catch(function () 
 entregaCerrar();
 await entregasCargar();
 entregasRender();
+td.quieto = true; renderTasks(); td.quieto = false;
 notificar("entrega_nueva", r.data && r.data.id);
 if (!previa) { misionEvento("entrega_subir", 1); }
 alert("¡Listo! Tu entrega quedó en revisión. Te avisaremos cuando la califiquen.");
