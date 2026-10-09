@@ -7692,6 +7692,65 @@ animation: tdAsoma .6s cubic-bezier(.34, 1.5, .5, 1) .1s backwards;
 .td-piz-masc, .td-f-hoy::before { animation: none; }
 .td-btn { transition: none; }
 }
+/* ── Adjuntos (v3) ── */
+.td-mini-adj { color: var(--text); border-color: color-mix(in srgb, var(--materia, #9fb4ff) 40%, transparent); }
+.td-d-adj { margin: 0 0 22px; }
+.td-d-adj h3 { display: flex; align-items: baseline; gap: 10px; margin: 0 0 10px; font-size: 14px; }
+.td-d-adj h3 small { color: var(--muted); font-weight: 600; font-size: 12px; }
+.td-d-galeria { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.td-d-galeria.td-una { grid-template-columns: 1fr; }
+.td-d-img {
+position: relative; display: block; padding: 0; margin: 0; overflow: hidden;
+aspect-ratio: 4 / 3; border-radius: 14px; border: 1px solid var(--line);
+background: #ffffff0a; cursor: zoom-in;
+}
+.td-una .td-d-img { aspect-ratio: auto; max-height: 420px; }
+.td-d-img img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.td-una .td-d-img img { height: auto; max-height: 420px; object-fit: contain; background: #0005; }
+.td-d-img:not(:has(img[src]))::after {
+content: "Cargando…"; position: absolute; inset: 0; display: grid; place-items: center;
+color: var(--muted); font-size: 12.5px;
+}
+.td-d-img.td-img-error::after { content: "No se pudo cargar"; }
+.td-d-archivos { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.td-d-archivos li {
+display: flex; align-items: center; gap: 12px; padding: 10px 12px;
+border: 1px solid var(--line); border-radius: 14px; background: #ffffff07;
+}
+.td-d-arch-ico { font-size: 22px; flex: 0 0 auto; }
+.td-d-arch-txt { flex: 1 1 auto; min-width: 0; }
+.td-d-arch-txt b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; }
+.td-d-arch-txt small { color: var(--muted); font-size: 12px; }
+.td-d-archivos a.td-btn { text-decoration: none; }
+.td-d-archivos a[aria-disabled] { opacity: .5; pointer-events: none; }
+.td-visor {
+position: fixed; inset: 0; z-index: 130; display: none;
+flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+padding: 56px 16px 20px; background: #05030ae8;
+}
+.td-visor.on { display: flex; }
+.td-visor img { max-width: 100%; max-height: calc(100vh - 140px); border-radius: 10px; box-shadow: 0 20px 60px #000c; }
+.td-visor-cerrar { position: absolute; top: 14px; right: 14px; color: #fff; }
+.td-visor-abrir { text-decoration: none; }
+.td-adj-drop {
+position: relative; display: flex; flex-direction: column; gap: 4px;
+padding: 16px; border: 1.5px dashed var(--line); border-radius: 14px;
+background: #ffffff06; cursor: pointer; text-align: center;
+}
+.td-adj-drop:hover, .td-adj-drop:focus-within { border-color: #d1a0ff; background: #d1a0ff12; }
+#tablon-root .td-adj-drop input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.td-adj-drop b { font-size: 14px; color: var(--text); }
+.td-adj-drop small { font-size: 12px; color: var(--muted); }
+.td-adj-lista ul { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 8px; }
+.td-adj-lista li { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 12px; }
+.td-adj-lista li div { flex: 1 1 auto; min-width: 0; }
+.td-adj-lista b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
+.td-adj-lista small { color: var(--muted); font-size: 11.5px; }
+.td-adj-mini { width: 40px; height: 40px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 8px; overflow: hidden; background: #ffffff0d; font-size: 20px; }
+.td-adj-mini img { width: 100%; height: 100%; object-fit: cover; }
+#tablon-root .td-adj-campo .td-adj-mini { display: grid; place-items: center; margin: 0; font-size: 20px; line-height: 1; }
+.td-visor-cerrar { width: 46px; height: 46px; font-size: 24px; background: #ffffff1f; }
+#tablon-root #tb-task-notify:disabled + * , #tablon-root label:has(#tb-task-notify:disabled) { opacity: .55; }
 </style>
 <div id="tablon-root" class="tb-theme-midnight">
 <div id="tb-ent-modal" class="tb-ent-modal tb-hidden" role="dialog" aria-modal="true" aria-labelledby="tb-ent-titulo">
@@ -8531,6 +8590,15 @@ Arrastra por ⠿ o usa las flechas. Los roles marcados como
 <option value="oculta">Oculta (la publico yo después)</option>
 </select>
 </label>
+<div class="tb-field wide td-adj-campo">
+<span>Imágenes y archivos (opcional)</span>
+<label class="td-adj-drop">
+<input id="tb-task-files" type="file" multiple accept="image/png,image/jpeg,image/webp,image/gif,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt">
+<b>📎 Elegir imágenes o archivos</b>
+<small>Fotos, PDF, Word, Excel, PowerPoint o texto. Hasta 6, máximo 10 MB cada uno. Las fotos se reducen solas.</small>
+</label>
+<div id="tb-task-adjuntos" class="td-adj-lista" aria-live="polite"></div>
+</div>
 <label class="tb-field">
 <span>Fecha de entrega</span>
 <input id="tb-task-due" type="date">
@@ -8555,6 +8623,12 @@ Arrastra por ⠿ o usa las flechas. Los roles marcados como
 <span>
 <input id="tb-task-published" type="checkbox" checked style="width:auto">
 Publicar inmediatamente
+</span>
+</label>
+<label class="tb-field wide">
+<span>
+<input id="tb-task-notify" type="checkbox" checked style="width:auto">
+Avisar al celular a quienes tienen los avisos activados
 </span>
 </label>
 </div>
@@ -10537,7 +10611,7 @@ if (managementMode && !task.published) { estado += '<span class="td-chip-borrado
 var marca = String(task.subject || "").trim().slice(0, 2).toUpperCase();
 var bicho = ["arana", "", "murcielago"][(index || 0) % 3];
 var lista = tdChecklist(task);
-var extras = [];
+var extras = tdAdjChips(task);
 if (lista.length) {
 var marcados = tdChecks(task).filter(function (n) { return n < lista.length; }).length;
 extras.push('<span class="td-mini">☑ ' + marcados + " de " + lista.length + " en la lista</span>");
@@ -11026,7 +11100,7 @@ var h = '<div class="td-d-cab"><div class="tb-task-head td-d-chips">' +
 '<p class="td-fecha td-f-' + f.estado + '">' + tdFechaHtml(f) + "</p>" +
 '<div class="td-d-autor">' + tdAutorHtml(task, "td-d-quien") +
 (publicada ? "<small>" + escapeHtml(publicada) + "</small>" : "") + "</div>" +
-'<div class="td-d-texto">' + tdEnlaces(task.description || "") + "</div>";
+'<div class="td-d-texto">' + tdEnlaces(task.description || "") + "</div>" + tdAdjDetalleHtml(task);
 if (lista.length) {
 h += '<section class="td-d-lista" aria-labelledby="td-lista-tit"><h3 id="td-lista-tit">Lista de materiales y pasos ' +
 '<small id="td-lista-cuenta">' + marcados + " de " + lista.length + "</small></h3><ul>" +
@@ -11059,6 +11133,7 @@ respuesta = td.sol[String(task.id)];
 }
 card.style.setProperty("--materia", colorDeMateria(task.subject));
 card.innerHTML = tdDetalleHtml(task, preview, respuesta);
+tdFirmarUrls();
 }
 function tdAbrir(taskId, activador) {
 td.vista = null;
@@ -11100,7 +11175,12 @@ priority: $("#tb-task-priority").value,
 created_by: me ? me.id : null,
 created_at: new Date().toISOString(),
 checklist: tdLeerLista(),
-respuesta_modo: respuesta ? $("#tb-task-resp-modo").value : null
+respuesta_modo: respuesta ? $("#tb-task-resp-modo").value : null,
+adjuntos: tdForm.existentes.filter(function (a) { return tdForm.quitar.indexOf(a.path) < 0; })
+.concat(tdForm.nuevos.map(function (n) {
+td.urls[n.url] = { url: n.url, exp: Infinity };
+return { path: n.url, nombre: n.nombre, tipo: n.tipo, tamano: n.tamano };
+}))
 },
 respuesta: respuesta
 };
@@ -11128,6 +11208,11 @@ $("#tb-task-published").checked = duplicar ? true : !!task.published;
 $("#tb-task-checklist").value = tdChecklist(task).join("\n");
 $("#tb-task-respuesta").value = td.sol[String(task.id)] || "";
 $("#tb-task-resp-modo").value = task.respuesta_modo || "al_vencer";
+tdFormLimpiar();
+tdForm.existentes = tdAdjuntos(task).slice();
+tdPintarAdjForm();
+$("#tb-task-notify").checked = !!duplicar;
+$("#tb-task-notify").disabled = !$("#tb-task-published").checked;
 $("#tb-task-form-title").textContent = duplicar ? "Nueva tarea (copia)" : "Editar tarea";
 $("#tb-task-cancel").classList.remove("tb-hidden");
 $("#tb-task-form").scrollIntoView({ behavior: "smooth", block: "start" });
@@ -11139,16 +11224,27 @@ return taskId
 ? client.from("tasks").update(d).eq("id", taskId)
 : client.from("tasks").insert(Object.assign({ created_by: me.id }, d)).select("id").single();
 };
-var r = await intento(datos);
-if (r.error && /checklist|respuesta_modo/i.test(r.error.message || "")) {
-td.colsListas = false;
 var copia = Object.assign({}, datos);
-delete copia.checklist;
-delete copia.respuesta_modo;
+var faltan = [];
+var r = await intento(copia);
+for (var k = 0; k < 3 && r.error; k++) {
+var msg = r.error.message || "";
+var col = ["adjuntos", "checklist", "respuesta_modo"].filter(function (c) {
+return msg.indexOf(c) >= 0 && c in copia;
+})[0];
+if (!col) { break; }
+delete copia[col];
+faltan.push(col);
 r = await intento(copia);
-if (!r.error) { avisoToast("⚠️ Tarea guardada sin lista ni respuesta: falta ejecutar " + TD_SQL + " en Supabase."); }
-} else if (!r.error) {
-td.colsListas = true;
+}
+if (!r.error) {
+td.colsListas = faltan.indexOf("respuesta_modo") < 0 && faltan.indexOf("checklist") < 0;
+td.adjListo = faltan.indexOf("adjuntos") < 0;
+if (faltan.length) {
+avisoToast("⚠️ Tarea guardada, pero sin " + faltan.map(function (c) {
+return c === "adjuntos" ? "adjuntos" : c === "checklist" ? "lista" : "respuesta";
+}).join(" ni ") + ": falta ejecutar " + (td.adjListo ? TD_SQL : TD_SQL_ADJ) + " en Supabase.");
+}
 }
 return r;
 }
@@ -11228,6 +11324,290 @@ document.addEventListener("keydown", function (ev) {
 if (ev.key === "Escape" && td.abierta !== null) { tdCerrar(); }
 });
 if ($("#tb-task-preview")) { $("#tb-task-preview").onclick = tdAbrirVistaPrevia; }
+/* ===================================================================
+   TAREAS v3 · imágenes y archivos adjuntos (bucket privado "tareas")
+   Requiere supabase/ACTIVAR-tareas-v3.sql. Las imágenes solo se
+   cargan al abrir la tarea; en la tarjeta se ve "Tiene imagen".
+   =================================================================== */
+var TD_SQL_ADJ = "ACTIVAR-tareas-v3.sql (carpeta supabase)";
+var TD_ADJ_MAX = 6;
+var TD_ADJ_PESO = 10 * 1024 * 1024;
+var TD_ADJ_TIPOS = {
+png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", webp: "image/webp", gif: "image/gif",
+pdf: "application/pdf",
+doc: "application/msword",
+docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+xls: "application/vnd.ms-excel",
+xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+ppt: "application/vnd.ms-powerpoint",
+pptx: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+txt: "text/plain"
+};
+var tdForm = { existentes: [], nuevos: [], quitar: [] };
+td.adjListo = true;
+td.urls = {};
+function tdExt(nombre) {
+var m = /\.([a-z0-9]+)$/i.exec(nombre || "");
+return m ? m[1].toLowerCase() : "";
+}
+function tdTipoDe(file) {
+var validos = Object.keys(TD_ADJ_TIPOS).map(function (k) { return TD_ADJ_TIPOS[k]; });
+if (file.type && validos.indexOf(file.type) >= 0) { return file.type; }
+return TD_ADJ_TIPOS[tdExt(file.name)] || "";
+}
+function tdEsImagen(a) { return /^image\//.test((a && a.tipo) || ""); }
+function tdAdjuntos(task) {
+var lista = task && task.adjuntos;
+if (typeof lista === "string") { try { lista = JSON.parse(lista); } catch (e) { lista = []; } }
+return Array.isArray(lista) ? lista.filter(function (a) { return a && a.path; }) : [];
+}
+function tdPeso(bytes) {
+bytes = bytes || 0;
+if (bytes < 1048576) { return Math.max(1, Math.round(bytes / 1024)) + " KB"; }
+return (bytes / 1048576).toFixed(1).replace(/\.0$/, "") + " MB";
+}
+function tdIconoArchivo(a) {
+var ext = tdExt(a.nombre);
+if (ext === "pdf") { return "📕"; }
+if (ext === "doc" || ext === "docx") { return "📝"; }
+if (ext === "xls" || ext === "xlsx") { return "📊"; }
+if (ext === "ppt" || ext === "pptx") { return "📽️"; }
+if (tdEsImagen(a)) { return "🖼️"; }
+return "📄";
+}
+function tdEtiquetaTipo(a) {
+var ext = tdExt(a.nombre);
+return (ext ? ext.toUpperCase() : "Archivo") + " · " + tdPeso(a.tamano);
+}
+/* chips de la tarjeta: solo la clasificación, la imagen no se carga aquí */
+function tdAdjChips(task) {
+var adj = tdAdjuntos(task);
+var imgs = adj.filter(tdEsImagen).length;
+var docs = adj.length - imgs;
+var chips = [];
+if (imgs) { chips.push('<span class="td-mini td-mini-adj">🖼️ ' + (imgs === 1 ? "Tiene imagen" : "Tiene " + imgs + " imágenes") + "</span>"); }
+if (docs) { chips.push('<span class="td-mini td-mini-adj">📎 ' + docs + (docs === 1 ? " archivo" : " archivos") + "</span>"); }
+return chips;
+}
+/* ---------- Detalle: galería y lista de archivos ---------- */
+function tdUrlLista(path) {
+var c = td.urls[path];
+return c && c.exp > Date.now() + 60000 ? c.url : "";
+}
+function tdAdjDetalleHtml(task) {
+var adj = tdAdjuntos(task);
+if (!adj.length) { return ""; }
+var imgs = adj.filter(tdEsImagen);
+var docs = adj.filter(function (a) { return !tdEsImagen(a); });
+var h = "";
+if (imgs.length) {
+h += '<section class="td-d-adj" aria-label="Imágenes de la tarea"><h3>' +
+(imgs.length === 1 ? "Imagen" : "Imágenes") + " <small>Toca para ampliar</small></h3>" +
+'<div class="td-d-galeria' + (imgs.length === 1 ? " td-una" : "") + '">' +
+imgs.map(function (a) {
+var url = tdUrlLista(a.path);
+return '<button type="button" class="td-d-img" data-td-img="' + escapeHtml(a.path) + '" aria-label="Ampliar ' +
+escapeHtml(a.nombre || "imagen") + '"><img alt="' + escapeHtml(a.nombre || "Imagen de la tarea") + '"' +
+(url ? ' src="' + escapeHtml(url) + '"' : "") + ' data-td-src="' + escapeHtml(a.path) + '" loading="lazy"></button>';
+}).join("") + "</div></section>";
+}
+if (docs.length) {
+h += '<section class="td-d-adj" aria-label="Archivos adjuntos"><h3>' +
+(docs.length === 1 ? "Archivo adjunto" : "Archivos adjuntos") + '</h3><ul class="td-d-archivos">' +
+docs.map(function (a) {
+var url = tdUrlLista(a.path);
+return '<li><span class="td-d-arch-ico" aria-hidden="true">' + tdIconoArchivo(a) + "</span>" +
+'<div class="td-d-arch-txt"><b>' + escapeHtml(a.nombre || "Archivo") + "</b><small>" +
+escapeHtml(tdEtiquetaTipo(a)) + "</small></div>" +
+'<a class="td-btn" target="_blank" rel="noopener noreferrer" data-td-href="' + escapeHtml(a.path) + '"' +
+(url ? ' href="' + escapeHtml(url) + '"' : ' aria-disabled="true"') + ">Abrir</a></li>";
+}).join("") + "</ul></section>";
+}
+return h;
+}
+async function tdFirmarUrls() {
+var card = $("#td-card");
+if (!card) { return; }
+var nodos = Array.prototype.slice.call(card.querySelectorAll("[data-td-src],[data-td-href]"));
+var faltan = [];
+nodos.forEach(function (n) {
+var p = n.dataset.tdSrc || n.dataset.tdHref;
+if (!tdUrlLista(p) && faltan.indexOf(p) < 0) { faltan.push(p); }
+});
+if (faltan.length && client) {
+var r = await client.storage.from("tareas").createSignedUrls(faltan, 3600);
+if (!r.error) {
+(r.data || []).forEach(function (f) {
+if (f.signedUrl && f.path) { td.urls[f.path] = { url: f.signedUrl, exp: Date.now() + 3500000 }; }
+});
+}
+}
+nodos.forEach(function (n) {
+var p = n.dataset.tdSrc || n.dataset.tdHref;
+var url = tdUrlLista(p);
+if (!url) {
+if (n.dataset.tdSrc && !n.getAttribute("src")) { n.closest(".td-d-img").classList.add("td-img-error"); }
+return;
+}
+if (n.dataset.tdSrc && n.getAttribute("src") !== url) { n.src = url; }
+if (n.dataset.tdHref) { n.href = url; n.removeAttribute("aria-disabled"); }
+});
+}
+function tdVisorAbrir(path) {
+var url = tdUrlLista(path);
+if (!url) { return; }
+var visor = $("#td-visor");
+if (!visor) {
+visor = document.createElement("div");
+visor.id = "td-visor";
+visor.className = "td-visor";
+visor.setAttribute("role", "dialog");
+visor.setAttribute("aria-modal", "true");
+visor.setAttribute("aria-label", "Imagen ampliada");
+visor.innerHTML = '<button type="button" class="tb-close td-visor-cerrar" aria-label="Cerrar imagen">×</button><img alt="">' +
+'<a class="td-btn td-visor-abrir" target="_blank" rel="noopener noreferrer">Abrir en otra pestaña</a>';
+root.appendChild(visor);
+visor.addEventListener("click", function (ev) {
+if (ev.target === visor || ev.target.closest(".td-visor-cerrar")) { tdVisorCerrar(); }
+});
+}
+visor.querySelector("img").src = url;
+visor.querySelector("a").href = url;
+visor.classList.add("on");
+visor.querySelector(".td-visor-cerrar").focus();
+}
+function tdVisorCerrar() {
+var visor = $("#td-visor");
+if (!visor || !visor.classList.contains("on")) { return false; }
+visor.classList.remove("on");
+var activo = $("#td-card [data-td-img]");
+if (activo) { activo.focus(); }
+return true;
+}
+/* ---------- Formulario: elegir, listar y quitar adjuntos ---------- */
+function tdFormLimpiar() {
+tdForm.nuevos.forEach(function (n) { try { URL.revokeObjectURL(n.url); } catch (e) { /* nada */ } });
+tdForm = { existentes: [], nuevos: [], quitar: [] };
+tdPintarAdjForm();
+}
+function tdAdjCuenta() {
+return tdForm.existentes.filter(function (a) { return tdForm.quitar.indexOf(a.path) < 0; }).length + tdForm.nuevos.length;
+}
+function tdPintarAdjForm() {
+var caja = $("#tb-task-adjuntos");
+if (!caja) { return; }
+var filas = [];
+tdForm.existentes.forEach(function (a, i) {
+if (tdForm.quitar.indexOf(a.path) >= 0) { return; }
+filas.push('<li><span class="td-adj-mini">' + tdIconoArchivo(a) + '</span><div><b>' + escapeHtml(a.nombre || "Archivo") +
+"</b><small>" + escapeHtml(tdEtiquetaTipo(a)) + ' · ya guardado</small></div>' +
+'<button type="button" class="tb-secondary" data-td-adj-quitar="e' + i + '" aria-label="Quitar ' +
+escapeHtml(a.nombre || "archivo") + '">Quitar</button></li>');
+});
+tdForm.nuevos.forEach(function (n, i) {
+var mini = tdEsImagen(n) ? '<img src="' + escapeHtml(n.url) + '" alt="">' : tdIconoArchivo(n);
+filas.push('<li><span class="td-adj-mini">' + mini + '</span><div><b>' + escapeHtml(n.nombre) + "</b><small>" +
+escapeHtml(tdEtiquetaTipo(n)) + ' · nuevo</small></div>' +
+'<button type="button" class="tb-secondary" data-td-adj-quitar="n' + i + '" aria-label="Quitar ' +
+escapeHtml(n.nombre) + '">Quitar</button></li>');
+});
+caja.innerHTML = filas.length ? '<ul>' + filas.join("") + "</ul>" : "";
+}
+function tdAdjElegir(archivos) {
+Array.prototype.forEach.call(archivos || [], function (file) {
+if (tdAdjCuenta() >= TD_ADJ_MAX) { avisoToast("⚠️ Máximo " + TD_ADJ_MAX + " adjuntos por tarea."); return; }
+var tipo = tdTipoDe(file);
+if (!tipo) { avisoToast("⚠️ «" + file.name + "» no es un tipo permitido (fotos, PDF, Word, Excel, PowerPoint o texto)."); return; }
+var esImg = /^image\//.test(tipo) && tipo !== "image/gif";
+if (file.size > (esImg ? 25 * 1024 * 1024 : TD_ADJ_PESO)) {
+avisoToast("⚠️ «" + file.name + "» pesa " + tdPeso(file.size) + ". El máximo es " + tdPeso(TD_ADJ_PESO) + ".");
+return;
+}
+tdForm.nuevos.push({ file: file, nombre: file.name.slice(0, 120), tipo: tipo, tamano: file.size, url: URL.createObjectURL(file) });
+});
+tdPintarAdjForm();
+}
+/* Sube los nuevos y devuelve la lista final, o null si algo falló. */
+async function tdSubirAdjuntos() {
+var lista = tdForm.existentes.filter(function (a) { return tdForm.quitar.indexOf(a.path) < 0; })
+.map(function (a) { return { path: a.path, nombre: a.nombre, tipo: a.tipo, tamano: a.tamano }; });
+var subidos = [];
+for (var i = 0; i < tdForm.nuevos.length; i++) {
+var n = tdForm.nuevos[i];
+var blob = n.file, tipo = n.tipo, nombre = n.nombre;
+if (/^image\/(png|jpeg|webp)$/.test(tipo)) {
+try {
+blob = await entregaComprimir(n.file);
+tipo = "image/jpeg";
+nombre = nombre.replace(/\.[^.]+$/, "") + ".jpg";
+} catch (e) { blob = n.file; }
+}
+if (blob.size > TD_ADJ_PESO) {
+tdBorrarDelBucket(subidos);
+alert("«" + n.nombre + "» sigue pesando más de " + tdPeso(TD_ADJ_PESO) + ". Quítalo o reduce su tamaño.");
+return null;
+}
+var ruta = me.id + "/" + nombreAleatorio(tdExt(nombre) || "bin");
+var r = await client.storage.from("tareas").upload(ruta, blob, { contentType: tipo, upsert: false });
+if (r.error) {
+tdBorrarDelBucket(subidos);
+alert("No se pudo subir «" + n.nombre + "»: " +
+(/bucket not found|not found/i.test(r.error.message || "") ? "falta ejecutar " + TD_SQL_ADJ + " en Supabase." : r.error.message));
+return null;
+}
+subidos.push(ruta);
+lista.push({ path: ruta, nombre: nombre, tipo: tipo, tamano: blob.size });
+}
+return { lista: lista, subidos: subidos };
+}
+function tdBorrarDelBucket(rutas) {
+if (!rutas || !rutas.length || !client) { return; }
+client.storage.from("tareas").remove(rutas).catch(function () { /* quedan huérfanos, no rompe nada */ });
+}
+/* Borra archivos que ninguna otra tarea usa (las copias duplicadas comparten archivos). */
+function tdBorrarSinUso(rutas, exceptoId) {
+var enUso = {};
+tasks.forEach(function (t) {
+if (exceptoId !== undefined && mismoId(t.id, exceptoId)) { return; }
+tdAdjuntos(t).forEach(function (a) { enUso[a.path] = true; });
+});
+tdBorrarDelBucket((rutas || []).filter(function (p) { return !enUso[p]; }));
+}
+/* ---------- Eventos de adjuntos ---------- */
+document.addEventListener("click", function (ev) {
+var t = ev.target;
+if (!t || !t.closest) { return; }
+var b;
+if ((b = t.closest("[data-td-img]"))) { tdVisorAbrir(b.dataset.tdImg); return; }
+if ((b = t.closest("[data-td-adj-quitar]"))) {
+var clave = b.dataset.tdAdjQuitar;
+var i = parseInt(clave.slice(1), 10);
+if (clave.charAt(0) === "e" && tdForm.existentes[i]) {
+tdForm.quitar.push(tdForm.existentes[i].path);
+} else if (clave.charAt(0) === "n" && tdForm.nuevos[i]) {
+try { URL.revokeObjectURL(tdForm.nuevos[i].url); } catch (e) { /* nada */ }
+tdForm.nuevos.splice(i, 1);
+}
+tdPintarAdjForm();
+return;
+}
+if ((b = t.closest("a[data-td-href][aria-disabled]"))) { ev.preventDefault(); }
+});
+document.addEventListener("keydown", function (ev) {
+if (ev.key === "Escape" && tdVisorCerrar()) { ev.stopImmediatePropagation(); }
+}, true);
+if ($("#tb-task-files")) {
+$("#tb-task-files").addEventListener("change", function () {
+tdAdjElegir(this.files);
+this.value = "";
+});
+}
+if ($("#tb-task-published")) {
+$("#tb-task-published").addEventListener("change", function () {
+var aviso = $("#tb-task-notify");
+if (aviso) { aviso.disabled = !this.checked; }
+});
+}
 function setSubjectValue(value) {
 var select = $("#tb-task-subject");
 var exists = false;
@@ -11260,11 +11640,13 @@ button.onclick = function () { abrirEmoji(button.dataset.reactOpen); };
 $$("[data-delete-task]").forEach(function (button) {
 button.onclick = async function () {
 if (!confirm("¿Borrar esta tarea? También se eliminarán sus cumplimientos.")) { return; }
+var borrada = tasks.find(function (t) { return mismoId(t.id, button.dataset.deleteTask); });
 var result = await client.from("tasks").delete().eq("id", button.dataset.deleteTask);
 if (result.error) {
 alert(result.error.message);
 return;
 }
+if (borrada) { tdBorrarSinUso(tdAdjuntos(borrada).map(function (a) { return a.path; }), borrada.id); }
 await refreshTasks();
 };
 });
@@ -21234,6 +21616,8 @@ $("#tb-task-cancel").onclick = function () {
 $("#tb-task-form").reset();
 $("#tb-task-id").value = "";
 $("#tb-task-form-title").textContent = "Nueva tarea";
+tdFormLimpiar();
+$("#tb-task-notify").disabled = false;
 this.classList.add("tb-hidden");
 };
 $("#tb-task-week").onchange = function () {
@@ -21256,17 +21640,27 @@ checklist: tdLeerLista(),
 respuesta_modo: respuesta ? $("#tb-task-resp-modo").value : null,
 updated_at: new Date().toISOString()
 };
+var avisar = taskData.published && $("#tb-task-notify").checked;
 var boton = this.querySelector("button.tb-primary");
-if (boton) { boton.disabled = true; }
+var textoBoton = boton ? boton.textContent : "";
+if (boton) { boton.disabled = true; if (tdForm.nuevos.length) { boton.textContent = "Subiendo archivos…"; } }
 try {
+var previa = taskId ? tasks.find(function (t) { return mismoId(t.id, taskId); }) : null;
+var adj = await tdSubirAdjuntos();
+if (!adj) { return; }
+taskData.adjuntos = adj.lista;
 var result = await tdGuardarTarea(taskId, taskData);
 if (result.error) {
+tdBorrarDelBucket(adj.subidos);
 alert(result.error.message);
 return;
 }
+if (!td.adjListo) { tdBorrarDelBucket(adj.subidos); }
+else if (previa && tdForm.quitar.length) { tdBorrarSinUso(tdForm.quitar, previa.id); }
 var guardadaId = taskId || (result.data && result.data.id);
 if (td.colsListas && guardadaId) { await tdGuardarRespuesta(guardadaId, respuesta, !!taskId); }
-if (taskData.published) {
+if (taskData.published && !avisar) { avisoToast("📌 Tarea guardada sin enviar aviso al celular."); }
+if (avisar) {
 notificar("tarea_nueva", guardadaId).then(function (r) {
 if (!r) { return; }
 if (r.fallo) {
@@ -21284,7 +21678,7 @@ avisoToast("📣 Aviso de la tarea enviado a " + r.enviados + " dispositivo(s)."
 $("#tb-task-cancel").click();
 await refreshTasks();
 } finally {
-if (boton) { boton.disabled = false; }
+if (boton) { boton.disabled = false; boton.textContent = textoBoton; }
 }
 };
 function perfilCumplimiento() {
