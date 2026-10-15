@@ -6692,55 +6692,138 @@ background: radial-gradient(120% 80% at 50% 0%, #ff7ad92e, transparent 60%), lin
 .tb-cumple-card .tb-primary { width: 100%; }
 .tb-cumple-luego { border: 0; background: none; color: var(--muted); font-weight: 750; cursor: pointer; text-decoration: underline; }
 .tb-cumple-card small { font-size: 11.5px; line-height: 1.4; }
-/* ===== Caza de espíritus de Halloween ===== */
-.tb-top .tb-caza-chip { position: relative; display: inline-flex; align-items: center; gap: 8px; padding: 6px 13px 6px 8px; border: 1px solid #ff9a3c66; border-radius: 999px; background: linear-gradient(125deg, #ff9a3c26, #a85eea22, #5ef2d614); color: #ffe0a8; font-size: 12.5px; font-weight: 900; white-space: nowrap; cursor: pointer; box-shadow: 0 4px 18px #ff8a2b22, inset 0 1px 0 #ffffff22; transition: transform .22s cubic-bezier(.34, 1.4, .5, 1), border-color .2s; }
+/* ===== Caza de espíritus de Halloween (v19) ===== */
+.tb-top .tb-caza-chip { position: relative; display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 6px 13px 6px 8px; border: 1px solid #ff9a3c66; border-radius: 999px; background: linear-gradient(125deg, #ff9a3c26, #a85eea22, #5ef2d614); color: #ffe0a8; font-size: 12.5px; font-weight: 900; white-space: nowrap; cursor: pointer; box-shadow: 0 4px 18px #ff8a2b22, inset 0 1px 0 #ffffff22; transition: transform .22s cubic-bezier(.34, 1.4, .5, 1), border-color .2s; }
 .tb-top .tb-caza-chip:hover { transform: translateY(-2px); border-color: #ffb05c; }
 .tb-top .tb-caza-chip:focus-visible { outline: 2px solid #ffb05c; outline-offset: 2px; }
-.tb-top .tb-caza-chip.alerta::after { content: ""; position: absolute; top: -2px; right: -2px; width: 9px; height: 9px; border-radius: 50%; background: #5cf0a5; box-shadow: 0 0 10px #5cf0a5; animation: tbLatido 1.2s infinite; }
+.tb-top .tb-caza-chip.alerta::after { content: ""; position: absolute; top: -2px; right: -2px; width: 10px; height: 10px; border-radius: 50%; background: #5cf0a5; box-shadow: 0 0 10px #5cf0a5; animation: tbLatido 1.2s infinite; }
 .tb-caza-chip-ico { width: 22px; height: 22px; display: grid; place-items: center; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff3c4, #ff8a2b 62%, #7c2700); box-shadow: 0 0 12px #ff8a2b88; font-size: 13px; line-height: 1; }
 #tablon-root.tb-light .tb-top .tb-caza-chip { background: linear-gradient(125deg, #fff1d0, #f3e5ff); border-color: #e08b2c66; color: #6e3b08; }
-#tablon-root.tb-pixel .tb-top .tb-caza-chip, #tablon-root.tb-pixel .tb-caza-progreso, #tablon-root.tb-pixel .tb-caza-slot, #tablon-root.tb-pixel .tb-espectro-tag { border-radius: 0 !important; border: 3px solid #0d0e1a; box-shadow: 4px 4px 0 #00000080; }
+#tablon-root.tb-pixel .tb-top .tb-caza-chip, #tablon-root.tb-pixel .tb-caza-progreso, #tablon-root.tb-pixel .tb-caza-slot, #tablon-root.tb-pixel .tb-espectro-tag, #tablon-root.tb-pixel .tb-caza-carta { border-radius: 0 !important; border: 3px solid #0d0e1a; box-shadow: 4px 4px 0 #00000080; }
 @media (max-width: 700px) { .tb-top .tb-caza-chip .tb-caza-etq { display: none; } .tb-top .tb-caza-chip { padding: 6px 10px 6px 6px; } }
 #tablon-root.tb-en-portal .tb-espectro, #tablon-root.tb-cg-abierta .tb-espectro { display: none !important; }
-.tb-espectro { position: fixed; z-index: 8600; width: 74px; height: 74px; padding: 0; border: 0; background: transparent; cursor: crosshair; user-select: none; touch-action: manipulation; filter: drop-shadow(0 0 18px var(--esp-glow, #ff9a3ccc)); transition: left 1.8s cubic-bezier(.22, 1, .36, 1), top 1.8s cubic-bezier(.22, 1, .36, 1), transform .2s ease, opacity .4s; animation: tbEspectroEntra .5s cubic-bezier(.2, 1.5, .4, 1) both; }
-.tb-espectro:focus-visible { outline: 3px solid var(--esp-glow); outline-offset: 6px; border-radius: 50%; }
-.tb-espectro-inner { display: block; width: 100%; height: 100%; animation: tbEspectroBob 2.6s ease-in-out infinite alternate; }
+
+/* Criatura en pantalla */
+.tb-espectro { position: fixed; z-index: 8600; width: 74px; height: 74px; padding: 0; border: 0; background: transparent; cursor: crosshair; user-select: none; -webkit-user-select: none; touch-action: manipulation; -webkit-tap-highlight-color: transparent; filter: drop-shadow(0 0 16px var(--esp-glow, #ff9a3ccc)); transition: left 1.6s cubic-bezier(.22, 1, .36, 1), top 1.6s cubic-bezier(.22, 1, .36, 1), transform .2s ease, opacity .4s; animation: tbEspectroEntra .55s cubic-bezier(.2, 1.5, .4, 1) both; }
+.tb-espectro::before { content: ""; position: absolute; inset: -14px; border-radius: 50%; }
+.tb-espectro:focus-visible { outline: 3px solid var(--esp-glow); outline-offset: 8px; border-radius: 50%; }
+.tb-espectro-inner { position: relative; display: block; width: 100%; height: 100%; animation: tbEspectroBob 2.6s ease-in-out infinite alternate; }
 .tb-espectro svg { width: 100%; height: 100%; overflow: visible; display: block; }
-.tb-espectro:hover { transform: scale(1.16) rotate(-4deg); }
+.tb-espectro:hover { transform: scale(1.12); }
+.tb-espectro.golpe .tb-espectro-inner { animation: tbEspectroGolpe .32s ease both; }
 .tb-espectro.huye { opacity: 0; transform: scale(.2); }
-.tb-espectro.atrapado { opacity: 0; transform: scale(1.4); transition: opacity .25s, transform .25s; }
+.tb-espectro.atrapado { transform: scale(1.5); opacity: 0; filter: brightness(3) drop-shadow(0 0 30px var(--esp-glow)); transition: opacity .35s .1s, transform .35s, filter .2s; }
 .tb-espectro-aura { position: absolute; inset: -12px; border-radius: 50%; background: radial-gradient(circle, var(--esp-glow, #ff9a3c66) 0%, transparent 70%); animation: tbAura 2s ease-in-out infinite; pointer-events: none; opacity: .55; }
-.tb-espectro-tag { position: absolute; left: 50%; bottom: -14px; transform: translateX(-50%); padding: 2px 9px; border-radius: 99px; background: #080d1ef2; border: 1px solid var(--esp-glow, #ff9a3c); color: #fff3d1; font-size: 10px; font-weight: 900; letter-spacing: .04em; white-space: nowrap; pointer-events: none; box-shadow: 0 4px 12px #000a; }
+.tb-espectro.r-mitico .tb-espectro-aura, .tb-espectro.r-legendario .tb-espectro-aura, .tb-espectro.forzada .tb-espectro-aura { opacity: .9; inset: -20px; }
+.tb-espectro.r-legendario::after { content: ""; position: absolute; inset: -26px; border-radius: 50%; background: conic-gradient(from 0deg, transparent 0 20deg, #ffe28a55 20deg 30deg, transparent 30deg 80deg, #ffe28a55 80deg 90deg, transparent 90deg 140deg, #ffe28a55 140deg 150deg, transparent 150deg 200deg, #ffe28a55 200deg 210deg, transparent 210deg 260deg, #ffe28a55 260deg 270deg, transparent 270deg 320deg, #ffe28a55 320deg 330deg, transparent 330deg); animation: tbCazaGira 6s linear infinite; pointer-events: none; z-index: -1; }
+.tb-espectro-vida { position: absolute; inset: -9px; width: calc(100% + 18px) !important; height: calc(100% + 18px) !important; transform: rotate(-90deg); pointer-events: none; }
+.tb-espectro-vida circle { fill: none; stroke-width: 5; }
+.tb-espectro-vida .fondo { stroke: #ffffff1f; }
+.tb-espectro-vida .barra { stroke: var(--rz, #ffd27a); stroke-linecap: round; filter: drop-shadow(0 0 4px var(--rz)); transition: stroke-dashoffset .25s ease; }
+.tb-espectro-tag { position: absolute; left: 50%; bottom: -16px; transform: translateX(-50%); padding: 2px 9px; border-radius: 99px; background: #080d1ef2; border: 1px solid var(--rz, var(--esp-glow)); color: #fff3d1; font-size: 10px; font-weight: 900; letter-spacing: .03em; white-space: nowrap; pointer-events: none; box-shadow: 0 4px 12px #000a; }
 @keyframes tbEspectroEntra { from { opacity: 0; transform: scale(.1) rotate(-35deg); } to { opacity: 1; transform: none; } }
-@keyframes tbEspectroBob { 0% { transform: translateY(0) rotate(-5deg); } 100% { transform: translateY(-14px) rotate(5deg); } }
+@keyframes tbEspectroBob { 0% { transform: translateY(0) rotate(-5deg); } 100% { transform: translateY(-12px) rotate(5deg); } }
+@keyframes tbEspectroGolpe { 0% { transform: scale(1); filter: brightness(1); } 30% { transform: scale(.82) rotate(-10deg); filter: brightness(2.4); } 60% { transform: scale(1.08) rotate(8deg); } 100% { transform: scale(1); filter: brightness(1); } }
+@keyframes tbCazaGira { to { transform: rotate(360deg); } }
 .tb-espectro-rastro { position: fixed; z-index: 8599; width: 6px; height: 6px; border-radius: 50%; background: var(--c, #ff9a3c); box-shadow: 0 0 8px var(--c, #ff9a3c); pointer-events: none; animation: tbRastroDesvanece .9s ease-out forwards; }
 @keyframes tbRastroDesvanece { from { opacity: .75; transform: scale(1); } to { opacity: 0; transform: translateY(-16px) scale(.2); } }
-.tb-espectro-chispa { position: fixed; z-index: 8601; width: 9px; height: 9px; border-radius: 50%; background: var(--c, #ffd27a); box-shadow: 0 0 12px var(--c, #ffd27a); pointer-events: none; animation: tbEspectroExplosion .8s cubic-bezier(.16, 1, .3, 1) forwards; }
+.tb-espectro-chispa { position: fixed; z-index: 8701; width: 9px; height: 9px; margin: -4px 0 0 -4px; border-radius: 50%; background: var(--c, #ffd27a); box-shadow: 0 0 12px var(--c, #ffd27a); pointer-events: none; animation: tbEspectroExplosion .8s cubic-bezier(.16, 1, .3, 1) forwards; }
 @keyframes tbEspectroExplosion { from { opacity: 1; transform: translate(0, 0) scale(1.3); } to { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(.1); } }
-.tb-caza-progreso { margin: 14px 0 16px; padding: 15px 16px; border: 1px solid #ff9a3c4d; border-radius: 18px; background: radial-gradient(90% 120% at 100% 0%, #a85eea24 0%, transparent 65%), linear-gradient(145deg, #ff9a3c17, #0b132899); }
-.tb-caza-progreso-fila { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 13px; }
+
+/* Efecto de captura */
+.tb-caza-fx { position: fixed; inset: 0; z-index: 8700; display: grid; place-items: center; padding: 16px; padding-bottom: max(16px, env(safe-area-inset-bottom)); overflow: hidden; background: radial-gradient(circle at var(--x) var(--y), color-mix(in srgb, var(--esp-glow) 22%, transparent), #050817b3 55%); animation: tbCazaFondo .3s ease both; cursor: pointer; }
+.tb-caza-fx.sale { animation: tbCazaFondoSale .38s ease forwards; }
+.tb-caza-flash { position: absolute; left: var(--x); top: var(--y); width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%; background: #fff; box-shadow: 0 0 60px 30px var(--esp-glow); animation: tbCazaFlash .55s ease-out forwards; pointer-events: none; }
+.tb-caza-fx.grande .tb-caza-flash { animation-duration: .8s; }
+.tb-caza-onda { position: absolute; left: var(--x); top: var(--y); width: 40px; height: 40px; margin: -20px 0 0 -20px; border-radius: 50%; border: 3px solid var(--esp-glow); box-shadow: 0 0 18px var(--esp-glow); animation: tbCazaOnda .9s cubic-bezier(.16, 1, .3, 1) forwards; pointer-events: none; }
+.tb-caza-onda.dos { border-color: var(--rz); animation-delay: .15s; }
+.tb-caza-fx.grande .tb-caza-onda { border-width: 5px; }
+.tb-caza-carta { position: relative; z-index: 1; width: min(340px, 88vw); display: grid; justify-items: center; gap: 8px; padding: 22px 20px 18px; border: 1.5px solid var(--rz); border-radius: 24px; text-align: center; overflow: hidden; cursor: default; background: radial-gradient(120% 70% at 50% 0%, color-mix(in srgb, var(--esp-glow) 30%, transparent), transparent 62%), linear-gradient(165deg, #1b2450, #0a1028); box-shadow: 0 30px 80px #000b, 0 0 40px color-mix(in srgb, var(--rz) 40%, transparent); animation: tbCazaCarta .6s cubic-bezier(.2, 1.4, .4, 1) .25s both; }
+.tb-caza-rayos { position: absolute; inset: -60%; z-index: -1; background: repeating-conic-gradient(#ffe28a26 0 9deg, transparent 9deg 18deg); animation: tbCazaGira 14s linear infinite; }
+.tb-caza-kicker { color: var(--rz); font-size: 12px; font-weight: 900; letter-spacing: .06em; }
+.tb-caza-carta-fig { width: 116px; height: 116px; filter: drop-shadow(0 0 22px var(--esp-glow)); animation: tbCazaFlota 2.4s ease-in-out .9s infinite alternate; }
+.tb-caza-carta-fig svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.tb-caza-carta h3 { margin: 2px 0 0; font-size: 22px; color: #fff; }
+.tb-caza-rz { padding: 3px 11px; border-radius: 99px; border: 1px solid var(--rz); color: var(--rz); background: color-mix(in srgb, var(--rz) 14%, transparent); font-size: 11px; font-weight: 900; }
+.tb-caza-premio { display: flex; align-items: center; gap: 8px; margin-top: 4px; font-size: 15px; color: #ffe7a3; }
+.tb-caza-premio b { font-size: 34px; line-height: 1; font-variant-numeric: tabular-nums; color: #ffd27a; text-shadow: 0 0 18px #ffb02e88; }
+.tb-caza-extra { margin: 0; font-size: 12.5px; line-height: 1.45; color: #d8c9a8; }
+.tb-caza-carta .tb-primary { width: 100%; margin-top: 6px; }
+.tb-caza-fx.leyenda .tb-caza-carta h3 { color: #ffe7a3; text-shadow: 0 0 16px #ffd23f88; }
+@keyframes tbCazaFondo { from { opacity: 0; } to { opacity: 1; } }
+@keyframes tbCazaFondoSale { to { opacity: 0; } }
+@keyframes tbCazaFlash { 0% { transform: scale(.4); opacity: 1; } 100% { transform: scale(14); opacity: 0; } }
+@keyframes tbCazaOnda { 0% { transform: scale(.3); opacity: 1; } 100% { transform: scale(9); opacity: 0; } }
+@keyframes tbCazaCarta { from { opacity: 0; transform: translateY(30px) scale(.7) rotateX(40deg); } to { opacity: 1; transform: none; } }
+@keyframes tbCazaFlota { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-8px) rotate(3deg); } }
+#tb-app.tb-caza-sacudida { animation: tbCazaSacude .5s cubic-bezier(.36, .07, .19, .97) both; }
+@keyframes tbCazaSacude { 10%, 90% { transform: translate(-2px, 1px); } 20%, 80% { transform: translate(4px, -2px); } 30%, 50%, 70% { transform: translate(-6px, 2px); } 40%, 60% { transform: translate(6px, -1px); } }
+
+/* Bestiario */
+.tb-caza-progreso { margin: 14px 0 14px; padding: 14px 15px; border: 1px solid #ff9a3c4d; border-radius: 18px; background: radial-gradient(90% 120% at 100% 0%, #a85eea24 0%, transparent 65%), linear-gradient(145deg, #ff9a3c17, #0b132899); }
+.tb-caza-progreso-fila { display: flex; justify-content: space-between; align-items: center; gap: 6px 10px; flex-wrap: wrap; font-size: 13px; }
 .tb-caza-barra { height: 9px; margin-top: 9px; border-radius: 99px; background: #ffffff14; overflow: hidden; box-shadow: inset 0 1px 3px #0006; }
 #tablon-root.tb-light .tb-caza-barra { background: #1b223318; }
 .tb-caza-barra i { display: block; height: 100%; border-radius: 99px; background: linear-gradient(90deg, #ff9a3c, #ffd27a, #5cf0a5); box-shadow: 0 0 12px #ff9a3c88; transition: width .45s cubic-bezier(.22, 1, .36, 1); }
-.tb-caza-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 11px; margin-bottom: 12px; }
-@media (min-width: 520px) { .tb-caza-grid { grid-template-columns: repeat(4, 1fr); } }
-.tb-caza-slot { position: relative; padding: 13px 8px 11px; border: 1px solid var(--line); border-radius: 16px; background: #ffffff08; text-align: center; }
+.tb-caza-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 12px; }
+.tb-caza-slot { position: relative; padding: 11px 6px 9px; border: 1px solid var(--line); border-radius: 15px; background: #ffffff08; text-align: center; }
 .tb-caza-slot.visto { border-color: var(--slot-c, #ff9a3c66); background: color-mix(in srgb, var(--slot-c, #ff9a3c) 12%, transparent); box-shadow: 0 8px 20px #0004; }
 .tb-caza-slot:not(.visto) svg { filter: brightness(0) opacity(.35); }
-.tb-caza-slot svg { width: 48px; height: 48px; margin: 0 auto 6px; display: block; }
-.tb-caza-slot b { display: block; font-size: 12px; line-height: 1.2; }
-.tb-caza-slot small { display: block; margin-top: 3px; color: var(--muted); font-size: 10.5px; }
-.tb-caza-rareza { display: inline-block; margin-bottom: 4px; padding: 1px 6px; border-radius: 99px; font-size: 9px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; background: #ffffff12; color: var(--slot-c, #ffd27a); }
+.tb-caza-slot svg { width: 46px; height: 46px; margin: 0 auto 5px; display: block; }
+.tb-caza-slot b { display: block; font-size: 11.5px; line-height: 1.2; }
+.tb-caza-slot small { display: block; margin-top: 3px; color: var(--muted); font-size: 10px; }
+.tb-caza-n { position: absolute; top: 7px; right: 8px; margin: 0 !important; color: #fff !important; font-weight: 900; }
+.tb-caza-rareza { display: inline-block; margin-bottom: 4px; padding: 1px 6px; border-radius: 99px; font-size: 8.5px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; background: #ffffff12; color: var(--rz, #ffd27a); }
 #tablon-root.tb-light .tb-caza-slot { background: #1b223308; border-color: #1b22331f; }
 #tablon-root.tb-light .tb-caza-slot.visto { background: #fff6e5; border-color: #e89a3c66; }
-.tb-caza-nota { margin: 0 0 12px; color: var(--muted); font-size: 11.5px; line-height: 1.45; }
+.tb-caza-nota { margin: 0 0 10px; color: var(--muted); font-size: 11.5px; line-height: 1.45; }
 .tb-caza-controles { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding-top: 10px; border-top: 1px solid var(--line); }
 .tb-caza-botones { display: flex; gap: 8px; flex-wrap: wrap; }
 .tb-caza-mute { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); cursor: pointer; user-select: none; }
-.tb-caza-mute input { accent-color: #ff9a3c; width: 16px; height: 16px; cursor: pointer; }
+.tb-caza-mute input { accent-color: #ff9a3c; width: 18px; height: 18px; cursor: pointer; }
+
+/* Panel del owner */
+.tb-caza-owner { margin-top: 14px; padding: 14px; border: 1px dashed #ffd23f66; border-radius: 18px; background: #ffd23f0a; }
+.tb-caza-owner h4 { margin: 0 0 4px; font-size: 15px; color: #ffe7a3; }
+.tb-caza-owner > p { margin: 0 0 10px; font-size: 12px; line-height: 1.45; color: var(--muted); }
+.tb-caza-o-fila { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 8px; }
+.tb-caza-o-fila input[type="search"], .tb-caza-o-fila select { flex: 1 1 200px; min-width: 0; min-height: 40px; padding: 9px 12px; color: #fff; border: 1px solid #9bb0ff2e; border-radius: 12px; background: #081226; outline: none; }
+.tb-caza-o-fila input[type="search"]:focus, .tb-caza-o-fila select:focus { border-color: #ffd23f; box-shadow: 0 0 0 3px #ffd23f22; }
+.tb-caza-o-rapidos { display: flex; gap: 6px; }
+.tb-caza-o-rapidos button { min-height: 36px; padding: 6px 10px; border: 1px solid #ffffff22; border-radius: 10px; background: #ffffff0d; color: #e8ecff; font-size: 12px; font-weight: 800; cursor: pointer; }
+.tb-caza-o-lista { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 6px; max-height: 210px; overflow-y: auto; margin-bottom: 10px; padding: 4px; border-radius: 12px; background: #050b1799; overscroll-behavior: contain; }
+.tb-caza-o-item { display: flex; align-items: center; gap: 8px; min-height: 42px; padding: 6px 9px; border: 1px solid transparent; border-radius: 10px; cursor: pointer; }
+.tb-caza-o-item.on { border-color: #ffd23f66; background: #ffd23f14; }
+.tb-caza-o-item input { width: 18px; height: 18px; flex: none; accent-color: #ffd23f; }
+.tb-caza-o-item span { min-width: 0; display: grid; }
+.tb-caza-o-item b { font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tb-caza-o-item small { font-size: 10.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#tb-caza-o-enviar { width: 100%; color: #2a1c02; background: linear-gradient(120deg, #ffe08a, #ffcf5c 55%, #f0a81f); }
+#tb-caza-o-enviar:disabled { color: inherit; }
+
+/* Celular: el bestiario se abre como hoja inferior */
+@media (max-width: 600px) {
+#tb-modal-caza { align-items: end; padding: 0; }
+#tb-modal-caza .tb-modal-card { width: 100%; max-height: 90dvh; padding: 18px 14px calc(16px + env(safe-area-inset-bottom)); border-radius: 22px 22px 0 0; animation: tbCazaHoja .32s cubic-bezier(.2, .9, .3, 1) both; }
+#tb-modal-caza h3 { font-size: 19px !important; }
+.tb-caza-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.tb-caza-slot svg { width: 40px; height: 40px; }
+.tb-caza-controles { flex-direction: column; align-items: stretch; }
+.tb-caza-botones > * { flex: 1; }
+.tb-caza-o-lista { grid-template-columns: 1fr; max-height: 180px; }
+.tb-caza-o-rapidos { width: 100%; }
+.tb-caza-o-rapidos button { flex: 1; }
+.tb-espectro-tag { font-size: 9px; padding: 2px 7px; }
+#tablon-root.tb-caza-abierta #tb-masc { display: none; }
+.tb-caza-carta-fig { width: 96px; height: 96px; }
+}
+@keyframes tbCazaHoja { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+
 @media (prefers-reduced-motion: reduce) {
-.tb-espectro, .tb-espectro-inner, .tb-espectro-aura, .tb-top .tb-caza-chip.alerta::after { animation: none !important; }
-.tb-espectro, .tb-espectro.quieto { transition: opacity .2s; }
+.tb-espectro, .tb-espectro-inner, .tb-espectro-aura, .tb-espectro::after, .tb-top .tb-caza-chip.alerta::after,
+.tb-caza-flash, .tb-caza-onda, .tb-caza-carta, .tb-caza-rayos, .tb-caza-carta-fig, #tb-app.tb-caza-sacudida, #tb-modal-caza .tb-modal-card { animation: none !important; }
+.tb-caza-flash, .tb-caza-onda { display: none; }
+.tb-espectro { transition: opacity .2s; }
 .tb-espectro:hover { transform: none; }
 }
 /* ===== Llave dorada: panel único, códigos de rescate y misión de la clave ===== */
@@ -7919,13 +8002,14 @@ Atrápalos antes de que huyan para ganar <b>Belis</b> y completar tu colección.
 <div class="tb-caza-progreso">
 <div class="tb-caza-progreso-fila">
 <b>Capturas con premio hoy: <span id="tb-caza-hoy">0 / 5</span></b>
-<span class="tb-muted" id="tb-caza-total">Total atrapados: 0</span>
+<span class="tb-muted">Apariciones hoy: <b id="tb-caza-nat">0 / 10</b></span>
 </div>
 <div class="tb-caza-barra" id="tb-caza-barra" role="progressbar" aria-label="Capturas con premio hoy" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0"><i id="tb-caza-barra-fill" style="width:0%"></i></div>
 <small class="tb-help" id="tb-caza-premio-txt" style="margin-top:8px"></small>
+<small class="tb-help" id="tb-caza-total" style="margin-top:4px"></small>
 </div>
 <div class="tb-caza-grid" id="tb-caza-bestiario"></div>
-<p class="tb-caza-nota">Los espíritus aparecen solos cada cierto tiempo mientras usas El Tablón. Los que invocas tú no dan Belis, pero sí cuentan para tu bestiario. <span id="tb-caza-fin"></span></p>
+<p class="tb-caza-nota">Mientras usas El Tablón, cada 3 minutos hay una probabilidad de 1 en 4 de que aparezca un espíritu (máximo 10 al día). Los raros resisten: hay que tocarlos varias veces. Los que invocas tú no dan Belis, pero sí llenan tu bestiario. <span id="tb-caza-fin"></span></p>
 <p class="tb-cumple-aviso" id="tb-caza-aviso" role="alert"></p>
 <div class="tb-caza-controles">
 <label class="tb-caza-mute"><input type="checkbox" id="tb-caza-sonido-chk" checked><span>🔊 Efectos de sonido</span></label>
@@ -7934,6 +8018,25 @@ Atrápalos antes de que huyan para ganar <b>Belis</b> y completar tu colección.
 <button type="button" class="tb-primary" data-cerrar-caza>Listo</button>
 </div>
 </div>
+<section class="tb-caza-owner tb-hidden" id="tb-caza-owner" aria-labelledby="tb-caza-o-titulo">
+<h4 id="tb-caza-o-titulo">⚡ Panel del owner · Forzar apariciones</h4>
+<p>Llegan al instante a quien tenga El Tablón abierto y duran 90 segundos. Las que llevan premio son un regalo: pagan siempre y no gastan el tope diario del alumno.</p>
+<div class="tb-caza-o-fila">
+<input type="search" id="tb-caza-o-buscar" placeholder="Buscar por nombre o usuario" aria-label="Buscar usuario">
+<div class="tb-caza-o-rapidos">
+<button type="button" data-caza-sel="yo">Solo yo</button>
+<button type="button" data-caza-sel="todos">Todos</button>
+<button type="button" data-caza-sel="ninguno">Ninguno</button>
+</div>
+</div>
+<div class="tb-caza-o-lista" id="tb-caza-o-lista"></div>
+<div class="tb-caza-o-fila">
+<select id="tb-caza-o-especie" aria-label="Criatura"></select>
+<label class="tb-caza-mute"><input type="checkbox" id="tb-caza-o-premio" checked><span>Con premio</span></label>
+</div>
+<button type="button" class="tb-primary" id="tb-caza-o-enviar" disabled>⚡ Forzar aparición (<span id="tb-caza-o-n">0</span>)</button>
+<p class="tb-cumple-aviso" id="tb-caza-o-aviso" role="alert"></p>
+</section>
 </div>
 </div>
 <div id="tb-ent-modal" class="tb-ent-modal tb-hidden" role="dialog" aria-modal="true" aria-labelledby="tb-ent-titulo">
@@ -13916,7 +14019,7 @@ grip.onpointercancel = soltar;
 };
 });
 }
-var VERSION_APP = "v18";
+var VERSION_APP = "v19";
 var PAGO_REPETIDO = {
 "Común": 8, "Raro": 15, "Épico": 40, "Legendario": 90, "Único": 300
 };
@@ -26006,27 +26109,51 @@ renderLogros();
 }
 
 /* ===================================================================
-   CAZA DE ESPÍRITUS DE HALLOWEEN
+   CAZA DE ESPÍRITUS DE HALLOWEEN (v19)
    Requiere supabase/ACTIVAR-caza-halloween.sql. El servidor decide qué
-   criatura aparece, cuánto paga, el tope diario y la fecha de cierre;
-   el navegador solo dibuja. El chip se actualiza solo cuando cambia el
-   conteo (sin observadores del DOM).
+   criatura aparece, cuánto paga, los topes diarios y la fecha de cierre;
+   el navegador solo dibuja. Las apariciones que fuerza el owner llegan
+   por Realtime (INSERT en tb_caza_boletos con forzada = true).
    =================================================================== */
 var CAZA_SQL = "ACTIVAR-caza-halloween.sql";
-var CAZA_PRIMERA_MS = 18000;
-var CAZA_CADA_MS = 135000;
-var CAZA_HUIDA_MS = 11500;
-var caza = { estado: "nada", datos: null, timer: null, pidiendo: false, capturando: false, audio: null };
+var CAZA_PRIMERA_MS = 20000;
+var CAZA_CADA_MS = 180000;
+var caza = { estado: "nada", datos: null, timer: null, pidiendo: false, capturando: false, audio: null,
+canal: null, cola: [], sel: {}, filtro: "" };
+var CAZA_RAREZAS = {
+"Común": { vida: 1, color: "#9fb3c8" },
+"Raro": { vida: 2, color: "#7aa8ff" },
+"Épico": { vida: 3, color: "#c084fc" },
+"Mítico": { vida: 4, color: "#3ff2b5" },
+"Legendario": { vida: 5, color: "#ffd23f" }
+};
 var CAZA_ESPECIES = {
 fuego_fatuo: { nombre: "Fuego Fatuo", rareza: "Común", premio: 8, velocidad: 2200, glow: "#5ef2d6",
 svg: '<svg viewBox="0 0 80 80" aria-hidden="true"><defs><radialGradient id="tbCazaFF" cx="50%" cy="55%" r="50%"><stop offset="0%" stop-color="#e4fbff"/><stop offset="55%" stop-color="#5ef2d6"/><stop offset="100%" stop-color="#3a6bff" stop-opacity="0"/></radialGradient></defs><path d="M40 10 C56 26 62 42 56 58 C51 70 29 70 24 58 C18 42 24 26 40 10 Z" fill="url(#tbCazaFF)"/><circle cx="33" cy="46" r="3.6" fill="#0b1020"/><circle cx="47" cy="46" r="3.6" fill="#0b1020"/><circle cx="32" cy="44.8" r="1.2" fill="#fff"/><circle cx="46" cy="44.8" r="1.2" fill="#fff"/><path d="M36 53 Q40 56 44 53" stroke="#0b1020" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>' },
+murcielago: { nombre: "Murciélago Travieso", rareza: "Común", premio: 8, velocidad: 1700, glow: "#c084fc",
+svg: '<svg viewBox="0 0 80 80" aria-hidden="true"><path d="M40 30 C34 30 31 34 31 40 C24 33 14 32 6 38 C12 40 14 45 13 50 C18 46 24 47 28 51 C30 47 33 46 35 48 C36 52 38 55 40 56 C42 55 44 52 45 48 C47 46 50 47 52 51 C56 47 62 46 67 50 C66 45 68 40 74 38 C66 32 56 33 49 40 C49 34 46 30 40 30 Z" fill="#2a1840" stroke="#c084fc" stroke-width="2"/><path d="M34 31 L33 24 L38 29 Z M46 31 L47 24 L42 29 Z" fill="#2a1840" stroke="#c084fc" stroke-width="1.5"/><circle cx="36" cy="39" r="3" fill="#ffd27a"/><circle cx="44" cy="39" r="3" fill="#ffd27a"/><path d="M37 46 L38 49 L39 46 M41 46 L42 49 L43 46" stroke="#fff" stroke-width="1.4" fill="none"/></svg>' },
+calavera: { nombre: "Calavera Saltarina", rareza: "Común", premio: 9, velocidad: 2000, glow: "#f5f0dc",
+svg: '<svg viewBox="0 0 80 80" aria-hidden="true"><path d="M40 12 C22 12 14 24 14 36 C14 45 19 50 24 52 L24 62 C24 65 27 67 30 67 L50 67 C53 67 56 65 56 62 L56 52 C61 50 66 45 66 36 C66 24 58 12 40 12 Z" fill="#f3efe2" stroke="#c9c2a8" stroke-width="2"/><ellipse cx="30" cy="38" rx="7" ry="8" fill="#1a1222"/><ellipse cx="50" cy="38" rx="7" ry="8" fill="#1a1222"/><circle cx="31" cy="37" r="2" fill="#7cf"/><circle cx="51" cy="37" r="2" fill="#7cf"/><path d="M37 50 L40 45 L43 50 Z" fill="#1a1222"/><path d="M32 57 V66 M37 57 V67 M43 57 V67 M48 57 V66" stroke="#c9c2a8" stroke-width="2"/></svg>' },
 espectro_michi: { nombre: "Michi Fantasma", rareza: "Raro", premio: 14, velocidad: 1900, glow: "#b07aff",
 svg: '<svg viewBox="0 0 80 80" aria-hidden="true"><path d="M22 32 L18 14 L32 24 Q40 21 48 24 L62 14 L58 32 C64 41 64 56 58 66 L50 61 L44 67 L40 61 L36 67 L30 61 L22 66 C16 56 16 41 22 32 Z" fill="#efeaff" stroke="#9d7aff" stroke-width="2.5"/><circle cx="33" cy="41" r="4" fill="#231442"/><circle cx="47" cy="41" r="4" fill="#231442"/><circle cx="32" cy="39.5" r="1.4" fill="#ffd27a"/><circle cx="46" cy="39.5" r="1.4" fill="#ffd27a"/><path d="M37 48 L40 50 L43 48" stroke="#ff7ad9" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>' },
+arana: { nombre: "Araña Tejedora", rareza: "Raro", premio: 14, velocidad: 1800, glow: "#ff5a6e",
+svg: '<svg viewBox="0 0 80 80" aria-hidden="true"><path d="M40 4 V24" stroke="#c9c2d8" stroke-width="1.2"/><g stroke="#2b1b2e" stroke-width="3.2" fill="none" stroke-linecap="round"><path d="M32 40 Q20 30 12 34 M32 44 Q18 42 10 48 M34 48 Q22 54 16 64 M36 50 Q30 60 28 70 M48 40 Q60 30 68 34 M48 44 Q62 42 70 48 M46 48 Q58 54 64 64 M44 50 Q50 60 52 70"/></g><ellipse cx="40" cy="46" rx="12" ry="14" fill="#2b1b2e" stroke="#ff5a6e" stroke-width="1.2"/><circle cx="40" cy="30" r="8" fill="#3a2540"/><path d="M37 42 L43 42 L40 47 L43 52 L37 52 L40 47 Z" fill="#ff5a6e"/><circle cx="37" cy="29" r="2.2" fill="#ff5a6e"/><circle cx="43" cy="29" r="2.2" fill="#ff5a6e"/></svg>' },
+buho: { nombre: "Búho Sombrío", rareza: "Raro", premio: 15, velocidad: 1800, glow: "#7aa8ff",
+svg: '<svg viewBox="0 0 80 80" aria-hidden="true"><path d="M22 22 L28 32 L52 32 L58 22 L50 28 Q40 24 30 28 Z" fill="#3b3466"/><ellipse cx="40" cy="46" rx="20" ry="24" fill="#4a3f7a" stroke="#7aa8ff" stroke-width="2"/><ellipse cx="40" cy="54" rx="12" ry="13" fill="#8c80c4" opacity=".55"/><circle cx="32" cy="38" r="8" fill="#fff6c8"/><circle cx="48" cy="38" r="8" fill="#fff6c8"/><circle cx="32" cy="38" r="4" fill="#130d24"/><circle cx="48" cy="38" r="4" fill="#130d24"/><path d="M37 45 L40 50 L43 45 Z" fill="#ffb02e"/><path d="M33 68 V72 M37 68 V72 M43 68 V72 M47 68 V72" stroke="#ffb02e" stroke-width="2.2" stroke-linecap="round"/></svg>' },
 calabaza_real: { nombre: "Calabaza Real", rareza: "Épico", premio: 20, velocidad: 1600, glow: "#ff9a3c",
-svg: '<svg viewBox="0 0 80 80" aria-hidden="true"><path d="M38 14 C38 9 43 8 45 12 L43 22 L37 22 Z" fill="#52dfa8"/><ellipse cx="40" cy="45" rx="26" ry="21" fill="#ff8a2b" stroke="#ffd27a" stroke-width="2"/><ellipse cx="40" cy="45" rx="15" ry="21" fill="#ffa53b"/><polygon points="28,38 35,38 31.5,44" fill="#241004"/><polygon points="45,38 52,38 48.5,44" fill="#241004"/><path d="M28 52 L33 55 L37 52 L40 55 L43 52 L47 55 L52 52" stroke="#241004" stroke-width="3" fill="none" stroke-linecap="round"/></svg>' },
+svg: '<svg viewBox="0 0 80 80" aria-hidden="true"><path d="M38 14 C38 9 43 8 45 12 L43 22 L37 22 Z" fill="#52dfa8"/><ellipse cx="40" cy="45" rx="26" ry="21" fill="#ff8a2b" stroke="#ffd27a" stroke-width="2"/><ellipse cx="40" cy="45" rx="15" ry="21" fill="#ffa53b"/><polygon points="28,38 35,38 31.5,44" fill="#241004"/><polygon points="45,38 52,38 48.5,44" fill="#241004"/><path d="M28 52 L33 55 L37 52 L40 55 L43 52 L47 55 L52 52" stroke="#241004" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M30 10 L34 4 L38 9 L42 3 L46 9 L50 4 L54 10 Z" fill="#ffd23f"/></svg>' },
+caldero: { nombre: "Caldero Hechizado", rareza: "Épico", premio: 22, velocidad: 1700, glow: "#7dff6a",
+svg: '<svg viewBox="0 0 80 80" aria-hidden="true"><circle cx="30" cy="20" r="5" fill="#7dff6a" opacity=".7"/><circle cx="44" cy="13" r="3.5" fill="#7dff6a" opacity=".6"/><circle cx="52" cy="23" r="4" fill="#7dff6a" opacity=".5"/><ellipse cx="40" cy="34" rx="26" ry="7" fill="#7dff6a"/><path d="M14 34 C14 60 24 68 40 68 C56 68 66 60 66 34 Z" fill="#1c1a24" stroke="#4b4760" stroke-width="2"/><path d="M24 68 L20 74 M56 68 L60 74" stroke="#1c1a24" stroke-width="4" stroke-linecap="round"/><circle cx="33" cy="48" r="3" fill="#7dff6a"/><circle cx="47" cy="48" r="3" fill="#7dff6a"/><path d="M34 56 Q40 60 46 56" stroke="#7dff6a" stroke-width="2" fill="none" stroke-linecap="round"/></svg>' },
+carreta_nagua: { nombre: "Carreta Nagua", rareza: "Épico", premio: 24, velocidad: 1500, glow: "#9be7ff",
+svg: '<svg viewBox="0 0 80 80" aria-hidden="true"><path d="M12 26 H58 V48 H12 Z" fill="#3a2a1e" stroke="#9be7ff" stroke-width="2"/><path d="M12 33 H58 M12 41 H58" stroke="#2a1c12" stroke-width="2"/><path d="M58 40 L74 36" stroke="#5a4232" stroke-width="3" stroke-linecap="round"/><circle cx="30" cy="54" r="13" fill="#0b1020" fill-opacity=".4" stroke="#9be7ff" stroke-width="3"/><path d="M30 41 V67 M17 54 H43 M21 45 L39 63 M39 45 L21 63" stroke="#9be7ff" stroke-width="1.6"/><circle cx="30" cy="54" r="3" fill="#9be7ff"/><path d="M8 66 Q22 60 36 68 Q50 74 70 64" stroke="#9be7ff" stroke-width="1.5" fill="none" opacity=".5"/><circle cx="26" cy="17" r="5" fill="#e9f8ff"/><circle cx="24.5" cy="16" r="1.2" fill="#0b1020"/><circle cx="27.5" cy="16" r="1.2" fill="#0b1020"/><path d="M21 22 H31 V26 H21 Z" fill="#e9f8ff" opacity=".8"/></svg>' },
 cadejo_espectral: { nombre: "Cadejo Espectral", rareza: "Mítico", premio: 35, velocidad: 1250, glow: "#3ff2b5",
-svg: '<svg viewBox="0 0 80 80" aria-hidden="true"><path d="M18 36 L14 14 L30 26 Q40 22 50 26 L66 14 L62 36 C67 45 64 58 54 64 L40 68 L26 64 C16 58 13 45 18 36 Z" fill="#0d1726" stroke="#3ff2b5" stroke-width="2.4"/><path d="M26 38 L36 42 L28 45 Z" fill="#3ff2b5"/><path d="M54 38 L44 42 L52 45 Z" fill="#3ff2b5"/><path d="M34 55 L37 52 L40 56 L43 52 L46 55" stroke="#9dffd9" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>' }
+svg: '<svg viewBox="0 0 80 80" aria-hidden="true"><path d="M18 36 L14 14 L30 26 Q40 22 50 26 L66 14 L62 36 C67 45 64 58 54 64 L40 68 L26 64 C16 58 13 45 18 36 Z" fill="#0d1726" stroke="#3ff2b5" stroke-width="2.4"/><path d="M26 38 L36 42 L28 45 Z" fill="#3ff2b5"/><path d="M54 38 L44 42 L52 45 Z" fill="#3ff2b5"/><path d="M34 55 L37 52 L40 56 L43 52 L46 55" stroke="#9dffd9" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>' },
+la_cegua: { nombre: "La Cegua", rareza: "Mítico", premio: 38, velocidad: 1200, glow: "#ff4d6d",
+svg: '<svg viewBox="0 0 80 80" aria-hidden="true"><path d="M40 6 C20 6 12 22 12 40 C12 58 16 70 22 74 L28 60 L40 66 L52 60 L58 74 C64 70 68 58 68 40 C68 22 60 6 40 6 Z" fill="#14101c"/><path d="M40 16 C30 16 27 26 28 36 C29 46 33 58 36 64 C38 68 42 68 44 64 C47 58 51 46 52 36 C53 26 50 16 40 16 Z" fill="#efe9dc" stroke="#ff4d6d" stroke-width="1.6"/><ellipse cx="34" cy="32" rx="4" ry="5" fill="#1a0b10"/><ellipse cx="46" cy="32" rx="4" ry="5" fill="#1a0b10"/><circle cx="34" cy="32" r="1.6" fill="#ff4d6d"/><circle cx="46" cy="32" r="1.6" fill="#ff4d6d"/><ellipse cx="37" cy="55" rx="1.6" ry="2.4" fill="#1a0b10"/><ellipse cx="43" cy="55" rx="1.6" ry="2.4" fill="#1a0b10"/><path d="M36 61 H44" stroke="#1a0b10" stroke-width="1.4"/></svg>' },
+la_mocuana: { nombre: "La Mocuana", rareza: "Legendario", premio: 50, velocidad: 1100, glow: "#ffe28a",
+svg: '<svg viewBox="0 0 80 80" aria-hidden="true"><defs><linearGradient id="tbCazaMoc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffdf2"/><stop offset="1" stop-color="#ffe28a" stop-opacity=".3"/></linearGradient></defs><path d="M40 8 C28 8 22 18 22 28 L18 70 L26 64 L32 72 L40 64 L48 72 L54 64 L62 70 L58 28 C58 18 52 8 40 8 Z" fill="url(#tbCazaMoc)" stroke="#ffe28a" stroke-width="1.6"/><path d="M27 18 C24 30 24 42 22 56 M53 18 C56 30 56 42 58 56" stroke="#3a2e1a" stroke-width="4" fill="none" stroke-linecap="round"/><ellipse cx="40" cy="26" rx="9" ry="11" fill="#fff8e6"/><path d="M35 25 Q36.5 23 38 25 M42 25 Q43.5 23 45 25" stroke="#3a2e1a" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M38 31 Q40 32.5 42 31" stroke="#d98a8a" stroke-width="1.4" fill="none" stroke-linecap="round"/><circle cx="40" cy="6" r="3" fill="#ffe28a"/><path d="M34 46 Q40 50 46 46" stroke="#ffe28a" stroke-width="1.2" fill="none" opacity=".7"/></svg>' }
 };
+function cazaRareza(esp) { return CAZA_RAREZAS[esp.rareza] || CAZA_RAREZAS["Común"]; }
 function cazaMovReducido() {
 try { return window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { return false; }
 }
@@ -26034,8 +26161,17 @@ function cazaSinSonido() {
 try { return window.localStorage.getItem("tb-caza-sin-sonido") === "1"; } catch (e) { return false; }
 }
 // Sonidos sintetizados con Web Audio (sin archivos).
+var CAZA_SONIDOS = {
+spawn: { notas: [523.25, 659.25, 783.99], paso: 0.08, dura: 0.35, vol: 0.06, tipo: "sine" },
+golpe: { notas: [196, 147], paso: 0.03, dura: 0.12, vol: 0.12, tipo: "square" },
+captura: { notas: [880, 1318.5], paso: 0.07, dura: 0.28, vol: 0.09, tipo: "triangle" },
+bono: { notas: [523.25, 659.25, 783.99, 1046.5], paso: 0.09, dura: 0.45, vol: 0.11, tipo: "triangle" },
+leyenda: { notas: [392, 523.25, 659.25, 783.99, 1046.5, 1318.5], paso: 0.1, dura: 0.6, vol: 0.1, tipo: "triangle" }
+};
 function cazaSonar(tipo) {
 if (cazaSinSonido()) { return; }
+var cfg = CAZA_SONIDOS[tipo];
+if (!cfg) { return; }
 try {
 var Ctx = window.AudioContext || window.webkitAudioContext;
 if (!Ctx) { return; }
@@ -26043,28 +26179,27 @@ if (!caza.audio) { caza.audio = new Ctx(); }
 var ctx = caza.audio;
 if (ctx.state === "suspended") { ctx.resume(); }
 var t0 = ctx.currentTime;
-var notas = tipo === "spawn" ? [523.25, 659.25, 783.99] : tipo === "bono" ? [523.25, 659.25, 783.99, 1046.5] : [880, 1318.5];
-var paso = tipo === "spawn" ? 0.08 : tipo === "bono" ? 0.09 : 0.07;
-var dura = tipo === "spawn" ? 0.35 : tipo === "bono" ? 0.45 : 0.28;
-var vol = tipo === "spawn" ? 0.06 : tipo === "bono" ? 0.11 : 0.09;
-notas.forEach(function (f, i) {
+cfg.notas.forEach(function (f, i) {
 var osc = ctx.createOscillator();
 var g = ctx.createGain();
-var ini = t0 + i * paso;
-osc.type = tipo === "spawn" ? "sine" : "triangle";
+var ini = t0 + i * cfg.paso;
+osc.type = cfg.tipo;
 osc.frequency.setValueAtTime(f, ini);
 g.gain.setValueAtTime(0.001, ini);
-g.gain.exponentialRampToValueAtTime(vol, ini + 0.03);
-g.gain.exponentialRampToValueAtTime(0.001, ini + dura);
+g.gain.exponentialRampToValueAtTime(cfg.vol, ini + 0.02);
+g.gain.exponentialRampToValueAtTime(0.001, ini + cfg.dura);
 osc.connect(g);
 g.connect(ctx.destination);
 osc.start(ini);
-osc.stop(ini + dura + 0.02);
+osc.stop(ini + cfg.dura + 0.02);
 });
 } catch (e) { /* sin audio, la caza sigue igual */ }
 }
+function cazaVibrar(ms) {
+try { if (navigator.vibrate && !cazaMovReducido()) { navigator.vibrate(ms); } } catch (e) { /* nada */ }
+}
 
-/* ---------- Estado y chip ---------- */
+/* ---------- Estado, chip y Realtime ---------- */
 async function cazaCargar() {
 if (!client || !me) { return; }
 var r = await client.rpc("tb_caza_estado");
@@ -26098,6 +26233,7 @@ async function cazaIniciar() {
 await cazaCargar();
 if (caza.timer) { clearTimeout(caza.timer); caza.timer = null; }
 if (caza.estado !== "lista") { return; }
+cazaSuscribir();
 cazaProgramar(CAZA_PRIMERA_MS);
 }
 function cazaProgramar(ms) {
@@ -26108,7 +26244,34 @@ if (caza.estado !== "lista") { return; }
 cazaAparecer(false).finally(function () { cazaProgramar(CAZA_CADA_MS); });
 }, ms);
 }
-// No interrumpe: ni en el login, ni con otra ventana abierta, ni con la pestaña oculta.
+function cazaSuscribir() {
+if (caza.canal || !client || !me) { return; }
+caza.canal = client.channel("tb-caza-" + me.id)
+.on("postgres_changes", { event: "INSERT", schema: "public", table: "tb_caza_boletos", filter: "user_id=eq." + me.id },
+function (payload) {
+var fila = payload && payload.new;
+if (!fila || !fila.forzada || fila.cobrado_en) { return; }
+cazaEncolar({ boleto: fila.id, especie: fila.especie, premio: fila.premio || 0, invocada: false, forzada: true, expira: fila.expira_en });
+})
+.subscribe();
+}
+function cazaEncolar(boleto) {
+caza.cola.push(boleto);
+cazaSiguiente();
+}
+function cazaSiguiente() {
+if ($(".tb-espectro")) { return; }
+while (caza.cola.length) {
+var b = caza.cola.shift();
+if (b.expira && Date.parse(b.expira) - Date.now() < 4000) { continue; }
+var app = $("#tb-app");
+if (!me || !app || app.classList.contains("tb-hidden")) { return; }
+cazaCerrar();
+avisoToast("⚡ ¡Aparición especial! Algo poderoso ronda tu tablón.");
+cazaDibujar(b);
+return;
+}
+}
 function cazaPuedeAparecer() {
 if (!me || document.hidden) { return false; }
 var app = $("#tb-app");
@@ -26116,12 +26279,12 @@ if (!app || app.classList.contains("tb-hidden")) { return false; }
 if (root.classList.contains("tb-en-portal") || root.classList.contains("tb-cg-abierta") || root.classList.contains("tb-modal-abierto")) { return false; }
 var terminos = $("#tb-terms");
 if (terminos && !terminos.classList.contains("tb-hidden")) { return false; }
-if ($("#tb-llave-modal") || $("#tb-cumple-modal") || $(".tb-espectro")) { return false; }
+if ($("#tb-llave-modal") || $("#tb-cumple-modal") || $(".tb-espectro") || $(".tb-caza-fx")) { return false; }
 var modal = $("#tb-modal-caza");
 return !modal || modal.classList.contains("tb-hidden");
 }
 
-/* ---------- Aparición y captura ---------- */
+/* ---------- Aparición ---------- */
 async function cazaAparecer(invocada) {
 if (caza.pidiendo || caza.estado !== "lista") { return null; }
 if (!invocada && !cazaPuedeAparecer()) { return null; }
@@ -26134,30 +26297,60 @@ if (r.error) { console.warn("[caza] aparecer:", r.error.message); return { ok: f
 var d = r.data || {};
 if (d.cerrado) { caza.estado = "cerrada"; cazaPintarChip(); return d; }
 if (!d.ok) { return d; }
-if (invocada && caza.datos && caza.datos.hoy) { caza.datos.hoy.invocadas = (caza.datos.hoy.invocadas || 0) + 1; }
+if (caza.datos && caza.datos.hoy) {
+if (invocada) { caza.datos.hoy.invocadas = (caza.datos.hoy.invocadas || 0) + 1; }
+else { caza.datos.hoy.naturales = (caza.datos.hoy.naturales || 0) + 1; }
+}
 cazaDibujar(d);
 return d;
 }
-function cazaPosicion() {
-return { x: Math.floor(8 + Math.random() * 78), y: Math.floor(14 + Math.random() * 66) };
+// Posición en píxeles dentro de la pantalla visible (sirve igual en celular).
+function cazaPosicion(tam) {
+var w = window.innerWidth, h = window.innerHeight;
+var margen = 10;
+var arriba = Math.min(90, h * 0.12), abajo = Math.max(arriba + tam + 20, h * 0.78);
+return {
+x: Math.round(margen + Math.random() * Math.max(1, w - tam - margen * 2)),
+y: Math.round(arriba + Math.random() * Math.max(1, abajo - arriba - tam))
+};
+}
+function cazaTamano() {
+return Math.round(Math.max(58, Math.min(80, window.innerWidth * 0.17)));
 }
 function cazaDibujar(boleto) {
 var esp = CAZA_ESPECIES[boleto.especie];
 if (!esp) { return; }
+var rz = cazaRareza(esp);
+var vidaMax = rz.vida;
+var vida = vidaMax;
 var quieto = cazaMovReducido();
+var tam = cazaTamano();
 var btn = document.createElement("button");
 btn.type = "button";
-btn.className = "tb-espectro" + (quieto ? " quieto" : "");
+btn.className = "tb-espectro r-" + esp.rareza.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase() + (quieto ? " quieto" : "") + (boleto.forzada ? " forzada" : "");
 btn.style.setProperty("--esp-glow", esp.glow);
-var pos = cazaPosicion();
-btn.style.left = pos.x + "vw";
-btn.style.top = pos.y + "vh";
-var etiqueta = boleto.premio > 0 ? esp.rareza + " · +" + boleto.premio + " B" : esp.rareza + (boleto.invocada ? " · invocado" : " · sin premio");
-btn.setAttribute("aria-label", "Atrapar a " + esp.nombre + (boleto.premio > 0 ? ", " + boleto.premio + " Belis" : ""));
-btn.innerHTML = '<span class="tb-espectro-aura"></span><span class="tb-espectro-inner">' + esp.svg + '</span><span class="tb-espectro-tag">' + escapeHtml(etiqueta) + "</span>";
+btn.style.setProperty("--rz", rz.color);
+btn.style.width = btn.style.height = tam + "px";
+var pos = cazaPosicion(tam);
+btn.style.left = pos.x + "px";
+btn.style.top = pos.y + "px";
+var etiqueta = boleto.premio > 0 ? esp.rareza + " · +" + boleto.premio + " B"
+: esp.rareza + (boleto.invocada ? " · invocado" : " · sin premio");
+var golpesTxt = vidaMax > 1 ? " Tócalo " + vidaMax + " veces." : "";
+btn.setAttribute("aria-label", "Atrapar a " + esp.nombre + (boleto.premio > 0 ? ", " + boleto.premio + " Belis." : ".") + golpesTxt);
+var circ = 2 * Math.PI * 46;
+btn.innerHTML = '<span class="tb-espectro-aura"></span>' +
+(vidaMax > 1 ? '<svg class="tb-espectro-vida" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" class="fondo"/><circle cx="50" cy="50" r="46" class="barra" style="stroke-dasharray:' + circ.toFixed(1) + ";stroke-dashoffset:0" + '"/></svg>' : "") +
+'<span class="tb-espectro-inner">' + esp.svg + "</span>" +
+'<span class="tb-espectro-tag">' + escapeHtml(etiqueta) + "</span>";
 var chip = $("#tb-caza-chip");
 if (chip) { chip.classList.add("alerta"); }
 cazaSonar("spawn");
+function mover() {
+var p = cazaPosicion(tam);
+btn.style.left = p.x + "px";
+btn.style.top = p.y + "px";
+}
 var vuelo = quieto ? null : setInterval(function () {
 if (!btn.isConnected) { clearInterval(vuelo); return; }
 var rect = btn.getBoundingClientRect();
@@ -26168,37 +26361,56 @@ rastro.style.top = (rect.top + rect.height / 2) + "px";
 rastro.style.setProperty("--c", esp.glow);
 root.appendChild(rastro);
 setTimeout(function () { rastro.remove(); }, 900);
-var p = cazaPosicion();
-btn.style.left = p.x + "vw";
-btn.style.top = p.y + "vh";
+mover();
 }, esp.velocidad);
 function quitar() {
 if (vuelo) { clearInterval(vuelo); }
 if (chip) { chip.classList.remove("alerta"); }
 }
+var restante = boleto.expira ? Date.parse(boleto.expira) - Date.now() - 2000 : Infinity;
+var huidaMs = Math.min(restante, boleto.forzada ? 30000 : 10000 + vidaMax * 2000);
 var huida = setTimeout(function () {
 quitar();
 btn.classList.add("huye");
-setTimeout(function () { btn.remove(); }, 420);
-}, CAZA_HUIDA_MS);
+setTimeout(function () { btn.remove(); cazaSiguiente(); }, 420);
+}, Math.max(4000, huidaMs));
 btn.addEventListener("click", function () {
-if (caza.capturando) { return; }
-clearTimeout(huida);
-quitar();
+if (caza.capturando || btn.disabled) { return; }
 var rect = btn.getBoundingClientRect();
 var cx = rect.left + rect.width / 2, cy = rect.top + rect.height / 2;
+vida -= 1;
+if (vida > 0) {
+// Golpe: aún resiste. Se sacude, chispea y (si no es común) se escurre.
+cazaSonar("golpe");
+cazaVibrar(25);
+cazaChispas(cx, cy, esp.glow, 7, 26);
+var barra = btn.querySelector(".tb-espectro-vida .barra");
+if (barra) { barra.style.strokeDashoffset = (circ * (1 - vida / vidaMax)).toFixed(1); }
+btn.classList.remove("golpe");
+void btn.offsetWidth;
+btn.classList.add("golpe");
+if (!quieto) { setTimeout(mover, 140); }
+return;
+}
+clearTimeout(huida);
+quitar();
 btn.disabled = true;
 btn.classList.add("atrapado");
-cazaCapturar(boleto, esp, cx, cy).finally(function () { btn.remove(); });
+cazaCapturar(boleto, esp, cx, cy).finally(function () {
+btn.remove();
+setTimeout(cazaSiguiente, 600);
+});
 });
 root.appendChild(btn);
 }
-function cazaChispas(x, y, color) {
+function cazaChispas(x, y, color, n, alcance) {
 if (cazaMovReducido()) { return; }
-for (var i = 0; i < 14; i++) {
+n = n || 14;
+alcance = alcance || 44;
+for (var i = 0; i < n; i++) {
 var p = document.createElement("i");
-var ang = (Math.PI * 2 * i) / 14;
-var dist = 34 + Math.random() * 44;
+var ang = (Math.PI * 2 * i) / n + Math.random() * 0.4;
+var dist = alcance * 0.7 + Math.random() * alcance;
 p.className = "tb-espectro-chispa";
 p.style.left = x + "px";
 p.style.top = y + "px";
@@ -26206,9 +26418,11 @@ p.style.setProperty("--c", i % 2 === 0 ? color : "#ffd27a");
 p.style.setProperty("--dx", (Math.cos(ang) * dist).toFixed(1) + "px");
 p.style.setProperty("--dy", (Math.sin(ang) * dist).toFixed(1) + "px");
 root.appendChild(p);
-setTimeout(function (n) { return function () { n.remove(); }; }(p), 820);
+setTimeout(function (nodo) { return function () { nodo.remove(); }; }(p), 820);
 }
 }
+
+/* ---------- Captura épica ---------- */
 async function cazaCapturar(boleto, esp, x, y) {
 caza.capturando = true;
 var r;
@@ -26221,8 +26435,6 @@ return;
 }
 var d = r.data || {};
 if (!d.ok) { avisoToast((d.escapo ? "💨 " : "⚠️ ") + (d.error || "No se pudo registrar la captura.")); return; }
-cazaChispas(x, y, esp.glow);
-cazaSonar(d.bono ? "bono" : "captura");
 if (d.perfil && typeof d.perfil.belis === "number") {
 me.belis = d.perfil.belis;
 var perfil = profiles.find(function (p) { return p.id === me.id; });
@@ -26237,12 +26449,77 @@ caza.datos.total = (caza.datos.total || 0) + 1;
 }
 cazaPintarChip();
 cazaPintarModal();
-if (d.total > 0) {
-avisoBelis("+" + d.total + " Belis · " + esp.nombre + (d.bono ? " + ¡Cofre 5/5!" : ""));
-} else {
-avisoToast("🎃 Atrapaste a " + esp.nombre + ". " + (boleto.invocada ? "Las invocaciones no dan Belis, pero cuentan en tu bestiario." : "Ya cobraste tus 5 capturas con premio de hoy."));
+cazaEfectoCaptura(esp, d, boleto, x, y);
 }
-if (d.bono) { mascDecirTexto("¡Cacería completa! Te ganaste el cofre de 50 Belis."); }
+function cazaEfectoCaptura(esp, d, boleto, x, y) {
+var rz = cazaRareza(esp);
+var grande = rz.vida >= 4;
+var leyenda = esp.rareza === "Legendario";
+var quieto = cazaMovReducido();
+cazaSonar(leyenda ? "leyenda" : d.bono ? "bono" : "captura");
+cazaVibrar(grande ? [40, 40, 90] : 50);
+var fx = document.createElement("div");
+fx.className = "tb-caza-fx" + (grande ? " grande" : "") + (leyenda ? " leyenda" : "") + (quieto ? " quieto" : "");
+fx.style.setProperty("--esp-glow", esp.glow);
+fx.style.setProperty("--rz", rz.color);
+fx.style.setProperty("--x", x + "px");
+fx.style.setProperty("--y", y + "px");
+fx.setAttribute("role", "status");
+var lineas = [];
+if (d.total > 0) {
+lineas.push('<div class="tb-caza-premio"><span class="tb-belis-coin">B</span><b data-cuenta="' + d.total + '">+' + (quieto ? d.total : 0) + "</b><span>Belis</span></div>");
+}
+if (d.bono) { lineas.push('<p class="tb-caza-extra">🎁 ¡Cofre de la cacería completa! +' + ((caza.datos && caza.datos.bono_belis) || 50) + " Belis incluidos</p>"); }
+if (d.forzada) { lineas.push('<p class="tb-caza-extra">⚡ Aparición especial del owner</p>'); }
+if (d.total === 0) {
+lineas.push('<p class="tb-caza-extra">' + (boleto.invocada ? "Las invocaciones no dan Belis, pero sí llenan tu bestiario." : "Ya cobraste tus capturas con premio de hoy.") + "</p>");
+}
+fx.innerHTML = '<span class="tb-caza-flash"></span><span class="tb-caza-onda"></span><span class="tb-caza-onda dos"></span>' +
+'<div class="tb-caza-carta" tabindex="-1">' +
+(leyenda ? '<span class="tb-caza-rayos" aria-hidden="true"></span>' : "") +
+'<span class="tb-caza-kicker">' + (d.nueva ? "¡Nueva criatura en tu bestiario!" : "¡Capturado!") + "</span>" +
+'<div class="tb-caza-carta-fig">' + esp.svg + "</div>" +
+"<h3>" + escapeHtml(esp.nombre) + "</h3>" +
+'<span class="tb-caza-rz">' + escapeHtml(esp.rareza) + "</span>" +
+lineas.join("") +
+'<button type="button" class="tb-primary tb-caza-seguir">Seguir cazando</button>' +
+"</div>";
+root.appendChild(fx);
+cazaChispas(x, y, esp.glow, grande ? 26 : 16, grande ? 80 : 54);
+if (grande && !quieto) {
+var app = $("#tb-app");
+if (app) {
+app.classList.remove("tb-caza-sacudida");
+void app.offsetWidth;
+app.classList.add("tb-caza-sacudida");
+setTimeout(function () { app.classList.remove("tb-caza-sacudida"); }, 520);
+}
+}
+var cifra = fx.querySelector("[data-cuenta]");
+if (cifra && !quieto) {
+var meta = +cifra.dataset.cuenta, t0 = 0;
+var paso = function (t) {
+if (!t0) { t0 = t; }
+var k = Math.min(1, (t - t0) / 900);
+cifra.textContent = "+" + Math.round(meta * (1 - Math.pow(1 - k, 3)));
+if (k < 1 && cifra.isConnected) { requestAnimationFrame(paso); }
+};
+setTimeout(function () { requestAnimationFrame(paso); }, 450);
+}
+var cerrado = false;
+function cerrar() {
+if (cerrado) { return; }
+cerrado = true;
+fx.classList.add("sale");
+setTimeout(function () { fx.remove(); }, 380);
+}
+fx.addEventListener("click", cerrar);
+var seguir = fx.querySelector(".tb-caza-seguir");
+setTimeout(function () { if (seguir && seguir.isConnected) { seguir.focus({ preventScroll: true }); } }, 500);
+setTimeout(cerrar, leyenda ? 5200 : grande ? 4000 : 3000);
+if (d.total > 0) { avisoBelis("+" + d.total + " Belis · " + esp.nombre); }
+if (leyenda) { mascDecirTexto("¡No lo puedo creer! Atrapaste a La Mocuana, la leyenda más rara del tablón."); }
+else if (d.bono) { mascDecirTexto("¡Cacería completa! Te ganaste el cofre de " + ((caza.datos && caza.datos.bono_belis) || 50) + " Belis."); }
 }
 
 /* ---------- Bestiario ---------- */
@@ -26253,22 +26530,27 @@ var d = caza.datos;
 var h = d.hoy || {};
 var tope = d.max_pagadas || 5;
 var maxInv = d.max_invocar || 10;
+var maxNat = d.max_naturales || 10;
 var pagadas = Math.min(tope, h.pagadas || 0);
 $("#tb-caza-hoy").textContent = pagadas + " / " + tope;
-$("#tb-caza-total").textContent = "Total atrapados: " + (d.total || 0);
+$("#tb-caza-nat").textContent = Math.min(maxNat, h.naturales || 0) + " / " + maxNat;
+var vistos = d.vistos || {};
+var distintas = Object.keys(CAZA_ESPECIES).filter(function (id) { return vistos[id]; }).length;
+$("#tb-caza-total").textContent = distintas + " de " + Object.keys(CAZA_ESPECIES).length + " criaturas · " + (d.total || 0) + " capturas";
 $("#tb-caza-barra-fill").style.width = Math.round(pagadas / tope * 100) + "%";
 $("#tb-caza-barra").setAttribute("aria-valuenow", String(pagadas));
 $("#tb-caza-premio-txt").textContent = h.bono
 ? "✨ Cacería de hoy completada y cofre cobrado. Puedes seguir atrapando para tu bestiario."
 : "Atrapa " + tope + " espíritus con premio hoy y recibe un cofre extra de +" + (d.bono_belis || 50) + " Belis.";
-var vistos = d.vistos || {};
 $("#tb-caza-bestiario").innerHTML = Object.keys(CAZA_ESPECIES).map(function (id) {
 var a = CAZA_ESPECIES[id];
 var n = vistos[id] || 0;
-return '<div class="tb-caza-slot' + (n ? " visto" : "") + '" style="--slot-c:' + a.glow + '">' +
+var rz = cazaRareza(a);
+return '<div class="tb-caza-slot' + (n ? " visto" : "") + '" style="--slot-c:' + a.glow + ";--rz:" + rz.color + '">' +
 '<span class="tb-caza-rareza">' + a.rareza + "</span>" + a.svg +
 "<b>" + (n ? escapeHtml(a.nombre) : "???") + "</b>" +
-"<small>+" + a.premio + " B · Atrapados: " + n + "</small></div>";
+"<small>+" + a.premio + " B" + (rz.vida > 1 ? " · " + rz.vida + " toques" : "") + "</small>" +
+(n ? '<small class="tb-caza-n">×' + n + "</small>" : "") + "</div>";
 }).join("");
 var quedan = Math.max(0, maxInv - (h.invocadas || 0));
 var inv = $("#tb-caza-invocar");
@@ -26276,6 +26558,7 @@ inv.disabled = quedan === 0;
 inv.textContent = quedan ? "🕯️ Invocar (" + quedan + ")" : "🕯️ Sin invocaciones hoy";
 $("#tb-caza-sonido-chk").checked = !cazaSinSonido();
 $("#tb-caza-fin").textContent = "La caza termina el " + cazaFechaTexto(d.fin) + ".";
+if (isOwner()) { cazaPintarOwner(); }
 }
 function cazaFechaTexto(iso) {
 if (!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) { return "2 de noviembre"; }
@@ -26285,7 +26568,7 @@ function cazaAbrir() {
 var modal = $("#tb-modal-caza");
 if (!modal) { return; }
 modal.classList.remove("tb-hidden");
-root.classList.add("tb-modal-abierto");
+root.classList.add("tb-modal-abierto", "tb-caza-abierta");
 $("#tb-caza-aviso").textContent = "";
 cazaPintarModal();
 cazaCargar().then(cazaPintarModal);
@@ -26295,9 +26578,56 @@ function cazaCerrar() {
 var modal = $("#tb-modal-caza");
 if (!modal || modal.classList.contains("tb-hidden")) { return; }
 modal.classList.add("tb-hidden");
-root.classList.remove("tb-modal-abierto");
-var chip = $("#tb-caza-chip");
-if (chip) { chip.focus(); }
+root.classList.remove("tb-modal-abierto", "tb-caza-abierta");
+}
+
+/* ---------- Panel del owner: forzar apariciones ---------- */
+function cazaSeleccionados() {
+return Object.keys(caza.sel).filter(function (id) { return caza.sel[id]; });
+}
+function cazaPintarOwner() {
+var caja = $("#tb-caza-owner");
+if (!caja) { return; }
+caja.classList.toggle("tb-hidden", !isOwner());
+if (!isOwner()) { return; }
+var select = $("#tb-caza-o-especie");
+if (!select.options.length) {
+select.innerHTML = '<option value="">🎲 Al azar (según rareza)</option>' + Object.keys(CAZA_ESPECIES).map(function (id) {
+var a = CAZA_ESPECIES[id];
+return '<option value="' + id + '">' + escapeHtml(a.nombre) + " · " + a.rareza + " · +" + a.premio + " B</option>";
+}).join("");
+}
+var filtro = caza.filtro.trim().toLowerCase();
+var lista = profilesOrdenados().filter(function (p) {
+return !filtro || (p.display_name || "").toLowerCase().indexOf(filtro) >= 0 || (p.username || "").toLowerCase().indexOf(filtro) >= 0;
+});
+$("#tb-caza-o-lista").innerHTML = lista.length ? lista.map(function (p) {
+var yo = p.id === me.id;
+return '<label class="tb-caza-o-item' + (caza.sel[p.id] ? " on" : "") + '"><input type="checkbox" data-caza-usuario="' + escapeHtml(p.id) + '"' + (caza.sel[p.id] ? " checked" : "") + ">" +
+"<span><b>" + escapeHtml(p.display_name || p.username) + (yo ? " (tú)" : "") + "</b><small>@" + escapeHtml(p.username) + "</small></span></label>";
+}).join("") : '<p class="tb-muted" style="margin:6px 4px">Nadie coincide con la búsqueda.</p>';
+var n = cazaSeleccionados().length;
+$("#tb-caza-o-n").textContent = n;
+$("#tb-caza-o-enviar").disabled = n === 0;
+}
+async function cazaForzar() {
+var ids = cazaSeleccionados();
+var aviso = $("#tb-caza-o-aviso");
+if (!ids.length) { aviso.textContent = "Elige al menos un usuario."; return; }
+var boton = $("#tb-caza-o-enviar");
+boton.disabled = true;
+aviso.textContent = "";
+var r = await client.rpc("tb_caza_forzar", {
+p_usuarios: ids,
+p_especie: $("#tb-caza-o-especie").value || null,
+p_premio: $("#tb-caza-o-premio").checked
+});
+boton.disabled = false;
+if (r.error) { aviso.textContent = r.error.message || "No se pudo forzar la aparición."; return; }
+var d = r.data || {};
+if (!d.ok) { aviso.textContent = d.error || "No se pudo forzar la aparición."; return; }
+aviso.textContent = "";
+avisoToast("⚡ Aparición enviada a " + d.enviados + " usuario(s). Le llega al instante a quien tenga El Tablón abierto; dura 90 segundos.");
 }
 (function cazaEnlazar() {
 var chip = $("#tb-caza-chip");
@@ -26307,21 +26637,45 @@ chip.onclick = cazaAbrir;
 $$("[data-cerrar-caza]").forEach(function (b) { b.onclick = cazaCerrar; });
 modal.addEventListener("click", function (ev) { if (ev.target === modal) { cazaCerrar(); } });
 document.addEventListener("keydown", function (ev) {
-if (ev.key === "Escape" && !modal.classList.contains("tb-hidden")) { cazaCerrar(); }
+if (ev.key !== "Escape") { return; }
+var fx = $(".tb-caza-fx");
+if (fx) { fx.click(); return; }
+if (!modal.classList.contains("tb-hidden")) { cazaCerrar(); }
 });
 $("#tb-caza-sonido-chk").onchange = function () {
 try { window.localStorage.setItem("tb-caza-sin-sonido", this.checked ? "0" : "1"); } catch (e) { /* preferencia solo en memoria */ }
 };
 $("#tb-caza-invocar").onclick = async function () {
-var boton = this;
-boton.disabled = true;
+this.disabled = true;
 var d = await cazaAparecer(true);
 if (d && d.ok) { cazaCerrar(); return; }
 $("#tb-caza-aviso").textContent = (d && d.error) || "No se pudo invocar ahora.";
 cazaPintarModal();
 };
+// Panel del owner
+$("#tb-caza-o-buscar").oninput = function () { caza.filtro = this.value; cazaPintarOwner(); };
+$("#tb-caza-o-lista").addEventListener("change", function (ev) {
+var c = ev.target.closest("[data-caza-usuario]");
+if (!c) { return; }
+caza.sel[c.dataset.cazaUsuario] = c.checked;
+cazaPintarOwner();
+});
+$$("[data-caza-sel]").forEach(function (b) {
+b.onclick = function () {
+var modo = b.dataset.cazaSel;
+if (modo === "ninguno") { caza.sel = {}; }
+else if (modo === "yo") { caza.sel = {}; caza.sel[me.id] = true; }
+else {
+var filtro = caza.filtro.trim().toLowerCase();
+profilesOrdenados().forEach(function (p) {
+if (!filtro || (p.display_name || "").toLowerCase().indexOf(filtro) >= 0 || (p.username || "").toLowerCase().indexOf(filtro) >= 0) { caza.sel[p.id] = true; }
+});
+}
+cazaPintarOwner();
+};
+});
+$("#tb-caza-o-enviar").onclick = cazaForzar;
 document.addEventListener("visibilitychange", function () {
-// Al volver a la pestaña se refresca el conteo (por si cambió el día).
 if (!document.hidden && me && caza.estado === "lista") { cazaCargar(); }
 });
 })();
