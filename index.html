@@ -6814,7 +6814,7 @@ background: radial-gradient(120% 80% at 50% 0%, #ff7ad92e, transparent 60%), lin
 .tb-caza-o-rapidos { width: 100%; }
 .tb-caza-o-rapidos button { flex: 1; }
 .tb-espectro-tag { font-size: 9px; padding: 2px 7px; }
-#tablon-root.tb-caza-abierta #tb-masc { display: none; }
+#tablon-root.tb-caza-abierta #tb-masc-wrap { display: none; }
 .tb-caza-carta-fig { width: 96px; height: 96px; }
 }
 @keyframes tbCazaHoja { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
@@ -6825,6 +6825,78 @@ background: radial-gradient(120% 80% at 50% 0%, #ff7ad92e, transparent 60%), lin
 .tb-caza-flash, .tb-caza-onda { display: none; }
 .tb-espectro { transition: opacity .2s; }
 .tb-espectro:hover { transform: none; }
+}
+/* ===== Acceso aprobado por el owner y «¿Olvidaste tu usuario?» ===== */
+.tb-link-mini { padding: 2px 0; border: 0; background: none; color: #b9a8ff; font: inherit; font-size: 12px; font-weight: 700; text-decoration: underline; text-decoration-color: #b9a8ff55; text-underline-offset: 3px; cursor: pointer; }
+.tb-link-mini:hover { color: #e3d9ff; text-decoration-color: currentColor; }
+.tb-link-mini:focus-visible { outline: 2px solid #b9a8ff; outline-offset: 2px; border-radius: 4px; }
+.tb-login-ayuda { display: flex; justify-content: flex-end; margin: -6px 2px 6px; }
+.tb-acceso-alt { margin: 10px 0 0; text-align: center; color: var(--muted); font-size: 12px; }
+#tb-acceso { display: grid; gap: 12px; }
+#tb-acceso [data-paso] { display: grid; gap: 12px; }
+#tb-acceso [data-paso][hidden] { display: none; }
+#tb-acceso .tb-muted { margin: 0; font-size: 13px; line-height: 1.5; }
+.tb-acceso-pie { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+/* Tarjeta para la captura */
+.tb-acceso-tarjeta { display: grid; justify-items: center; gap: 8px; padding: 16px 14px 12px; border: 1px solid #ffffff1f; border-radius: 22px; background: linear-gradient(160deg, #ffffff0d, #ffffff03); }
+.tb-pose { position: relative; width: min(210px, 62vw); aspect-ratio: 1; border-radius: 24px; overflow: hidden; background: radial-gradient(circle at 50% 40%, color-mix(in srgb, var(--p2) 55%, transparent), transparent 62%), linear-gradient(150deg, var(--p1), #070b18); box-shadow: inset 0 0 0 1px #ffffff1a, 0 14px 30px #0006; }
+.tb-pose::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 20% 15%, #ffffff22 0 2px, transparent 3px) 0 0 / 34px 34px; opacity: .5; pointer-events: none; }
+.tb-pose-fig { position: absolute; inset: 6%; transform: rotate(var(--gira, 0deg)); animation: tbPoseBaila 2.4s ease-in-out infinite alternate; }
+.tb-pose-fig > svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.tb-pose-fig.cabeza { transform: rotate(180deg); animation: none; }
+.tb-pose-fig.aplastado { transform-origin: 50% 92%; transform: scale(1.24, .68); animation: none; }
+.tb-pose.chica { width: 92px; border-radius: 16px; flex: none; }
+.tb-pose.chica .tb-pose-fig { animation: none; }
+@keyframes tbPoseBaila { from { translate: 0 0; } to { translate: 0 -4px; } }
+.tb-acceso-datos { display: flex; align-items: baseline; gap: 12px; font-size: 15px; font-weight: 800; color: #e8ecff; }
+.tb-acceso-datos b { padding: 2px 12px; border-radius: 10px; background: #ffffff14; font-size: 26px; letter-spacing: .08em; color: #fff; font-variant-numeric: tabular-nums; }
+.tb-acceso-pose-txt { color: var(--muted); font-size: 12px; }
+.tb-acceso-instr { margin: 0; padding: 10px 12px; border-left: 3px solid #b9a8ff; border-radius: 10px; background: #b9a8ff12; font-size: 13px; line-height: 1.5; }
+.tb-acceso-estado { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 0; color: var(--muted); font-size: 12.5px; }
+.tb-acceso-punto { width: 8px; height: 8px; border-radius: 50%; background: #b9a8ff; box-shadow: 0 0 0 0 #b9a8ff88; animation: tbAccesoPulso 1.6s ease-out infinite; }
+@keyframes tbAccesoPulso { to { box-shadow: 0 0 0 10px #b9a8ff00; } }
+#tb-acceso-final { margin: 0; font-size: 13.5px; line-height: 1.5; text-align: center; }
+/* La mascota no tapa la captura */
+#tablon-root.tb-acceso-esperando #tb-masc-wrap { display: none; }
+/* Lista de usuarios */
+.tb-usuarios-modal { position: fixed; inset: 0; z-index: 9200; display: grid; place-items: center; padding: 16px; background: #050817b8; backdrop-filter: blur(6px); }
+.tb-usuarios-caja { width: min(400px, 100%); max-height: min(560px, 86dvh); display: grid; grid-template-rows: auto auto 1fr; gap: 10px; padding: 16px; border: 1px solid #ffffff1f; border-radius: 22px; background: linear-gradient(165deg, #1b2450, #0a1028); box-shadow: 0 24px 70px #000a; animation: tbLlaveEntra .3s ease both; }
+.tb-usuarios-cab { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.tb-usuarios-cab h3 { margin: 0; font-size: 16px; }
+.tb-usuarios-buscar { position: relative; }
+.tb-usuarios-buscar input { width: 100%; min-height: 42px; padding: 10px 12px 10px 36px; color: #fff; border: 1px solid #9bb0ff2e; border-radius: 12px; background: #050b17; outline: none; }
+.tb-usuarios-buscar input:focus { border-color: #b9a8ff; box-shadow: 0 0 0 3px #b9a8ff22; }
+.tb-usuarios-buscar::before { content: "⌕"; position: absolute; left: 12px; top: 50%; transform: translateY(-52%); color: var(--muted); font-size: 17px; pointer-events: none; }
+.tb-usuarios-lista { display: grid; align-content: start; gap: 4px; min-height: 120px; overflow-y: auto; overscroll-behavior: contain; padding-right: 2px; }
+.tb-usuarios-item { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 48px; padding: 7px 10px; border: 1px solid transparent; border-radius: 12px; background: transparent; color: inherit; text-align: left; cursor: pointer; }
+.tb-usuarios-item:hover, .tb-usuarios-item:focus-visible { border-color: #b9a8ff44; background: #b9a8ff12; outline: none; }
+.tb-usuarios-av { width: 32px; height: 32px; flex: none; display: grid; place-items: center; border-radius: 50%; background: linear-gradient(135deg, #7a5cff, #ff7ad9); color: #fff; font-size: 13px; font-weight: 900; }
+.tb-usuarios-txt { min-width: 0; display: grid; }
+.tb-usuarios-txt b { font-size: 13.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tb-usuarios-txt small { color: #b9a8ff; font-size: 12px; }
+.tb-usuarios-vacio { margin: 18px 6px; text-align: center; color: var(--muted); font-size: 13px; }
+/* Bandeja del owner */
+.tb-top .tb-acceso-chip { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 6px 12px 6px 10px; border: 1px solid #b9a8ff66; border-radius: 999px; background: #b9a8ff1a; color: #e3d9ff; font-size: 12.5px; font-weight: 900; cursor: pointer; animation: tbAccesoChip 2.2s ease-in-out infinite; }
+.tb-top .tb-acceso-chip:focus-visible { outline: 2px solid #b9a8ff; outline-offset: 2px; }
+@keyframes tbAccesoChip { 50% { box-shadow: 0 0 0 5px #b9a8ff22; } }
+.tb-acceso-owner-nota { margin: 8px 0 12px; padding: 10px 12px; border-radius: 12px; background: #b9a8ff12; font-size: 12.5px; line-height: 1.5; color: var(--muted); }
+#tb-acceso-owner-lista { display: grid; gap: 10px; }
+.tb-acceso-sol { display: flex; gap: 12px; align-items: center; padding: 10px; border: 1px solid var(--line); border-radius: 18px; background: #ffffff06; }
+.tb-acceso-sol-info { min-width: 0; flex: 1; display: grid; gap: 3px; }
+.tb-acceso-sol-info small { color: var(--muted); font-size: 12px; }
+.tb-acceso-sol-cod { font-size: 12.5px; }
+.tb-acceso-sol-cod b { padding: 1px 7px; border-radius: 7px; background: #ffffff14; font-size: 15px; letter-spacing: .06em; }
+.tb-acceso-sol-bot { display: flex; gap: 8px; margin-top: 6px; }
+.tb-acceso-sol-bot button { flex: 1; min-height: 38px; padding: 8px 10px; font-size: 13px; }
+@media (max-width: 600px) {
+.tb-usuarios-modal { place-items: end center; padding: 0; }
+.tb-usuarios-caja { width: 100%; max-height: 82dvh; border-radius: 22px 22px 0 0; padding-bottom: calc(16px + env(safe-area-inset-bottom)); }
+#tb-modal-acceso { align-items: end; padding: 0; }
+#tb-modal-acceso .tb-modal-card { width: 100%; max-height: 88dvh; border-radius: 22px 22px 0 0; padding: 18px 14px calc(16px + env(safe-area-inset-bottom)); }
+.tb-top .tb-acceso-chip .tb-acceso-chip-etq { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+.tb-pose-fig, .tb-acceso-punto, .tb-top .tb-acceso-chip, .tb-usuarios-caja { animation: none !important; }
 }
 /* ===== Llave dorada: panel único, códigos de rescate y misión de la clave ===== */
 .tb-login-modo { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin: 4px 0 12px; padding: 4px; border: 1px solid #ffd27a2e; border-radius: 12px; background: #050b17aa; }
@@ -7986,6 +8058,23 @@ animation-delay: 0s;
 #tablon-root.tb-lite .tb-task::before { animation: none !important; will-change: auto; }
 </style>
 <div id="tablon-root" class="tb-theme-midnight">
+<div class="tb-usuarios-modal tb-hidden" id="tb-usuarios-modal" role="dialog" aria-modal="true" aria-labelledby="tb-usuarios-titulo">
+<div class="tb-usuarios-caja">
+<div class="tb-usuarios-cab"><h3 id="tb-usuarios-titulo">Busca tu usuario</h3><button type="button" class="tb-close" data-cerrar-usuarios aria-label="Cerrar">×</button></div>
+<label class="tb-usuarios-buscar"><input type="search" id="tb-usuarios-buscar" placeholder="Tu nombre o @usuario" aria-label="Buscar usuario" autocomplete="off"></label>
+<div class="tb-usuarios-lista" id="tb-usuarios-lista"></div>
+</div>
+</div>
+<div class="tb-modal tb-hidden" id="tb-modal-acceso" role="dialog" aria-modal="true" aria-labelledby="tb-acceso-owner-titulo">
+<div class="tb-modal-card tb-glass">
+<div class="tb-modal-head">
+<h3 id="tb-acceso-owner-titulo" style="margin:0;font-size:20px">🙋 Solicitudes de acceso</h3>
+<button type="button" class="tb-close" data-cerrar-acceso aria-label="Cerrar">×</button>
+</div>
+<p class="tb-acceso-owner-nota">Compara con la captura que te enviaron: <b>misma pose, mismo código y mismo @usuario</b>. Aprueba solo si te la mandó el alumno de verdad; al aprobar, entra con una contraseña nueva y su llave dorada se la muestra.</p>
+<div id="tb-acceso-owner-lista"></div>
+</div>
+</div>
 <div class="tb-modal tb-hidden" id="tb-modal-caza" role="dialog" aria-modal="true" aria-labelledby="tb-caza-titulo">
 <div class="tb-modal-card tb-glass">
 <div class="tb-modal-head">
@@ -8224,6 +8313,7 @@ Sandoval, gracias por ser el mayor consumidor de El tablón.
 minlength="3" maxlength="24" required>
 <span class="tb-fl-label">Usuario</span>
 </label>
+<div class="tb-login-ayuda"><button type="button" class="tb-link-mini" data-usuarios-para="tb-login-user">¿Olvidaste tu usuario?</button></div>
 <div class="tb-login-modo" role="group" aria-label="Cómo quieres entrar">
 <button type="button" class="on" data-login-modo="clave" aria-pressed="true">Con contraseña</button>
 <button type="button" data-login-modo="codigo" aria-pressed="false">🔑 Con código</button>
@@ -8265,6 +8355,7 @@ nueva con 4 códigos frescos.
 ¿Olvidaste tu contraseña? Entra con uno de tus <b>códigos de rescate</b>
 y crea una nueva. Si ya no tienes ninguno, pídele ayuda a <b>Víctor Hugo</b>.
 </p>
+<p class="tb-acceso-alt">¿Sin contraseña ni códigos? <button type="button" class="tb-link-mini" id="tb-acceso-abrir">Pide acceso a Víctor Hugo</button></p>
 <button class="tb-primary tb-walk-btn" id="tb-login-btn">
 <span class="tb-walk-glow"></span>
 <span class="tb-walk-text" id="tb-walk-text">Entrar</span>
@@ -8301,6 +8392,30 @@ y crea una nueva. Si ya no tienes ninguno, pídele ayuda a <b>Víctor Hugo</b>.
 </span>
 </button>
 </form>
+<div id="tb-acceso" class="tb-hidden">
+<div data-paso="pedir">
+<p class="tb-muted">Escribe tu usuario. Te saldrá una imagen para mandarle a Víctor Hugo; cuando la apruebe, entrarás sin contraseña.</p>
+<label class="tb-fl">
+<input id="tb-acceso-usuario" placeholder=" " autocomplete="username" maxlength="24" autocapitalize="off" spellcheck="false">
+<span class="tb-fl-label">Usuario</span>
+</label>
+<div class="tb-login-ayuda"><button type="button" class="tb-link-mini" data-usuarios-para="tb-acceso-usuario">¿Olvidaste tu usuario?</button></div>
+<p class="tb-cumple-aviso" id="tb-acceso-aviso" role="alert"></p>
+<button type="button" class="tb-primary" id="tb-acceso-enviar">Enviar solicitud</button>
+<div class="tb-acceso-pie"><button type="button" class="tb-link-mini" data-acceso-volver>← Entrar con contraseña</button></div>
+</div>
+<div data-paso="esperar" hidden>
+<div class="tb-acceso-tarjeta" id="tb-acceso-tarjeta"></div>
+<p class="tb-acceso-instr">📸 <b>Toma una captura de esta pantalla</b> y envíasela a Víctor Hugo. Cuando la apruebe, entrarás solo; no cierres esta página.</p>
+<p class="tb-acceso-estado" id="tb-acceso-estado" role="status"><span class="tb-acceso-punto" aria-hidden="true"></span>Esperando aprobación · vence en <b id="tb-acceso-reloj">10:00</b></p>
+<div class="tb-acceso-pie"><button type="button" class="tb-link-mini" id="tb-acceso-cancelar">Cancelar solicitud</button></div>
+</div>
+<div data-paso="final" hidden>
+<p id="tb-acceso-final"></p>
+<button type="button" class="tb-primary" id="tb-acceso-otra">Pedir acceso otra vez</button>
+<div class="tb-acceso-pie"><button type="button" class="tb-link-mini" data-acceso-volver>← Entrar con contraseña</button></div>
+</div>
+</div>
 <form id="tb-register" class="tb-hidden">
 <label class="tb-fl">
 <input id="tb-register-user" placeholder=" " autocomplete="username"
@@ -8485,6 +8600,7 @@ title="Modo 8-bit" aria-label="Activar modo 8-bit">
 </button>
 <span class="tb-racha-chip tb-hidden" id="tb-racha-top"
 title="Tu racha diaria"></span>
+<button type="button" class="tb-acceso-chip tb-hidden" id="tb-acceso-chip" title="Solicitudes de acceso">🙋 <span class="tb-acceso-chip-etq">Acceso</span> <b id="tb-acceso-chip-n">0</b></button>
 <button type="button" class="tb-caza-chip tb-hidden" id="tb-caza-chip" title="Bestiario y caza de Halloween">
 <span class="tb-caza-chip-ico" aria-hidden="true">🎃</span><span class="tb-caza-etq">Caza</span><b id="tb-caza-chip-cont">0/5</b>
 </button>
@@ -14019,7 +14135,7 @@ grip.onpointercancel = soltar;
 };
 });
 }
-var VERSION_APP = "v19";
+var VERSION_APP = "v20";
 var PAGO_REPETIDO = {
 "Común": 8, "Raro": 15, "Épico": 40, "Legendario": 90, "Único": 300
 };
@@ -21581,6 +21697,7 @@ $$("[data-auth]").forEach(function (button) {
 button.classList.toggle("active", button.dataset.auth === mode);
 });
 $("#tb-login").classList.toggle("tb-hidden", mode !== "login");
+$("#tb-acceso").classList.add("tb-hidden");
 $("#tb-register").classList.toggle("tb-hidden", mode !== "register");
 $("#tb-auth-title").textContent = mode === "login" ? "Bienvenido" : "Crea tu perfil";
 $("#tb-auth-sub").textContent = mode === "login"
@@ -21740,6 +21857,7 @@ await revisarRacha();
 await revisarRecompensaDiaria();
 iniciarLogros();
 cazaIniciar();
+accesoOwnerIniciar();
 }
 $$("[data-auth]").forEach(function (button) {
 button.onclick = function () { switchAuth(button.dataset.auth); };
@@ -26678,6 +26796,342 @@ $("#tb-caza-o-enviar").onclick = cazaForzar;
 document.addEventListener("visibilitychange", function () {
 if (!document.hidden && me && caza.estado === "lista") { cazaCargar(); }
 });
+})();
+
+/* ===================================================================
+   ACCESO APROBADO POR EL OWNER + «¿OLVIDASTE TU USUARIO?»
+   Requiere supabase/ACTIVAR-acceso-owner.sql. El alumno pide acceso sin
+   contraseña, ve una pose de Michi o Rugo + un código, le manda captura
+   al owner y, al aprobarse, entra con una contraseña nueva generada al
+   azar (la llave dorada se la muestra junto con 4 códigos).
+   =================================================================== */
+var ACCESO_SQL = "ACTIVAR-acceso-owner.sql";
+var ACCESO_CLAVE_SS = "tb-acceso-pendiente";
+var acceso = { sol: null, sondeo: null, reloj: null, canjeando: false, lista: null, listaEn: 0, destino: null,
+pendientes: [], canal: null, refresco: null };
+var LENTES = '<g><path d="M70 84 L58 79 M134 82 L146 77" stroke="#0d0a1e" stroke-width="4" stroke-linecap="round"/><rect x="70" y="76" width="30" height="20" rx="8" fill="#0d0a1e"/><rect x="104" y="74" width="30" height="20" rx="8" fill="#0d0a1e"/><path d="M100 84 H104" stroke="#0d0a1e" stroke-width="4"/><path d="M76 80 L85 80 M110 78 L119 78" stroke="#fff" stroke-width="2.6" stroke-linecap="round" opacity=".75"/></g>';
+var ACCESO_POSES = {
+gato_lentes: { m: "gato", t: "Michi con lentes de sol", c1: "#3a1d6e", c2: "#ff7ad9", gira: -10, acc: LENTES },
+gato_cabeza: { m: "gato", t: "Michi de cabeza", c1: "#0f3b4a", c2: "#5ef2d6", cls: "cabeza", acc: "" },
+gato_corona: { m: "gato", t: "Michi con corona", c1: "#4a2a06", c2: "#ffd23f", acc: '<path d="M74 54 L78 24 L90 40 L100 16 L110 40 L122 24 L126 54 Z" fill="#ffd23f" stroke="#b9780c" stroke-width="2.5" stroke-linejoin="round"/><circle cx="100" cy="16" r="4.5" fill="#ff5a6e"/><circle cx="78" cy="24" r="3.4" fill="#5ef2d6"/><circle cx="122" cy="24" r="3.4" fill="#5ef2d6"/>' },
+gato_bigote: { m: "gato", t: "Michi con bigote y monóculo", c1: "#2a1a10", c2: "#ff9a3c", gira: 6, acc: '<path d="M101 110 C94 102 80 102 72 113 C82 109 92 115 101 113 C110 115 120 109 130 113 C122 102 108 102 101 110 Z" fill="#1a1222"/><circle cx="118" cy="86" r="14" fill="none" stroke="#ffd23f" stroke-width="3"/><path d="M131 92 Q140 110 132 128" stroke="#ffd23f" stroke-width="1.6" fill="none"/>' },
+leon_lentes: { m: "leon", t: "Rugo con lentes de sol", c1: "#13324a", c2: "#7aa8ff", gira: 10, acc: LENTES },
+leon_aplastado: { m: "leon", t: "Rugo aplastado", c1: "#2c3d14", c2: "#c9f56a", cls: "aplastado", acc: "" },
+leon_fiesta: { m: "leon", t: "Rugo con gorro de fiesta", c1: "#4a1030", c2: "#ff5a9e", acc: '<path d="M80 52 L114 0 L130 44 Z" fill="#7aa8ff" stroke="#3b5bc4" stroke-width="2" stroke-linejoin="round"/><path d="M90 38 L122 30 M98 24 L118 18" stroke="#ffd23f" stroke-width="4" stroke-linecap="round"/><circle cx="114" cy="2" r="7" fill="#ff5a6e"/>' },
+leon_globo: { m: "leon", t: "Rugo con un globo", c1: "#0d2f2a", c2: "#ff5a6e", gira: -6, acc: '<path d="M148 138 C158 108 148 92 162 70" stroke="#e8ecff" stroke-width="2" fill="none"/><ellipse cx="164" cy="44" rx="22" ry="27" fill="#ff5a6e"/><path d="M159 71 L169 71 L164 64 Z" fill="#ff5a6e"/><ellipse cx="156" cy="33" rx="6" ry="9" fill="#fff" opacity=".4"/>' }
+};
+function accesoPoseHtml(pose, chica) {
+var p = ACCESO_POSES[pose] || ACCESO_POSES.gato_lentes;
+var masc = $(p.m === "leon" ? "#tb-masc-leon svg" : "#tb-masc-gato svg");
+return '<div class="tb-pose' + (chica ? " chica" : "") + '" style="--p1:' + p.c1 + ";--p2:" + p.c2 + '">' +
+'<div class="tb-pose-fig' + (p.cls ? " " + p.cls : "") + '" style="--gira:' + (p.gira || 0) + 'deg">' +
+(masc ? masc.outerHTML : "") +
+(p.acc ? '<svg class="tb-pose-acc" viewBox="0 0 200 200" aria-hidden="true">' + p.acc + "</svg>" : "") +
+"</div></div>";
+}
+function accesoPoseTexto(pose) { return (ACCESO_POSES[pose] || ACCESO_POSES.gato_lentes).t; }
+function accesoClaveAzar() {
+var grupos = ["abcdefghijkmnpqrstuvwxyz", "ABCDEFGHJKLMNPQRSTUVWXYZ", "23456789", "!#%+=?@"];
+var todo = grupos.join("");
+var bytes = new Uint32Array(14);
+window.crypto.getRandomValues(bytes);
+var c = grupos.map(function (g, i) { return g[bytes[i] % g.length]; });
+for (var i = 4; i < 14; i++) { c.push(todo[bytes[i] % todo.length]); }
+for (var j = c.length - 1; j > 0; j--) { var k = bytes[j % 14] % (j + 1); var t = c[j]; c[j] = c[k]; c[k] = t; }
+return c.join("");
+}
+
+/* ---------- «¿Olvidaste tu usuario?» ---------- */
+async function accesoAbrirLista(destino) {
+acceso.destino = destino;
+var capa = $("#tb-usuarios-modal");
+capa.classList.remove("tb-hidden");
+$("#tb-usuarios-buscar").value = "";
+var caja = $("#tb-usuarios-lista");
+if (!acceso.lista || Date.now() - acceso.listaEn > 60000) {
+caja.innerHTML = '<p class="tb-usuarios-vacio">Cargando usuarios…</p>';
+var r = await client.rpc("tb_usuarios_lista");
+if (r.error) {
+caja.innerHTML = '<p class="tb-usuarios-vacio">' + (faltaTablaTb(r.error)
+? "Esta lista todavía no está activada. Pídele ayuda a Víctor Hugo."
+: "No se pudo cargar la lista. Revisa tu conexión.") + "</p>";
+return;
+}
+acceso.lista = Array.isArray(r.data) ? r.data : [];
+acceso.listaEn = Date.now();
+}
+accesoPintarLista();
+setTimeout(function () { $("#tb-usuarios-buscar").focus(); }, 60);
+}
+function accesoSinTildes(t) { return String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(); }
+function accesoPintarLista() {
+var q = accesoSinTildes($("#tb-usuarios-buscar").value.trim().replace(/^@/, ""));
+var lista = (acceso.lista || []).filter(function (x) {
+return !q || accesoSinTildes(x.u).indexOf(q) >= 0 || accesoSinTildes(x.n).indexOf(q) >= 0;
+});
+$("#tb-usuarios-lista").innerHTML = lista.length ? lista.slice(0, 300).map(function (x) {
+var inicial = escapeHtml((x.n || x.u).trim().charAt(0).toUpperCase());
+return '<button type="button" class="tb-usuarios-item" data-usuario="' + escapeHtml(x.u) + '">' +
+'<span class="tb-usuarios-av" aria-hidden="true">' + inicial + "</span>" +
+'<span class="tb-usuarios-txt"><b>' + escapeHtml(x.n || x.u) + "</b><small>@" + escapeHtml(x.u) + "</small></span></button>";
+}).join("") : '<p class="tb-usuarios-vacio">Nadie coincide con «' + escapeHtml($("#tb-usuarios-buscar").value.trim()) + "».</p>";
+}
+function accesoCerrarLista() {
+$("#tb-usuarios-modal").classList.add("tb-hidden");
+}
+
+/* ---------- Pedir acceso (alumno) ---------- */
+function accesoMostrar(abrir) {
+$("#tb-login").classList.toggle("tb-hidden", abrir);
+$("#tb-acceso").classList.toggle("tb-hidden", !abrir);
+$("#tb-auth-message").classList.add("tb-hidden");
+$("#tb-auth-title").textContent = abrir ? "Pedir acceso" : "Bienvenido";
+$("#tb-auth-sub").textContent = abrir
+? "Sin contraseña: Víctor Hugo aprueba tu entrada."
+: (loginModoActual === "codigo" ? "Usa tu usuario y uno de tus códigos de rescate." : "Ingresa con tu usuario y contraseña.");
+if (abrir) {
+if (acceso.sol) { accesoPaso("esperar"); return; }
+accesoPaso("pedir");
+var u = $("#tb-login-user").value.trim().toLowerCase();
+if (u && !$("#tb-acceso-usuario").value) { $("#tb-acceso-usuario").value = u; }
+setTimeout(function () { $("#tb-acceso-usuario").focus(); }, 60);
+}
+}
+function accesoPaso(paso) {
+$$("#tb-acceso [data-paso]").forEach(function (n) { n.hidden = n.dataset.paso !== paso; });
+}
+async function accesoEnviar() {
+var usuario = $("#tb-acceso-usuario").value.trim().toLowerCase();
+var aviso = $("#tb-acceso-aviso");
+aviso.textContent = "";
+if (!/^[a-z0-9_]{3,24}$/.test(usuario)) { aviso.textContent = "Escribe tu usuario sin espacios, tildes ni mayúsculas."; return; }
+var boton = $("#tb-acceso-enviar");
+boton.disabled = true;
+var r = await client.rpc("tb_acceso_solicitar", { p_usuario: usuario });
+boton.disabled = false;
+if (r.error) {
+aviso.textContent = faltaTablaTb(r.error) ? "Esta opción todavía no está activada. Pídele ayuda a Víctor Hugo." : (r.error.message || "No se pudo enviar.");
+return;
+}
+var d = r.data || {};
+if (!d.ok) { aviso.textContent = d.error || "No se pudo enviar la solicitud."; return; }
+acceso.sol = { id: d.id, secreto: d.secreto, usuario: d.usuario, pose: d.pose, codigo: d.codigo, expira: d.expira_en };
+try { window.sessionStorage.setItem(ACCESO_CLAVE_SS, JSON.stringify(acceso.sol)); } catch (e) { /* solo en memoria */ }
+accesoEsperar();
+}
+function accesoEsperar() {
+var s = acceso.sol;
+$("#tb-acceso-tarjeta").innerHTML = accesoPoseHtml(s.pose) +
+'<div class="tb-acceso-datos"><span>@' + escapeHtml(s.usuario) + "</span><b>" + escapeHtml(s.codigo) + "</b></div>" +
+'<small class="tb-acceso-pose-txt">' + escapeHtml(accesoPoseTexto(s.pose)) + "</small>";
+accesoPaso("esperar");
+root.classList.add("tb-acceso-esperando");
+setTimeout(function () { var t = $("#tb-acceso-tarjeta"); if (t && t.scrollIntoView) { t.scrollIntoView({ block: "center", behavior: "smooth" }); } }, 80);
+clearInterval(acceso.reloj);
+var pintarReloj = function () {
+var ms = Date.parse(s.expira) - Date.now();
+if (ms <= 0) { accesoFinal("vencida"); return; }
+var seg = Math.ceil(ms / 1000);
+$("#tb-acceso-reloj").textContent = Math.floor(seg / 60) + ":" + String(seg % 60).padStart(2, "0");
+};
+pintarReloj();
+acceso.reloj = setInterval(pintarReloj, 1000);
+clearInterval(acceso.sondeo);
+acceso.sondeo = setInterval(accesoSondear, 3000);
+}
+async function accesoSondear() {
+var s = acceso.sol;
+if (!s || acceso.canjeando || document.hidden) { return; }
+var r = await client.rpc("tb_acceso_estado", { p_id: s.id, p_secreto: s.secreto });
+if (r.error || !r.data) { return; }
+var estado = r.data.estado;
+if (estado === "aprobada") { accesoCanjear(); }
+else if (estado === "rechazada" || estado === "vencida" || estado === "cancelada" || estado === "desconocida" || estado === "usada") { accesoFinal(estado); }
+}
+async function accesoCanjear() {
+var s = acceso.sol;
+if (!s || acceso.canjeando) { return; }
+acceso.canjeando = true;
+clearInterval(acceso.sondeo);
+clearInterval(acceso.reloj);
+$("#tb-acceso-estado").innerHTML = "✅ <b>¡Aprobado!</b> Entrando…";
+var clave = accesoClaveAzar();
+try {
+var r = await client.rpc("tb_acceso_canjear", { p_id: s.id, p_secreto: s.secreto, p_clave: clave });
+if (r.error || !r.data || !r.data.ok) {
+accesoFinal("error", (r.error && r.error.message) || (r.data && r.data.error));
+return;
+}
+var entrada = await client.auth.signInWithPassword({ email: internalEmail(s.usuario), password: clave });
+if (entrada.error) { accesoFinal("error", entrada.error.message); return; }
+accesoLimpiar();
+llave.clave = clave;
+llave.rescate = true;
+$("#tb-login-user").value = s.usuario;
+accesoMostrar(false);
+entrarPorLaPuerta();
+await loadData();
+} finally {
+acceso.canjeando = false;
+}
+}
+function accesoFinal(estado, detalle) {
+clearInterval(acceso.sondeo);
+clearInterval(acceso.reloj);
+var textos = {
+rechazada: "El owner no aprobó esta solicitud. Si fue un error, escríbele y vuelve a intentarlo.",
+vencida: "La solicitud venció sin respuesta. Puedes pedir acceso otra vez.",
+cancelada: "Cancelaste la solicitud.",
+usada: "Esta solicitud ya se usó para entrar.",
+desconocida: "No se encontró la solicitud. Pide acceso otra vez.",
+error: "No se pudo completar la entrada" + (detalle ? ": " + detalle : ".") + " Pide acceso otra vez."
+};
+accesoLimpiar();
+$("#tb-acceso-final").textContent = textos[estado] || textos.error;
+accesoPaso("final");
+}
+function accesoLimpiar() {
+root.classList.remove("tb-acceso-esperando");
+clearInterval(acceso.sondeo);
+clearInterval(acceso.reloj);
+acceso.sol = null;
+try { window.sessionStorage.removeItem(ACCESO_CLAVE_SS); } catch (e) { /* nada */ }
+}
+async function accesoCancelar() {
+var s = acceso.sol;
+if (s) { await client.rpc("tb_acceso_cancelar", { p_id: s.id, p_secreto: s.secreto }); }
+accesoFinal("cancelada");
+}
+// Si recargó la página mientras esperaba, retoma la solicitud.
+function accesoRetomar() {
+var guardada = null;
+try { guardada = JSON.parse(window.sessionStorage.getItem(ACCESO_CLAVE_SS) || "null"); } catch (e) { guardada = null; }
+if (!guardada || !guardada.id || Date.parse(guardada.expira) < Date.now()) { accesoLimpiar(); return; }
+acceso.sol = guardada;
+accesoMostrar(true);
+accesoEsperar();
+accesoSondear();
+}
+
+/* ---------- Bandeja del owner ---------- */
+async function accesoOwnerIniciar() {
+if (!isOwner() || !client) { return; }
+await accesoOwnerCargar();
+if (!acceso.canal) {
+acceso.canal = client.channel("tb-acceso-owner")
+.on("postgres_changes", { event: "*", schema: "public", table: "tb_acceso_solicitudes" }, function (payload) {
+var nueva = payload && payload.eventType === "INSERT" && payload.new;
+accesoOwnerCargar().then(function () {
+if (nueva && nueva.estado === "pendiente") {
+avisoToast("🙋 @" + nueva.usuario + " pide entrar sin contraseña. Revisa la captura que te envíe.");
+}
+});
+})
+.subscribe();
+}
+clearInterval(acceso.refresco);
+acceso.refresco = setInterval(function () { if (!document.hidden) { accesoOwnerCargar(); } }, 30000);
+}
+async function accesoOwnerCargar() {
+var r = await client.rpc("tb_acceso_pendientes");
+if (r.error) {
+if (faltaTablaTb(r.error) && !acceso.avisado) {
+acceso.avisado = true;
+avisoToast("🙋 Para activar el acceso aprobado ejecuta supabase/" + ACCESO_SQL + " en el SQL Editor de Supabase.");
+}
+return;
+}
+acceso.pendientes = Array.isArray(r.data) ? r.data : [];
+var chip = $("#tb-acceso-chip");
+chip.classList.toggle("tb-hidden", !acceso.pendientes.length);
+$("#tb-acceso-chip-n").textContent = acceso.pendientes.length;
+chip.setAttribute("aria-label", acceso.pendientes.length + " solicitud(es) de acceso");
+accesoOwnerPintar();
+}
+function accesoHace(iso) {
+var min = Math.max(0, Math.round((Date.now() - Date.parse(iso)) / 60000));
+return min < 1 ? "ahora" : "hace " + min + " min";
+}
+function accesoOwnerPintar() {
+var modal = $("#tb-modal-acceso");
+if (!modal || modal.classList.contains("tb-hidden")) { return; }
+var caja = $("#tb-acceso-owner-lista");
+if (!acceso.pendientes.length) {
+caja.innerHTML = '<p class="tb-usuarios-vacio">No hay solicitudes pendientes.</p>';
+return;
+}
+caja.innerHTML = acceso.pendientes.map(function (s) {
+return '<article class="tb-acceso-sol">' + accesoPoseHtml(s.pose, true) +
+'<div class="tb-acceso-sol-info"><b>' + escapeHtml(s.nombre) + "</b><small>@" + escapeHtml(s.usuario) + " · " + accesoHace(s.creado_en) + "</small>" +
+'<span class="tb-acceso-sol-cod">' + escapeHtml(accesoPoseTexto(s.pose)) + " · código <b>" + escapeHtml(s.codigo) + "</b></span>" +
+'<div class="tb-acceso-sol-bot"><button type="button" class="tb-primary" data-acceso-ok="' + escapeHtml(s.id) + '">Aprobar</button>' +
+'<button type="button" class="tb-secondary" data-acceso-no="' + escapeHtml(s.id) + '">Rechazar</button></div></div></article>';
+}).join("");
+}
+async function accesoOwnerResolver(id, aprobar, boton) {
+boton.disabled = true;
+var r = await client.rpc("tb_acceso_resolver", { p_id: id, p_aprobar: aprobar });
+if (r.error || !r.data || !r.data.ok) {
+boton.disabled = false;
+avisoToast("⚠️ " + ((r.error && r.error.message) || (r.data && r.data.error) || "No se pudo resolver."));
+} else {
+avisoToast(aprobar ? "✅ Acceso aprobado. El alumno entrará en unos segundos." : "Solicitud rechazada.");
+}
+accesoOwnerCargar();
+}
+function accesoOwnerAbrir() {
+$("#tb-modal-acceso").classList.remove("tb-hidden");
+root.classList.add("tb-modal-abierto");
+accesoOwnerPintar();
+accesoOwnerCargar();
+}
+function accesoOwnerCerrar() {
+var m = $("#tb-modal-acceso");
+if (m.classList.contains("tb-hidden")) { return; }
+m.classList.add("tb-hidden");
+root.classList.remove("tb-modal-abierto");
+}
+(function accesoEnlazar() {
+if (!$("#tb-acceso")) { return; }
+$$("[data-usuarios-para]").forEach(function (b) {
+b.onclick = function () { accesoAbrirLista(b.dataset.usuariosPara); };
+});
+$("#tb-usuarios-buscar").oninput = accesoPintarLista;
+$("#tb-usuarios-lista").addEventListener("click", function (ev) {
+var item = ev.target.closest("[data-usuario]");
+if (!item) { return; }
+var campo = $("#" + acceso.destino);
+if (campo) {
+campo.value = item.dataset.usuario;
+campo.dispatchEvent(new Event("input", { bubbles: true }));
+}
+accesoCerrarLista();
+if (campo) { campo.focus(); }
+});
+$$("[data-cerrar-usuarios]").forEach(function (b) { b.onclick = accesoCerrarLista; });
+$("#tb-usuarios-modal").addEventListener("click", function (ev) { if (ev.target === this) { accesoCerrarLista(); } });
+$("#tb-acceso-abrir").onclick = function () { accesoMostrar(true); };
+$$("[data-acceso-volver]").forEach(function (b) { b.onclick = function () { accesoMostrar(false); }; });
+$("#tb-acceso-enviar").onclick = accesoEnviar;
+$("#tb-acceso-usuario").onkeydown = function (ev) { if (ev.key === "Enter") { ev.preventDefault(); accesoEnviar(); } };
+$("#tb-acceso-cancelar").onclick = accesoCancelar;
+$("#tb-acceso-otra").onclick = function () { accesoPaso("pedir"); };
+$("#tb-acceso-chip").onclick = accesoOwnerAbrir;
+$$("[data-cerrar-acceso]").forEach(function (b) { b.onclick = accesoOwnerCerrar; });
+$("#tb-modal-acceso").addEventListener("click", function (ev) { if (ev.target === this) { accesoOwnerCerrar(); } });
+$("#tb-acceso-owner-lista").addEventListener("click", function (ev) {
+var ok = ev.target.closest("[data-acceso-ok]");
+var no = ev.target.closest("[data-acceso-no]");
+if (ok) { accesoOwnerResolver(ok.dataset.accesoOk, true, ok); }
+if (no) { accesoOwnerResolver(no.dataset.accesoNo, false, no); }
+});
+document.addEventListener("keydown", function (ev) {
+if (ev.key !== "Escape") { return; }
+if (!$("#tb-usuarios-modal").classList.contains("tb-hidden")) { accesoCerrarLista(); }
+else { accesoOwnerCerrar(); }
+});
+document.addEventListener("visibilitychange", function () { if (!document.hidden && acceso.sol) { accesoSondear(); } });
+setTimeout(accesoRetomar, 400);
 })();
 
 /* ---------- Pantalla de entrada: contraseña o código ---------- */
