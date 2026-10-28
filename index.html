@@ -11080,6 +11080,1089 @@ estilo.id = "tb-nx-css";
 estilo.textContent = css;
 document.head.appendChild(estilo);
 })();
+/* ===================================================================
+   LEYENDAS DE NICARAGUA · 14 conceptos animados (v22)
+   Cada leyenda genera 3 cosméticos: banner animado (MOTIONS), tarjeta
+   (CARDS) y carta de arte completo (CARDS). Todo el arte se dibuja aquí
+   en SVG; cada carta tiene su propia ilustración y su marco según la
+   rareza. Se sincroniza con el catálogo del servidor cuando entra el owner.
+   =================================================================== */
+var LY_PACK = [
+  { s: "guardabarranco", n: "El Guardabarranco", r: "Común", a: "#3fe0d0", x: "#ff8a3c", m: "#1d4f5c", d: "#05161b",
+    t: "El ave nacional cruza el barranco al amanecer." },
+  { s: "sacuanjoche", n: "Flor de Sacuanjoche", r: "Común", a: "#ffe08a", x: "#fff6e0", m: "#3c2a52", d: "#0b0718",
+    t: "La flor nacional se abre bajo la luna." },
+  { s: "chocoyos", n: "Chocoyos del Cráter", r: "Común", a: "#7dff9a", x: "#ffb35c", m: "#4a2a24", d: "#120806",
+    t: "Bandadas verdes vuelan entre el humo del volcán Masaya." },
+  { s: "ometepe", n: "Ometepe al Alba", r: "Común", a: "#ffb36b", x: "#ff6fa8", m: "#3b3f7a", d: "#0d1030",
+    t: "Dos volcanes despiertan sobre el Cocibolca." },
+  { s: "tiburon", n: "El Tiburón del Cocibolca", r: "Raro", a: "#4fd8ff", x: "#c6f7ff", m: "#0e3b5c", d: "#020c18",
+    t: "El único tiburón que vive en un lago de agua dulce." },
+  { s: "momotombo", n: "Furia del Momotombo", r: "Raro", a: "#ff5a2a", x: "#ffd166", m: "#3a1420", d: "#0c0407",
+    t: "El volcán ruge y la lava baja hasta el lago." },
+  { s: "torovenado", n: "El Torovenado", r: "Raro", a: "#ff3d7f", x: "#ffd23f", m: "#3a1a5c", d: "#120724",
+    t: "Máscaras, música y burla en las calles de Masaya." },
+  { s: "gigantona", n: "La Gigantona", r: "Raro", a: "#ffd23f", x: "#ff5d6d", m: "#24346e", d: "#080d26",
+    t: "Baila frente a la catedral de León al ritmo del tambor." },
+  { s: "cadejo", n: "El Cadejo", r: "Épico", a: "#cdeeff", x: "#ff3b3b", m: "#1f2f55", d: "#04070e",
+    t: "El perro blanco que cuida a quien camina solo de noche." },
+  { s: "mocuana", n: "La Mocuana", r: "Épico", a: "#e6d4ff", x: "#7fe7ff", m: "#2b2350", d: "#07061a",
+    t: "Aparece en la cueva del cerro, junto a la cascada." },
+  { s: "padre", n: "El Padre sin Cabeza", r: "Épico", a: "#ffcf7a", x: "#8cf0ff", m: "#2a2440", d: "#06050e",
+    t: "A medianoche, la campana suena sola." },
+  { s: "gueguense", n: "El Güegüense", r: "Legendario", a: "#ffcf5c", x: "#ff4f7a", m: "#5a1f3a", d: "#13050d",
+    t: "La máscara más astuta de Nicaragua, patrimonio de la humanidad." },
+  { s: "carreta", n: "La Carreta Nagua", r: "Legendario", a: "#7df9ff", x: "#b8ff6b", m: "#132a3a", d: "#020507",
+    t: "Si oyes sus ruedas en la calle vacía, no te asomes." },
+  { s: "petroglifo", n: "Petroglifo del Sol", r: "Único", a: "#ffd27a", x: "#9b7bff", m: "#2a1d4a", d: "#07040f",
+    t: "Las espirales de piedra de Ometepe despiertan durante el eclipse." }
+];
+var LY_PESO = { "Común": 60, "Raro": 30, "Épico": 20, "Legendario": 10, "Único": 1 };
+var LY_CSS = "<style>" +
+  ".tw{animation:tw 3.2s ease-in-out infinite}.gl{animation:gl 4s ease-in-out infinite}.ey{animation:ey 2.6s ease-in-out infinite}" +
+  ".fl{animation:fl 5s ease-in-out infinite alternate}.fl2{animation:fl 7s ease-in-out infinite alternate-reverse}" +
+  ".dr{animation:dr 18s ease-in-out infinite alternate}.dr2{animation:dr2 26s ease-in-out infinite alternate}" +
+  ".sw{animation:sw 3.6s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:50% 100%}" +
+  ".sw2{animation:sw2 5s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:50% 100%}" +
+  ".pe{animation:pe 2.2s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:50% 0}" +
+  ".sp{animation:sp 60s linear infinite;transform-box:fill-box;transform-origin:center}" +
+  ".spr{animation:sp 40s linear infinite reverse;transform-box:fill-box;transform-origin:center}" +
+  ".spf{animation:sp 3s linear infinite;transform-box:fill-box;transform-origin:center}" +
+  ".fi{animation:fi .9s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:50% 100%}" +
+  ".fi2{animation:fi 1.3s ease-in-out infinite alternate-reverse;transform-box:fill-box;transform-origin:50% 100%}" +
+  ".ri{animation:ri 7s linear infinite}.ri2{animation:ri 11s linear infinite}" +
+  ".hu{animation:hu 9s ease-in infinite;transform-box:fill-box;transform-origin:center}" +
+  ".fa{animation:fa 10s linear infinite;transform-box:fill-box;transform-origin:center}" +
+  ".sh{animation:sh 7s ease-in-out infinite}.fx{animation:fx 6s linear infinite}" +
+  ".nd{animation:nd 14s ease-in-out infinite alternate}.bo{animation:bo 3s ease-in-out infinite alternate}" +
+  ".wf{animation:wf 1.2s linear infinite}.lv{animation:wf 3s linear infinite}" +
+  ".ff{animation:ff 1s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:50% 50%}" +
+  ".or{animation:sp 24s linear infinite;transform-box:view-box;transform-origin:var(--o)}" +
+  "@keyframes tw{0%,100%{opacity:.15}50%{opacity:1}}@keyframes gl{0%,100%{fill-opacity:.4;stroke-opacity:.4}50%{fill-opacity:1;stroke-opacity:1}}" +
+  "@keyframes ey{0%,100%{opacity:.55}50%{opacity:1}}" +
+  "@keyframes fl{to{transform:translateY(-14px)}}@keyframes dr{to{transform:translateX(-70px)}}@keyframes dr2{to{transform:translateX(90px)}}" +
+  "@keyframes sw{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}@keyframes sw2{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}" +
+  "@keyframes pe{from{transform:rotate(-16deg)}to{transform:rotate(16deg)}}@keyframes sp{to{transform:rotate(360deg)}}" +
+  "@keyframes fi{from{transform:scale(.92,.86)}to{transform:scale(1.06,1.12)}}" +
+  "@keyframes ri{0%{transform:translateY(0);opacity:0}15%{opacity:1}80%{opacity:.8}100%{transform:translateY(-420px);opacity:0}}" +
+  "@keyframes hu{0%{transform:translateY(0) scale(.4);opacity:0}20%{opacity:.75}100%{transform:translateY(-300px) scale(2.2);opacity:0}}" +
+  "@keyframes fa{0%{transform:translate(0,-80px) rotate(0);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translate(-140px,820px) rotate(420deg);opacity:0}}" +
+  "@keyframes sh{0%,50%{transform:translateX(-900px) skewX(-20deg)}100%{transform:translateX(1500px) skewX(-20deg)}}" +
+  "@keyframes fx{0%,84%,100%{opacity:0}85%,88%{opacity:1}86%{opacity:.2}}" +
+  "@keyframes nd{from{transform:translateX(0)}to{transform:translateX(-120px)}}@keyframes bo{from{transform:translateY(-3px) rotate(-2deg)}to{transform:translateY(4px) rotate(2deg)}}" +
+  "@keyframes wf{to{stroke-dashoffset:-60}}@keyframes ff{from{transform:scaleY(1)}to{transform:scaleY(.35)}}" +
+  "@media(prefers-reduced-motion:reduce){*{animation:none!important}}</style>";
+
+/* ---------- utilidades ---------- */
+function lyRng(semilla) {
+  var h = 2166136261;
+  for (var i = 0; i < semilla.length; i++) { h ^= semilla.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return function () {
+    h += 0x6D2B79F5;
+    var t = h;
+    t = Math.imul(t ^ t >>> 15, t | 1);
+    t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+function lyF(v) { return Math.round(v * 10) / 10; }
+function lyG(tr, inner, cls, st) {
+  return '<g' + (tr ? ' transform="' + tr + '"' : "") + (cls ? ' class="' + cls + '"' : "") + (st ? ' style="' + st + '"' : "") + ">" + inner + "</g>";
+}
+/* Un elemento animado dentro de un grupo posicionado: así la animación CSS no pisa el transform. */
+function lyA(tr, cls, inner, st) { return lyG(tr, lyG("", inner, cls, st)); }
+function lyMix(hex, hacia, k) {
+  var n = parseInt(String(hex).replace("#", ""), 16);
+  var r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255, d = hacia === "claro" ? 255 : 0;
+  function p(c) { return Math.round(c + (d - c) * k); }
+  return "rgb(" + p(r) + "," + p(g) + "," + p(b) + ")";
+}
+function lyEstrellas(R, W, H, n, col) {
+  var s = "";
+  for (var i = 0; i < n; i++) {
+    var r = .5 + R() * 1.7;
+    s += '<circle cx="' + lyF(R() * W) + '" cy="' + lyF(R() * H) + '" r="' + lyF(r) + '" fill="' + col + '"' +
+      (R() < .55 ? ' class="tw" style="animation-delay:-' + lyF(R() * 3) + "s;animation-duration:" + lyF(2 + R() * 3) + 's"' : ' opacity="' + lyF(.3 + R() * .5) + '"') + "/>";
+  }
+  return s;
+}
+function lyCordillera(R, W, base, alto, col, op, paso) {
+  var d = "M0 " + (base + 400) + " L0 " + base;
+  for (var x = 0; x <= W + 40; x += (paso || 60) + R() * (paso || 60)) { d += " L" + lyF(x) + " " + lyF(base - R() * alto); }
+  return '<path d="' + d + " L" + (W + 40) + " " + base + " L" + (W + 40) + " " + (base + 400) + 'Z" fill="' + col + '" opacity="' + op + '"/>';
+}
+function lyNiebla(R, W, y, col, n, op) {
+  var s = "";
+  for (var i = 0; i < n; i++) {
+    s += lyA("", i % 2 ? "dr" : "dr2", '<ellipse cx="' + lyF(R() * W) + '" cy="' + lyF(y + (R() - .5) * 40) + '" rx="' + lyF(120 + R() * 220) +
+      '" ry="' + lyF(18 + R() * 26) + '" fill="' + col + '" opacity="' + lyF(op * (.5 + R() * .5)) + '" filter="url(#bl)"/>',
+      "animation-delay:-" + lyF(R() * 10) + "s");
+  }
+  return s;
+}
+function lyParticulas(R, W, H, n, col, cls, rmax) {
+  var s = "";
+  for (var i = 0; i < n; i++) {
+    s += lyA("translate(" + lyF(R() * W) + " " + lyF(H * (.55 + R() * .5)) + ")", cls,
+      '<circle r="' + lyF(.8 + R() * (rmax || 2.6)) + '" fill="' + col + '"/>',
+      "animation-delay:-" + lyF(R() * 9) + "s;animation-duration:" + lyF(5 + R() * 7) + "s");
+  }
+  return s;
+}
+function lyLuciernagas(R, W, H, y0, n, col) {
+  var s = "";
+  for (var i = 0; i < n; i++) {
+    s += lyA("translate(" + lyF(R() * W) + " " + lyF(y0 + R() * (H - y0)) + ")", i % 2 ? "fl" : "fl2",
+      '<circle r="' + lyF(1.4 + R() * 2.2) + '" fill="' + col + '" class="tw" style="animation-delay:-' + lyF(R() * 3) + 's" filter="url(#bl3)"/>',
+      "animation-delay:-" + lyF(R() * 5) + "s");
+  }
+  return s;
+}
+function lyDefs(P, extra) {
+  return "<defs>" +
+    '<linearGradient id="cielo" x1="0" y1="0" x2=".3" y2="1"><stop offset="0" stop-color="' + P.d + '"/><stop offset=".7" stop-color="' + P.m + '"/><stop offset="1" stop-color="' + lyMix(P.m, "claro", .12) + '"/></linearGradient>' +
+    '<radialGradient id="halo"><stop offset="0" stop-color="' + P.a + '" stop-opacity=".75"/><stop offset=".4" stop-color="' + P.a + '" stop-opacity=".22"/><stop offset="1" stop-color="' + P.a + '" stop-opacity="0"/></radialGradient>' +
+    '<radialGradient id="halox"><stop offset="0" stop-color="' + P.x + '" stop-opacity=".8"/><stop offset=".45" stop-color="' + P.x + '" stop-opacity=".2"/><stop offset="1" stop-color="' + P.x + '" stop-opacity="0"/></radialGradient>' +
+    '<linearGradient id="velo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + P.d + '" stop-opacity="0"/><stop offset=".55" stop-color="' + P.d + '" stop-opacity=".85"/><stop offset="1" stop-color="' + P.d + '"/></linearGradient>' +
+    '<linearGradient id="brillo" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".3"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>' +
+    '<linearGradient id="oro" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff4c9"/><stop offset=".3" stop-color="' + P.a + '"/><stop offset=".55" stop-color="' + lyMix(P.a, "oscuro", .45) + '"/><stop offset=".8" stop-color="' + P.a + '"/><stop offset="1" stop-color="#fff4c9"/></linearGradient>' +
+    '<linearGradient id="holo" x1="0" y1="0" x2="1" y2="1" gradientUnits="objectBoundingBox"><stop offset="0" stop-color="#ff7ad9"/><stop offset=".2" stop-color="#ffd27a"/><stop offset=".4" stop-color="#7affc4"/><stop offset=".6" stop-color="#7ad7ff"/><stop offset=".8" stop-color="#b07aff"/><stop offset="1" stop-color="#ff7ad9"/>' +
+    '<animateTransform attributeName="gradientTransform" type="rotate" from="0 .5 .5" to="360 .5 .5" dur="9s" repeatCount="indefinite"/></linearGradient>' +
+    '<filter id="bl" x="-50%" y="-100%" width="200%" height="300%"><feGaussianBlur stdDeviation="14"/></filter>' +
+    '<filter id="bl2" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5"/></filter>' +
+    '<filter id="bl3" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="2.2"/></filter>' +
+    '<filter id="resplandor" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>' +
+    (extra || "") + "</defs>";
+}
+function lyNivel(r) { return { "Común": 0, "Raro": 1, "Épico": 2, "Legendario": 3, "Único": 4 }[r] || 0; }
+
+/* ---------- marco de carta según rareza ---------- */
+function lyFiligrana(P, nivel) {
+  // Voluta de esquina (se refleja en las 4 esquinas).
+  var v = '<path d="M0 0 C40 0 64 10 76 34 C84 52 74 70 58 68 C44 66 42 50 54 46" fill="none" stroke="url(#oro)" stroke-width="3" stroke-linecap="round"/>' +
+    '<path d="M0 0 C0 40 10 64 34 76 C52 84 70 74 68 58 C66 44 50 42 46 54" fill="none" stroke="url(#oro)" stroke-width="3" stroke-linecap="round"/>' +
+    (nivel >= 2 ? '<circle cx="22" cy="22" r="6" fill="' + P.x + '" stroke="#fff4c9" stroke-width="1.5"/><circle cx="20" cy="20" r="2" fill="#fff" opacity=".8"/>' : "") +
+    (nivel >= 3 ? '<path d="M90 8 H150 M8 90 V150" stroke="url(#oro)" stroke-width="2" stroke-dasharray="2 6" stroke-linecap="round"/>' : "");
+  return lyG("translate(26 26)", v) + lyG("translate(574 26) scale(-1 1)", v) +
+    lyG("translate(26 734) scale(1 -1)", v) + lyG("translate(574 734) scale(-1 -1)", v);
+}
+function lyMarcoCarta(P, t, nivel) {
+  var s = "";
+  // Bisel exterior.
+  s += '<rect x="7" y="7" width="586" height="746" rx="26" fill="none" stroke="' + (nivel >= 4 ? "url(#holo)" : "url(#oro)") + '" stroke-width="' + (nivel >= 3 ? 9 : 6) + '"/>';
+  s += '<rect x="18" y="18" width="564" height="724" rx="18" fill="none" stroke="' + P.a + '" stroke-width="1.5" opacity=".55"/>';
+  if (nivel >= 1) { s += lyFiligrana(P, nivel); }
+  if (nivel >= 2) {
+    // Joya superior con destello.
+    s += lyG("translate(300 18)", '<path d="M-26 0 L0 -12 L26 0 L0 22Z" fill="url(#oro)"/><path d="M-13 1 L0 -5 L13 1 L0 13Z" fill="' + P.x + '"/>' +
+      '<circle r="18" fill="url(#halox)" class="gl"/>');
+    s += '<g class="sh" opacity=".55"><rect x="0" y="-60" width="130" height="900" fill="url(#brillo)"/></g>';
+  }
+  if (nivel >= 3) {
+    s += '<rect x="30" y="30" width="540" height="700" rx="14" fill="none" stroke="url(#oro)" stroke-width="1" stroke-dasharray="1 9" opacity=".8"/>';
+  }
+  // Placa con el nombre.
+  var ancho = Math.min(460, 150 + t.n.length * 15);
+  s += lyG("translate(300 690)",
+    '<path d="M' + (-ancho / 2 - 26) + ' 0 L' + (-ancho / 2) + ' -24 H' + (ancho / 2) + ' L' + (ancho / 2 + 26) + ' 0 L' + (ancho / 2) + ' 24 H' + (-ancho / 2) + 'Z" fill="' + P.d + '" fill-opacity=".92" stroke="url(#oro)" stroke-width="2.5"/>' +
+    '<text y="8" text-anchor="middle" font-family="Georgia, \'Times New Roman\', serif" font-size="23" font-weight="700" letter-spacing="2.5" fill="' + lyMix(P.a, "claro", .45) + '">' + t.n.toUpperCase() + "</text>" +
+    lyG("translate(0 40)", lyRombos(P, nivel)));
+  return s;
+}
+function lyRombos(P, nivel) {
+  var n = nivel + 1, s = "", x0 = -(n - 1) * 9;
+  for (var i = 0; i < n; i++) {
+    s += '<path d="M' + (x0 + i * 18) + ' -6 L' + (x0 + i * 18 + 6) + ' 0 L' + (x0 + i * 18) + ' 6 L' + (x0 + i * 18 - 6) + ' 0Z" fill="' + (nivel >= 4 ? "url(#holo)" : P.a) + '"/>';
+  }
+  return s;
+}
+/* ---------- ilustraciones: cada una tiene fondo (se adapta al ancho) y protagonista (caja de 400×400, base en y=400) ---------- */
+var LY_ESCENAS = {};
+
+LY_ESCENAS.guardabarranco = {
+  fondo: function (P, R, W, H, suelo) {
+    var s = '<defs><linearGradient id="amanecer" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + P.d + '"/><stop offset=".45" stop-color="' + P.m + '"/>' +
+      '<stop offset=".8" stop-color="' + lyMix(P.x, "oscuro", .25) + '"/><stop offset="1" stop-color="' + P.x + '"/></linearGradient></defs>';
+    s += '<rect width="' + W + '" height="' + H + '" fill="url(#amanecer)"/>';
+    s += lyEstrellas(R, W, suelo * .45, 40, "#fff");
+    s += '<circle cx="' + W / 2 + '" cy="' + (suelo - 110) + '" r="260" fill="url(#halox)"/>';
+    s += '<circle cx="' + W / 2 + '" cy="' + (suelo - 60) + '" r="70" fill="#ffe2b8" opacity=".9"/>';
+    s += lyCordillera(R, W, suelo - 90, 90, lyMix(P.m, "oscuro", .3), .8, 70);
+    // paredes del barranco
+    var izq = "M0 " + H + " L0 0 ", der = "M" + W + " " + H + " L" + W + " 0 ";
+    for (var y = 0; y <= suelo + 40; y += 40) {
+      izq += "L" + lyF(W * .12 + R() * W * .1 + (y / suelo) * W * .06) + " " + y + " ";
+      der += "L" + lyF(W * .88 - R() * W * .1 - (y / suelo) * W * .06) + " " + y + " ";
+    }
+    s += '<path d="' + izq + "L0 " + H + 'Z" fill="' + lyMix(P.d, "oscuro", .2) + '"/>';
+    s += '<path d="' + der + "L" + W + " " + H + 'Z" fill="' + lyMix(P.d, "oscuro", .2) + '"/>';
+    s += '<path d="' + izq + '" fill="none" stroke="' + P.x + '" stroke-width="2" opacity=".35"/>';
+    s += '<path d="' + der + '" fill="none" stroke="' + P.x + '" stroke-width="2" opacity=".35"/>';
+    s += lyNiebla(R, W, suelo - 40, "#ffe6d0", 6, .35);
+    // río al fondo
+    s += '<path d="M' + W * .3 + " " + H + " C" + W * .45 + " " + (suelo + 60) + " " + W * .55 + " " + (suelo + 30) + " " + W * .5 + " " + (suelo - 30) +
+      '" stroke="' + P.a + '" stroke-width="10" fill="none" opacity=".35" stroke-dasharray="30 30" class="lv"/>';
+    for (var i = 0; i < 4; i++) {
+      s += lyA("translate(" + lyF(W * (.2 + R() * .6)) + " " + lyF(suelo * (.2 + R() * .3)) + ")", "dr2",
+        '<path d="M-8 0 Q-4 -5 0 0 Q4 -5 8 0" stroke="' + P.d + '" stroke-width="2" fill="none"/>', "animation-delay:-" + lyF(R() * 20) + "s");
+    }
+    return s;
+  },
+  heroe: function (P) {
+    var s = '<defs><linearGradient id="gbcuerpo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5fe3c0"/><stop offset=".6" stop-color="#1c9c86"/><stop offset="1" stop-color="#0b5a52"/></linearGradient>' +
+      '<linearGradient id="gbpecho" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffb070"/><stop offset="1" stop-color="' + P.x + '"/></linearGradient>' +
+      '<linearGradient id="gbala" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5ad6ff"/><stop offset="1" stop-color="#127f9e"/></linearGradient></defs>';
+    s += '<circle cx="215" cy="240" r="190" fill="url(#halo)" opacity=".55"/>';
+    // rama con hojas
+    s += '<path d="M-60 336 C40 312 120 300 210 318 S360 300 470 290" stroke="#3a2416" stroke-width="16" fill="none" stroke-linecap="round"/>';
+    s += '<path d="M-60 336 C40 312 120 300 210 318 S360 300 470 290" stroke="#6a4630" stroke-width="5" fill="none" stroke-linecap="round" opacity=".6" transform="translate(0 -4)"/>';
+    var hojas = [[40, 318, -30], [70, 306, 210], [330, 300, -40], [380, 292, 200], [420, 286, -20]];
+    hojas.forEach(function (h, i) {
+      s += lyA("translate(" + h[0] + " " + h[1] + ") rotate(" + h[2] + ")", "sw2",
+        '<path d="M0 0 C14 -16 44 -18 64 0 C44 16 14 16 0 0Z" fill="' + (i % 2 ? "#1f6b46" : "#2a8a58") + '"/><path d="M0 0 H60" stroke="#0f3b25" stroke-width="1.5"/>',
+        "animation-delay:-" + i + "s");
+    });
+    // cola (péndulo) con raquetas
+    s += lyA("translate(176 298)", "pe",
+      '<path d="M0 0 L-18 112 M8 0 L-2 116" stroke="#0e6e7a" stroke-width="3.5" stroke-linecap="round"/>' +
+      '<path d="M-6 6 L-12 46 M10 6 L6 48" stroke="url(#gbala)" stroke-width="9" stroke-linecap="round"/>' +
+      '<ellipse cx="-19" cy="124" rx="10" ry="19" fill="url(#gbala)"/><ellipse cx="-19" cy="134" rx="10" ry="9" fill="#06131a"/>' +
+      '<ellipse cx="-2" cy="128" rx="10" ry="19" fill="url(#gbala)"/><ellipse cx="-2" cy="138" rx="10" ry="9" fill="#06131a"/>');
+    // ave
+    var ave = '<path d="M160 312 C142 262 166 214 214 200 C252 190 276 222 268 258 C260 292 226 318 186 320Z" fill="url(#gbcuerpo)"/>' +
+      '<path d="M206 222 C236 226 250 256 240 286 C230 306 206 316 190 314 C206 290 212 254 206 222Z" fill="url(#gbpecho)" opacity=".95"/>' +
+      '<path d="M172 236 C196 224 230 246 226 292 C210 306 184 306 170 292Z" fill="url(#gbala)"/>' +
+      '<path d="M178 252 Q200 250 214 268 M176 270 Q196 268 210 284 M174 286 Q190 286 202 296" stroke="#0a5a70" stroke-width="2" fill="none"/>' +
+      '<circle cx="232" cy="196" r="28" fill="url(#gbcuerpo)"/>' +
+      '<path d="M208 182 C220 168 246 168 258 182 C246 178 222 178 208 186Z" fill="#7fffe6" opacity=".9"/>' +
+      '<path d="M206 196 C222 192 246 194 266 202 L264 210 C246 206 224 206 208 208Z" fill="#071318"/>' +
+      '<circle cx="240" cy="200" r="5.5" fill="#ff8a3c"/><circle cx="240" cy="200" r="2.6" fill="#000"/><circle cx="241.5" cy="198.5" r="1" fill="#fff"/>' +
+      '<path d="M258 202 L300 212 L260 218Z" fill="#14181c"/>' +
+      '<path d="M226 222 L236 238 L244 222Z" fill="#071318"/>' +
+      '<path d="M196 316 L192 328 M210 316 L212 328" stroke="#2a1a10" stroke-width="3.5" stroke-linecap="round"/>';
+    s += lyA("", "fl", ave, "animation-duration:2.6s");
+    return s;
+  }
+};
+
+LY_ESCENAS.sacuanjoche = {
+  fondo: function (P, R, W, H, suelo) {
+    var s = '<rect width="' + W + '" height="' + H + '" fill="url(#cielo)"/>';
+    s += lyEstrellas(R, W, suelo * .7, 110, "#fff");
+    var lx = W * .74, ly = 130;
+    s += '<circle cx="' + lx + '" cy="' + ly + '" r="200" fill="url(#halo)" opacity=".6"/>';
+    s += '<circle cx="' + lx + '" cy="' + ly + '" r="58" fill="#fffbe8"/><circle cx="' + (lx - 14) + '" cy="' + (ly - 10) + '" r="10" fill="#efe6c8" opacity=".7"/>' +
+      '<circle cx="' + (lx + 18) + '" cy="' + (ly + 16) + '" r="7" fill="#efe6c8" opacity=".6"/>';
+    s += lyCordillera(R, W, suelo - 40, 70, lyMix(P.m, "oscuro", .25), .9, 90);
+    s += '<rect y="' + (suelo - 10) + '" width="' + W + '" height="' + (H - suelo + 10) + '" fill="' + P.d + '"/>';
+    s += lyLuciernagas(R, W, H, suelo * .3, 26, P.a);
+    for (var i = 0; i < 16; i++) {
+      s += lyA("translate(" + lyF(R() * (W + 200)) + " " + lyF(R() * 60 - 40) + ")", "fa",
+        '<path d="M0 0 C4 -8 16 -10 22 -4 C16 4 6 4 0 0Z" fill="#fff8e8" opacity=".85"/>',
+        "animation-delay:-" + lyF(R() * 10) + "s;animation-duration:" + lyF(8 + R() * 8) + "s");
+    }
+    return s;
+  },
+  heroe: function (P, R) {
+    var s = '<defs><radialGradient id="sqpet" cx="0" cy=".5" r="1"><stop offset="0" stop-color="' + P.a + '"/><stop offset=".35" stop-color="#fff6d8"/><stop offset="1" stop-color="#ffffff"/></radialGradient></defs>';
+    s += '<circle cx="200" cy="210" r="210" fill="url(#halo)" opacity=".45"/>';
+    s += '<path d="M200 420 C196 340 170 300 130 270 M200 420 C210 330 250 290 300 262 M200 420 C200 330 214 250 210 180" stroke="#4a3a30" stroke-width="9" fill="none" stroke-linecap="round"/>';
+    var hojas = [[130, 270, 200], [300, 262, -20], [210, 180, -80], [150, 300, 160], [262, 296, 20], [100, 250, 230], [330, 240, -40]];
+    hojas.forEach(function (h, i) {
+      s += lyA("translate(" + h[0] + " " + h[1] + ") rotate(" + h[2] + ")", "sw2",
+        '<path d="M0 0 C20 -18 70 -20 112 0 C70 20 20 18 0 0Z" fill="' + (i % 2 ? "#1f5a3a" : "#2b7048") + '"/><path d="M4 0 H106" stroke="#123a24" stroke-width="2"/>',
+        "animation-delay:-" + lyF(i * .7) + "s;animation-duration:" + lyF(4 + i * .4) + "s");
+    });
+    function flor(x, y, k, rot) {
+      var f = "";
+      for (var p = 0; p < 5; p++) {
+        f += '<path transform="rotate(' + (p * 72) + ')" d="M0 0 C6 -16 30 -28 50 -18 C60 -8 46 12 0 0Z" fill="url(#sqpet)" stroke="#f3e2b8" stroke-width=".8"/>';
+      }
+      f += '<circle r="7" fill="' + P.a + '"/><circle r="16" fill="url(#halo)" class="gl"/>';
+      return lyG("translate(" + x + " " + y + ") scale(" + k + ") rotate(" + rot + ")", f);
+    }
+    var flores = [[210, 170, 1.35, 0], [130, 238, 1, 20], [292, 236, 1.08, 50], [176, 290, .85, 10], [252, 110, .78, 30], [338, 176, .7, 5], [88, 176, .72, 40], [240, 300, .7, 60]];
+    var fs = "";
+    flores.forEach(function (f) { fs += flor(f[0], f[1], f[2], f[3]); });
+    s += lyA("", "fl", '<g filter="url(#resplandor)">' + fs + "</g>", "animation-duration:6s");
+    return s;
+  }
+};
+
+LY_ESCENAS.chocoyos = {
+  fondo: function (P, R, W, H, suelo) {
+    var s = '<defs><linearGradient id="ocaso" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + P.d + '"/><stop offset=".55" stop-color="' + P.m + '"/><stop offset="1" stop-color="' + P.x + '"/></linearGradient></defs>';
+    s += '<rect width="' + W + '" height="' + H + '" fill="url(#ocaso)"/>';
+    s += lyEstrellas(R, W, suelo * .4, 40, "#ffe8c8");
+    // columna de humo
+    var cx = W / 2;
+    for (var i = 0; i < 16; i++) {
+      s += lyA("translate(" + lyF(cx + (R() - .5) * 80) + " " + (suelo - 60) + ")", "hu",
+        '<circle r="' + lyF(30 + R() * 40) + '" fill="' + (i % 3 ? "#8a7a78" : "#b8a8a0") + '" opacity=".55" filter="url(#bl2)"/>',
+        "animation-delay:-" + lyF(i * .6) + "s;animation-duration:" + lyF(8 + R() * 4) + "s");
+    }
+    // cráter
+    s += '<ellipse cx="' + cx + '" cy="' + (suelo - 30) + '" rx="' + W * .38 + '" ry="60" fill="url(#halox)" class="gl"/>';
+    s += '<path d="M0 ' + (suelo - 120) + " C" + W * .15 + " " + (suelo - 150) + " " + W * .28 + " " + (suelo - 60) + " " + W * .38 + " " + (suelo - 40) +
+      " Q" + cx + " " + (suelo - 10) + " " + W * .62 + " " + (suelo - 40) + " C" + W * .72 + " " + (suelo - 60) + " " + W * .85 + " " + (suelo - 160) + " " + W + " " + (suelo - 130) +
+      " V" + H + " H0Z" + '" fill="' + lyMix(P.m, "oscuro", .55) + '"/>';
+    s += '<path d="M' + W * .38 + " " + (suelo - 40) + " Q" + cx + " " + (suelo - 10) + " " + W * .62 + " " + (suelo - 40) + '" stroke="' + P.x + '" stroke-width="4" fill="none" opacity=".8" filter="url(#bl3)"/>';
+    s += '<rect y="' + suelo + '" width="' + W + '" height="' + (H - suelo) + '" fill="' + lyMix(P.d, "oscuro", .2) + '"/>';
+    return s;
+  },
+  heroe: function (P, R) {
+    // chocoyo en vuelo visto de lado, mirando a la derecha
+    function volando(k, retraso) {
+      return '<g transform="scale(' + k + ')">' +
+        '<path d="M-6 2 L-46 10 L-44 4 L-8 -2Z" fill="#2a9a4a"/>' +
+        '<path d="M-10 0 C-6 -9 14 -11 26 -5 C32 -2 32 4 26 6 C14 10 -4 8 -10 0Z" fill="#46d46a"/>' +
+        '<circle cx="26" cy="-2" r="7" fill="#52e076"/><circle cx="28" cy="-4" r="1.8" fill="#14080a"/>' +
+        '<path d="M32 -4 C37 -4 38 2 33 3Z" fill="#ffe2b8"/>' +
+        '<g class="ff" style="animation-delay:-' + retraso + 's;animation-duration:.42s"><path d="M2 -4 C0 -24 12 -34 22 -32 C18 -22 14 -12 12 -4Z" fill="#7dff9a"/></g>' +
+        '<g class="ff" style="animation-delay:-' + retraso + 's;animation-duration:.42s"><path d="M0 4 C-6 20 4 28 14 26 C12 18 12 10 10 4Z" fill="#2fa04e" opacity=".8"/></g></g>';
+    }
+    var s = "";
+    var bandada = "";
+    for (var i = 0; i < 12; i++) {
+      var a = (i / 12) * Math.PI * 2, r = 140 + (i % 3) * 18;
+      var x = 200 + Math.cos(a) * r, y = 150 + Math.sin(a) * r * .38;
+      var mira = Math.sin(a) < 0 ? 1 : -1; // vuelan en círculo: los de arriba a la derecha, los de abajo a la izquierda
+      bandada += lyG("translate(" + lyF(x) + " " + lyF(y) + ") scale(" + mira + " 1)", volando(.75 + (i % 4) * .12, lyF(R())));
+    }
+    s += lyA("", "dr", bandada, "animation-duration:7s");
+    // repisa de roca con dos chocoyos posados
+    s += '<path d="M90 400 L130 330 L250 314 L320 336 L350 400Z" fill="#1d120e"/><path d="M130 330 L250 314 L320 336" stroke="' + P.x + '" stroke-width="2.5" fill="none" opacity=".6"/>';
+    function posado(x, y, flip) {
+      var p = '<path d="M-6 -6 L-14 64 L-4 66 L4 -4Z" fill="#2a9a4a"/>' +
+        '<ellipse cx="0" cy="-34" rx="22" ry="34" fill="#3cc860"/>' +
+        '<ellipse cx="6" cy="-26" rx="12" ry="24" fill="#8ef0a0" opacity=".55"/>' +
+        '<path d="M-20 -44 C-30 -20 -24 4 -10 12 C-8 -6 -10 -26 -20 -44Z" fill="#1f8a3e"/>' +
+        '<path d="M-14 -40 C-20 -28 -18 -14 -12 -4 M-18 -26 L-10 -24" stroke="#16702f" stroke-width="2" fill="none"/>' +
+        '<circle cx="6" cy="-74" r="19" fill="#46d46a"/>' +
+        '<circle cx="2" cy="-64" r="7" fill="#ff7a4a" opacity=".85"/>' +
+        '<circle cx="10" cy="-78" r="4.6" fill="#fff6e0"/><circle cx="11" cy="-78" r="3" fill="#14080a"/><circle cx="12" cy="-79.4" r="1" fill="#fff"/>' +
+        '<path d="M22 -80 C34 -80 36 -66 28 -62 C26 -66 24 -70 20 -70Z" fill="#ffe2b8"/>' +
+        '<path d="M-8 2 L-8 10 M6 2 L6 10" stroke="#5a3a2a" stroke-width="3.5" stroke-linecap="round"/>';
+      return lyG("translate(" + x + " " + y + ") scale(" + (flip ? -1 : 1) + " 1)", lyA("", "fl", p, "animation-duration:3s"));
+    }
+    s += posado(196, 312, false) + posado(270, 322, true);
+    return s;
+  }
+};
+
+LY_ESCENAS.ometepe = {
+  fondo: function (P, R, W, H, suelo) {
+    var hz = suelo - 70;
+    var s = '<defs><linearGradient id="alba" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + P.d + '"/><stop offset=".4" stop-color="' + P.m + '"/><stop offset=".75" stop-color="' + P.x + '"/><stop offset="1" stop-color="' + P.a + '"/></linearGradient>' +
+      '<linearGradient id="lago" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + lyMix(P.x, "oscuro", .35) + '"/><stop offset="1" stop-color="' + P.d + '"/></linearGradient></defs>';
+    s += '<rect width="' + W + '" height="' + hz + '" fill="url(#alba)"/>';
+    s += lyEstrellas(R, W, hz * .4, 30, "#fff");
+    s += '<circle cx="' + W / 2 + '" cy="' + hz + '" r="300" fill="url(#halo)"/>';
+    s += '<circle cx="' + W / 2 + '" cy="' + hz + '" r="78" fill="#fff0c8"/>';
+    for (var i = 0; i < 5; i++) {
+      s += lyA("", i % 2 ? "dr" : "dr2", '<ellipse cx="' + lyF(R() * W) + '" cy="' + lyF(hz * (.25 + R() * .5)) + '" rx="' + lyF(140 + R() * 160) + '" ry="10" fill="' + P.x + '" opacity=".55"/>');
+    }
+    s += '<rect y="' + hz + '" width="' + W + '" height="' + (H - hz) + '" fill="url(#lago)"/>';
+    for (var j = 0; j < 22; j++) {
+      var y = hz + 6 + j * 9;
+      s += lyA("", j % 2 ? "nd" : "dr", '<rect x="' + lyF(W / 2 - 60 + (R() - .5) * 40) + '" y="' + y + '" width="' + lyF(30 + R() * 90) + '" height="2.5" fill="#ffe2b0" opacity="' + lyF(.8 - j * .03) + '"/>',
+        "animation-duration:" + lyF(6 + R() * 6) + "s");
+    }
+    return s;
+  },
+  heroe: function (P) {
+    var isla = '<path d="M-10 330 L120 64 C132 52 148 52 160 64 L232 210 C252 160 276 140 300 140 C330 140 360 190 410 330Z" fill="' + lyMix(P.m, "oscuro", .45) + '"/>' +
+      '<path d="M120 64 C132 52 148 52 160 64 L182 108 C164 100 146 112 130 100 C122 94 114 92 104 96Z" fill="#e8d6ff" opacity=".35"/>' +
+      '<path d="M-10 330 L120 64 M160 64 L232 210" stroke="' + P.x + '" stroke-width="2" opacity=".5"/>';
+    var s = isla;
+    s += lyA("", "dr", '<ellipse cx="140" cy="62" rx="70" ry="16" fill="#ffe6f0" opacity=".75" filter="url(#bl2)"/><ellipse cx="170" cy="50" rx="40" ry="12" fill="#fff" opacity=".6" filter="url(#bl2)"/>', "animation-duration:12s");
+    s += '<g transform="translate(0 660) scale(1 -1)" opacity=".28" filter="url(#bl2)">' + isla + "</g>";
+    s += '<path d="M-20 330 H420" stroke="#ffd8b0" stroke-width="2" opacity=".6"/>';
+    // panga con pescador
+    s += lyA("translate(300 372)", "bo",
+      '<path d="M-60 0 C-40 18 40 18 64 -2 L56 -6 H-54Z" fill="#170a12"/><path d="M-54 -6 H56" stroke="' + P.a + '" stroke-width="2" opacity=".6"/>' +
+      '<path d="M8 -6 L10 -40 M10 -40 C14 -46 22 -46 22 -40" stroke="#170a12" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="10" cy="-50" r="7" fill="#170a12"/>' +
+      '<path d="M18 -34 L64 -70" stroke="#170a12" stroke-width="2.5"/><path d="M64 -70 Q70 -20 60 4" stroke="#ffe2b0" stroke-width="1" fill="none" opacity=".6"/>');
+    for (var i = 0; i < 3; i++) {
+      s += lyA("translate(" + (40 + i * 34) + " " + (150 + i * 14) + ")", "dr2", '<path d="M-10 0 Q-5 -7 0 0 Q5 -7 10 0" stroke="#2a1430" stroke-width="2.5" fill="none"/>', "animation-delay:-" + i * 3 + "s");
+    }
+    return s;
+  }
+};
+
+LY_ESCENAS.tiburon = {
+  fondo: function (P, R, W, H, suelo) {
+    var agua = 170;
+    var s = '<defs><linearGradient id="lagoal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + lyMix(P.m, "claro", .1) + '"/><stop offset=".5" stop-color="' + P.m + '"/><stop offset="1" stop-color="' + P.d + '"/></linearGradient>' +
+      '<linearGradient id="rayo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + P.x + '" stop-opacity=".45"/><stop offset="1" stop-color="' + P.x + '" stop-opacity="0"/></linearGradient></defs>';
+    s += '<rect width="' + W + '" height="' + agua + '" fill="' + P.d + '"/>';
+    s += lyEstrellas(R, W, agua - 30, 50, "#fff");
+    s += '<circle cx="' + W * .22 + '" cy="60" r="28" fill="#f2fbff"/><circle cx="' + W * .22 + '" cy="60" r="120" fill="url(#halo)" opacity=".5"/>';
+    s += '<path d="M' + W * .6 + " " + agua + " L" + W * .76 + " " + (agua - 120) + " C" + W * .77 + " " + (agua - 126) + " " + W * .79 + " " + (agua - 126) + " " + W * .8 + " " + (agua - 120) + " L" + W * .98 + " " + agua + 'Z" fill="#071a2a"/>';
+    s += '<rect y="' + agua + '" width="' + W + '" height="' + (H - agua) + '" fill="url(#lagoal)"/>';
+    s += lyA("", "nd", '<path d="' + (function () { var d = "M-120 " + agua; for (var x = -120; x < W + 240; x += 60) { d += " Q" + (x + 30) + " " + (agua - 7) + " " + (x + 60) + " " + agua; } return d; })() +
+      '" stroke="' + P.x + '" stroke-width="3" fill="none" opacity=".8"/>', "animation-duration:6s");
+    for (var i = 0; i < 6; i++) {
+      var x0 = W * (.08 + i * .17);
+      s += lyA("", "gl", '<path d="M' + lyF(x0) + " " + agua + " L" + lyF(x0 + 40) + " " + agua + " L" + lyF(x0 + 140) + " " + H + " L" + lyF(x0 + 40) + " " + H + 'Z" fill="url(#rayo)"/>',
+        "animation-delay:-" + lyF(R() * 4) + "s;animation-duration:" + lyF(3 + R() * 3) + "s");
+    }
+    for (var b = 0; b < 26; b++) {
+      s += lyA("translate(" + lyF(R() * W) + " " + lyF(H - R() * 60) + ")", "ri", '<circle r="' + lyF(1.5 + R() * 3.5) + '" fill="none" stroke="' + P.x + '" stroke-width="1.2" opacity=".8"/>',
+        "animation-delay:-" + lyF(R() * 7) + "s;animation-duration:" + lyF(5 + R() * 5) + "s");
+    }
+    for (var a = 0; a < Math.round(W / 70); a++) {
+      var xa = a * 70 + R() * 40, h = 60 + R() * 90;
+      s += lyA("translate(" + lyF(xa) + " " + H + ")", "sw2", '<path d="M0 0 C-14 ' + lyF(-h * .4) + " 14 " + lyF(-h * .7) + " 0 " + lyF(-h) + '" stroke="#0d4a3a" stroke-width="6" fill="none" stroke-linecap="round"/>',
+        "animation-delay:-" + lyF(R() * 4) + "s");
+    }
+    return s;
+  },
+  heroe: function (P, R) {
+    var s = '<defs><linearGradient id="tbcuerpo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b3a52"/><stop offset=".55" stop-color="#4f7d99"/><stop offset=".62" stop-color="#cfe6f2"/><stop offset="1" stop-color="#e8f6ff"/></linearGradient></defs>';
+    var cardumen = "";
+    for (var i = 0; i < 18; i++) {
+      cardumen += lyG("translate(" + lyF(250 + (R() - .5) * 140) + " " + lyF(90 + (R() - .5) * 70) + ")", '<path d="M0 0 C6 -5 16 -5 20 0 C16 5 6 5 0 0Z M20 0 L27 -5 L27 5Z" fill="' + P.x + '" opacity=".85"/>');
+    }
+    s += lyA("", "dr2", cardumen, "animation-duration:9s");
+    var tiburon = '<path d="M14 92 C40 66 120 54 200 60 L236 4 C240 0 246 2 246 8 L240 62 C286 66 320 74 352 82 L392 34 C396 30 402 32 400 38 L376 98 L404 152 C406 158 400 160 396 156 L350 114 C310 124 270 132 236 132 L214 168 C210 172 204 170 206 164 L210 132 C160 134 100 130 60 118 C40 112 22 104 14 92Z" fill="url(#tbcuerpo)"/>' +
+      '<path d="M14 92 C40 66 120 54 200 60 C270 62 320 74 352 82" stroke="' + P.a + '" stroke-width="2.5" fill="none" opacity=".75"/>' +
+      '<circle cx="62" cy="86" r="4.5" fill="#06121c"/><circle cx="63" cy="85" r="1.3" fill="#fff"/>' +
+      '<path d="M104 84 C100 94 100 102 104 110 M116 84 C112 94 112 102 116 110 M128 84 C124 94 124 102 128 110" stroke="#16324a" stroke-width="2" fill="none" opacity=".7"/>' +
+      '<path d="M22 104 C34 110 50 112 62 108" stroke="#0e2233" stroke-width="2" fill="none"/>';
+    s += lyA("translate(-10 170) scale(1.02)", "fl", lyA("", "dr", tiburon, "animation-duration:10s"), "animation-duration:3.4s");
+    return s;
+  }
+};
+
+LY_ESCENAS.momotombo = {
+  fondo: function (P, R, W, H, suelo) {
+    var s = '<defs><linearGradient id="fuego" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + P.d + '"/><stop offset=".6" stop-color="' + P.m + '"/><stop offset="1" stop-color="' + lyMix(P.a, "oscuro", .4) + '"/></linearGradient></defs>';
+    s += '<rect width="' + W + '" height="' + H + '" fill="url(#fuego)"/>';
+    s += lyEstrellas(R, W, 160, 30, "#ffd8c8");
+    var cx = W / 2, cy = suelo - 330;
+    for (var i = 0; i < 18; i++) {
+      s += lyA("translate(" + lyF(cx + (R() - .5) * 120) + " " + lyF(cy + 10) + ")", "hu",
+        '<circle r="' + lyF(34 + R() * 46) + '" fill="' + (i % 2 ? "#3a2a2c" : "#5a4040") + '" opacity=".75" filter="url(#bl2)"/>',
+        "animation-delay:-" + lyF(i * .5) + "s;animation-duration:" + lyF(7 + R() * 4) + "s");
+    }
+    s += '<ellipse cx="' + cx + '" cy="' + (cy - 120) + '" rx="' + (W * .4) + '" ry="110" fill="#2a1a1e" opacity=".8" filter="url(#bl)"/>';
+    for (var k = 0; k < 3; k++) {
+      var lx = cx + (R() - .5) * W * .5, ly = cy - 150 + R() * 40;
+      s += '<path class="fx" style="animation-delay:-' + lyF(R() * 6) + 's;animation-duration:' + lyF(4 + R() * 4) + 's" d="M' + lyF(lx) + " " + lyF(ly) + " l18 40 l-12 6 l22 46 l-14 4 l20 50" +
+        '" stroke="#fff6d0" stroke-width="3" fill="none" filter="url(#resplandor)"/>';
+    }
+    s += '<rect y="' + (suelo - 20) + '" width="' + W + '" height="' + (H - suelo + 20) + '" fill="#1a0608"/>';
+    s += '<rect y="' + (suelo - 20) + '" width="' + W + '" height="60" fill="' + P.a + '" opacity=".22" filter="url(#bl2)" class="gl"/>';
+    s += lyCordillera(R, W, suelo - 10, 30, "#0c0204", 1, 60);
+    return s;
+  },
+  heroe: function (P, R) {
+    var s = '<defs><linearGradient id="mmcono" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#120406"/><stop offset=".5" stop-color="#3a1418"/><stop offset="1" stop-color="#0c0204"/></linearGradient></defs>';
+    s += '<circle cx="200" cy="70" r="150" fill="url(#halo)" class="gl"/>';
+    s += '<path d="M-60 400 L170 76 C180 66 220 66 230 76 L460 400Z" fill="url(#mmcono)"/>';
+    s += '<path d="M170 76 C180 66 220 66 230 76" stroke="' + P.x + '" stroke-width="5" fill="none" filter="url(#resplandor)"/>';
+    var rios = ["M186 80 C176 150 150 200 140 260 C132 310 100 350 80 400", "M212 80 C226 140 246 190 252 240 C258 300 300 350 320 400", "M198 82 C196 160 204 230 196 300 C192 340 196 370 190 400"];
+    rios.forEach(function (d, i) {
+      s += '<path d="' + d + '" stroke="' + P.a + '" stroke-width="' + (9 - i) + '" fill="none" stroke-linecap="round" filter="url(#resplandor)" opacity=".95"/>';
+      s += '<path d="' + d + '" stroke="' + P.x + '" stroke-width="3" fill="none" stroke-dasharray="14 22" class="lv" style="animation-delay:-' + i + 's"/>';
+    });
+    for (var j = 0; j < 4; j++) {
+      s += lyA("translate(" + (184 + j * 10) + " 78)", j % 2 ? "fi" : "fi2", '<path d="M-6 0 C-10 -30 -2 -60 0 -' + (70 + j * 14) + ' C2 -60 10 -30 6 0Z" fill="' + (j % 2 ? P.x : P.a) + '" filter="url(#bl3)"/>');
+    }
+    for (var i = 0; i < 22; i++) {
+      s += lyA("translate(" + lyF(180 + R() * 40) + " 70)", "ri", '<circle r="' + lyF(1.5 + R() * 3) + '" fill="' + (i % 2 ? P.x : P.a) + '"/>',
+        "animation-delay:-" + lyF(R() * 7) + "s;animation-duration:" + lyF(3 + R() * 3) + "s");
+    }
+    return s;
+  }
+};
+
+LY_ESCENAS.torovenado = {
+  fondo: function (P, R, W, H, suelo) {
+    var s = '<rect width="' + W + '" height="' + H + '" fill="url(#cielo)"/>';
+    s += lyEstrellas(R, W, 200, 40, "#fff");
+    // casas coloniales
+    var x = -20, colores = ["#2a1240", "#341a52", "#22103a"];
+    while (x < W) {
+      var w = 110 + R() * 70, h = 150 + R() * 70;
+      s += '<rect x="' + lyF(x) + '" y="' + lyF(suelo - h) + '" width="' + lyF(w) + '" height="' + lyF(h + 10) + '" fill="' + colores[Math.floor(R() * 3)] + '"/>';
+      s += '<path d="M' + lyF(x - 10) + " " + lyF(suelo - h) + " L" + lyF(x + w / 2) + " " + lyF(suelo - h - 34) + " L" + lyF(x + w + 10) + " " + lyF(suelo - h) + 'Z" fill="#5a1f2a"/>';
+      s += '<path d="M' + lyF(x + w / 2 - 16) + " " + suelo + " V" + lyF(suelo - 54) + " a16 16 0 0 1 32 0 V" + suelo + 'Z" fill="#12061e"/>';
+      s += '<rect x="' + lyF(x + 14) + '" y="' + lyF(suelo - h + 26) + '" width="22" height="30" fill="' + P.x + '" opacity=".75" class="gl" style="animation-delay:-' + lyF(R() * 4) + 's"/>';
+      s += '<rect x="' + lyF(x + w - 36) + '" y="' + lyF(suelo - h + 26) + '" width="22" height="30" fill="' + P.x + '" opacity=".6"/>';
+      x += w + 6;
+    }
+    s += '<rect y="' + suelo + '" width="' + W + '" height="' + (H - suelo) + '" fill="#160822"/>';
+    // papel picado
+    var cols = [P.a, P.x, "#3fe0d0", "#9b7bff", "#ff8a3c"];
+    for (var fila = 0; fila < 2; fila++) {
+      var y0 = 40 + fila * 70;
+      s += '<path d="M0 ' + y0 + " Q" + W / 2 + " " + (y0 + 40) + " " + W + " " + y0 + '" stroke="#fff" stroke-width="1.5" opacity=".5" fill="none"/>';
+      for (var b = 20; b < W; b += 46) {
+        var yy = y0 + Math.sin((b / W) * Math.PI) * 40 * .5 + 2;
+        s += lyA("translate(" + b + " " + lyF(yy) + ")", "sw2", '<path d="M-14 0 H14 V30 L7 24 L0 32 L-7 24 L-14 30Z" fill="' + cols[(b / 46 + fila) % 5 | 0] + '" opacity=".9"/><circle cy="12" r="4" fill="' + P.d + '"/>',
+          "animation-delay:-" + lyF(R() * 3) + "s;animation-duration:" + lyF(1.6 + R() * 1.6) + "s;transform-origin:50% 0");
+      }
+    }
+    for (var c = 0; c < 30; c++) {
+      s += lyA("translate(" + lyF(R() * (W + 160)) + " -20)", "fa", '<rect width="7" height="4" fill="' + cols[c % 5] + '"/>',
+        "animation-delay:-" + lyF(R() * 10) + "s;animation-duration:" + lyF(6 + R() * 6) + "s");
+    }
+    return s;
+  },
+  heroe: function (P, R) {
+    var s = '<circle cx="200" cy="200" r="200" fill="url(#halo)" opacity=".55"/>';
+    var cols = [P.a, P.x, "#3fe0d0", "#9b7bff", "#ff8a3c", "#7dff9a"];
+    // bailarines del fondo
+    function sombra(x, k) {
+      return lyG("translate(" + x + " 400) scale(" + k + ")", lyA("", "sw", '<path d="M-26 0 L-14 -80 L-30 -130 L-8 -150 C-8 -170 8 -170 8 -150 L30 -130 L14 -80 L26 0Z" fill="#1a0a2a"/>' +
+        '<path d="M-8 -168 L-22 -196 M8 -168 L22 -196" stroke="#1a0a2a" stroke-width="5" stroke-linecap="round"/>', "animation-duration:1.4s"));
+    }
+    s += sombra(40, .9) + sombra(360, .85);
+    // faldón de cintas
+    var faldon = "";
+    for (var i = 0; i < 13; i++) {
+      var ang = -60 + i * 10;
+      faldon += lyA("translate(200 250) rotate(" + ang + ")", "sw2", '<path d="M-7 0 L7 0 L10 150 L-10 150Z" fill="' + cols[i % 6] + '"/>', "animation-delay:-" + lyF(i * .2) + "s;animation-duration:1.8s;transform-origin:50% 0");
+    }
+    var cuerpo = faldon +
+      '<path d="M168 250 C164 210 172 176 200 168 C228 176 236 210 232 250Z" fill="#2a1240"/>' +
+      '<path d="M176 196 L224 196 L222 214 L178 214Z" fill="' + P.x + '"/>' +
+      lyA("translate(176 186)", "pe", '<path d="M0 0 C-30 -20 -46 -60 -40 -96" stroke="#2a1240" stroke-width="13" fill="none" stroke-linecap="round"/><g transform="translate(-40 -104)"><ellipse rx="12" ry="15" fill="' + P.x + '"/><path d="M-12 0 H12" stroke="' + P.a + '" stroke-width="3"/></g>', "animation-duration:.5s;transform-origin:100% 100%") +
+      lyA("translate(224 186)", "pe", '<path d="M0 0 C30 -20 46 -60 40 -96" stroke="#2a1240" stroke-width="13" fill="none" stroke-linecap="round"/><g transform="translate(40 -104)"><ellipse rx="12" ry="15" fill="' + P.a + '"/><path d="M-12 0 H12" stroke="' + P.x + '" stroke-width="3"/></g>', "animation-duration:.5s;animation-delay:-.25s;transform-origin:0 100%") +
+      // máscara: toro con cuernos de venado
+      '<path d="M200 168 C176 168 164 146 166 120 C168 92 184 78 200 78 C216 78 232 92 234 120 C236 146 224 168 200 168Z" fill="#f4e6d0"/>' +
+      '<path d="M176 108 C184 100 194 102 196 112 M204 112 C206 102 216 100 224 108" stroke="#2a1240" stroke-width="4" fill="none" stroke-linecap="round"/>' +
+      '<circle cx="186" cy="118" r="5" fill="#2a1240"/><circle cx="214" cy="118" r="5" fill="#2a1240"/>' +
+      '<path d="M184 146 C192 156 208 156 216 146 C210 140 190 140 184 146Z" fill="' + P.a + '"/><circle cx="192" cy="148" r="2.2" fill="#2a1240"/><circle cx="208" cy="148" r="2.2" fill="#2a1240"/>' +
+      '<circle cx="176" cy="134" r="8" fill="' + P.a + '" opacity=".5"/><circle cx="224" cy="134" r="8" fill="' + P.a + '" opacity=".5"/>' +
+      '<path d="M168 104 C146 98 134 84 136 70 M232 104 C254 98 266 84 264 70" stroke="#f4e6d0" stroke-width="8" fill="none" stroke-linecap="round"/>' +
+      '<path d="M182 82 C172 56 158 40 140 30 M168 58 C152 56 140 48 132 38 M160 44 C162 30 156 18 150 10 M218 82 C228 56 242 40 260 30 M232 58 C248 56 260 48 268 38 M240 44 C238 30 244 18 250 10" stroke="' + P.x + '" stroke-width="6" fill="none" stroke-linecap="round"/>';
+    s += lyA("", "sw", cuerpo, "animation-duration:1.4s");
+    return s;
+  }
+};
+
+LY_ESCENAS.gigantona = {
+  fondo: function (P, R, W, H, suelo) {
+    var s = '<rect width="' + W + '" height="' + H + '" fill="url(#cielo)"/>';
+    s += lyEstrellas(R, W, 220, 60, "#fff");
+    var cx = W / 2;
+    // catedral de León (blanca)
+    var cat = '<rect x="-210" y="-210" width="420" height="220" fill="#d9dbe8"/>' +
+      '<rect x="-250" y="-300" width="80" height="310" fill="#e6e8f2"/><rect x="170" y="-300" width="80" height="310" fill="#e6e8f2"/>' +
+      '<path d="M-250 -300 Q-210 -360 -170 -300Z M170 -300 Q210 -360 250 -300Z" fill="#f2f3fa"/>' +
+      '<circle cx="-210" cy="-352" r="6" fill="#f2f3fa"/><circle cx="210" cy="-352" r="6" fill="#f2f3fa"/>' +
+      '<path d="M-90 -210 Q0 -330 90 -210Z" fill="#eceef6"/><path d="M-120 -210 L0 -262 L120 -210Z" fill="#c9ccdc"/>' +
+      '<path d="M-36 10 V-70 a36 36 0 0 1 72 0 V10Z" fill="#2a2440"/>' +
+      '<path d="M-150 -40 V-110 a20 20 0 0 1 40 0 V-40Z M110 -40 V-110 a20 20 0 0 1 40 0 V-40Z M-226 -200 V-250 a14 14 0 0 1 28 0 V-200Z M198 -200 V-250 a14 14 0 0 1 28 0 V-200Z" fill="#4a4470"/>';
+    s += '<circle cx="' + cx + '" cy="' + (suelo - 170) + '" r="300" fill="url(#halo)" opacity=".5"/>';
+    s += lyG("translate(" + cx + " " + suelo + ") scale(.95)", '<g opacity=".62">' + cat + "</g>");
+    s += '<rect y="' + suelo + '" width="' + W + '" height="' + (H - suelo) + '" fill="#1a1636"/>';
+    for (var k = 0; k < W; k += 40) {
+      s += '<path d="M' + (W / 2) + " " + suelo + " L" + (k * 2 - W / 2) + " " + H + '" stroke="#2a2650" stroke-width="1.5"/>';
+    }
+    // guirnaldas de focos
+    for (var f = 0; f < 2; f++) {
+      var y0 = 30 + f * 60;
+      s += '<path d="M-10 ' + y0 + " Q" + W / 2 + " " + (y0 + 70) + " " + (W + 10) + " " + y0 + '" stroke="#3a3460" stroke-width="2" fill="none"/>';
+      for (var x = 10; x < W; x += 34) {
+        var t = x / W, yy = (1 - t) * (1 - t) * y0 + 2 * t * (1 - t) * (y0 + 70) + t * t * y0;
+        s += '<circle cx="' + x + '" cy="' + lyF(yy + 6) + '" r="5" fill="' + [P.a, P.x, "#7ad7ff"][(x / 34 | 0) % 3] + '" class="tw" style="animation-delay:-' + lyF(R() * 3) + 's"/>';
+      }
+    }
+    return s;
+  },
+  heroe: function (P, R) {
+    var s = '<defs><linearGradient id="gtfalda" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="' + lyMix(P.x, "oscuro", .3) + '"/><stop offset=".5" stop-color="' + P.x + '"/><stop offset="1" stop-color="' + lyMix(P.x, "oscuro", .3) + '"/></linearGradient></defs>';
+    var faldaD = "M150 210 C120 290 70 350 50 400 H330 C310 350 262 290 232 210Z";
+    s += '<defs><clipPath id="gtclip"><path d="' + faldaD + '"/></clipPath></defs>';
+    var falda = '<path d="' + faldaD + '" fill="url(#gtfalda)"/>';
+    var rayas = "";
+    for (var i = 0; i < 4; i++) {
+      var y = 260 + i * 38, w = 80 + i * 34;
+      rayas += '<path d="M' + (191 - w - 60) + " " + y + " Q191 " + (y + 18) + " " + (191 + w + 60) + " " + y + '" stroke="' + [P.a, "#fff", P.a, "#7ad7ff"][i] + '" stroke-width="6" fill="none" opacity=".9"/>';
+    }
+    falda += '<g clip-path="url(#gtclip)">' + rayas + "</g>";
+    var cuerpo = falda +
+      '<path d="M160 214 C156 180 166 150 191 144 C216 150 226 180 222 214Z" fill="#24346e"/><path d="M176 150 L191 176 L206 150" stroke="' + P.a + '" stroke-width="4" fill="none"/>' +
+      lyA("translate(162 160)", "pe", '<path d="M0 0 C-14 30 -18 70 -10 104" stroke="#f1d6c4" stroke-width="10" fill="none" stroke-linecap="round"/>', "animation-duration:1.2s") +
+      lyA("translate(220 160)", "pe", '<path d="M0 0 C14 30 18 70 10 104" stroke="#f1d6c4" stroke-width="10" fill="none" stroke-linecap="round"/>', "animation-duration:1.2s;animation-delay:-.6s") +
+      '<path d="M166 98 C160 130 158 180 150 232 M216 98 C222 130 224 180 232 232" stroke="#140c20" stroke-width="12" fill="none" stroke-linecap="round"/>' +
+      '<ellipse cx="191" cy="100" rx="30" ry="38" fill="#f6e2d4"/>' +
+      '<path d="M162 92 C166 62 216 62 220 92 C206 76 176 76 162 92Z" fill="#140c20"/>' +
+      '<ellipse cx="180" cy="100" rx="5" ry="6.5" fill="#1a1030"/><ellipse cx="202" cy="100" rx="5" ry="6.5" fill="#1a1030"/>' +
+      '<circle cx="181.5" cy="98" r="1.6" fill="#fff"/><circle cx="203.5" cy="98" r="1.6" fill="#fff"/>' +
+      '<path d="M172 90 Q180 86 186 90 M196 90 Q202 86 210 90" stroke="#140c20" stroke-width="2" fill="none"/>' +
+      '<circle cx="172" cy="116" r="7" fill="#ff8aa0" opacity=".7"/><circle cx="210" cy="116" r="7" fill="#ff8aa0" opacity=".7"/>' +
+      '<path d="M184 122 Q191 128 198 122 Q191 118 184 122Z" fill="#d12a4a"/>' +
+      // corona alta
+      '<path d="M166 66 L160 6 L176 34 L184 -6 L191 26 L198 -6 L206 34 L222 6 L216 66Z" fill="url(#oro)" stroke="#fff4c9" stroke-width="1.5"/>' +
+      '<circle cx="191" cy="44" r="7" fill="' + P.x + '"/><circle cx="174" cy="52" r="4.5" fill="#7ad7ff"/><circle cx="208" cy="52" r="4.5" fill="#7ad7ff"/>' +
+      '<circle cx="191" cy="44" r="18" fill="url(#halox)" class="gl"/>';
+    s += lyA("translate(-10 0)", "sw", cuerpo, "animation-duration:1.8s");
+    // enano cabezón con tambor
+    var enano = '<rect x="-14" y="-40" width="28" height="40" rx="6" fill="#3a2a6e"/>' +
+      '<path d="M-10 0 V18 M10 0 V18" stroke="#3a2a6e" stroke-width="7" stroke-linecap="round"/>' +
+      '<g transform="translate(0 -22)"><ellipse rx="16" ry="11" fill="#c94a3a"/><ellipse rx="16" ry="4" cy="-8" fill="#f1d6c4"/></g>' +
+      '<circle cy="-82" r="42" fill="#f1d6c4"/><path d="M-46 -94 C-40 -140 40 -140 46 -94Z" fill="' + P.a + '"/><path d="M-52 -94 H52" stroke="' + lyMix(P.a, "oscuro", .4) + '" stroke-width="6"/>' +
+      '<circle cx="-14" cy="-82" r="5" fill="#1a1030"/><circle cx="14" cy="-82" r="5" fill="#1a1030"/><path d="M-12 -62 Q0 -52 12 -62" stroke="#8a2a2a" stroke-width="4" fill="none" stroke-linecap="round"/>' +
+      '<circle cx="-24" cy="-68" r="7" fill="#ff8aa0" opacity=".7"/><circle cx="24" cy="-68" r="7" fill="#ff8aa0" opacity=".7"/>' +
+      lyA("translate(14 -30)", "pe", '<path d="M0 0 L16 16" stroke="#f1d6c4" stroke-width="5" stroke-linecap="round"/>', "animation-duration:.3s");
+    s += lyA("translate(340 382)", "bo", enano, "animation-duration:.6s");
+    return s;
+  }
+};
+LY_ESCENAS.cadejo = {
+  fondo: function (P, R, W, H, suelo) {
+    var s = '<rect width="' + W + '" height="' + H + '" fill="url(#cielo)"/>';
+    s += lyEstrellas(R, W, suelo * .7, 120, "#e8f4ff");
+    var lx = W * .74, ly = Math.max(100, suelo - 400);
+    s += '<circle cx="' + lx + '" cy="' + ly + '" r="250" fill="url(#halo)" opacity=".55"/>';
+    s += '<circle cx="' + lx + '" cy="' + ly + '" r="78" fill="#e9f4ff"/>' +
+      '<circle cx="' + (lx - 34) + '" cy="' + (ly - 20) + '" r="20" fill="#cfdcef" opacity=".7"/><circle cx="' + (lx + 30) + '" cy="' + (ly + 30) + '" r="14" fill="#cfdcef" opacity=".6"/>' +
+      '<circle cx="' + (lx + 46) + '" cy="' + (ly - 46) + '" r="9" fill="#cfdcef" opacity=".6"/>';
+    s += lyCordillera(R, W, suelo - 120, 110, lyMix(P.m, "oscuro", .2), .9, 50);
+    for (var x = -20; x < W + 40; x += 22 + R() * 30) {
+      var h = 60 + R() * 120, y = suelo - 70 + R() * 30;
+      var w = h * .36;
+      s += '<path d="M' + lyF(x) + " " + lyF(y - h) + " L" + lyF(x + w) + " " + lyF(y) + " L" + lyF(x - w) + " " + lyF(y) + 'Z" fill="' + lyMix(P.d, "claro", .04) + '"/>';
+    }
+    s += '<rect y="' + (suelo - 40) + '" width="' + W + '" height="' + (H - suelo + 40) + '" fill="' + P.d + '"/>';
+    s += '<path d="M' + (W / 2 - 40) + " " + H + " C" + (W / 2 - 10) + " " + (suelo + 60) + " " + (W / 2 + 120) + " " + (suelo + 10) + " " + (W / 2 + 30) + " " + (suelo - 40) +
+      " L" + (W / 2 + 60) + " " + (suelo - 40) + " C" + (W / 2 + 200) + " " + (suelo + 10) + " " + (W / 2 + 90) + " " + (suelo + 60) + " " + (W / 2 + 160) + " " + H + 'Z" fill="#1c2a44" opacity=".8"/>';
+    s += lyNiebla(R, W, suelo - 60, "#cfe4ff", 8, .4);
+    s += lyLuciernagas(R, W, H, suelo - 200, 16, "#bfe9ff");
+    return s;
+  },
+  heroe: function (P, R) {
+    var s = '<defs><linearGradient id="cdpelo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".7" stop-color="#cfe2f7"/><stop offset="1" stop-color="#7f9cc4"/></linearGradient>' +
+      '<radialGradient id="cdojo"><stop offset="0" stop-color="#fff2f2"/><stop offset=".3" stop-color="' + P.x + '"/><stop offset="1" stop-color="' + P.x + '" stop-opacity="0"/></radialGradient>' +
+      '<radialGradient id="cdfarol"><stop offset="0" stop-color="#ffe6a0" stop-opacity=".9"/><stop offset="1" stop-color="#ffb35c" stop-opacity="0"/></radialGradient></defs>';
+    // farol en el suelo
+    s += lyG("translate(56 392)", '<circle cy="-24" r="70" fill="url(#cdfarol)" class="gl"/><path d="M-12 0 H12 L9 -36 H-9Z" fill="#1a1208"/><rect x="-7" y="-32" width="14" height="24" fill="#ffd27a"/>' +
+      lyA("translate(0 -12)", "fi", '<path d="M0 0 C-4 -6 -2 -12 0 -16 C2 -12 4 -6 0 0Z" fill="#fff4c9"/>') + '<path d="M-7 -36 Q0 -50 7 -36" stroke="#1a1208" stroke-width="2.5" fill="none"/>');
+    // el perro (mirando a la izquierda), silueta de una sola pieza
+    var cuerpoD = "M38 110 C46 98 70 90 86 86 C92 72 98 64 104 56 L112 22 L126 62 C138 70 148 84 152 104 " +
+      "C162 140 178 164 208 170 C252 176 292 166 320 176 C338 182 346 200 342 222 C340 250 326 262 314 272 " +
+      "L318 340 L326 388 L302 390 L296 340 L290 292 C282 288 272 288 264 292 L260 340 L266 388 L242 390 L238 340 L236 272 " +
+      "C214 266 188 264 168 260 L164 340 L172 388 L148 390 L142 340 L140 264 C134 260 128 256 124 250 " +
+      "L120 340 L128 388 L104 390 L98 340 L100 236 C98 210 104 182 110 158 C100 142 88 132 78 128 C64 126 48 122 38 116Z";
+    var pelo = "";
+    for (var i = 0; i < 18; i++) {
+      var px = 170 + i * 9, py = 168 - Math.sin(i / 17 * Math.PI) * 8;
+      pelo += '<path d="M' + lyF(px) + " " + lyF(py) + " l" + lyF(6 + R() * 4) + " " + lyF(-6 - R() * 6) + '" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>';
+    }
+    for (var j = 0; j < 8; j++) {
+      pelo += '<path d="M' + lyF(118 + j * 4) + " " + lyF(150 + j * 12) + " l-" + lyF(8 + R() * 6) + " " + lyF(2 + R() * 4) + '" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>';
+    }
+    var perro = '<ellipse cx="210" cy="392" rx="170" ry="12" fill="#000" opacity=".5"/>' +
+      lyA("translate(334 196)", "sw2", '<path d="M0 0 C34 -10 54 -48 46 -86 C42 -102 28 -100 30 -86 C34 -60 22 -30 -8 -14Z" fill="url(#cdpelo)"/>', "transform-origin:0 100%;animation-duration:1.6s") +
+      '<path d="' + cuerpoD + '" fill="url(#cdpelo)"/>' + pelo +
+      '<path d="M104 236 C110 200 120 176 140 166 M166 258 C200 252 236 262 262 290" stroke="#9db6d6" stroke-width="2.5" fill="none" opacity=".7"/>' +
+      '<path d="M112 26 L120 58 L108 56Z" fill="#ffc2cc" opacity=".55"/>' +
+      '<ellipse cx="42" cy="112" rx="7" ry="5.5" fill="#1a2234"/>' +
+      '<path d="M44 120 C56 126 70 126 82 122" stroke="#7f9cc4" stroke-width="2" fill="none"/>' +
+      '<circle cx="90" cy="98" r="16" fill="url(#cdojo)" class="ey"/><circle cx="90" cy="98" r="3.6" fill="#fff0f0"/>' +
+      '<path d="M128 132 C148 150 156 178 146 210 C140 228 142 246 152 258" stroke="#9aa6b8" stroke-width="3" fill="none" stroke-dasharray="7 4" stroke-linecap="round"/>' +
+      '<circle cx="152" cy="262" r="6" fill="none" stroke="#9aa6b8" stroke-width="3"/>';
+    s += '<g filter="url(#resplandor)">' + lyA("", "fl", perro, "animation-duration:3.8s") + "</g>";
+    return s;
+  }
+};
+
+LY_ESCENAS.mocuana = {
+  fondo: function (P, R, W, H, suelo) {
+    var s = '<rect width="' + W + '" height="' + H + '" fill="url(#cielo)"/>';
+    s += lyEstrellas(R, W, suelo * .6, 90, "#f2ecff");
+    var lx = W * .5, ly = 120;
+    s += '<circle cx="' + lx + '" cy="' + ly + '" r="230" fill="url(#halo)" opacity=".6"/><circle cx="' + lx + '" cy="' + ly + '" r="62" fill="#f6f1ff"/>' +
+      '<circle cx="' + lx + '" cy="' + ly + '" r="86" fill="none" stroke="#e6d4ff" stroke-width="1.5" opacity=".5" class="gl"/>';
+    // cerro con cueva a la izquierda y cascada a la derecha
+    s += '<path d="M0 ' + (suelo - 280) + " C" + W * .12 + " " + (suelo - 300) + " " + W * .22 + " " + (suelo - 200) + " " + W * .3 + " " + (suelo - 140) +
+      " L" + W * .34 + " " + (suelo + 20) + " L0 " + (suelo + 20) + 'Z" fill="#14102a"/>';
+    s += '<path d="M' + W * .06 + " " + (suelo + 20) + " V" + (suelo - 120) + " a" + W * .08 + " 80 0 0 1 " + W * .16 + " 0 V" + (suelo + 20) + 'Z" fill="#05040c"/>';
+    s += lyA("", "gl", '<ellipse cx="' + W * .14 + '" cy="' + (suelo - 50) + '" rx="' + W * .06 + '" ry="56" fill="' + P.x + '" opacity=".16" filter="url(#bl2)"/>');
+    s += '<path d="M' + W + " " + (suelo - 300) + " C" + W * .9 + " " + (suelo - 310) + " " + W * .82 + " " + (suelo - 250) + " " + W * .78 + " " + (suelo - 220) +
+      " L" + W * .74 + " " + (suelo + 20) + " L" + W + " " + (suelo + 20) + 'Z" fill="#14102a"/>';
+    s += '<path d="M0 ' + (suelo - 280) + " C" + W * .12 + " " + (suelo - 300) + " " + W * .22 + " " + (suelo - 200) + " " + W * .3 + " " + (suelo - 140) + '" stroke="' + P.a + '" stroke-width="2" fill="none" opacity=".45"/>';
+    s += '<path d="M' + W + " " + (suelo - 300) + " C" + W * .9 + " " + (suelo - 310) + " " + W * .82 + " " + (suelo - 250) + " " + W * .78 + " " + (suelo - 220) + '" stroke="' + P.a + '" stroke-width="2" fill="none" opacity=".45"/>';
+    var cx = W * .8, top = suelo - 222, ancho = 46;
+    s += '<defs><linearGradient id="mccas" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="' + P.x + '" stop-opacity="0"/><stop offset=".3" stop-color="#e8fbff" stop-opacity=".55"/><stop offset=".7" stop-color="#e8fbff" stop-opacity=".55"/><stop offset="1" stop-color="' + P.x + '" stop-opacity="0"/></linearGradient></defs>';
+    s += '<path d="M' + (cx - ancho / 2) + " " + top + " C" + (cx - ancho / 2 - 6) + " " + (top + 80) + " " + (cx - ancho / 2 - 10) + " " + (suelo - 40) + " " + (cx - ancho / 2 - 18) + " " + (suelo + 12) +
+      " H" + (cx + ancho / 2 + 18) + " C" + (cx + ancho / 2 + 10) + " " + (suelo - 40) + " " + (cx + ancho / 2 + 6) + " " + (top + 80) + " " + (cx + ancho / 2) + " " + top + 'Z" fill="url(#mccas)"/>';
+    for (var i = 0; i < 7; i++) {
+      var xx = cx - ancho / 2 + 4 + i * (ancho - 8) / 6;
+      s += '<path d="M' + lyF(xx) + " " + top + " C" + lyF(xx - 2) + " " + (top + 100) + " " + lyF(xx - 6 + (i - 3) * 3) + " " + (suelo - 20) + " " + lyF(xx - 8 + (i - 3) * 4) + " " + (suelo + 10) +
+        '" stroke="#ffffff" stroke-width="2" fill="none" stroke-dasharray="26 18" class="wf" opacity="' + lyF(.35 + R() * .4) + '" style="animation-delay:-' + lyF(R()) + 's;animation-duration:' + lyF(.8 + R() * .6) + 's"/>';
+    }
+    s += lyA("", "gl", '<ellipse cx="' + cx + '" cy="' + (suelo + 10) + '" rx="110" ry="26" fill="#e8fbff" opacity=".55" filter="url(#bl2)"/>');
+    s += '<rect y="' + (suelo + 10) + '" width="' + W + '" height="' + (H - suelo - 10) + '" fill="#0d1030"/>';
+    s += lyNiebla(R, W, suelo + 10, "#dff8ff", 6, .35);
+    s += lyLuciernagas(R, W, H, 80, 22, "#f2ecff");
+    return s;
+  },
+  heroe: function (P, R) {
+    var s = '<defs><linearGradient id="mcvest" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".6" stop-color="#e6dcff"/><stop offset="1" stop-color="#e6dcff" stop-opacity="0"/></linearGradient></defs>';
+    s += '<circle cx="190" cy="190" r="170" fill="url(#halo)" class="gl"/>';
+    s += '<path d="M90 400 L120 330 L250 320 L300 400Z" fill="#1c1636"/><path d="M120 330 L250 320" stroke="' + P.a + '" stroke-width="2" opacity=".5"/>';
+    var mujer =
+      lyA("translate(200 116)", "sw2", '<path d="M0 0 C40 10 90 40 150 30 C120 60 70 70 20 52 C70 90 120 110 170 104 C120 140 50 120 4 80Z" fill="#e6dcff" opacity=".35"/>', "transform-origin:0 0;animation-duration:3s") +
+      lyA("translate(196 92)", "sw2", '<path d="M0 0 C30 10 60 40 92 90 C100 110 112 140 130 160 C100 150 78 120 66 96 C50 70 30 50 6 44Z" fill="#120c22"/>', "transform-origin:0 0;animation-duration:4s") +
+      '<path d="M170 128 C160 170 150 230 120 330 C150 340 210 344 260 330 C230 250 214 180 206 128Z" fill="url(#mcvest)"/>' +
+      lyA("translate(190 300)", "sw2", '<path d="M-70 30 C-40 20 0 26 40 22 C70 18 100 26 120 34 C90 40 60 46 30 44 C0 42 -40 44 -70 30Z" fill="#fff" opacity=".55"/>', "transform-origin:50% 0;animation-duration:2.6s") +
+      '<path d="M172 136 C150 170 140 200 150 226 M204 136 C224 160 236 186 240 210" stroke="#f6eefd" stroke-width="8" fill="none" stroke-linecap="round"/>' +
+      '<ellipse cx="188" cy="100" rx="21" ry="26" fill="#f4e9f0"/>' +
+      '<path d="M166 96 C166 66 210 64 212 92 C200 82 180 82 166 96Z" fill="#120c22"/>' +
+      '<path d="M178 100 Q182 97 186 100 M192 100 Q196 97 200 100" stroke="#120c22" stroke-width="2" fill="none"/>' +
+      '<path d="M184 114 Q189 117 194 114" stroke="#b84a6a" stroke-width="2" fill="none"/>';
+    s += '<g filter="url(#resplandor)">' + lyA("", "fl", mujer, "animation-duration:4.5s") + "</g>";
+    for (var i = 0; i < 10; i++) {
+      s += lyA("translate(" + lyF(80 + R() * 240) + " " + lyF(140 + R() * 200) + ")", "ri", '<circle r="' + lyF(2 + R() * 3) + '" fill="#f2ecff" filter="url(#bl3)"/>',
+        "animation-delay:-" + lyF(R() * 7) + "s;animation-duration:" + lyF(6 + R() * 5) + "s");
+    }
+    return s;
+  }
+};
+
+LY_ESCENAS.padre = {
+  fondo: function (P, R, W, H, suelo) {
+    var s = '<rect width="' + W + '" height="' + H + '" fill="url(#cielo)"/>';
+    s += lyEstrellas(R, W, suelo * .6, 80, "#fff");
+    var tx = W * .5 - 150;
+    s += '<circle cx="' + (tx + 60) + '" cy="110" r="190" fill="url(#halo)" opacity=".5"/><circle cx="' + (tx + 60) + '" cy="110" r="54" fill="#fff6e0"/>';
+    // iglesia colonial
+    var ig = '<rect x="0" y="-250" width="120" height="260" fill="#2c2846"/><path d="M0 -250 L60 -320 L120 -250Z" fill="#3a3458"/><path d="M60 -320 V-350 M48 -338 H72" stroke="#3a3458" stroke-width="5"/>' +
+      '<path d="M30 -150 V-196 a30 30 0 0 1 60 0 V-150Z" fill="#0c0a18"/>' +
+      lyA("translate(60 -196)", "pe", '<path d="M0 0 V8 M-14 34 C-14 14 -8 8 0 8 C8 8 14 14 14 34Z" stroke="#6a5a2a" stroke-width="2" fill="#c9a24a"/><circle cy="36" r="4" fill="#8a6a2a"/>', "animation-duration:1.6s") +
+      '<rect x="120" y="-170" width="280" height="180" fill="#25213e"/><path d="M110 -170 L260 -230 L410 -170Z" fill="#332e52"/>' +
+      '<path d="M230 10 V-80 a30 30 0 0 1 60 0 V10Z" fill="#0c0a18"/><circle cx="260" cy="-130" r="20" fill="' + P.a + '" opacity=".25" class="gl"/>' +
+      '<path d="M160 -60 V-110 a14 14 0 0 1 28 0 V-60Z M330 -60 V-110 a14 14 0 0 1 28 0 V-60Z" fill="' + P.a + '" opacity=".35" class="gl"/>';
+    s += lyG("translate(" + tx + " " + (suelo - 30) + ")", ig);
+    s += '<rect y="' + (suelo - 20) + '" width="' + W + '" height="' + (H - suelo + 20) + '" fill="#0a0814"/>';
+    for (var c = 0; c < Math.round(W / 70); c++) {
+      var cx = 20 + c * 70 + R() * 30, cy = suelo + 10 + R() * 30, k = .7 + R() * .5;
+      s += '<path transform="translate(' + lyF(cx) + " " + lyF(cy) + ") scale(" + lyF(k) + ") rotate(" + lyF((R() - .5) * 16) + ')" d="M-3 0 V-40 M-14 -28 H8" stroke="#2a2440" stroke-width="5"/>';
+    }
+    for (var b = 0; b < 6; b++) {
+      s += lyA("translate(" + lyF(R() * W) + " " + lyF(40 + R() * 160) + ")", b % 2 ? "dr" : "dr2",
+        lyG("", '<path d="M0 0 C-6 -8 -14 -8 -20 -2 C-14 -4 -10 0 -10 4 C-6 0 -2 2 0 6 C2 2 6 0 10 4 C10 0 14 -4 20 -2 C14 -8 6 -8 0 0Z" fill="#05040a"/>', "ff", "animation-duration:.25s"),
+        "animation-delay:-" + lyF(R() * 20) + "s;animation-duration:" + lyF(10 + R() * 8) + "s");
+    }
+    s += lyNiebla(R, W, suelo + 10, P.x, 7, .25);
+    return s;
+  },
+  heroe: function (P, R) {
+    var s = '<defs><linearGradient id="pdsotana" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14122a"/><stop offset=".7" stop-color="#1c2a40"/><stop offset="1" stop-color="' + P.x + '" stop-opacity="0"/></linearGradient>' +
+      '<radialGradient id="pdvela"><stop offset="0" stop-color="#fff4c9" stop-opacity=".95"/><stop offset=".4" stop-color="' + P.a + '" stop-opacity=".4"/><stop offset="1" stop-color="' + P.a + '" stop-opacity="0"/></radialGradient></defs>';
+    var fantasma = '<path d="M160 120 C130 170 120 250 100 380 C150 396 250 396 300 380 C280 250 270 170 240 120Z" fill="url(#pdsotana)"/>' +
+      '<path d="M160 120 C130 170 120 250 100 380 M240 120 C270 170 280 250 300 380" stroke="' + P.x + '" stroke-width="3" fill="none" opacity=".75" filter="url(#bl3)"/>' +
+      '<path d="M200 126 V360" stroke="#2a3a58" stroke-width="2"/>';
+    for (var i = 0; i < 7; i++) { fantasma += '<circle cx="200" cy="' + (150 + i * 26) + '" r="3" fill="' + P.x + '" opacity=".7"/>'; }
+    fantasma += '<path d="M160 120 C176 108 224 108 240 120 C226 128 174 128 160 120Z" fill="#f2f6ff"/>' +
+      // vapor donde debería estar la cabeza
+      lyG("translate(200 112)", (function () {
+        var v = "";
+        for (var j = 0; j < 7; j++) { v += lyA("translate(" + lyF((R() - .5) * 30) + " 0)", "hu", '<circle r="' + lyF(10 + R() * 10) + '" fill="' + P.x + '" opacity=".5" filter="url(#bl2)"/>', "animation-delay:-" + lyF(j * 1.2) + "s;animation-duration:8s"); }
+        return v;
+      })()) +
+      // manos y vela
+      '<path d="M150 200 C170 230 200 240 214 236 M250 200 C236 228 222 236 214 236" stroke="#14122a" stroke-width="16" fill="none" stroke-linecap="round"/>' +
+      '<circle cx="214" cy="236" r="10" fill="#c9d6ea"/>' +
+      '<rect x="208" y="186" width="12" height="46" rx="3" fill="#f6eedc"/>' +
+      '<circle cx="214" cy="172" r="60" fill="url(#pdvela)" class="gl"/>' +
+      lyA("translate(214 186)", "fi", '<path d="M0 0 C-8 -10 -6 -22 0 -32 C6 -22 8 -10 0 0Z" fill="' + P.a + '"/><path d="M0 0 C-3 -6 -2 -12 0 -18 C2 -12 3 -6 0 0Z" fill="#fff8e0"/>');
+    s += lyA("", "fl", '<g opacity=".95">' + fantasma + "</g>", "animation-duration:4s");
+    return s;
+  }
+};
+
+LY_ESCENAS.gueguense = {
+  fondo: function (P, R, W, H, suelo) {
+    var s = '<defs><radialGradient id="ggfondo" cx=".5" cy=".38" r=".8"><stop offset="0" stop-color="' + lyMix(P.m, "claro", .15) + '"/><stop offset=".6" stop-color="' + P.m + '"/><stop offset="1" stop-color="' + P.d + '"/></radialGradient></defs>';
+    s += '<rect width="' + W + '" height="' + H + '" fill="url(#ggfondo)"/>';
+    var cx = W / 2, cy = suelo - 220, rayos = "";
+    for (var i = 0; i < 36; i++) {
+      var a = (i / 36) * Math.PI * 2, a2 = a + Math.PI / 36;
+      rayos += '<path d="M' + cx + " " + cy + " L" + lyF(cx + Math.cos(a) * 900) + " " + lyF(cy + Math.sin(a) * 900) + " L" + lyF(cx + Math.cos(a2) * 900) + " " + lyF(cy + Math.sin(a2) * 900) +
+        'Z" fill="' + (i % 2 ? P.a : P.x) + '" opacity="' + (i % 2 ? .12 : .07) + '"/>';
+    }
+    s += lyA("", "sp", rayos, "animation-duration:90s");
+    // bandas textiles
+    var cols = [P.a, P.x, "#3fe0d0", "#fff4c9"];
+    for (var b = 0; b < 3; b++) {
+      var y = suelo - 10 + b * 26, d = "M0 " + y;
+      for (var x = 0; x <= W; x += 24) { d += " L" + x + " " + (y + (x / 24 % 2 ? 12 : 0)); }
+      s += '<path d="' + d + '" stroke="' + cols[b] + '" stroke-width="7" fill="none" opacity=".85"/>';
+    }
+    s += '<rect y="' + (suelo + 70) + '" width="' + W + '" height="' + Math.max(0, H - suelo - 70) + '" fill="' + P.d + '"/>';
+    for (var r = 0; r < 4; r++) {
+      var y2 = suelo + 90 + r * 40;
+      for (var x2 = 0; x2 < W; x2 += 40) {
+        s += '<path d="M' + x2 + " " + y2 + " l12 -12 l12 12 l-12 12Z" + '" fill="none" stroke="' + cols[(r + x2 / 40) % 4 | 0] + '" stroke-width="2" opacity=".35"/>';
+      }
+    }
+    s += lyParticulas(R, W, H, 40, P.a, "ri", 2.2);
+    // los machos (danzantes con cabeza de caballo)
+    for (var m = 0; m < Math.round(W / 150); m++) {
+      var mx = 60 + m * 150;
+      s += lyA("translate(" + mx + " " + (suelo + 6) + ")", "bo",
+        '<path d="M-14 0 L-10 -50 L10 -50 L14 0Z" fill="#1a0610"/><circle cy="-62" r="12" fill="#1a0610"/><path d="M8 -60 C26 -74 40 -70 46 -60 C38 -56 28 -54 14 -52Z M22 -68 L28 -82 L32 -68Z" fill="#1a0610"/>' +
+        '<path d="M-16 -36 H40" stroke="#1a0610" stroke-width="5"/>', "animation-delay:-" + lyF(m * .35) + "s;animation-duration:.7s");
+    }
+    return s;
+  },
+  heroe: function (P, R) {
+    var s = '<defs><radialGradient id="ggcara" cx=".5" cy=".45" r=".6"><stop offset="0" stop-color="#fff7f0"/><stop offset=".8" stop-color="#f6ddd0"/><stop offset="1" stop-color="#e8c2b0"/></radialGradient>' +
+      '<linearGradient id="ggsomb" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2a0c18"/><stop offset=".5" stop-color="#5a1f3a"/><stop offset="1" stop-color="#2a0c18"/></linearGradient></defs>';
+    s += '<circle cx="200" cy="190" r="200" fill="url(#halo)" class="gl"/>';
+    // plumas del sombrero
+    var plumas = "", cols = [P.x, "#3fe0d0", P.a, "#9b7bff", "#ff8a3c", "#7dff9a", P.x];
+    for (var i = 0; i < 7; i++) {
+      var ang = -54 + i * 18;
+      plumas += lyA("translate(200 70) rotate(" + ang + ")", "sw2",
+        '<path d="M0 0 C-14 -40 -10 -96 0 -128 C10 -96 14 -40 0 0Z" fill="' + cols[i] + '"/><path d="M0 -4 V-120" stroke="#fff" stroke-width="1.4" opacity=".6"/>',
+        "animation-delay:-" + lyF(i * .3) + "s;animation-duration:" + lyF(2.4 + i * .2) + "s");
+    }
+    s += plumas;
+    // sombrero con espejos y cintas
+    s += '<ellipse cx="200" cy="94" rx="170" ry="30" fill="url(#ggsomb)" stroke="url(#oro)" stroke-width="4"/>' +
+      '<path d="M120 94 C120 40 150 22 200 22 C250 22 280 40 280 94Z" fill="url(#ggsomb)" stroke="url(#oro)" stroke-width="4"/>' +
+      '<path d="M124 76 H276" stroke="url(#oro)" stroke-width="10"/>';
+    for (var e = 0; e < 7; e++) {
+      s += '<circle cx="' + (140 + e * 20) + '" cy="76" r="5.5" fill="#e8f6ff"/><circle cx="' + (140 + e * 20) + '" cy="76" r="8" fill="url(#halo)" class="tw" style="animation-delay:-' + lyF(e * .4) + 's"/>';
+    }
+    for (var c = 0; c < 6; c++) {
+      s += lyA("translate(" + (54 + c * 58) + " 110)", "pe", '<path d="M0 0 C-4 30 6 60 0 90" stroke="' + cols[c] + '" stroke-width="6" fill="none" stroke-linecap="round"/>',
+        "animation-delay:-" + lyF(c * .3) + "s;animation-duration:1.8s");
+    }
+    // la máscara
+    s += '<path d="M200 108 C150 108 126 150 128 206 C130 270 162 318 200 322 C238 318 270 270 272 206 C274 150 250 108 200 108Z" fill="url(#ggcara)" stroke="#c99a7a" stroke-width="2"/>' +
+      '<path d="M150 168 C162 154 184 152 194 166 M206 166 C216 152 238 154 250 168" stroke="#1a0a10" stroke-width="7" fill="none" stroke-linecap="round"/>' +
+      '<path d="M156 186 C166 176 186 176 192 188 C184 198 164 198 156 186Z M208 188 C214 176 234 176 244 186 C236 198 216 198 208 188Z" fill="#fff"/>' +
+      '<circle cx="176" cy="187" r="7" fill="#1a3a6a"/><circle cx="224" cy="187" r="7" fill="#1a3a6a"/><circle cx="176" cy="187" r="3.2" fill="#000"/><circle cx="224" cy="187" r="3.2" fill="#000"/>' +
+      '<circle cx="178" cy="185" r="1.6" fill="#fff"/><circle cx="226" cy="185" r="1.6" fill="#fff"/>' +
+      '<path d="M200 190 C196 214 190 228 196 236 C200 240 206 238 208 232" stroke="#b07a5a" stroke-width="3.5" fill="none" stroke-linecap="round"/>' +
+      '<circle cx="152" cy="232" r="22" fill="' + P.x + '" opacity=".45"/><circle cx="248" cy="232" r="22" fill="' + P.x + '" opacity=".45"/>' +
+      // bigote retorcido
+      '<path d="M200 248 C182 238 160 240 146 252 C134 262 120 262 112 252 C120 272 146 276 164 266 C178 258 190 256 200 262 C210 256 222 258 236 266 C254 276 280 272 288 252 C280 262 266 262 254 252 C240 240 218 238 200 248Z" fill="#14060c"/>' +
+      '<path d="M112 252 C104 244 104 232 112 226 M288 252 C296 244 296 232 288 226" stroke="#14060c" stroke-width="5" fill="none" stroke-linecap="round"/>' +
+      '<path d="M184 278 Q200 288 216 278 Q200 274 184 278Z" fill="#c42a4a"/>' +
+      '<path d="M190 296 C194 316 206 316 210 296 C206 300 194 300 190 296Z" fill="#14060c"/>' +
+      // gorguera
+      (function () {
+        var g = "";
+        for (var k = 0; k < 12; k++) {
+          var x = 132 + k * 12.5;
+          g += '<path d="M' + x + ' 330 q6 -14 12 0 q-6 14 -12 0Z" fill="#fff4c9" stroke="url(#oro)" stroke-width="1"/>';
+        }
+        return g;
+      })() +
+      '<path d="M120 352 C150 336 250 336 280 352 L300 400 H100Z" fill="#5a1f3a" stroke="url(#oro)" stroke-width="3"/>' +
+      '<path d="M150 370 H250" stroke="url(#oro)" stroke-width="3" stroke-dasharray="4 6"/>';
+    return s;
+  }
+};
+
+LY_ESCENAS.carreta = {
+  fondo: function (P, R, W, H, suelo) {
+    var s = '<rect width="' + W + '" height="' + H + '" fill="url(#cielo)"/>';
+    s += lyEstrellas(R, W, suelo * .5, 70, "#dffcff");
+    var lx = W * .3, ly = Math.max(90, suelo - 380);
+    s += '<circle cx="' + lx + '" cy="' + ly + '" r="200" fill="url(#halo)" opacity=".45"/><circle cx="' + lx + '" cy="' + ly + '" r="46" fill="#e8fdff"/>';
+    for (var n = 0; n < 4; n++) {
+      s += lyA("", n % 2 ? "dr" : "dr2", '<ellipse cx="' + lyF(R() * W) + '" cy="' + lyF(70 + R() * 90) + '" rx="' + lyF(120 + R() * 140) + '" ry="16" fill="#0a1a24" opacity=".85" filter="url(#bl2)"/>',
+        "animation-duration:" + lyF(20 + R() * 10) + "s");
+    }
+    // pueblo de adobe
+    var x = -30;
+    while (x < W) {
+      var w = 90 + R() * 70, h = 70 + R() * 50;
+      s += '<rect x="' + lyF(x) + '" y="' + lyF(suelo - h - 30) + '" width="' + lyF(w) + '" height="' + lyF(h + 40) + '" fill="#08141c"/>' +
+        '<path d="M' + lyF(x - 8) + " " + lyF(suelo - h - 30) + " L" + lyF(x + w / 2) + " " + lyF(suelo - h - 56) + " L" + lyF(x + w + 8) + " " + lyF(suelo - h - 30) + 'Z" fill="#0c1e28"/>' +
+        (R() < .5 ? '<rect x="' + lyF(x + w * .3) + '" y="' + lyF(suelo - h - 6) + '" width="14" height="18" fill="#ffcf7a" opacity=".55"/>' : "");
+      x += w + 10;
+    }
+    s += '<rect y="' + (suelo - 30) + '" width="' + W + '" height="' + (H - suelo + 30) + '" fill="#040a0e"/>';
+    s += '<path d="M0 ' + (suelo + 8) + " Q" + W / 2 + " " + (suelo - 6) + " " + W + " " + (suelo + 8) + '" stroke="#1a2a30" stroke-width="20" fill="none" opacity=".7"/>';
+    s += lyNiebla(R, W, suelo - 10, P.a, 9, .3);
+    s += lyParticulas(R, W, H, 30, P.x, "ri", 2);
+    return s;
+  },
+  heroe: function (P, R) {
+    var s = '<defs><radialGradient id="crfuego" cx=".5" cy="1" r="1"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset=".3" stop-color="' + P.a + '"/><stop offset="1" stop-color="' + P.x + '" stop-opacity="0"/></radialGradient></defs>';
+    // fuego espectral bajo la carreta
+    for (var f = 0; f < 9; f++) {
+      s += lyA("translate(" + (150 + f * 28) + " 398)", f % 2 ? "fi" : "fi2", '<path d="M-14 0 C-18 -30 -6 -50 0 -' + (60 + (f % 3) * 20) + ' C6 -50 18 -30 14 0Z" fill="url(#crfuego)" opacity=".8"/>',
+        "animation-duration:" + lyF(.6 + R() * .6) + "s");
+    }
+    function buey(x, y, k, op) {
+      var b = '<path d="M0 0 C30 -10 80 -10 110 0" stroke="#dff" stroke-width="6" fill="none" stroke-linecap="round"/>';
+      for (var i = 0; i < 6; i++) { b += '<path d="M' + (18 + i * 14) + ' 2 C' + (14 + i * 14) + " 24 " + (22 + i * 14) + " 40 " + (30 + i * 14) + ' 44" stroke="#cfeff2" stroke-width="3.5" fill="none" stroke-linecap="round"/>'; }
+      b += '<path d="M6 4 L-2 70 L4 70 M28 10 L24 72 L30 72 M92 6 L98 70 L104 70 M108 2 L118 68 L124 68" stroke="#cfeff2" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>' +
+        '<path d="M110 0 C120 -6 124 -18 122 -28" stroke="#cfeff2" stroke-width="4" fill="none" stroke-linecap="round"/>' +
+        // cráneo con cuernos
+        '<g transform="translate(-12 -2)"><path d="M0 0 C-14 -4 -26 6 -30 20 C-32 30 -24 34 -18 30 C-12 24 -6 14 4 10Z" fill="#e8ffff"/>' +
+        '<circle cx="-12" cy="10" r="4" fill="' + P.a + '" class="ey"/><path d="M-4 0 C-4 -22 12 -32 28 -30 M-10 -2 C-20 -20 -40 -26 -52 -18" stroke="#e8ffff" stroke-width="5" fill="none" stroke-linecap="round"/></g>';
+      return lyG("translate(" + x + " " + y + ") scale(" + k + ")", '<g opacity="' + op + '" filter="url(#resplandor)">' + lyA("", "bo", b, "animation-duration:.8s") + "</g>");
+    }
+    s += '<ellipse cx="90" cy="330" rx="120" ry="70" fill="url(#halo)" class="gl"/>';
+    s += buey(40, 284, 1.15, .5) + buey(16, 300, 1.25, 1);
+    // yugo y lanza
+    s += '<path d="M-20 298 H50 M40 302 L250 300" stroke="#5a4028" stroke-width="7" stroke-linecap="round"/>';
+    // carreta
+    var carreta = '<path d="M210 220 C230 150 380 150 400 220Z" fill="#2a1c12" stroke="#4a3420" stroke-width="3"/>' +
+      '<path d="M222 214 C240 166 370 166 390 214" stroke="#6a4a2a" stroke-width="2" fill="none" stroke-dasharray="4 6"/>' +
+      '<rect x="200" y="220" width="210" height="64" fill="#1c120a" stroke="#4a3420" stroke-width="3"/>' +
+      '<path d="M200 240 H410 M200 262 H410" stroke="#3a2a1a" stroke-width="3"/>';
+    // la muerte conduciendo
+    carreta += '<path d="M236 224 C236 190 250 160 268 152 C286 160 300 190 300 224Z" fill="#05090c"/>' +
+      '<ellipse cx="268" cy="172" rx="11" ry="13" fill="#0a1418"/><circle cx="264" cy="171" r="2.4" fill="' + P.a + '" class="ey"/><circle cx="273" cy="171" r="2.4" fill="' + P.a + '" class="ey"/>' +
+      '<path d="M286 190 L330 108 C342 96 362 98 372 106 C356 106 344 110 334 118" stroke="#9ab" stroke-width="4" fill="none" stroke-linecap="round"/>';
+    s += lyA("", "bo", carreta, "animation-duration:.9s");
+    // rueda sólida con radios
+    var rueda = '<circle r="62" fill="#24180e" stroke="#4a3420" stroke-width="6"/><circle r="50" fill="none" stroke="#3a2a1a" stroke-width="3"/>' +
+      '<path d="M0 -50 V50 M-50 0 H50 M-35 -35 L35 35 M-35 35 L35 -35" stroke="#3a2a1a" stroke-width="7"/><circle r="12" fill="#5a4020" stroke="' + P.a + '" stroke-width="2"/>';
+    s += lyG("translate(305 338)", lyG("", rueda, "spf", "animation-duration:4s"));
+    s += '<path d="M240 300 C230 330 236 360 226 390 M380 300 C392 334 384 362 396 392" stroke="#7a8a96" stroke-width="3" fill="none" stroke-dasharray="6 4"/>';
+    return s;
+  }
+};
+
+LY_ESCENAS.petroglifo = {
+  fondo: function (P, R, W, H, suelo) {
+    var s = '<rect width="' + W + '" height="' + H + '" fill="url(#cielo)"/>';
+    s += lyEstrellas(R, W, H * .8, 160, "#fff");
+    // constelaciones
+    var pts = [];
+    for (var i = 0; i < 9; i++) { pts.push([lyF(R() * W), lyF(30 + R() * suelo * .5)]); }
+    s += '<path d="M' + pts.map(function (p) { return p.join(" "); }).join(" L") + '" stroke="' + P.x + '" stroke-width="1" fill="none" opacity=".35" class="gl"/>';
+    // eclipse con corona
+    var cx = W / 2, cy = suelo - 250, cor = "";
+    for (var k = 0; k < 48; k++) {
+      var a = (k / 48) * Math.PI * 2, l = 90 + (k % 3) * 30 + R() * 30;
+      cor += '<path d="M' + lyF(cx + Math.cos(a) * 80) + " " + lyF(cy + Math.sin(a) * 80) + " L" + lyF(cx + Math.cos(a) * (80 + l)) + " " + lyF(cy + Math.sin(a) * (80 + l)) + '" stroke="' + (k % 2 ? P.a : "#fff4c9") + '" stroke-width="2" opacity=".55"/>';
+    }
+    s += '<circle cx="' + cx + '" cy="' + cy + '" r="320" fill="url(#halo)" opacity=".6"/>';
+    s += lyA("", "spr", cor, "animation-duration:120s");
+    // volcanes con selva
+    s += '<path d="M-40 ' + H + " L" + W * .25 + " " + (suelo - 120) + " C" + W * .3 + " " + (suelo - 130) + " " + W * .34 + " " + (suelo - 120) + " " + W * .5 + " " + (suelo - 40) +
+      " C" + W * .66 + " " + (suelo - 140) + " " + W * .8 + " " + (suelo - 90) + " " + (W + 40) + " " + (suelo - 30) + " V" + H + 'Z" fill="#0a0716"/>';
+    for (var x = -10; x < W + 20; x += 18 + R() * 16) {
+      s += '<circle cx="' + lyF(x) + '" cy="' + lyF(suelo - 30 + R() * 20) + '" r="' + lyF(14 + R() * 14) + '" fill="#0f0c22"/>';
+    }
+    s += '<rect y="' + (suelo - 10) + '" width="' + W + '" height="' + (H - suelo + 10) + '" fill="#070513"/>';
+    s += lyNiebla(R, W, suelo - 20, P.x, 7, .35);
+    return s;
+  },
+  heroe: function (P, R) {
+    var s = '<defs><radialGradient id="ptpiedra" cx=".4" cy=".35" r=".75"><stop offset="0" stop-color="#6a5a7a"/><stop offset=".7" stop-color="#3a2e4a"/><stop offset="1" stop-color="#1c1428"/></radialGradient>' +
+      '<filter id="ptgrano"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="7"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .35 0"/><feComposite in2="SourceGraphic" operator="in"/></filter></defs>';
+    var c = 200, cy = 190;
+    // órbita de piedras pequeñas
+    var orb = "";
+    for (var o = 0; o < 6; o++) {
+      var a = (o / 6) * Math.PI * 2;
+      orb += lyG("translate(" + lyF(c + Math.cos(a) * 196) + " " + lyF(cy + Math.sin(a) * 196) + ")",
+        '<circle r="16" fill="url(#ptpiedra)" stroke="url(#holo)" stroke-width="2"/><path d="M-6 0 a6 6 0 1 1 6 6" stroke="' + P.a + '" stroke-width="2" fill="none"/>');
+    }
+    s += lyA("", "sp", '<circle cx="' + c + '" cy="' + cy + '" r="212" fill="none" stroke="' + P.x + '" stroke-width="1" stroke-dasharray="2 10" opacity=".6"/>' + orb, "animation-duration:40s");
+    s += '<circle cx="' + c + '" cy="' + cy + '" r="190" fill="url(#halo)" class="gl"/>';
+    // disco de piedra
+    s += '<circle cx="' + c + '" cy="' + cy + '" r="160" fill="url(#ptpiedra)"/><circle cx="' + c + '" cy="' + cy + '" r="160" fill="#000" filter="url(#ptgrano)"/>';
+    s += '<circle cx="' + c + '" cy="' + cy + '" r="160" fill="none" stroke="url(#holo)" stroke-width="5"/>';
+    // anillo de glifos (gira)
+    var glifos = "";
+    for (var g = 0; g < 12; g++) {
+      var ga = (g / 12) * 360;
+      var forma = [
+        '<path d="M0 -10 a10 10 0 1 1 -10 10 a6 6 0 1 1 6 -6" fill="none"/>',
+        '<circle r="9" fill="none"/><circle r="3"/>',
+        '<path d="M0 -12 V12 M-8 -4 L0 -12 L8 -4 M-7 12 L0 4 L7 12" fill="none"/>',
+        '<path d="M-10 0 Q0 -14 10 0 Q0 14 -10 0Z" fill="none"/>'
+      ][g % 4];
+      glifos += lyG("rotate(" + ga + " " + c + " " + cy + ") translate(" + c + " " + (cy - 128) + ")", forma);
+    }
+    s += lyA("", "sp", '<g stroke="' + P.a + '" fill="' + P.a + '" stroke-width="3" stroke-linecap="round" filter="url(#resplandor)">' + glifos + "</g>" +
+      '<circle cx="' + c + '" cy="' + cy + '" r="146" fill="none" stroke="' + P.a + '" stroke-width="2" opacity=".6"/><circle cx="' + c + '" cy="' + cy + '" r="108" fill="none" stroke="' + P.a + '" stroke-width="2" opacity=".6"/>', "animation-duration:50s");
+    // espiral central (gira al revés)
+    var esp = "M" + c + " " + cy;
+    for (var t = 0; t < 7 * Math.PI; t += .25) { esp += " L" + lyF(c + Math.cos(t) * t * 4.4) + " " + lyF(cy + Math.sin(t) * t * 4.4); }
+    s += lyA("", "spr", '<path d="' + esp + '" stroke="' + P.x + '" stroke-width="5" fill="none" stroke-linecap="round" filter="url(#resplandor)"/>', "animation-duration:30s");
+    // figura humana grabada en la base
+    s += '<g transform="translate(' + c + ' 400)" stroke="' + P.a + '" stroke-width="4" fill="none" stroke-linecap="round" class="gl"><circle cy="-58" r="9"/><path d="M0 -48 V-14 M-20 -40 L0 -32 L20 -40 M-14 0 L0 -14 L14 0"/></g>';
+    return s;
+  }
+};
+/* ---------- composición de los tres formatos ---------- */
+function lyConstruir(t) {
+  var P = { a: t.a, m: t.m, d: t.d, x: t.x };
+  var E = LY_ESCENAS[t.s];
+  var nivel = lyNivel(t.r);
+  var SUELO = 460;
+  var abrir = function (w, h) { return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + w + " " + h + '" preserveAspectRatio="xMidYMid slice">' + LY_CSS + lyDefs(P); };
+
+  // Banner animado: escena ancha con el protagonista al centro.
+  var Rb = lyRng(t.s + "-b");
+  var banner = abrir(1200, 480) + E.fondo(P, Rb, 1200, 480, SUELO) +
+    lyG("translate(400 " + (SUELO - 400) + ")", E.heroe(P, lyRng(t.s + "-h"))) +
+    (nivel >= 2 ? '<g class="sh" opacity=".5"><rect x="0" y="-60" width="160" height="600" fill="url(#brillo)"/></g>' : "") +
+    (nivel >= 3 ? '<rect x="10" y="10" width="1180" height="460" rx="10" fill="none" stroke="url(#' + (nivel >= 4 ? "holo" : "oro") + ')" stroke-width="5"/>' : "") +
+    "</svg>";
+
+  // Carta de arte completo: la ilustración ocupa toda la carta, con marco según rareza.
+  var Rc = lyRng(t.s + "-c");
+  var SC = 540;
+  var carta = abrir(600, 760) + E.fondo(P, Rc, 600, 760, SC) +
+    lyG("translate(100 " + (SC - 400) + ")", E.heroe(P, lyRng(t.s + "-h"))) +
+    '<rect y="560" width="600" height="200" fill="url(#velo)" opacity=".85"/>' +
+    lyMarcoCarta(P, t, nivel) + "</svg>";
+
+  // Tarjeta: la misma escena, más tenue para que se lea el perfil encima.
+  var Rt = lyRng(t.s + "-t");
+  var esq = '<path d="M16 60V16h120M464 16h120v44M16 700v44h120M464 744h120v-44" fill="none" stroke="' + P.a + '" stroke-width="3" opacity=".85"/>';
+  var tarjeta = abrir(600, 760) + '<rect width="600" height="760" fill="' + P.d + '"/>' +
+    '<g opacity=".62">' + E.fondo(P, Rt, 600, 760, SUELO) + "</g>" +
+    '<g opacity=".5">' + lyG("translate(100 " + (SUELO - 400) + ")", E.heroe(P, lyRng(t.s + "-h"))) + "</g>" +
+    '<rect width="600" height="760" fill="url(#velo)" opacity=".8"/>' +
+    '<rect x="24" y="24" width="552" height="712" rx="14" fill="none" stroke="' + P.a + '" stroke-width="1.5" opacity=".4"/>' + esq +
+    (nivel >= 2 ? '<g class="sh" opacity=".35"><rect x="0" y="-60" width="120" height="900" fill="url(#brillo)"/></g>' : "") +
+    "</svg>";
+  return { banner: banner, tarjeta: tarjeta, carta: carta };
+}
+
+(function lyRegistrar() {
+  if (typeof root === "undefined" || typeof MOTIONS === "undefined") { return; }
+  var css = "";
+  var quieto = function (svg) { return svg.replace(/<style>[\s\S]*?<\/style>/, ""); };
+  LY_PACK.forEach(function (t) {
+    var id = "ly_" + t.s;
+    var arte;
+    try { arte = lyConstruir(t); } catch (e) { console.warn("[leyendas] no se pudo dibujar", t.s, e); return; }
+    var poner = function (k, v) { root.style.setProperty("--" + id + "-" + k, imageValue(v)); };
+    poner("banner", arte.banner); poner("still", quieto(arte.banner));
+    poner("card", arte.tarjeta); poner("card-still", quieto(arte.tarjeta));
+    poner("letter", arte.carta); poner("letter-still", quieto(arte.carta));
+    var peso = LY_PESO[t.r] || 1;
+    MOTIONS[id] = { name: t.n, rarity: t.r, weight: peso, color: t.a, css: "var(--" + id + "-banner)", size: "cover", anim: "none", desc: t.t, coleccion: "leyendas" };
+    CARDS[id] = { name: t.n, rarity: t.r, weight: peso, color: t.a, cls: "tb-ep26-card tb-ly-" + t.s, desc: t.t, coleccion: "leyendas" };
+    CARDS["carta_" + id] = { name: "Carta · " + t.n, rarity: t.r, weight: Math.max(1, Math.round(peso / 2)), color: t.a,
+      cls: "tb-carta-epica tb-ly-carta tb-ly-" + t.s, desc: t.t, coleccion: "leyendas" };
+    css += "#tablon-root .tb-ly-" + t.s + "{--ep26-accent:" + t.a + ";--ep26-dark:" + t.d + ";--ep26-surface:var(--" + id + "-card);--ep26-letter:var(--" + id + "-letter);}" +
+      "#tablon-root .tb-art-pausa.tb-ly-" + t.s + ",#tablon-root.tb-modal-abierto #tb-app .tb-ly-" + t.s +
+      "{--" + id + "-card:var(--" + id + "-card-still);--" + id + "-letter:var(--" + id + "-letter-still);}";
+  });
+  // Cartas de arte completo: el banner del perfil se vuelve transparente para que se vea la ilustración.
+  css += "#tablon-root .tb-ly-carta .tb-banner{background:transparent!important;height:190px;border-bottom:0!important;box-shadow:none!important;}" +
+    "#tablon-root .tb-ly-carta .tb-banner *{opacity:0;}" +
+    "#tablon-root .tb-ly-carta .tb-profile-body{background:linear-gradient(180deg,transparent 0,color-mix(in srgb,var(--ep26-dark) 55%,transparent) 22%,color-mix(in srgb,var(--ep26-dark) 92%,transparent) 48%,var(--ep26-dark) 100%)!important;}" +
+    "#tablon-root .tb-ly-carta{background-position:center top!important;}";
+  var estilo = document.createElement("style");
+  estilo.id = "tb-ly-css";
+  estilo.textContent = css;
+  document.head.appendChild(estilo);
+})();
 
 var CARTA_CHANCE_PERCENT = 0.000000067;
 var CARTA_CHANCE = CARTA_CHANCE_PERCENT / 100;
