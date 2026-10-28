@@ -11927,9 +11927,11 @@ function lyTarjeta(t) {
       EPIC_COLLECTION.push({
         id: id, slug: id, name: t.n, rarity: t.r, accent: t.a, mid: t.m, dark: t.d,
         description: t.t + " Shiny: " + t.ts, scene: "leyenda", index: 40 + i, arteDirecto: true,
-        banner: lyBanner(t), card: lyTarjeta(t),
-        letter: lyCarta(t, false), shiny: lyCarta(t, true),
-        perfil: lyPerfil(t, false), perfilShiny: lyPerfil(t, true)
+        banner: lyBanner(t), card: lyTarjeta(t)
+        /* letter, shiny, perfil y perfilShiny (las 4 ilustraciones más pesadas) se generan
+           bajo demanda, la primera vez que alguien ve esta carta — ver el parche en
+           prepararArteCarta. Así la carga de la página no dibuja 14 × 4 ilustraciones
+           que casi nadie va a abrir. */
       });
     } catch (e) { console.warn("[leyendas] no se pudo dibujar", t.s, e); return; }
     var c = "#tablon-root .tb-ep26-" + id;
@@ -11964,6 +11966,10 @@ var d = EPIC_POR_SLUG[slug];
 if (!d || d.__arteListo) { return; }
 d.__arteListo = true;
 if (slug === 'halloween' || d.arteDirecto) {
+if (d.scene === "leyenda" && !d.letter) {
+var lyT = LY_PACK.filter(function (x) { return "ly_" + x.s === d.slug; })[0];
+if (lyT) { d.letter = lyCarta(lyT, false); d.shiny = lyCarta(lyT, true); d.perfil = lyPerfil(lyT, false); d.perfilShiny = lyPerfil(lyT, true); }
+}
 var hwSet = function(k,v){ root.style.setProperty('--'+d.id+'-'+k,imageValue(v)); };
 var hwQuieto=function(v){return v.replace(/<style>[\s\S]*?<\/style>/,'');};
 hwSet('letter',d.letter); hwSet('letter-still',hwQuieto(d.letter)); hwSet('shiny',d.shiny); hwSet('shiny-still',hwQuieto(d.shiny)); hwSet('shiny-hero',d.shiny); hwSet('shiny-hero-still',hwQuieto(d.shiny)); hwSet('sbase',d.perfilShiny); hwSet('sbase-still',hwQuieto(d.perfilShiny)); hwSet('perfil',d.perfil); hwSet('perfil-still',hwQuieto(d.perfil)); return;
