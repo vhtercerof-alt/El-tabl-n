@@ -8570,14 +8570,14 @@ caracteres y lo puedes cambiar cuando quieras desde Personalizar.
 <button class="tb-rail-btn" data-view="mascota" title="Mascota">
 🐾<span class="tb-rail-label">Mascota</span>
 </button>
-<button class="tb-rail-btn tb-staff-only" data-view="redaccion" title="Redacción">
+<button class="tb-rail-btn tb-staff-only" data-perm="noticias" data-view="redaccion" title="Redacción">
 ✍<span class="tb-rail-label">Redacción</span>
 </button>
 <button class="tb-rail-btn" data-view="entregas" title="Entregas">
 📥<span class="tb-rail-label">Entregas</span>
 <span class="tb-badge tb-entregas-badge tb-hidden"></span>
 </button>
-<button class="tb-rail-btn tb-staff-only" data-view="manage" title="Administrar">
+<button class="tb-rail-btn tb-staff-only" data-perm="tareas" data-view="manage" title="Administrar">
 ⚙<span class="tb-rail-label">Publicar</span>
 </button>
 <button class="tb-rail-btn tb-owner-only" data-view="roles" title="Roles">
@@ -8618,10 +8618,10 @@ caracteres y lo puedes cambiar cuando quieras desde Personalizar.
 <button class="tb-nav" data-view="logros">🏅 Logros<span class="tb-badge tb-logros-badge tb-hidden"></span></button>
 <button class="tb-nav" data-view="ranking">🏆 Ranking</button>
 <button class="tb-nav" data-view="mascota">🐾 Mascota</button>
-<button class="tb-nav" type="button" data-com-nov-abrir><svg class="tb-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 1.9 4.9L19 9.8l-4.5 2.6L13.8 18 12 14.4 10.2 18l-.7-5.6L5 9.8l5.1-1.9z"/><path d="M18.6 16.4l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/></svg><span class="tb-nav-text">Novedades</span></button>
-<button class="tb-nav tb-staff-only" data-view="redaccion">✍ Redacción</button>
+<button class="tb-nav" type="button" data-view="novedades"><svg class="tb-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 1.9 4.9L19 9.8l-4.5 2.6L13.8 18 12 14.4 10.2 18l-.7-5.6L5 9.8l5.1-1.9z"/><path d="M18.6 16.4l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/></svg><span class="tb-nav-text">Novedades</span></button>
+<button class="tb-nav tb-staff-only" data-perm="noticias" data-view="redaccion">✍ Redacción</button>
 <button class="tb-nav" data-view="entregas">📥 Entregas<span class="tb-badge tb-entregas-badge tb-hidden"></span></button>
-<button class="tb-nav tb-staff-only" data-view="manage">⚙ Publicar tareas</button>
+<button class="tb-nav tb-staff-only" data-perm="tareas" data-view="manage">⚙ Publicar tareas</button>
 <button class="tb-nav tb-owner-only" data-view="roles">★ Roles</button>
 <button class="tb-nav tb-owner-only" data-view="owner">♛ Panel del owner</button>
 </aside>
@@ -8664,7 +8664,7 @@ title="Tu racha diaria"></span>
 <h1>Hola, <span id="tb-first-name">usuario</span> <span class="tb-logo-inline" aria-hidden="true"></span></h1>
 <p>Revisa las tareas publicadas y el progreso de tu grupo.</p>
 </div>
-<button type="button" class="tb-secondary" data-com-nov-abrir>✨ Novedades</button>
+<button type="button" class="tb-secondary" data-com-ir="novedades">✨ Novedades</button>
 </div>
 <aside class="hw-banner" aria-label="Edición Halloween"><div><small>El Tablón · Noche de Halloween</small><h2>Un poco de magia.<br>Mucho por descubrir.</h2><p>Tus tareas, tu comunidad y tus personajes favoritos, vestidos para la noche más misteriosa del año.</p></div><div class="hw-moon" aria-hidden="true"></div></aside><div id="tb-push-card" class="tb-card tb-hidden" aria-live="polite"></div>
 <div id="tb-com-alertas"></div>
@@ -8711,6 +8711,10 @@ title="Tu racha diaria"></span>
 <section id="tb-view-talentos" class="tb-view">
 <div class="tb-welcome"><div><h1>Rincón de talentos</h1><p>Dibujos, fotos, letras y todo lo que haces bien.</p></div><button type="button" class="tb-primary" id="tb-tal-nuevo">Compartir mi talento</button></div>
 <div id="tb-tal-root"></div>
+</section>
+<section id="tb-view-novedades" class="tb-view">
+<div class="tb-welcome"><div><h1>Novedades</h1><p>Todo lo que cambia en El Tablón, con imágenes y enlaces.</p></div><button type="button" class="tb-primary tb-hidden" id="tb-nov-nueva" data-perm="novedades">Nueva novedad</button></div>
+<div id="tb-nov-root"></div>
 </section>
 <section id="tb-view-tasks" class="tb-view">
 <div class="tb-welcome">
@@ -8890,7 +8894,7 @@ Canje de Belis
 </div>
 <div id="tb-logros"></div>
 </section>
-<section id="tb-view-redaccion" class="tb-view tb-staff-only">
+<section id="tb-view-redaccion" class="tb-view tb-staff-only" data-perm="noticias">
 <div class="tb-welcome">
 <div>
 <h1>Redacción</h1>
@@ -9027,7 +9031,7 @@ Arrastra por ⠿ o usa las flechas. Los roles marcados como
 </div>
 <div id="tb-entregas-lista" class="tb-ent-lista"></div>
 </section>
-<section id="tb-view-manage" class="tb-view tb-staff-only">
+<section id="tb-view-manage" class="tb-view tb-staff-only" data-perm="tareas">
 <div class="tb-welcome">
 <div>
 <h1>Administrar tareas</h1>
@@ -9152,19 +9156,6 @@ Avisar al celular a quienes tienen los avisos activados
 <button type="submit" class="tb-primary" id="tb-anuncio-enviar">📣 Enviar aviso</button>
 <p class="tb-extra-status" id="tb-anuncio-status" role="status" aria-live="polite"></p>
 </form>
-</details>
-<details class="tb-card tb-extra-owner" id="tb-com-nov-panel">
-<summary>✨ Publicar novedades</summary>
-<p class="tb-muted">Le aparecen una sola vez a cada persona cuando entra. Úsalo para contar qué cambió en El Tablón.</p>
-<form id="tb-com-nov-form">
-<label class="tb-field"><span>Título</span><input id="tb-com-nov-titulo" maxlength="80" required placeholder="Llegó el modo concentración"></label>
-<label class="tb-field"><span>Resumen (opcional)</span><input id="tb-com-nov-resumen" maxlength="240" placeholder="Una frase que lo explique todo."></label>
-<div id="tb-com-nov-items"></div>
-<div class="tb-com-nov-acc"><button type="button" class="tb-secondary" id="tb-com-nov-mas">Agregar otro punto</button>
-<button type="submit" class="tb-primary" id="tb-com-nov-publicar">Publicar novedad</button></div>
-<p class="tb-extra-status" id="tb-com-nov-status" role="status" aria-live="polite"></p>
-</form>
-<div id="tb-com-nov-historial"></div>
 </details>
 <details class="tb-card tb-extra-owner" id="tb-extra-owner-panel">
 <summary>🏅 Administrar vitrina de logros</summary>
@@ -10106,6 +10097,192 @@ fill="none" stroke="#9ebd75" stroke-width="13" stroke-linecap="round"/>
 }
 @media (prefers-reduced-motion: reduce) {
   #tablon-root .tb-com-est-star, #tablon-root .tb-her-fila.foco, #tablon-root .tb-tal-aplauso.pop { animation: none !important; }
+}
+</style>
+
+<style id="tb-v23">
+/* ═══ v23 · hermandades personalizadas, roles, insignias 2.0, novedades ═══ */
+#tablon-root .tb-her-escudo.mini, #tablon-root .tb-her-escudo.chip { width: 34px; height: 42px; }
+#tablon-root .tb-her-escudo.opc { width: 34px; height: 42px; }
+#tablon-root .tb-her-escudo.medio { width: 46px; height: 56px; }
+#tablon-root .tb-her-escudo.estandarte { width: 74px; height: 91px; }
+#tablon-root .tb-her-llama { animation: tbHerLlama 1s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: 50% 100%; }
+@keyframes tbHerLlama { from { transform: scaleY(.88); } to { transform: scaleY(1.08); } }
+#tablon-root .tb-her-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+#tablon-root .tb-her-chipopc { padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; background: #ffffff08; color: var(--text); font: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer; }
+#tablon-root .tb-her-chipopc.on { border-color: var(--accent); background: #819bff26; }
+#tablon-root .tb-her-grito { margin: 8px 0 0; font-family: 'Cinzel', Georgia, serif; font-weight: 700; font-size: 14px; letter-spacing: .06em; color: var(--her-metal, #f6d77f); }
+#tablon-root .tb-her-historia { margin: 10px 0 0; max-width: 60ch; font-size: 13.5px; line-height: 1.55; color: var(--text); opacity: .85; }
+#tablon-root .tb-her-titulo { display: inline-block; margin-right: 4px; padding: 1px 8px; border-radius: 999px; background: #f6d77f1f; color: #f6d77f; font-size: 11px; font-weight: 800; }
+#tablon-root.tb-light .tb-her-titulo { color: #7d5a0e; }
+/* insignia de hermandad en la tarjeta */
+#tablon-root .tb-com-herchip.v2 {
+  position: relative; gap: 10px; padding: 5px 14px 5px 6px; border-radius: 14px; overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--hc) 60%, transparent);
+  background: linear-gradient(100deg, color-mix(in srgb, var(--hc) 34%, transparent), color-mix(in srgb, var(--hc2) 12%, transparent) 70%, transparent);
+  box-shadow: inset 3px 0 0 var(--hc), 0 6px 18px -10px var(--hc);
+}
+#tablon-root .tb-com-herchip.v2::after { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 30%, #ffffff22 45%, transparent 60%); background-size: 260% 100%; animation: tbHerBrillo 6s ease-in-out infinite; pointer-events: none; }
+@keyframes tbHerBrillo { 0%, 60% { background-position: 120% 0; } 100% { background-position: -40% 0; } }
+#tablon-root .tb-com-herchip-escudo { display: grid; place-items: center; filter: drop-shadow(0 0 8px color-mix(in srgb, var(--hc) 70%, transparent)); }
+#tablon-root .tb-com-herchip.v2 .tb-com-herchip-txt b { font-size: 13.5px; background: linear-gradient(90deg, var(--text), color-mix(in srgb, var(--hm) 80%, var(--text))); -webkit-background-clip: text; background-clip: text; color: transparent; }
+#tablon-root .tb-com-herchip.v2 .tb-com-herchip-txt small { font-size: 11px; color: color-mix(in srgb, var(--hm) 70%, var(--muted)); font-weight: 700; }
+/* estandarte en el perfil ampliado */
+#tablon-root .tb-com-estandarte {
+  position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 16px; align-items: center;
+  margin: 16px 0 6px; padding: 14px 16px; border-radius: 18px; overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--hc) 55%, transparent);
+  background: radial-gradient(circle at 12% 50%, color-mix(in srgb, var(--hc) 45%, transparent), transparent 60%), linear-gradient(120deg, color-mix(in srgb, var(--hc2) 16%, transparent), transparent);
+}
+#tablon-root .tb-com-estandarte-escudo { filter: drop-shadow(0 8px 16px #0009) drop-shadow(0 0 14px color-mix(in srgb, var(--hc) 60%, transparent)); }
+#tablon-root .tb-com-estandarte-txt { display: grid; gap: 2px; min-width: 0; }
+#tablon-root .tb-com-estandarte-txt small { color: var(--muted); font-size: 11.5px; font-weight: 700; }
+#tablon-root .tb-com-estandarte-txt b { font-family: 'Cinzel', Georgia, serif; font-size: 20px; line-height: 1.1; overflow-wrap: anywhere; }
+#tablon-root .tb-com-estandarte-txt i { color: var(--muted); font-size: 13px; }
+#tablon-root .tb-com-estandarte-rango { justify-self: start; margin-top: 4px; padding: 2px 10px; border-radius: 999px; background: color-mix(in srgb, var(--hm) 18%, transparent); color: var(--hm); font-size: 12px; font-weight: 800; }
+#tablon-root.tb-light .tb-com-estandarte-rango { color: #5a3f08; }
+#tablon-root .tb-com-estandarte-datos { color: var(--muted); font-size: 12px; }
+/* roles en el perfil ampliado */
+#tablon-root .tb-ext-roles { margin: 14px 0 6px; }
+#tablon-root .tb-ext-roles h4, #tablon-root .tb-ext-rol-insignias h4 { margin: 0 0 8px; font-size: 14px; }
+#tablon-root .tb-ext-roles ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+#tablon-root .tb-ext-rol { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 12px; align-items: start; padding: 10px 12px; border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--rc) 45%, transparent); background: linear-gradient(90deg, color-mix(in srgb, var(--rc) 16%, transparent), transparent); }
+#tablon-root .tb-ext-rol-ico { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: color-mix(in srgb, var(--rc) 26%, transparent); color: var(--rc); }
+#tablon-root .tb-ext-rol-ico svg { width: 22px; height: 22px; }
+#tablon-root .tb-ext-rol-txt b { display: block; color: var(--rc); }
+#tablon-root .tb-ext-rol-txt small { display: block; margin-top: 2px; color: var(--muted); font-size: 12px; line-height: 1.45; }
+#tablon-root .tb-ext-rol-ins { display: flex; gap: 4px; margin-top: 6px; }
+#tablon-root .tb-ext-rol-insignias { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line); }
+#tablon-root .tb-ext-rol-ins-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+#tablon-root .tb-ext-ins-opc { display: grid; grid-template-columns: auto 40px minmax(0, 1fr); gap: 8px; align-items: center; padding: 8px; border: 1px solid var(--line); border-radius: 12px; font-size: 12.5px; cursor: pointer; }
+#tablon-root .tb-ext-ins-opc.on { border-color: var(--accent); background: #819bff1f; }
+#tablon-root .tb-ext-ins-opc svg { width: 40px; height: 40px; }
+/* insignias: tarjeta y perfil */
+#tablon-root .tb-ext-dest { display: flex; gap: 8px; align-items: center; }
+#tablon-root .tb-ext-dest .tb-ext-dest-ins svg { width: 42px; height: 44px; }
+#tablon-root .tb-ext-dest .tb-ext-dest-ins.mitica svg, #tablon-root .tb-ext-dest .tb-ext-dest-ins.epica svg { filter: drop-shadow(0 0 8px #b07aff88); }
+#tablon-root .tb-ext-ins-card { display: grid; gap: 4px; }
+#tablon-root .tb-ext-rango-mini { color: var(--muted) !important; letter-spacing: 0 !important; font-weight: 700 !important; font-size: 11.5px !important; }
+#tablon-root .tb-ext-ins-modal { margin: 14px 0; display: grid; gap: 10px; }
+#tablon-root .tb-ext-prestigio { display: grid; grid-template-columns: minmax(0, 1fr) minmax(90px, 160px); gap: 12px; align-items: center; }
+#tablon-root .tb-ext-prestigio b { display: block; font-family: 'Cinzel', Georgia, serif; font-size: 17px; }
+#tablon-root .tb-ext-prestigio small { color: var(--muted); font-size: 12px; }
+#tablon-root .tb-ext-barra { display: block; height: 7px; border-radius: 7px; background: #ffffff14; overflow: hidden; }
+#tablon-root.tb-light .tb-ext-barra { background: #1b223314; }
+#tablon-root .tb-ext-barra i { display: block; height: 100%; border-radius: 7px; background: linear-gradient(90deg, #f0b429, #ff7ad9, #7fd6ff); }
+#tablon-root .tb-ext-todas { display: flex; flex-wrap: wrap; gap: 4px; }
+#tablon-root .tb-ext-viva { display: inline-flex; align-items: center; gap: 5px; padding: 2px 8px; border-radius: 999px; background: #ff718722; color: #ff9aaa; font-size: 10.5px; font-weight: 800; }
+#tablon-root .tb-ext-viva::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #ff7187; animation: tbExtPulso 1.4s ease-in-out infinite; }
+@keyframes tbExtPulso { 50% { opacity: .25; transform: scale(.6); } }
+#tablon-root .tb-insignia .tb-ext-viva { position: absolute; top: 10px; left: 10px; }
+#tablon-root .tb-insignia { position: relative; }
+#tablon-root .tb-insignia.secreta { border-style: dashed; }
+#tablon-root .tb-insignia.secreta h4 { color: var(--muted); }
+#tablon-root .tb-ext-rareza { display: block; margin: 4px 0; color: #cdb8ff; font-size: 11.5px; font-weight: 700; }
+#tablon-root.tb-light .tb-ext-rareza { color: #6a3fc4; }
+#tablon-root .tb-ext-ok { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+#tablon-root .tb-ext-fijar { padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; background: #ffffff0a; color: var(--text); font: inherit; font-size: 11.5px; font-weight: 800; cursor: pointer; }
+#tablon-root .tb-ext-fijar.on { border-color: #f2c75c; background: #f2c75c26; color: #f6d77f; }
+#tablon-root .tb-ext-pop-rareza, #tablon-root .tb-ext-pop-pts { display: block; margin-top: 6px; font-size: 11.5px; font-weight: 700; color: #cdb8ff; }
+#tablon-root .tb-ext-pop-pts { color: #f6d77f; }
+#tablon-root .tb-ins-mitico { animation: tbExtGira 12s linear infinite; transform-origin: 50px 50px; }
+@keyframes tbExtGira { to { transform: rotate(360deg); } }
+/* cabecera de logros */
+#tablon-root .tb-ext-cabecera { display: grid; grid-template-columns: minmax(0, 1.2fr) auto minmax(0, .9fr); gap: 20px; align-items: center; margin-bottom: 17px;
+  background: radial-gradient(circle at 8% 40%, #b07aff33, transparent 45%), radial-gradient(circle at 92% 60%, #f0b42922, transparent 45%); }
+#tablon-root .tb-ext-cab-rango { display: flex; gap: 16px; align-items: center; min-width: 0; }
+#tablon-root .tb-ext-cab-sello svg { width: 76px; height: 80px; filter: drop-shadow(0 6px 14px #0008); }
+#tablon-root .tb-ext-cab-rango small, #tablon-root .tb-ext-cab-dest small { color: var(--muted); font-size: 12px; font-weight: 700; }
+#tablon-root .tb-ext-cab-rango h3 { margin: 2px 0 8px; font-family: 'Cinzel', Georgia, serif; font-size: 24px; }
+#tablon-root .tb-ext-cab-rango p { margin: 8px 0 0; font-size: 12.5px; }
+#tablon-root .tb-ext-cab-tiers { display: grid; grid-template-columns: repeat(5, auto); gap: 6px; }
+#tablon-root .tb-ext-tier { display: grid; justify-items: center; min-width: 54px; padding: 8px 6px; border-radius: 12px; border: 1px solid var(--line); font-size: 10.5px; font-weight: 800; color: var(--muted); }
+#tablon-root .tb-ext-tier b { font-size: 18px; color: var(--text); }
+#tablon-root .tb-ext-tier.mitica { border-color: #ff7ad977; } #tablon-root .tb-ext-tier.epica { border-color: #b07aff77; } #tablon-root .tb-ext-tier.oro { border-color: #f0b42977; }
+#tablon-root .tb-ext-cab-dest > div { display: flex; gap: 10px; margin-top: 8px; }
+#tablon-root .tb-ext-slot { display: grid; place-items: center; width: 62px; height: 66px; border-radius: 16px; border: 2px dashed var(--line); color: var(--muted); font-size: 22px; background: none; padding: 0; }
+#tablon-root .tb-ext-slot.lleno { border-style: solid; border-color: #f2c75c88; cursor: pointer; background: #f2c75c12; }
+#tablon-root .tb-ext-slot svg { width: 52px; height: 54px; }
+#tablon-root .tb-ext-ins-tabs { margin: 0 0 14px; }
+/* salón de la fama */
+#tablon-root .tb-ext-fama { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+#tablon-root .tb-ext-fama li { display: grid; grid-template-columns: 28px auto minmax(0, 1fr) auto 60px; gap: 12px; align-items: center; padding: 8px 10px; border-radius: 14px; border: 1px solid var(--line); }
+#tablon-root .tb-ext-fama li.yo { border-color: var(--accent); background: #819bff14; }
+#tablon-root .tb-ext-fama-pos { font-family: 'Cinzel', Georgia, serif; font-weight: 700; font-size: 18px; text-align: center; color: var(--muted); }
+#tablon-root .tb-ext-fama li:nth-child(1) .tb-ext-fama-pos { color: #f6d77f; } #tablon-root .tb-ext-fama li:nth-child(2) .tb-ext-fama-pos { color: #dfe6f5; } #tablon-root .tb-ext-fama li:nth-child(3) .tb-ext-fama-pos { color: #f0b27a; }
+#tablon-root .tb-ext-fama b { display: block; } #tablon-root .tb-ext-fama small { color: var(--muted); font-size: 12px; }
+#tablon-root .tb-ext-fama-ins { display: flex; gap: 2px; } #tablon-root .tb-ext-fama-ins svg { width: 30px; height: 32px; }
+#tablon-root .tb-ext-fama-pts { text-align: right; font-size: 17px; }
+/* especiales */
+#tablon-root .tb-ext-esp { display: grid; grid-template-columns: minmax(260px, 340px) minmax(0, 1fr); gap: 20px; align-items: start; }
+#tablon-root .tb-ext-esp-form { display: grid; gap: 4px; padding: 16px; border-radius: 16px; border: 1px solid var(--line); }
+#tablon-root .tb-ext-esp-form h4 { margin: 0; }
+#tablon-root .tb-ext-esp-previa { justify-self: center; } #tablon-root .tb-ext-esp-previa svg { width: 92px; height: 96px; }
+#tablon-root .tb-ext-esp-sel { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+#tablon-root .tb-ext-esp-sel select, #tablon-root .tb-ext-esp-dar select { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid #9bb0ff2e; background: #081226; color: #fff; font: inherit; font-size: 12.5px; }
+#tablon-root.tb-light .tb-ext-esp-sel select, #tablon-root.tb-light .tb-ext-esp-dar select { background: #fff; color: var(--text); }
+#tablon-root .tb-ext-esp-lista { display: grid; gap: 10px; }
+#tablon-root .tb-ext-esp-item { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; padding: 12px; border-radius: 14px; border: 1px solid var(--line); }
+#tablon-root .tb-ext-esp-item > svg { width: 64px; height: 66px; }
+#tablon-root .tb-ext-esp-item b { display: block; } #tablon-root .tb-ext-esp-item small { color: var(--muted); font-size: 12px; } #tablon-root .tb-ext-esp-item p { margin: 4px 0 0; font-size: 13px; }
+#tablon-root .tb-ext-esp-dar { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; align-items: center; }
+#tablon-root .tb-ext-esp-dar select { flex: 1; min-width: 140px; }
+/* revelación de insignia */
+#tablon-root .tb-ext-revela { position: fixed; inset: 0; z-index: 400; display: grid; place-items: center; background: radial-gradient(circle at 50% 42%, #2a1650f2, #05040cfa 70%); animation: tbExtEntra .35s ease-out both; overflow: hidden; }
+#tablon-root .tb-ext-revela.sale { animation: tbExtSale .35s ease-in both; }
+@keyframes tbExtEntra { from { opacity: 0; } } @keyframes tbExtSale { to { opacity: 0; } }
+#tablon-root .tb-ext-revela-rayos { position: absolute; left: 50%; top: 42%; width: 0; height: 0; opacity: .55; animation: tbExtGira 30s linear infinite; }
+#tablon-root .tb-ext-revela-rayos i { position: absolute; left: 0; top: -1.2vmax; width: 80vmax; height: 2.4vmax; transform-origin: 0 50%; clip-path: polygon(0 50%, 100% 0, 100% 100%); background: linear-gradient(90deg, #ffffff30, transparent 80%); }
+#tablon-root .tb-ext-revela-mitica .tb-ext-revela-rayos i { background: linear-gradient(90deg, #ff7ad955, #7fd6ff22, transparent); }
+#tablon-root .tb-ext-revela-oro .tb-ext-revela-rayos i { background: linear-gradient(90deg, #f0b42940, transparent); }
+#tablon-root .tb-ext-revela-chispas { position: absolute; left: 50%; top: 42%; }
+#tablon-root .tb-ext-revela-chispas b { position: absolute; width: 8px; height: 8px; border-radius: 50%; background: #fff4c9; box-shadow: 0 0 10px #ffd27a; opacity: 0; animation: tbExtChispa 1.2s ease-out both; }
+#tablon-root .tb-ext-revela-mitica .tb-ext-revela-chispas b:nth-child(3n) { background: #ff7ad9; } #tablon-root .tb-ext-revela-mitica .tb-ext-revela-chispas b:nth-child(3n+1) { background: #7fd6ff; }
+@keyframes tbExtChispa { 0% { opacity: 1; transform: translate(0, 0) scale(1.2); } 100% { opacity: 0; transform: translate(var(--x), var(--y)) scale(.2); } }
+#tablon-root .tb-ext-revela-centro { position: relative; display: grid; justify-items: center; gap: 6px; max-width: 420px; padding: 20px; text-align: center; color: #fff; }
+#tablon-root .tb-ext-revela-ins svg { width: 180px; height: 186px; animation: tbExtAparece 1s cubic-bezier(.2, .9, .25, 1.25) both; filter: drop-shadow(0 0 30px #ffd27a88); }
+#tablon-root .tb-ext-revela-mitica .tb-ext-revela-ins svg { filter: drop-shadow(0 0 34px #ff7ad9aa) drop-shadow(0 0 60px #7fd6ff55); }
+@keyframes tbExtAparece { 0% { transform: scale(.1) rotate(-200deg); opacity: 0; } 70% { transform: scale(1.12) rotate(8deg); opacity: 1; } 100% { transform: none; } }
+#tablon-root .tb-ext-revela-centro small { color: #f6d77f; font-weight: 800; font-size: 13px; animation: tbExtSube .5s .6s both; }
+#tablon-root .tb-ext-revela-centro h2 { margin: 0; font-family: 'Cinzel', Georgia, serif; font-size: 30px; animation: tbExtSube .5s .7s both; }
+#tablon-root .tb-ext-revela-centro p { margin: 0; color: #d8dcef; animation: tbExtSube .5s .8s both; }
+#tablon-root .tb-ext-revela-rareza { color: #cdb8ff; font-size: 12.5px; font-weight: 700; animation: tbExtSube .5s .9s both; }
+#tablon-root .tb-ext-revela-acc { display: flex; gap: 10px; margin-top: 12px; animation: tbExtSube .5s 1s both; }
+@keyframes tbExtSube { from { opacity: 0; transform: translateY(12px); } }
+/* novedades */
+#tablon-root .tb-nov-lista { display: grid; gap: 17px; }
+#tablon-root .tb-nov-card { padding: 0; overflow: hidden; }
+#tablon-root .tb-nov-card.oculta { opacity: .7; border-style: dashed; }
+#tablon-root .tb-nov-portada { display: block; width: 100%; max-height: 320px; object-fit: cover; }
+#tablon-root .tb-nov-portada.mini { max-height: 200px; border-radius: 14px; margin: 10px 0 0; }
+#tablon-root .tb-nov-cuerpo { padding: 20px 22px; }
+#tablon-root .tb-nov-cuerpo header { display: flex; justify-content: space-between; gap: 12px; align-items: start; }
+#tablon-root .tb-nov-cuerpo h2 { margin: 0; font-size: 22px; }
+#tablon-root .tb-nov-cuerpo time { color: var(--muted); font-size: 12.5px; }
+#tablon-root .tb-nov-item-img { display: block; max-width: 100%; max-height: 260px; margin-top: 8px; border-radius: 12px; border: 1px solid var(--line); }
+#tablon-root .tb-nov-acc { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+#tablon-root .tb-nov-editor { margin-bottom: 17px; }
+#tablon-root .tb-nov-editor h2 { margin: 0 0 6px; }
+#tablon-root .tb-nov-img-campo { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 12px 0 4px; }
+#tablon-root .tb-nov-label { display: block; width: 100%; color: #b0bad0; font-size: 12px; font-weight: 750; }
+#tablon-root.tb-light .tb-nov-label { color: #414b5f; }
+#tablon-root .tb-nov-img-previa { display: flex; gap: 10px; align-items: center; }
+#tablon-root .tb-nov-img-previa img { width: 140px; height: 90px; object-fit: cover; border-radius: 10px; border: 1px solid var(--line); }
+@media (max-width: 900px) {
+  #tablon-root .tb-ext-cabecera { grid-template-columns: minmax(0, 1fr); }
+  #tablon-root .tb-ext-esp { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 720px) {
+  #tablon-root .tb-com-estandarte { grid-template-columns: auto minmax(0, 1fr); }
+  #tablon-root .tb-com-estandarte > .tb-secondary { grid-column: 1 / -1; }
+  #tablon-root .tb-ext-fama li { grid-template-columns: 24px auto minmax(0, 1fr) 46px; }
+  #tablon-root .tb-ext-fama-ins { display: none; }
+  #tablon-root .tb-ext-cab-tiers { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  #tablon-root .tb-ext-esp-sel { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #tablon-root .tb-her-llama, #tablon-root .tb-com-herchip.v2::after, #tablon-root .tb-ins-mitico, #tablon-root .tb-ext-revela-rayos, #tablon-root .tb-ext-revela *, #tablon-root .tb-ext-viva::before { animation: none !important; }
 }
 </style>
 <script>
@@ -13129,7 +13306,7 @@ var publicada = tiempoRelativo(task.created_at);
 var hecha = tdEsHecha(task);
 var id = escapeHtml(task.id);
 var controls = "";
-if (managementMode && isStaff()) {
+if (managementMode && puede("tareas")) {
 controls = '<div class="tb-actions td-admin">' +
 '<button type="button" class="tb-secondary" data-edit-task="' + id + '">Editar</button>' +
 '<button type="button" class="tb-secondary" data-dup-task="' + id + '">Duplicar</button>' +
@@ -13593,7 +13770,7 @@ var tieneTexto = typeof texto === "string" && texto.trim() !== "";
 var cuerpo, nota = "";
 if (tieneTexto) {
 cuerpo = '<div class="td-piz-texto">' + tdEnlaces(texto.trim()) + "</div>";
-if (isStaff() && modo !== "inmediata") {
+if (puede("tareas") && modo !== "inmediata") {
 nota = '<p class="td-piz-nota">' + (modo === "al_vencer"
 ? "Solo el staff la ve hasta que pase la fecha de entrega."
 : "Oculta para los estudiantes. Edita la tarea y elige «Visible desde ya» cuando quieras publicarla.") + "</p>";
@@ -13644,7 +13821,7 @@ return '<li class="' + (on ? "on" : "") + '"><label><input type="checkbox" data-
 }
 if (!preview) {
 h += '<div class="td-d-acciones">' + tdBotonesHtml(task) +
-(isStaff() ? '<button type="button" class="tb-secondary" data-td-editar="' + id + '">Editar</button>' +
+(puede("tareas") ? '<button type="button" class="tb-secondary" data-td-editar="' + id + '">Editar</button>' +
 '<button type="button" class="tb-secondary" data-td-duplicar="' + id + '">Duplicar</button>' : "") + "</div>";
 var grupo = tdProgresoGrupo(task, true);
 if (grupo) { h += '<p class="td-d-grupo">👥 ' + escapeHtml(grupo) + "</p>"; }
@@ -14665,18 +14842,18 @@ avatarHtml(profile, "tb-avatar") +
 '<div class="tb-modal-meta">' +
 "<h3>" + escapeHtml(profile.display_name) + "</h3>" +
 '<small class="tb-muted">@' + escapeHtml(profile.username) + "</small><br>" +
-roleHtml(profile, true) +
+roleHtml(profile, false) +
 "</div>" +
 "</div>" + comunidadInsigniasHtml(profile, true) +
 '<p class="tb-muted tb-modal-bio">' +
-escapeHtml(profile.bio || "Sin descripción") + "</p>" +
+escapeHtml(profile.bio || "Sin descripción") + "</p>" + extRolesHtml(profile) +
 rachaMiniHtml(profile) +
 '<div class="tb-stats">' +
 '<div class="tb-stat"><strong>' + (profile.level || 1) + "</strong><small>NIVEL</small></div>" +
 '<div class="tb-stat"><strong>' + (profile.completed_tasks || 0) +
 "</strong><small>TAREAS CUMPLIDAS</small></div>" +
 '<div class="tb-stat"><strong>' + escapeHtml(profile.role) + "</strong><small>ROL</small></div>" +
-"</div>" + insigniasHtmlPerfil(profile) +
+"</div>" + insigniasHtmlPerfil(profile, true) +
 '<button type="button" class="tb-secondary tb-modal-close-bottom" data-close-modal>Cerrar perfil</button>';
 $("#tb-modal-content").scrollTop = 0;
 $("#tb-profile-modal").classList.remove("tb-hidden");
@@ -22981,7 +23158,7 @@ await cargarVotosEncuestas();
 pintarEncuestas();
 }
 async function cerrarEncuesta(encuestaId) {
-if (!client || !isStaff()) { return; }
+if (!client || !puede("encuestas")) { return; }
 var result = await client.from("encuestas").update({ activa: false }).eq("id", encuestaId);
 if (result.error) {
 console.error("[encuestas] cerrar:", result.error);
@@ -22995,7 +23172,7 @@ encuestaVotos = encuestaVotos.filter(function (v) { return v.encuesta_id !== enc
 pintarEncuestas();
 }
 async function publicarEncuesta(pregunta, opcionesTexto) {
-if (!client || !me || !isStaff() || encuestaEnviando) { return; }
+if (!client || !me || !puede("encuestas") || encuestaEnviando) { return; }
 var limpio = pregunta.trim();
 var opciones = opcionesTexto.map(function (t) { return t.trim(); }).filter(Boolean);
 if (!limpio) { encuestaError = "Escribe la pregunta de la encuesta."; pintarEncuestas(); return; }
@@ -23118,7 +23295,7 @@ return '<div class="tb-card tb-glass tb-encuesta-tarjeta">' +
 '<p class="tb-encuesta-meta">' + total + " voto" + (total === 1 ? "" : "s") +
 (miVoto ? " · ya votaste" : " · toca una opción para votar") + "</p>" +
 opciones +
-(isStaff()
+(puede("encuestas")
 ? '<button type="button" class="tb-secondary tb-encuesta-cerrar" data-cerrar-encuesta="' + escapeHtml(encuesta.id) + '">Cerrar esta encuesta</button>'
 : "") +
 "</div></div>";
@@ -23127,10 +23304,10 @@ function pintarEncuestas() {
 var caja = $("#tb-arcade");
 if (!caja) { return; }
 var cuerpo;
-var botonNueva = isStaff()
+var botonNueva = puede("encuestas")
 ? '<button type="button" class="tb-primary" id="tb-encuesta-nueva" style="margin:0 auto 18px;display:block;padding:10px 18px;border-radius:10px;color:#fff">+ Nueva encuesta</button>'
 : "";
-if (encuestaCreando && isStaff()) {
+if (encuestaCreando && puede("encuestas")) {
 cuerpo = encuestaFormHTML();
 } else if (encuestasActivas.length) {
 cuerpo = botonNueva +
@@ -23138,7 +23315,7 @@ cuerpo = botonNueva +
 '<div class="tb-encuesta-lista">' +
 encuestasActivas.map(encuestaTarjetaHTML).join("") +
 "</div>";
-} else if (isStaff()) {
+} else if (puede("encuestas")) {
 cuerpo = '<div class="tb-encuesta-vacio">' +
 "<p>No hay ninguna encuesta activa en este momento.</p>" +
 '<button type="button" class="tb-primary" id="tb-encuesta-nueva" style="margin-top:10px;padding:10px 18px;border-radius:10px;color:#fff">Crear encuesta</button>' +
@@ -23547,7 +23724,7 @@ var result = await client.from("memes").insert({
 titulo: memeEstado.nombre || "meme",
 imagen: datos,
 autor_id: me.id,
-aprobado: isStaff()
+aprobado: puede("memes")
 });
 memeEnviando = false;
 if (result.error) {
@@ -23583,7 +23760,7 @@ return "No se pudo completar la acción: " + msg;
 async function cargarMemes() {
 if (!client) { memeGaleria = []; return; }
 var consulta = client.from("memes").select("*").order("created_at", { ascending: false }).limit(60);
-if (!isStaff() && me) {
+if (!puede("memes") && me) {
 consulta = consulta.or("aprobado.eq.true,autor_id.eq." + me.id);
 }
 var result = await consulta;
@@ -23595,7 +23772,7 @@ return;
 memeGaleria = result.data || [];
 }
 async function moderarMeme(id, aprobar) {
-if (!client || !isStaff()) { return; }
+if (!client || !puede("memes")) { return; }
 var result = aprobar
 ? await client.from("memes").update({ aprobado: true }).eq("id", id)
 : await client.from("memes").delete().eq("id", id);
@@ -23616,7 +23793,7 @@ return '<div class="tb-meme-galeria">' + memeGaleria.map(function (m) {
 var pendiente = !m.aprobado;
 var autor = profiles.find(function (p) { return p.id === m.autor_id; });
 var mods = "";
-if (isStaff()) {
+if (puede("memes")) {
 mods = '<div class="tb-meme-item-mods">' +
 (pendiente ? '<button type="button" class="tb-primary" data-meme-aprobar="' + escapeHtml(m.id) + '" style="color:#fff">Aprobar</button>' : "") +
 '<button type="button" class="tb-secondary" data-meme-borrar="' + escapeHtml(m.id) + '">Borrar</button>' +
@@ -23649,12 +23826,12 @@ var pendientes = memeGaleria.filter(function (m) { return !m.aprobado; }).length
 var tabs = '<div class="tb-meme-tabs">' +
 '<button type="button" class="tb-rank-tab' + (memeVista === "crear" ? " on" : "") + '" data-meme-vista="crear">Crear</button>' +
 '<button type="button" class="tb-rank-tab' + (memeVista === "galeria" ? " on" : "") + '" data-meme-vista="galeria">Tablón' +
-(isStaff() && pendientes ? " · " + pendientes : "") + "</button>" +
+(puede("memes") && pendientes ? " · " + pendientes : "") + "</button>" +
 "</div>";
 var aviso = memeError
 ? '<p style="color:var(--danger);font-size:12.5px;margin:0 0 12px;text-align:center">' + escapeHtml(memeError) + "</p>"
 : "";
-var nota = (memeVista === "crear" && !isStaff())
+var nota = (memeVista === "crear" && !puede("memes"))
 ? '<p style="color:var(--muted);font-size:12px;margin:0 0 12px;text-align:center">Tu meme pasa por revisión del staff antes de aparecer en el tablón.</p>'
 : "";
 caja.innerHTML = cabeceraArcade("Memes", []) +
@@ -23696,7 +23873,7 @@ if (!aprobados) { return "Tablón vacío"; }
 return aprobados + (aprobados === 1 ? " meme clavado" : " memes clavados");
 }
 function memeBadge() {
-if (!isStaff()) { return ""; }
+if (!puede("memes")) { return ""; }
 var pendientes = memeGaleria.filter(function (m) { return !m.aprobado; }).length;
 return pendientes ? pendientes + " por revisar" : "";
 }
@@ -23808,7 +23985,7 @@ $("#tb-auth-sub").textContent = mode === "login"
 }
 function showView(name) {
 if(me&&(name==="shop"||name==="inventory"))rpSchedule();
-if ((name === "manage" || name === "redaccion") && !isStaff()) { return; }
+if ((name === "manage" && !puede("tareas")) || (name === "redaccion" && !puede("noticias"))) { return; }
 if (name === "owner" && !isOwner()) { return; }
 if (name !== "arcade") {
 detenerTetris();
@@ -23834,7 +24011,7 @@ shop: "Tienda", inventory: "Personalizar", gifts: "Regalos",
 noticias: "Noticias", juego: "Camino al Ídolo", arcade: "Actividades", logros: "Logros",
 redaccion: "Redacción", ranking: "Ranking", mascota: "Tu mascota",
 manage: "Administrar tareas", entregas: "Entregas", roles: "Roles", owner: "Panel del owner", showcase: "Mi vitrina", ideas: "Buzón de ideas", epic: "Cartas Épicas",
-hermandades: "Hermandades", talentos: "Rincón de talentos"
+hermandades: "Hermandades", talentos: "Rincón de talentos", novedades: "Novedades"
 };
 $("#tb-page-title").textContent = titles[name] || "El tablón";
 if (name === "epic") { renderEpicGallery(); }
@@ -27828,14 +28005,14 @@ var forma = FORMAS[b.forma];
 var gy = b.forma === "estrella" ? 54 : b.forma === "escudo" ? 48 : 50;
 var gs = b.forma === "estrella" ? 0.8 : 1;
 var vivo = !bloqueada;
-var alto = b.tier === "oro" || b.tier === "epica";
+var alto = b.tier === "oro" || b.tier === "epica" || b.tier === "mitica";
 var chispa = function (x, y, z, d) { return '<path class="tb-ins-chispa" style="animation-delay:' + d + 's" d="M' + x + " " + (y - z) + " L" + (x + z * .28) + " " + (y - z * .28) + " L" + (x + z) + " " + y + " L" + (x + z * .28) + " " + (y + z * .28) + " L" + x + " " + (y + z) + " L" + (x - z * .28) + " " + (y + z * .28) + " L" + (x - z) + " " + y + " L" + (x - z * .28) + " " + (y - z * .28) + 'Z" fill="#fff"/>'; };
 return '<svg class="tb-insignia-svg tb-ins-' + b.tier + (vivo ? " vivo" : "") + '" viewBox="-6 -6 112 116" role="img" aria-label="' + escapeHtml(b.n) + '">' +
 "<defs>" +
 '<linearGradient id="' + u + 'g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="' + col[0] + '"/><stop offset=".5" stop-color="' + col[1] + '"/><stop offset="1" stop-color="' + col[2] + '"/></linearGradient>' +
 '<radialGradient id="' + u + 'r" cx=".34" cy=".22" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".6"/><stop offset=".4" stop-color="#fff" stop-opacity=".06"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></radialGradient>' +
 '<linearGradient id="' + u + 'b" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".85"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>' +
-(b.tier === "epica" ? '<linearGradient id="' + u + 'h" x1="0" y1="0" x2="1" y2=".4">' + INS_HOLO + "</linearGradient>" : "") +
+(b.tier === "epica" || b.tier === "mitica" ? '<linearGradient id="' + u + 'h" x1="0" y1="0" x2="1" y2=".4">' + INS_HOLO + "</linearGradient>" : "") +
 '<clipPath id="' + u + 'c"><path d="' + forma + '"/></clipPath>' +
 '<filter id="' + u + 'f" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="1.8" stdDeviation="1.3" flood-color="#000" flood-opacity=".55"/></filter>' +
 "</defs>" +
@@ -27845,12 +28022,13 @@ return '<svg class="tb-insignia-svg tb-ins-' + b.tier + (vivo ? " vivo" : "") + 
 '<g clip-path="url(#' + u + 'c)">' +
 '<path d="' + forma + '" fill="url(#' + u + 'r)"/>' +
 '<ellipse cx="36" cy="16" rx="42" ry="17" fill="#fff" opacity=".2"/>' +
-(b.tier === "epica" ? '<rect class="tb-ins-holo" x="-100" y="0" width="300" height="100" fill="url(#' + u + 'h)" opacity=".42" style="mix-blend-mode:overlay"/>' : "") +
+(b.tier === "epica" || b.tier === "mitica" ? '<rect class="tb-ins-holo" x="-100" y="0" width="300" height="100" fill="url(#' + u + 'h)" opacity=".42" style="mix-blend-mode:overlay"/>' : "") +
 (vivo ? '<g transform="rotate(22 50 50)"><rect class="tb-ins-brillo" x="-70" y="-20" width="24" height="140" fill="url(#' + u + 'b)"/></g>' : "") +
 "</g>" +
 '<path d="' + forma + '" fill="none" stroke="#ffffff8c" stroke-width="1.4" transform="translate(50 50) scale(.84) translate(-50 -50)"/>' +
 '<g filter="url(#' + u + 'f)" transform="translate(50 ' + gy + ") scale(" + gs + ')">' + GLIFOS[b.glifo] + "</g>" +
-(alto && vivo ? chispa(84, 12, 6, 0) + chispa(14, 30, 4, 1.1) + (b.tier === "epica" ? chispa(88, 80, 5, 2.2) : "") : "") +
+(alto && vivo ? chispa(84, 12, 6, 0) + chispa(14, 30, 4, 1.1) + (b.tier === "epica" || b.tier === "mitica" ? chispa(88, 80, 5, 2.2) : "") +
+(b.tier === "mitica" && vivo ? '<circle class="tb-ins-mitico" cx="50" cy="50" r="53" fill="none" stroke="url(#' + u + 'h)" stroke-width="3" stroke-dasharray="7 9"/>' : "") : "") +
 (bloqueada ? '<g transform="translate(76 80)"><circle r="13" fill="#0b1024" stroke="#ffffff22"/><rect x="-6" y="-2" width="12" height="9" rx="2" fill="#97a5bf"/><path d="M-4-2v-3a4 4 0 018 0v3" stroke="#97a5bf" stroke-width="2.4" fill="none"/></g>' : "") +
 "</svg>";
 }
@@ -31748,7 +31926,7 @@ var visible = esVercel() && !!me;
 var estado = visible ? pushEstadoActual() : "";
 var instalar = pushEstado.instalar
 ? '<button type="button" class="tb-secondary" data-push="instalar">📲 Instalar app</button>' : "";
-var paraQue = isStaff() ? " y de las entregas por revisar." : " y de la calificación de tus entregas.";
+var paraQue = puede("entregas") ? " y de las entregas por revisar." : " y de la calificación de tus entregas.";
 var mensaje = pushEstado.mensaje ? '<p class="tb-help">' + escapeHtml(pushEstado.mensaje) + "</p>" : "";
 var botonActivar = '<button type="button" class="tb-primary" data-push="on"' + (pushEstado.ocupado ? " disabled" : "") + ">" +
 (pushEstado.ocupado ? "Activando…" : "Activar avisos") + "</button>";
@@ -31822,7 +32000,7 @@ return permitidas.indexOf(vista) >= 0 ? vista : "home";
 async function entregasCargar() {
 if (!client || !me) { return; }
 var r = await client.from("tb_entregas").select("*")
-.order("updated_at", { ascending: false }).limit(isStaff() ? 300 : 200);
+.order("updated_at", { ascending: false }).limit(puede("entregas") ? 300 : 200);
 if (r.error) {
 ent.listas = false; ent.lista = [];
 ent.error = faltaTablaTb(r.error) ? "falta" : r.error.message;
@@ -31836,7 +32014,7 @@ return ent.lista.find(function (e) { return mismoId(e.task_id, taskId) && me && 
 }
 function entregasBadge() {
 if (!ent) { return; }
-var pendientes = isStaff()
+var pendientes = puede("entregas")
 ? ent.lista.filter(function (e) { return e.estado === "pendiente"; }).length
 : (ent.listas && me ? tasks.filter(function (t) { return t.published && entregaPorHacer(t); }).length : 0);
 $$(".tb-entregas-badge").forEach(function (b) {
@@ -32036,7 +32214,7 @@ function entregasRender() {
 var caja = $("#tb-entregas-lista");
 if (!caja) { return; }
 var filtros = $("#tb-ent-filtros-staff");
-if (filtros) { filtros.classList.toggle("tb-hidden", !isStaff()); }
+if (filtros) { filtros.classList.toggle("tb-hidden", !puede("entregas")); }
 $$("[data-ent-filtro]").forEach(function (b) {
 b.classList.toggle("on", b.dataset.entFiltro === ent.filtro);
 });
@@ -32045,7 +32223,7 @@ caja.innerHTML = '<div class="tb-empty"><b>' + (ent.error === "falta" ? "Falta a
 "</b>" + escapeHtml(ent.error === "falta" ? "Ejecuta " + ENT_SQL + " en el SQL Editor de Supabase y recarga la página." : ent.error) + "</div>";
 return;
 }
-if (!isStaff()) { entregasAlumnoRender(caja); return; }
+if (!puede("entregas")) { entregasAlumnoRender(caja); return; }
 var pend = ent.lista.filter(function (e) { return e.estado === "pendiente"; }).length;
 $("#tb-entregas-resumen").textContent = pend + " por revisar · " + (ent.lista.length - pend) + " revisadas";
 var lista = ent.lista.filter(function (e) {
@@ -32260,29 +32438,87 @@ function comCerrarModal(id) {
 }
 
 /* ---------- Escudos ---------- */
+var COM_PARTICIONES = { liso: "Liso", partido: "Partido", cortado: "Cortado", tronchado: "Tronchado", cuartelado: "Cuartelado",
+  banda: "Banda", cabrio: "Cabrío", bordura: "Bordura", ajedrezado: "Ajedrezado" };
+var COM_TIMBRES = { ninguno: "Ninguno", corona: "Corona", yelmo: "Yelmo", alas: "Alas", laurel: "Laurel", estrella: "Estrella", llamas: "Llamas" };
+var COM_METALES = { auto: "Automático", oro: "Oro", plata: "Plata" };
+function herParticion(p, color, u) {
+  var f = 'fill="' + color + '"';
+  switch (p) {
+    case "partido": return '<rect x="60" y="-10" width="80" height="170" ' + f + "/>";
+    case "cortado": return '<rect x="-10" y="70" width="140" height="90" ' + f + "/>";
+    case "tronchado": return '<path d="M130 -10 V160 H-10Z" ' + f + "/>";
+    case "cuartelado": return '<rect x="60" y="-10" width="80" height="80" ' + f + '/><rect x="-10" y="70" width="70" height="90" ' + f + "/>";
+    case "banda": return '<rect x="-30" y="56" width="190" height="28" ' + f + ' transform="rotate(42 60 70)"/>';
+    case "cabrio": return '<path d="M-10 120 L60 52 L130 120 V160 H106 L60 96 L14 160 H-10Z" ' + f + "/>";
+    case "bordura": return '<path d="' + COM_FORMA_PATH.escudo + '" fill="none" stroke="' + color + '" stroke-width="22"/>';
+    case "ajedrezado":
+      var c = "";
+      for (var y = 0; y < 150; y += 20) { for (var x = 0; x < 130; x += 20) { if (((x + y) / 20) % 2 === 0) { c += '<rect x="' + x + '" y="' + y + '" width="20" height="20" ' + f + "/>"; } } }
+      return c;
+    default: return "";
+  }
+}
+function herTimbre(t, metal, forma) {
+  var top = forma === "pendon" ? 8 : forma === "rodela" ? 14 : 12;
+  var oro = metal;
+  switch (t) {
+    case "corona":
+      return '<path d="M34 ' + (top - 4) + ' L28 ' + (top - 30) + ' L44 ' + (top - 16) + ' L52 ' + (top - 36) + ' L60 ' + (top - 18) + ' L68 ' + (top - 36) + ' L76 ' + (top - 16) + ' L92 ' + (top - 30) + ' L86 ' + (top - 4) + 'Z" fill="' + oro + '" stroke="#0006" stroke-width="1.2"/>' +
+        '<circle cx="60" cy="' + (top - 12) + '" r="3.4" fill="#ff5d6d"/><circle cx="44" cy="' + (top - 10) + '" r="2.4" fill="#7ad7ff"/><circle cx="76" cy="' + (top - 10) + '" r="2.4" fill="#7ad7ff"/>';
+    case "yelmo":
+      return '<path d="M40 ' + (top + 2) + ' C38 ' + (top - 26) + ' 82 ' + (top - 26) + ' 80 ' + (top + 2) + 'Z" fill="#c9d2e6" stroke="#0006" stroke-width="1.2"/>' +
+        '<path d="M46 ' + (top - 8) + ' H74 M46 ' + (top - 3) + ' H74" stroke="#2a3346" stroke-width="2"/>' +
+        '<path d="M60 ' + (top - 24) + ' C66 ' + (top - 40) + ' 84 ' + (top - 38) + ' 92 ' + (top - 30) + ' C80 ' + (top - 30) + ' 70 ' + (top - 26) + ' 64 ' + (top - 20) + 'Z" fill="#ff5d6d"/>';
+    case "alas":
+      var ala = '<path d="M0 0 C-18 -6 -34 6 -42 28 C-32 22 -24 22 -18 26 C-28 32 -32 42 -34 52 C-24 44 -14 42 -8 44 C-14 52 -14 60 -12 68 C-4 56 2 40 4 22Z" fill="' + oro + '" stroke="#0005" stroke-width="1"/>';
+      return '<g transform="translate(16 40)">' + ala + '</g><g transform="translate(104 40) scale(-1 1)">' + ala + "</g>";
+    case "laurel":
+      var rama = "";
+      for (var i = 0; i < 6; i++) { rama += '<ellipse cx="' + (-4 - i * 1.5) + '" cy="' + (-i * 16) + '" rx="5" ry="10" transform="rotate(' + (-30 + i * 4) + " " + (-4 - i * 1.5) + " " + (-i * 16) + ')" fill="#5fbf6a"/>'; }
+      return '<g transform="translate(20 128)">' + rama + '</g><g transform="translate(100 128) scale(-1 1)">' + rama + "</g>";
+    case "estrella":
+      return '<path d="M60 ' + (top - 38) + ' l6 13 14 2 -10 10 2.5 14 -12.5 -6.5 -12.5 6.5 2.5 -14 -10 -10 14 -2z" fill="' + oro + '" stroke="#0005" stroke-width="1.2"/>';
+    case "llamas":
+      return '<g class="tb-her-llama"><path d="M44 ' + (top + 2) + ' C40 ' + (top - 14) + ' 48 ' + (top - 22) + ' 50 ' + (top - 34) + ' C56 ' + (top - 22) + ' 58 ' + (top - 30) + ' 60 ' + (top - 42) +
+        ' C64 ' + (top - 28) + ' 70 ' + (top - 24) + ' 70 ' + (top - 34) + ' C76 ' + (top - 22) + ' 80 ' + (top - 14) + ' 76 ' + (top + 2) + 'Z" fill="#ff8a3c"/>' +
+        '<path d="M52 ' + (top + 2) + ' C50 ' + (top - 8) + ' 56 ' + (top - 14) + ' 60 ' + (top - 24) + ' C64 ' + (top - 14) + ' 70 ' + (top - 8) + ' 68 ' + (top + 2) + 'Z" fill="#ffd27a"/></g>';
+    default: return "";
+  }
+}
 function herEscudoSvg(h, clase, etiqueta) {
   var t = COM_TINTURAS[h.color] || COM_TINTURAS.azur;
+  var t2 = COM_TINTURAS[h.color2] || COM_TINTURAS.oro;
   var forma = COM_FORMA_PATH[h.forma] ? h.forma : "escudo";
   var d = COM_FORMA_PATH[forma];
   var cy = COM_FORMA_CY[forma];
   var id = "tbher" + (++comSvgN);
   var icono = ICONOS_ROL[h.emblema] || ICONOS_ROL.corona;
+  var carga = h.metal === "oro" ? "#f6d77f" : h.metal === "plata" ? "#eef2f8" : t.carga;
+  var metalTimbre = h.metal === "plata" ? "#eef2f8" : "#f6d77f";
+  var particion = h.particion && h.particion !== "liso" ? herParticion(h.particion, "url(#" + id + "g2)", id) : "";
   var texto = etiqueta || ("Escudo de " + (h.nombre || "la hermandad"));
-  return '<svg class="tb-her-escudo ' + (clase || "") + '" viewBox="0 0 120 140" role="img" aria-label="' +
-    escapeHtml(texto) + '" style="color:' + t.carga + '">' +
+  var timbre = h.timbre && h.timbre !== "ninguno" ? herTimbre(h.timbre, metalTimbre, forma) : "";
+  var atras = h.timbre === "alas" || h.timbre === "laurel";
+  return '<svg class="tb-her-escudo ' + (clase || "") + '" viewBox="-14 -36 148 182" role="img" aria-label="' +
+    escapeHtml(texto) + '" style="color:' + carga + '">' +
     '<defs><linearGradient id="' + id + 'g" x1="0" y1="0" x2=".35" y2="1">' +
     '<stop offset="0" stop-color="' + mezcla(t.campo, "claro", .22) + '"/>' +
     '<stop offset=".55" stop-color="' + t.campo + '"/>' +
     '<stop offset="1" stop-color="' + mezcla(t.campo, "oscuro", .34) + '"/></linearGradient>' +
+    '<linearGradient id="' + id + 'g2" x1="0" y1="0" x2=".35" y2="1">' +
+    '<stop offset="0" stop-color="' + mezcla(t2.campo, "claro", .22) + '"/><stop offset="1" stop-color="' + mezcla(t2.campo, "oscuro", .25) + '"/></linearGradient>' +
     '<clipPath id="' + id + 'c"><path d="' + d + '"/></clipPath></defs>' +
+    (atras ? timbre : "") +
     '<path d="' + d + '" fill="url(#' + id + 'g)"/>' +
-    '<g clip-path="url(#' + id + 'c)">' +
+    '<g clip-path="url(#' + id + 'c)">' + particion +
     '<path d="M-10 -10H74L-10 92Z" fill="#fff" opacity=".12"/>' +
-    '<path d="' + d + '" fill="none" stroke="' + t.carga + '" stroke-opacity=".38" stroke-width="1.4" ' +
+    '<path d="' + d + '" fill="none" stroke="' + carga + '" stroke-opacity=".38" stroke-width="1.4" ' +
     'transform="translate(60 ' + cy + ') scale(.85) translate(-60 -' + cy + ')"/></g>' +
-    '<path d="' + d + '" fill="none" stroke="' + t.carga + '" stroke-width="5" stroke-linejoin="round"/>' +
-    '<g transform="translate(27 ' + (cy - 33) + ') scale(2.75)" fill="none" stroke="' + t.carga +
-    '" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">' + icono + "</g></svg>";
+    '<path d="' + d + '" fill="none" stroke="' + carga + '" stroke-width="5" stroke-linejoin="round"/>' +
+    '<g transform="translate(27 ' + (cy - 33) + ') scale(2.75)" fill="none" stroke="' + carga +
+    '" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="filter:drop-shadow(0 1px 1px #0008)">' + icono + "</g>" +
+    (atras ? "" : timbre) + "</svg>";
 }
 
 /* ---------- Identidad en la tarjeta de perfil ---------- */
@@ -32297,20 +32533,34 @@ function comunidadInsigniasHtml(profile, enModal) {
   var partes = [];
   var m = herMiembro(profile.id);
   var h = m ? herPorId(m.hermandad_id) : null;
-  if (h) {
-    var interior = herEscudoSvg(h, "mini") +
-      '<span class="tb-com-herchip-txt"><b>' + escapeHtml(h.nombre) + "</b><small>" +
-      (m.rango === "fundador" ? "Fundador" : "Miembro") + "</small></span>";
-    partes.push(enModal
-      ? '<button type="button" class="tb-com-herchip" data-com-ir-her="' + escapeHtml(h.id) +
-        '" title="Ver la hermandad">' + interior + "</button>"
-      : '<span class="tb-com-herchip">' + interior + "</span>");
+  if (h && !enModal) {
+    var t = COM_TINTURAS[h.color] || COM_TINTURAS.azur;
+    var t2 = COM_TINTURAS[h.color2] || COM_TINTURAS.oro;
+    var rango = m.rango === "fundador" ? '<span aria-hidden="true">♛</span> Fundador' : (m.titulo ? escapeHtml(m.titulo) : "Miembro");
+    partes.push('<span class="tb-com-herchip v2" style="--hc:' + t.campo + ";--hc2:" + t2.campo + ";--hm:" + t.carga + '">' +
+      '<span class="tb-com-herchip-escudo">' + herEscudoSvg(h, "chip") + "</span>" +
+      '<span class="tb-com-herchip-txt"><b>' + escapeHtml(h.nombre) + "</b><small>" + rango + "</small></span></span>");
   }
   if (estGano(profile.id)) {
     partes.push('<span class="tb-com-estchip" title="Elegido por sus compañeros la semana pasada">' +
       '<span aria-hidden="true">★</span> Estudiante de la semana</span>');
   }
-  return partes.length ? '<div class="tb-com-ident">' + partes.join("") + "</div>" : "";
+  var html = partes.length ? '<div class="tb-com-ident">' + partes.join("") + "</div>" : "";
+  if (h && enModal) { html = herEstandarteHtml(h, m) + html; }
+  return html;
+}
+function herEstandarteHtml(h, m) {
+  var t = COM_TINTURAS[h.color] || COM_TINTURAS.azur;
+  var t2 = COM_TINTURAS[h.color2] || COM_TINTURAS.oro;
+  var miembros = herMiembrosDe(h.id).length;
+  var rango = m.rango === "fundador" ? '<span aria-hidden="true">♛</span> Fundador' : (m.titulo ? escapeHtml(m.titulo) : "Miembro");
+  return '<section class="tb-com-estandarte" style="--hc:' + t.campo + ";--hc2:" + t2.campo + ";--hm:" + t.carga + '">' +
+    '<div class="tb-com-estandarte-escudo">' + herEscudoSvg(h, "estandarte") + "</div>" +
+    '<div class="tb-com-estandarte-txt"><small>Hermandad</small><b>' + escapeHtml(h.nombre) + "</b>" +
+    (h.lema ? "<i>«" + escapeHtml(h.lema) + "»</i>" : "") +
+    '<span class="tb-com-estandarte-rango">' + rango + "</span>" +
+    '<span class="tb-com-estandarte-datos">' + miembros + (miembros === 1 ? " miembro" : " miembros") + ", " + herPoder(h.id) + " de poder</span></div>" +
+    '<button type="button" class="tb-secondary" data-com-ir-her="' + escapeHtml(h.id) + '">Ver</button></section>';
 }
 
 /* ===================================================================
@@ -32319,8 +32569,8 @@ function comunidadInsigniasHtml(profile, enModal) {
 async function herCargar() {
   if (!client || !me) { return; }
   var r = await Promise.all([
-    client.from("tb_hermandades").select("id,nombre,lema,emblema,color,forma,abierta,fundador,created_at"),
-    client.from("tb_hermandad_miembros").select("user_id,hermandad_id,rango,unido_en"),
+    client.from("tb_hermandades").select("id,nombre,lema,emblema,color,forma,abierta,fundador,created_at,particion,color2,metal,timbre,historia,grito"),
+    client.from("tb_hermandad_miembros").select("user_id,hermandad_id,rango,unido_en,titulo"),
     client.from("tb_hermandad_solicitudes").select("id,hermandad_id,user_id,tipo,mensaje,creada_en")
   ]);
   var error = r[0].error || r[1].error || r[2].error;
@@ -32388,9 +32638,12 @@ function herRender() {
 function herBorradorInicial(editar) {
   if (editar) {
     var h = herPorId(herMiembro(me.id).hermandad_id);
-    return { nombre: h.nombre, lema: h.lema || "", forma: h.forma, color: h.color, emblema: h.emblema, abierta: h.abierta };
+    return { nombre: h.nombre, lema: h.lema || "", forma: h.forma, color: h.color, emblema: h.emblema, abierta: h.abierta,
+      particion: h.particion || "liso", color2: h.color2 || "oro", metal: h.metal || "auto", timbre: h.timbre || "ninguno",
+      grito: h.grito || "", historia: h.historia || "" };
   }
-  return { nombre: "", lema: "", forma: "escudo", color: "azur", emblema: "corona", abierta: true };
+  return { nombre: "", lema: "", forma: "escudo", color: "azur", emblema: "corona", abierta: true,
+    particion: "liso", color2: "oro", metal: "auto", timbre: "ninguno", grito: "", historia: "" };
 }
 function herFormasHtml(b) {
   return Object.keys(COM_FORMAS).map(function (k) {
@@ -32399,6 +32652,22 @@ function herFormasHtml(b) {
       '" aria-pressed="' + on + '">' +
       herEscudoSvg({ forma: k, color: b.color, emblema: b.emblema }, "opc", COM_FORMAS[k]) +
       "<span>" + COM_FORMAS[k] + "</span></button>";
+  }).join("");
+}
+function herParticionesHtml(b) {
+  return Object.keys(COM_PARTICIONES).map(function (k) {
+    var on = b.particion === k;
+    var copia = {}; Object.keys(b).forEach(function (x) { copia[x] = b[x]; }); copia.particion = k; copia.timbre = "ninguno";
+    return '<button type="button" class="tb-her-forma' + (on ? " on" : "") + '" data-her-particion="' + k + '" aria-pressed="' + on + '">' +
+      herEscudoSvg(copia, "opc", COM_PARTICIONES[k]) + "<span>" + COM_PARTICIONES[k] + "</span></button>";
+  }).join("");
+}
+function herTimbresHtml(b) {
+  return Object.keys(COM_TIMBRES).map(function (k) {
+    var on = b.timbre === k;
+    var copia = {}; Object.keys(b).forEach(function (x) { copia[x] = b[x]; }); copia.timbre = k;
+    return '<button type="button" class="tb-her-forma' + (on ? " on" : "") + '" data-her-timbre="' + k + '" aria-pressed="' + on + '">' +
+      herEscudoSvg(copia, "opc", COM_TIMBRES[k]) + "<span>" + COM_TIMBRES[k] + "</span></button>";
   }).join("");
 }
 function herForjaHtml(editar) {
@@ -32435,6 +32704,22 @@ function herForjaHtml(editar) {
         '" aria-pressed="' + on + '" title="' + COM_EMBLEMA_NOMBRE[k] + '">' + iconoRol(k) +
         '<span class="tb-com-sr">' + COM_EMBLEMA_NOMBRE[k] + "</span></button>";
     }).join("") + "</div></fieldset>" +
+    '<fieldset class="tb-her-opc"><legend>Partición del campo</legend><div class="tb-her-formas" id="tb-her-particiones">' + herParticionesHtml(b) + "</div></fieldset>" +
+    '<fieldset class="tb-her-opc"><legend>Segundo color</legend><div class="tb-her-colores">' +
+    Object.keys(COM_TINTURAS).map(function (k) {
+      var c = COM_TINTURAS[k];
+      var on = b.color2 === k;
+      return '<button type="button" class="tb-her-color' + (on ? " on" : "") + '" data-her-color2="' + k + '" aria-pressed="' + on + '" title="' + c.nombre + " (" + c.comun + ')" style="--c:' + c.campo + ";--m:" + c.carga + '">' +
+        '<span class="tb-com-sr">' + c.nombre + "</span></button>";
+    }).join("") + "</div></fieldset>" +
+    '<fieldset class="tb-her-opc"><legend>Color del emblema</legend><div class="tb-her-chips">' +
+    Object.keys(COM_METALES).map(function (k) {
+      var on = b.metal === k;
+      return '<button type="button" class="tb-her-chipopc' + (on ? " on" : "") + '" data-her-metal="' + k + '" aria-pressed="' + on + '">' + COM_METALES[k] + "</button>";
+    }).join("") + "</div></fieldset>" +
+    '<fieldset class="tb-her-opc"><legend>Timbre (adorno del escudo)</legend><div class="tb-her-formas" id="tb-her-timbres">' + herTimbresHtml(b) + "</div></fieldset>" +
+    '<label class="tb-field"><span>Grito de guerra (opcional)</span><input id="tb-her-grito" maxlength="40" autocomplete="off" placeholder="¡Por el honor del salón!" value="' + escapeHtml(b.grito || "") + '"></label>' +
+    '<label class="tb-field"><span>Historia de la hermandad (opcional) <small class="tb-com-cuenta" id="tb-her-historia-n">' + String(b.historia || "").length + '/300</small></span><textarea id="tb-her-historia" maxlength="300" placeholder="Cómo nació, qué los une, qué quieren lograr.">' + escapeHtml(b.historia || "") + "</textarea></label>" +
     (editar ? '<label class="tb-her-check"><input type="checkbox" id="tb-her-abierta"' + (b.abierta ? " checked" : "") +
       "> Aceptar solicitudes de ingreso</label>" : "") +
     '<p class="tb-alert tb-hidden" id="tb-her-error" role="alert"></p>' +
@@ -32454,6 +32739,8 @@ function herForjaVincular() {
     com.her.borrador.lema = this.value;
     $("#tb-her-previa-lema").textContent = this.value.trim() ? "«" + this.value.trim() + "»" : "";
   };
+  $("#tb-her-grito").oninput = function () { com.her.borrador.grito = this.value; };
+  $("#tb-her-historia").oninput = function () { com.her.borrador.historia = this.value; $("#tb-her-historia-n").textContent = this.value.length + "/300"; };
   var abierta = $("#tb-her-abierta");
   if (abierta) { abierta.onchange = function () { com.her.borrador.abierta = this.checked; }; }
   form.onsubmit = herGuardar;
@@ -32476,6 +32763,15 @@ function herForjaRefrescar() {
     x.classList.toggle("on", on);
     x.setAttribute("aria-pressed", String(on));
   });
+  $("#tb-her-particiones").innerHTML = herParticionesHtml(b);
+  $("#tb-her-timbres").innerHTML = herTimbresHtml(b);
+  [["herColor2", "color2"], ["herMetal", "metal"]].forEach(function (par) {
+    $$("[data-" + par[0].replace(/[A-Z]/g, function (c) { return "-" + c.toLowerCase(); }) + "]").forEach(function (x) {
+      var on = x.dataset[par[0]] === b[par[1]];
+      x.classList.toggle("on", on);
+      x.setAttribute("aria-pressed", String(on));
+    });
+  });
 }
 async function herGuardar(ev) {
   ev.preventDefault();
@@ -32495,6 +32791,12 @@ async function herGuardar(ev) {
         p_forma: b.forma, p_abierta: !!b.abierta })
     : await client.rpc("tb_hermandad_crear", {
         p_nombre: nombre, p_lema: b.lema || null, p_emblema: b.emblema, p_color: b.color, p_forma: b.forma });
+  if (!r.error) {
+    var r2 = await client.rpc("tb_hermandad_personalizar", {
+      p_particion: b.particion || "liso", p_color2: b.color2 || "oro", p_metal: b.metal || "auto", p_timbre: b.timbre || "ninguno",
+      p_historia: b.historia || null, p_grito: b.grito || null });
+    if (r2.error) { r = r2; }
+  }
   com.her.ocupado = false;
   boton.disabled = false;
   if (r.error) { fallo(comError(r.error)); return; }
@@ -32519,6 +32821,8 @@ function herMiaHtml(m) {
     '<div class="tb-her-hero-info">' +
     '<h2 class="tb-her-nombre">' + escapeHtml(h.nombre) + "</h2>" +
     (h.lema ? '<p class="tb-her-lema">«' + escapeHtml(h.lema) + "»</p>" : "") +
+    (h.grito ? '<p class="tb-her-grito">' + escapeHtml(h.grito) + "</p>" : "") +
+    (h.historia ? '<p class="tb-her-historia">' + escapeHtml(h.historia) + "</p>" : "") +
     '<span class="tb-her-rango">' + (soyFundador ? '<span aria-hidden="true">♛</span> Eres el fundador' : "Eres miembro") + "</span>" +
     '<dl class="tb-her-datos">' +
     "<div><dt>Miembros</dt><dd>" + miembros.length + " de " + COM_HER_MAX + "</dd></div>" +
@@ -32539,13 +32843,13 @@ function herMiaHtml(m) {
       if (!p) { return ""; }
       var esF = x.rango === "fundador";
       var acciones = soyFundador && !esF
-        ? '<div class="tb-her-m-acc"><button type="button" class="tb-her-mini" data-her-ceder="' + escapeHtml(p.id) + '">Ceder fundación</button>' +
+        ? '<div class="tb-her-m-acc"><button type="button" class="tb-her-mini" data-her-titulo="' + escapeHtml(p.id) + '">Título</button><button type="button" class="tb-her-mini" data-her-ceder="' + escapeHtml(p.id) + '">Ceder fundación</button>' +
           '<button type="button" class="tb-her-mini peligro" data-her-quitar="' + escapeHtml(p.id) + '">Quitar</button></div>'
         : "";
       return '<li class="tb-her-m"><button type="button" class="tb-her-m-av" data-com-perfil="' + escapeHtml(p.id) +
         '" aria-label="Ver perfil de ' + escapeHtml(p.display_name || p.username) + '">' + avatarHtml(p, "tb-com-av") + "</button>" +
         "<div><b>" + escapeHtml(p.display_name || p.username) + (esF ? '<span class="tb-her-corona" title="Fundador"> ♛</span>' : "") + "</b>" +
-        "<small>" + (esF ? "Fundador" : "Miembro desde el " + comFecha(x.unido_en)) + "</small></div>" + acciones + "</li>";
+        "<small>" + (esF ? "Fundador" : (x.titulo ? '<span class="tb-her-titulo">' + escapeHtml(x.titulo) + "</span> " : "") + "desde el " + comFecha(x.unido_en)) + "</small></div>" + acciones + "</li>";
     }).join("") + "</ul></section>";
 
   if (soyFundador) {
@@ -32630,7 +32934,7 @@ function herSalonHtml(mio) {
     } else if (mio.hermandad_id === h.id) {
       accion = '<span class="tb-her-estado tuya">La tuya</span>';
     }
-    if (isStaff() && !(mio && mio.hermandad_id === h.id && mio.rango === "fundador")) {
+    if (puede("hermandades") && !(mio && mio.hermandad_id === h.id && mio.rango === "fundador")) {
       accion += '<div class="tb-her-mod"><button type="button" class="tb-her-mini" data-her-renombrar="' + escapeHtml(h.id) + '">Renombrar</button>' +
         '<button type="button" class="tb-her-mini peligro" data-her-disolver="' + escapeHtml(h.id) + '">Disolver</button></div>';
     }
@@ -32742,13 +33046,13 @@ function estRender() {
       : '<button type="button" class="tb-primary tb-com-est-btn" data-com-votar>Votar por alguien</button>';
   }
   html += "</div>";
-  if (isOwner()) {
+  if (puede("estrella")) {
     var vivo = d.en_vivo || [];
     html += '<details class="tb-com-est-owner"><summary>Conteo en vivo y premios</summary>' +
       (vivo.length ? '<ol class="tb-com-est-vivo">' + vivo.map(function (x) {
         return "<li><span>" + escapeHtml(comNombre(x.id)) + "</span><b>" + x.votos + "</b></li>";
       }).join("") + "</ol>" : '<p class="tb-muted">Todavía nadie ha votado esta semana.</p>') +
-      (ganadores.length ? '<div class="tb-com-est-premios">' + ganadores.map(function (x) {
+      (ganadores.length && isOwner() ? '<div class="tb-com-est-premios">' + ganadores.map(function (x) {
         var clave = "tb-com-premio-" + d.anterior + "-" + x.p.id;
         var dado = false;
         try { dado = window.localStorage.getItem(clave) === "1"; } catch (e) { dado = false; }
@@ -32831,7 +33135,7 @@ async function estPremiar(uid) {
    ALERTAS DEL OWNER
    =================================================================== */
 async function alertasCargar() {
-  if (!client || !isOwner()) { return; }
+  if (!client || !puede("alertas")) { return; }
   var r = await client.rpc("tb_alertas_owner");
   if (r.error) { com.alertas.error = comError(r.error); com.alertas.listo = false; return; }
   com.alertas.lista = (r.data || []).concat(alertasCumples());
@@ -32862,7 +33166,7 @@ function alertasRender() {
   var chip = $("#tb-com-alerta-chip");
   var caja = $("#tb-com-alertas");
   if (!chip || !caja) { return; }
-  if (!isOwner() || !com.alertas.listo) {
+  if (!puede("alertas") || !com.alertas.listo) {
     chip.classList.add("tb-hidden");
     caja.innerHTML = "";
     return;
@@ -32917,7 +33221,7 @@ function novMostrarCuandoSePueda() {
 }
 async function novAbrirTodas() {
   if (!client) { return; }
-  var r = await client.from("tb_novedades").select("id,titulo,resumen,items,created_at")
+  var r = await client.from("tb_novedades").select("id,titulo,resumen,items,portada,created_at")
     .eq("publicada", true).order("id", { ascending: false }).limit(3);
   if (r.error) { avisoToast(comError(r.error)); return; }
   com.nov.lista = r.data || [];
@@ -32928,14 +33232,9 @@ function novMostrar() {
   if (!com.nov.lista.length) { return; }
   $("#tb-com-nov-cuerpo").innerHTML = com.nov.lista.map(function (n) {
     return '<article class="tb-com-nov"><header><h3>' + escapeHtml(n.titulo) + "</h3><time>" + comFecha(n.created_at) + "</time></header>" +
+      (n.portada ? '<img class="tb-nov-portada mini" src="' + escapeHtml(safeUrl(n.portada)) + '" alt="">' : "") +
       (n.resumen ? '<p class="tb-com-nov-resumen">' + escapeHtml(n.resumen) + "</p>" : "") +
-      '<ul class="tb-com-nov-items">' + (n.items || []).map(function (it) {
-        var vista = it && COM_VISTAS[it.vista] ? it.vista : "";
-        return '<li><span class="tb-com-nov-ico" aria-hidden="true">' + escapeHtml((it && it.icono) || "✨") + "</span><div>" +
-          "<b>" + escapeHtml((it && it.titulo) || "") + "</b>" + (it && it.texto ? "<p>" + escapeHtml(it.texto) + "</p>" : "") +
-          (vista ? '<button type="button" class="tb-com-nov-ir" data-com-nov-ir="' + vista + '">Ir a ' + COM_VISTAS[vista] + "</button>" : "") +
-          "</div></li>";
-      }).join("") + "</ul></article>";
+      novItemsHtml(n.items) + "</article>";
   }).join("");
   comAbrirModal("tb-com-nov-modal");
 }
@@ -33032,12 +33331,12 @@ async function talCargar() {
   talBadge();
 }
 async function talContarPendientes() {
-  if (!client || !isStaff()) { return; }
+  if (!client || !puede("talentos")) { return; }
   var r = await client.from("tb_talentos").select("id", { count: "exact", head: true }).eq("estado", "pendiente");
   if (!r.error) { com.tal.pendientes = r.count || 0; talBadge(); }
 }
 function talBadge() {
-  var n = isStaff() ? com.tal.pendientes : 0;
+  var n = puede("talentos") ? com.tal.pendientes : 0;
   $$(".tb-tal-badge").forEach(function (b) {
     b.textContent = n > 99 ? "99+" : String(n);
     b.classList.toggle("tb-hidden", !n);
@@ -33113,7 +33412,7 @@ async function talRender() {
     return;
   }
   if (!com.tal.listo) { caja.innerHTML = '<p class="tb-muted">Cargando obras…</p>'; return; }
-  if (com.tal.tab === "revisar" && !isStaff()) { com.tal.tab = "galeria"; }
+  if (com.tal.tab === "revisar" && !puede("talentos")) { com.tal.tab = "galeria"; }
   var turno = ++com.tal.pinta;
   var visibles = talVisibles();
   var destacada = null;
@@ -33127,7 +33426,7 @@ async function talRender() {
   var misObras = com.tal.lista.filter(function (t) { return t.autor === me.id; }).length;
   var html = '<div class="tb-tal-barra"><div class="tb-tal-tabs" role="tablist" aria-label="Secciones del rincón">' +
     talTab("galeria", "Galería", 0) + talTab("mias", "Mis obras", 0, misObras) +
-    (isStaff() ? talTab("revisar", "Por revisar", com.tal.pendientes) : "") + "</div>" +
+    (puede("talentos") ? talTab("revisar", "Por revisar", com.tal.pendientes) : "") + "</div>" +
     (com.tal.tab === "galeria" ? '<div class="tb-tal-filtro" role="group" aria-label="Filtrar por categoría">' +
       ['<button type="button" class="tb-tal-cat' + (com.tal.cat === "todas" ? " on" : "") + '" data-tal-cat="todas" aria-pressed="' + (com.tal.cat === "todas") + '">Todas</button>']
         .concat(Object.keys(COM_TAL_CATS).map(function (k) {
@@ -33182,7 +33481,7 @@ async function talAbrir(id) {
   var url = talUrl(t);
   var mio = t.autor === me.id;
   var acciones = [];
-  if (isStaff()) {
+  if (puede("talentos")) {
     if (t.estado === "pendiente") {
       acciones.push('<button type="button" class="tb-primary" data-tal-mod="publicar" data-tal-id="' + escapeHtml(t.id) + '">Publicar</button>');
       acciones.push('<button type="button" class="tb-secondary" data-tal-mod="rechazar" data-tal-id="' + escapeHtml(t.id) + '">No publicar</button>');
@@ -33192,7 +33491,7 @@ async function talAbrir(id) {
         '" data-tal-id="' + escapeHtml(t.id) + '">' + (t.destacado ? "Quitar de destacada" : "Destacar en el rincón") + "</button>");
     }
   }
-  if (mio || isStaff()) {
+  if (mio || puede("talentos")) {
     acciones.push('<button type="button" class="tb-danger" data-tal-borrar="' + escapeHtml(t.id) + '">Borrar obra</button>');
   }
   $("#tb-tal-ver-titulo").textContent = t.titulo;
@@ -33203,7 +33502,7 @@ async function talAbrir(id) {
     escapeHtml(comNombre(t.autor)) + "</button><span>" + cat.i + " " + cat.n + "</span><span class=\"tb-muted\">" +
     comFecha(t.created_at, { day: "numeric", month: "long", year: "numeric" }) + "</span>" +
     (t.estado === "publicado" ? talAplausoHtml(t) : talEstadoHtml(t)) + "</div>" +
-    (t.nota_staff && (mio || isStaff()) ? '<p class="tb-note">Nota del profe: ' + escapeHtml(t.nota_staff) + "</p>" : "") +
+    (t.nota_staff && (mio || puede("talentos")) ? '<p class="tb-note">Nota del profe: ' + escapeHtml(t.nota_staff) + "</p>" : "") +
     (acciones.length ? '<div class="tb-tal-ver-acc">' + acciones.join("") + "</div>" : "");
   if ($("#tb-tal-modal").classList.contains("tb-hidden")) { comAbrirModal("tb-tal-modal"); }
 }
@@ -33253,7 +33552,7 @@ async function talModerar(id, accion) {
   await talCargar();
   talRender();
   if (com.tal.abierta === id) { talAbrir(id); }
-  if (isOwner()) { alertasCargar().then(alertasRender); }
+  if (puede("alertas")) { alertasCargar().then(alertasRender); }
 }
 async function talBorrar(id) {
   var t = talPorId(id);
@@ -33274,8 +33573,8 @@ function talAbrirForm() {
   $("#tb-tal-previa").innerHTML = "";
   $("#tb-tal-error").classList.add("tb-hidden");
   $("#tb-tal-cuenta").textContent = "0/2000";
-  $("#tb-tal-enviar").textContent = isStaff() ? "Publicar" : "Enviar a revisión";
-  $("#tb-tal-form-sub").textContent = isStaff()
+  $("#tb-tal-enviar").textContent = puede("talentos") ? "Publicar" : "Enviar a revisión";
+  $("#tb-tal-form-sub").textContent = puede("talentos")
     ? "Como eres del staff, se publica de inmediato."
     : "El profe la revisa antes de publicarla para todos.";
   talPintarCats();
@@ -33339,11 +33638,11 @@ async function talEnviar(ev) {
       throw r.error;
     }
     comCerrarModal("tb-tal-form-modal");
-    avisoToast(isStaff() ? "Tu obra ya está publicada." : "¡Enviada! La verás en «Mis obras» mientras el profe la revisa.");
-    com.tal.tab = isStaff() ? "galeria" : "mias";
+    avisoToast(puede("talentos") ? "Tu obra ya está publicada." : "¡Enviada! La verás en «Mis obras» mientras el profe la revisa.");
+    com.tal.tab = puede("talentos") ? "galeria" : "mias";
     await talCargar();
     talRender();
-    if (isOwner()) { alertasCargar().then(alertasRender); }
+    if (puede("alertas")) { alertasCargar().then(alertasRender); }
   } catch (e) {
     fallo(comError(e));
   } finally {
@@ -33368,14 +33667,15 @@ async function comunidadIniciar() {
   estRender();
   herRender();
   talContarPendientes().catch(function () { /* nada */ });
-  if (isOwner()) {
+  if (puede("alertas")) {
     alertasCargar().then(alertasRender).catch(function (e) { console.warn("[alertas]", e); });
-    novEditorIniciar();
   }
   novRevisar().catch(function (e) { console.warn("[novedades]", e); });
+  extIniciar().catch(function (e) { console.warn("[v23]", e); });
 }
 function comunidadVista(nombre) {
   if (!me) { return; }
+  extVista(nombre);
   if (nombre === "hermandades") {
     herRender();
     herCargar().then(function () { herRender(); comRefrescarTarjetas(); });
@@ -33386,9 +33686,8 @@ function comunidadVista(nombre) {
   }
   if (nombre === "home") {
     estRender();
-    if (isOwner()) { alertasRender(); }
+    if (puede("alertas")) { alertasRender(); }
   }
-  if (nombre === "owner") { novEditorIniciar(); }
 }
 root.addEventListener("click", function (ev) {
   var b = ev.target.closest && ev.target.closest("button");
@@ -33458,11 +33757,15 @@ root.addEventListener("click", function (ev) {
     return;
   }
   /* hermandades: diseño */
-  if (d.herForma || d.herColor || d.herEmblema) {
+  if (d.herForma || d.herColor || d.herEmblema || d.herColor2 || d.herMetal || d.herTimbre || d.herParticion) {
     if (!com.her.borrador) { return; }
     if (d.herForma) { com.her.borrador.forma = d.herForma; }
     if (d.herColor) { com.her.borrador.color = d.herColor; }
     if (d.herEmblema) { com.her.borrador.emblema = d.herEmblema; }
+    if (d.herColor2) { com.her.borrador.color2 = d.herColor2; }
+    if (d.herMetal) { com.her.borrador.metal = d.herMetal; }
+    if (d.herTimbre) { com.her.borrador.timbre = d.herTimbre; }
+    if (d.herParticion) { com.her.borrador.particion = d.herParticion; }
     herForjaRefrescar();
     return;
   }
@@ -33496,6 +33799,13 @@ root.addEventListener("click", function (ev) {
     herAccion("tb_hermandad_invitar", { p_user: sel.value }, function (x) {
       return x === "unido" ? "Ya había pedido entrar: ahora es miembro." : "Invitación enviada.";
     });
+    return;
+  }
+  if (d.herTitulo) {
+    var actual = (herMiembro(d.herTitulo) || {}).titulo || "";
+    var titulo = window.prompt("Título para " + comNombre(d.herTitulo) + " (máximo 24 letras, vacío para quitarlo):", actual);
+    if (titulo === null) { return; }
+    herAccion("tb_hermandad_titulo", { p_user: d.herTitulo, p_titulo: titulo.trim() }, titulo.trim() ? "Título asignado." : "Título quitado.");
     return;
   }
   if (d.herQuitar) {
@@ -33561,6 +33871,698 @@ document.addEventListener("keydown", function (ev) {
   if (!$("#tb-tal-modal").classList.contains("tb-hidden")) { talCerrarVisor(); return; }
   if (!$("#tb-com-voto-modal").classList.contains("tb-hidden")) { comCerrarModal("tb-com-voto-modal"); return; }
   if (!$("#tb-com-nov-modal").classList.contains("tb-hidden")) { novCerrar(); }
+});
+
+/* ===================================================================
+   v23 · PERMISOS POR ROL, ROLES EN EL PERFIL, INSIGNIAS 2.0 Y NOVEDADES
+   Requiere en Supabase: v23_permisos_por_rol y v23_comunidad_permisos_insignias.
+   =================================================================== */
+var EXT_PERMISOS = [
+  { id: "tareas", nombre: "📋 Publicar y editar tareas", texto: "Crear, editar, ocultar y borrar tareas, con sus archivos adjuntos." },
+  { id: "entregas", nombre: "📥 Revisar entregas", texto: "Ver las entregas de todo el salón y calificarlas." },
+  { id: "noticias", nombre: "📰 Redacción", texto: "Escribir, editar y borrar noticias y publicaciones de prensa." },
+  { id: "encuestas", nombre: "📊 Encuestas", texto: "Crear, editar y cerrar encuestas." },
+  { id: "memes", nombre: "😂 Moderar memes", texto: "Aprobar, ocultar y borrar memes de cualquier persona." },
+  { id: "talentos", nombre: "🎭 Revisar el rincón de talentos", texto: "Publicar, rechazar, destacar y borrar obras." },
+  { id: "hermandades", nombre: "🛡️ Moderar hermandades", texto: "Renombrar o disolver hermandades con nombres inapropiados." },
+  { id: "novedades", nombre: "✨ Publicar novedades", texto: "Crear, editar, ocultar y borrar novedades, con imágenes." },
+  { id: "alertas", nombre: "🔔 Ver alertas del salón", texto: "Ver quién debe entregas, quién no entra y qué falta revisar." },
+  { id: "estrella", nombre: "⭐ Conteo del estudiante de la semana", texto: "Ver el conteo de votos en vivo antes de que cierre la semana." },
+  { id: "insignias", nombre: "🏅 Otorgar insignias especiales", texto: "Crear insignias especiales del salón y entregarlas a las personas." }
+];
+var EXT_STAFF_BASE = ["tareas", "entregas", "noticias", "encuestas", "memes", "talentos", "hermandades"];
+var ext = {
+  esp: [], otorgadas: [], rolIns: [], listo: false,
+  talPub: [], aplausos: [],
+  rareza: null, rarezaClave: "",
+  nov: { lista: [], editando: null, borrador: null, guardando: false, listo: false, error: "" }
+};
+EXT_PERMISOS.forEach(function (p) {
+  if (!PERMISOS_ROL.some(function (x) { return x.id === p.id; })) { PERMISOS_ROL.push(p); }
+});
+function puede(permiso) {
+  if (!me) { return false; }
+  if (me.role === "owner") { return true; }
+  if (me.role === "admin" && EXT_STAFF_BASE.indexOf(permiso) >= 0) { return true; }
+  return tengoPermiso(permiso);
+}
+function extAplicarPermisos() {
+  $$("[data-perm]").forEach(function (el) {
+    if (puede(el.dataset.perm)) { el.classList.remove("tb-hidden"); }
+  });
+}
+function extPermisosDeRol(roleId) {
+  return permisosRol.filter(function (p) { return String(p.role_id) === String(roleId); }).map(function (p) {
+    var def = PERMISOS_ROL.filter(function (x) { return x.id === p.permiso; })[0];
+    return def ? def.nombre.replace(/^\S+\s/, "") : p.permiso;
+  });
+}
+
+/* ---------- Roles en el perfil ampliado ---------- */
+function extRolesHtml(profile) {
+  if (!profile) { return ""; }
+  var mios = rolesDe(profile);
+  var filas;
+  if (mios.length) {
+    filas = mios.map(function (rol) {
+      var permisos = extPermisosDeRol(rol.id);
+      var insignias = ext.rolIns.filter(function (x) { return String(x.role_id) === String(rol.id); })
+        .map(function (x) { return extInsigniaPorId("esp_" + x.insignia_id); }).filter(Boolean);
+      return '<li class="tb-ext-rol" style="--rc:' + escapeHtml(safeCssColor(rol.color)) + '">' +
+        '<span class="tb-ext-rol-ico">' + (rol.icon ? iconoRol(rol.icon) : iconoRol("estrella")) + "</span>" +
+        '<div class="tb-ext-rol-txt"><b>' + escapeHtml(rol.name) + "</b>" +
+        (permisos.length ? "<small>Puede: " + escapeHtml(permisos.join(", ").toLowerCase()) + "</small>" : "") +
+        (insignias.length ? '<span class="tb-ext-rol-ins">' + insignias.map(function (b) {
+          return '<button type="button" class="tb-insignia-mini" data-ins="' + escapeHtml(b.id) + '" title="' + escapeHtml(b.n) + '">' + insigniaSvg(b, false) + "</button>";
+        }).join("") + "</span>" : "") +
+        "</div></li>";
+    }).join("");
+  } else {
+    var base = { owner: ["Owner", "#ffcf5c", "corona"], admin: ["Administración", "#8fa6ff", "escudo"], student: ["Estudiante", "#52dfa8", "libro"] }[profile.role] || ["Estudiante", "#52dfa8", "libro"];
+    filas = '<li class="tb-ext-rol" style="--rc:' + base[1] + '"><span class="tb-ext-rol-ico">' + iconoRol(base[2]) + '</span><div class="tb-ext-rol-txt"><b>' + base[0] + "</b></div></li>";
+  }
+  return '<section class="tb-ext-roles" aria-label="Roles"><h4>Roles <span class="tb-muted">' + Math.max(1, mios.length) + "</span></h4><ul>" + filas + "</ul></section>";
+}
+
+/* ---------- Insignias que da cada rol (editor de roles) ---------- */
+var _extEditorPermisos = editorPermisos;
+editorPermisos = function (rol) {
+  var base = _extEditorPermisos(rol);
+  var esp = ext.esp;
+  var bloque = '<div class="tb-ext-rol-insignias"><h4>Insignias del rol</h4>' +
+    '<p class="tb-muted">Todas las personas con este rol las reciben mientras lo tengan.</p>' +
+    (esp.length ? '<div class="tb-ext-rol-ins-grid">' + esp.map(function (e) {
+      var b = extInsigniaPorId("esp_" + e.id);
+      var on = ext.rolIns.some(function (x) { return String(x.role_id) === String(rol.id) && x.insignia_id === e.id; });
+      return '<label class="tb-ext-ins-opc' + (on ? " on" : "") + '"><input type="checkbox" data-rol-ins="' + escapeHtml(e.id) + '"' + (on ? " checked" : "") + ">" +
+        (b ? insigniaSvg(b, false) : "") + "<span>" + escapeHtml(e.nombre) + "</span></label>";
+    }).join("") + "</div>"
+      : '<p class="tb-muted">Todavía no hay insignias especiales. Créalas en <b>Logros</b>, en la sección «Insignias especiales del salón».</p>') +
+    "</div>";
+  return base + bloque;
+};
+var _extEnlazarPermisos = enlazarPermisos;
+enlazarPermisos = function (rol) {
+  _extEnlazarPermisos(rol);
+  $$("[data-rol-ins]").forEach(function (caja) {
+    caja.onchange = async function () {
+      caja.disabled = true;
+      var r = caja.checked
+        ? await client.from("tb_rol_insignias").insert({ role_id: rol.id, insignia_id: caja.dataset.rolIns })
+        : await client.from("tb_rol_insignias").delete().eq("role_id", rol.id).eq("insignia_id", caja.dataset.rolIns);
+      caja.disabled = false;
+      if (r.error) { caja.checked = !caja.checked; avisoToast(comError(r.error)); return; }
+      await extCargarInsignias();
+      renderEditorRol();
+      comRefrescarTarjetas();
+      avisoToast(caja.checked ? "El rol ahora da esa insignia." : "El rol ya no da esa insignia.");
+    };
+  });
+};
+
+/* ---------- Insignias 2.0 ---------- */
+TIER_COL.mitica = ["#ffffff", "#ff7ad9", "#2a0f4a"];
+TIER_NOMBRE.mitica = "Mítica";
+var EXT_PUNTOS = { bronce: 8, plata: 20, oro: 50, epica: 120, mitica: 250 };
+var EXT_ORDEN = { mitica: 0, epica: 1, oro: 2, plata: 3, bronce: 4 };
+var EXT_RANGOS = [[0, "Novato"], [120, "Coleccionista"], [350, "Curador"], [800, "Conservador"], [1500, "Maestro"], [2500, "Inmortal"]];
+GLIFOS.estandarte = '<path d="M-14-20h28v28l-14 12-14-12z" fill="#fff"/><path d="M-6-10h12M-6-3h12" stroke="#0005" stroke-width="3" stroke-linecap="round"/>';
+GLIFOS.paleta = '<path d="M0-20C12-20 21-12 21-2c0 7-6 8-10 7-4-1-6 2-4 6 2 5-2 9-8 9-11 0-20-9-20-20S-11-20 0-20z" fill="#fff"/><circle cx="-8" cy="-8" r="3.2" fill="#0005"/><circle cx="3" cy="-11" r="3.2" fill="#0005"/><circle cx="11" cy="-3" r="3.2" fill="#0005"/>';
+GLIFOS.aplauso = '<path d="M-12 16c-6-6-9-13-7-20l4-12c1-3 5-2 5 1v8l3-14c1-3 5-3 5 0v12l3-12c1-3 5-2 5 1l-2 14 4-7c2-3 6-1 5 2l-5 14c-3 9-12 15-20 13z" fill="#fff"/><path d="M14-18l4-4M18-10h5M10-22l1-5" stroke="#fff" stroke-width="3" stroke-linecap="round"/>';
+GLIFOS.mascara = '<ellipse rx="15" ry="19" fill="#fff"/><path d="M-14 6c4-5 9-5 14-1 5-4 10-4 14 1-4 5-9 5-14 3-5 2-10 2-14-3z" fill="#0007"/><circle cx="-6" cy="-5" r="2.8" fill="#0007"/><circle cx="6" cy="-5" r="2.8" fill="#0007"/><circle cx="-9" cy="2" r="3" fill="#ff7a9a" opacity=".6"/><circle cx="9" cy="2" r="3" fill="#ff7a9a" opacity=".6"/>';
+GLIFOS.volcan = '<path d="M-20 18L-6-8h12L20 18z" fill="#fff"/><path d="M-3-10c-3-6 1-9 3-13 2 4 6 7 3 13" fill="#fff" opacity=".75"/>';
+GLIFOS.perro = '<path d="M-17 16V2c0-6 4-10 10-10h7l6-9 2 9c5 2 8 6 8 11v13h-7V8h-14v8z" fill="#fff"/><circle cx="6" cy="-5" r="2" fill="#f33"/>';
+GLIFOS.ojo = '<path d="M-21 0c10-15 32-15 42 0-10 15-32 15-42 0z" fill="#fff"/><circle r="8" fill="#0007"/><circle r="3" fill="#fff"/>';
+GLIFOS.interrogacion = '<text y="11" text-anchor="middle" font-family="Georgia,serif" font-weight="900" font-size="32" fill="#fff">?</text>';
+GLIFOS.infinito = '<path d="M0 0c-5-8-17-8-17 0s12 8 17 0 12-8 17 0-12 8-17 0z" fill="none" stroke="#fff" stroke-width="5"/>';
+GLIFOS.rol = '<path d="M-8 6l-6 16 8-4 6 6 2-18zM8 6l6 16-8-4-6 6-2-18z" fill="#fff" opacity=".8"/><circle cy="-6" r="13" fill="#fff"/><path d="M0-12l2 4 4.5.6-3.3 3.1.8 4.5L0-2l-4 2.2.8-4.5-3.3-3.1 4.5-.6z" fill="#0005"/>';
+GLIFOS.sol = '<circle r="9" fill="#fff"/><path d="M0-21v6M0 15v6M-21 0h6M15 0h6M-15-15l4 4M11 11l4 4M-15 15l4-4M11-11l4-4" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/>';
+GLIFOS.espiral = '<path d="M0 0c3 0 4-3 3-5-2-4-8-3-9 2-1 6 5 10 11 8 8-3 9-14 2-19-9-6-21 0-21 11" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/>';
+GLIFOS.estrella2 = '<circle r="20" fill="none" stroke="#fff" stroke-width="3"/><path d="M0-13l4 8 9 1.3-6.5 6.3 1.5 9L0 7.3l-8 4.3 1.5-9L-13-3.7l9-1.3z" fill="#fff"/>';
+
+function extCartas(p) { return Array.isArray(p.cards) ? p.cards : []; }
+function extHerDe(p) { var m = herMiembro(p.id); return m ? { m: m, h: herPorId(m.hermandad_id) } : null; }
+function extVictorias(p) {
+  var d = com.est.datos;
+  if (!d) { return 0; }
+  return (d.historial || []).filter(function (h) { return (h.ids || []).indexOf(p.id) >= 0; }).length;
+}
+function extObras(p) { return ext.talPub.filter(function (t) { return t.autor === p.id; }); }
+function extAplausosRecibidos(p) {
+  var ids = {};
+  extObras(p).forEach(function (t) { ids[t.id] = true; });
+  return ext.aplausos.filter(function (a) { return ids[a.talento_id]; }).length;
+}
+function extEsTop(p, campo, n) {
+  var lista = profiles.filter(function (x) { return x.role !== "owner" && (x.status || "active") === "active"; })
+    .slice().sort(function (a, b) { return (b[campo] || 0) - (a[campo] || 0); });
+  var i = lista.findIndex(function (x) { return x.id === p.id; });
+  return i >= 0 && i < n && (p[campo] || 0) > 0 ? 1 : 0;
+}
+function extCompletas(p, cat) {
+  var del = INSIGNIAS.filter(function (b) { return b.cat === cat && !b.especial; });
+  return del.length && del.every(function (b) { try { return Number(b.v(p)) >= b.meta; } catch (e) { return false; } }) ? 1 : 0;
+}
+[
+  { id: "her_jura", n: "Juramento", cat: "Comunidad", tier: "bronce", forma: "escudo", glifo: "estandarte", c: "Te uniste a una hermandad. Ya no caminas solo.", v: function (p) { return extHerDe(p) ? 1 : 0; }, meta: 1 },
+  { id: "her_titulo", n: "Con título", cat: "Comunidad", tier: "plata", forma: "escudo", glifo: "estandarte", c: "El fundador de tu hermandad te dio un título.", v: function (p) { var x = extHerDe(p); return x && x.m.titulo ? 1 : 0; }, meta: 1 },
+  { id: "her_fundador", n: "Fundador", cat: "Comunidad", tier: "oro", forma: "escudo", glifo: "corona", c: "Fundaste una hermandad y la lideras.", v: function (p) { var x = extHerDe(p); return x && x.m.rango === "fundador" ? 1 : 0; }, meta: 1 },
+  { id: "her_llena", n: "Casa llena", cat: "Comunidad", tier: "epica", forma: "escudo", glifo: "estandarte", c: "Tu hermandad completó sus 10 miembros.", v: function (p) { var x = extHerDe(p); return x ? herMiembrosDe(x.h.id).length : 0; }, meta: 10 },
+  { id: "her_cima", n: "Estandarte del salón", cat: "En vivo", viva: true, tier: "epica", forma: "escudo", glifo: "corona", c: "Tu hermandad ocupa el primer lugar del salón. Si la superan, la pierdes.", v: function (p) { var x = extHerDe(p); var s = herSalon(); return x && s.length > 1 && s[0].id === x.h.id ? 1 : 0; }, meta: 1 },
+  { id: "est1", n: "Estrella del salón", cat: "Comunidad", tier: "oro", forma: "estrella", glifo: "estrella2", c: "Tus compañeros te eligieron estudiante de la semana.", v: extVictorias, meta: 1 },
+  { id: "est3", n: "Constelación", cat: "Comunidad", tier: "epica", forma: "estrella", glifo: "estrella2", c: "Tres veces estudiante de la semana.", v: extVictorias, meta: 3 },
+  { id: "tal1", n: "Artista", cat: "Comunidad", tier: "bronce", forma: "circulo", glifo: "paleta", c: "Publicaste tu primera obra en el rincón de talentos.", v: function (p) { return extObras(p).length; }, meta: 1 },
+  { id: "tal5", n: "Galería propia", cat: "Comunidad", tier: "plata", forma: "circulo", glifo: "paleta", c: "Cinco obras publicadas en el rincón.", v: function (p) { return extObras(p).length; }, meta: 5 },
+  { id: "apl10", n: "Ovación", cat: "Comunidad", tier: "oro", forma: "circulo", glifo: "aplauso", c: "Tus obras recibieron 10 aplausos.", v: extAplausosRecibidos, meta: 10 },
+  { id: "apl50", n: "Ídolo del rincón", cat: "Comunidad", tier: "epica", forma: "circulo", glifo: "aplauso", c: "Cincuenta aplausos para tus obras.", v: extAplausosRecibidos, meta: 50 },
+  { id: "tal_dest", n: "Obra maestra", cat: "Comunidad", tier: "epica", forma: "estrella", glifo: "paleta", c: "El profe destacó una de tus obras en el rincón.", v: function (p) { return extObras(p).some(function (t) { return t.destacado; }) ? 1 : 0; }, meta: 1 },
+  { id: "ley1", n: "Leyenda viva", cat: "Colección", tier: "epica", forma: "estrella", glifo: "volcan", c: "Tienes una carta de Leyendas de Nicaragua.", v: function (p) { return extCartas(p).filter(function (id) { return /(carta|shiny)_ly_/.test(id); }).length; }, meta: 1 },
+  { id: "ley_shiny", n: "Mito brillante", cat: "Colección", tier: "mitica", forma: "estrella", glifo: "volcan", c: "Tienes una Shiny de Leyendas de Nicaragua.", v: function (p) { return extCartas(p).filter(function (id) { return /shiny_ly_/.test(id); }).length; }, meta: 1 },
+  { id: "epicas5", n: "Vitrina épica", cat: "Colección", tier: "mitica", forma: "estrella", glifo: "naipe", c: "Cinco Cartas Épicas distintas en tu colección.", v: function (p) { var vistos = {}; extCartas(p).forEach(function (id) { var m = /^(carta|shiny)_(.+)$/.exec(id); if (m) { vistos[m[2]] = true; } }); return Object.keys(vistos).length; }, meta: 5 },
+  { id: "rol1", n: "Con distintivo", cat: "Roles", tier: "plata", forma: "rombo", glifo: "rol", c: "Tienes un rol especial en el salón.", v: function (p) { return rolesDe(p).length; }, meta: 1 },
+  { id: "rol3", n: "Multifacético", cat: "Roles", tier: "oro", forma: "rombo", glifo: "rol", c: "Tres roles a la vez. Te toca de todo.", v: function (p) { return rolesDe(p).length; }, meta: 3 },
+  { id: "top_tareas", n: "Primero de la clase", cat: "En vivo", viva: true, tier: "mitica", forma: "hexagono", glifo: "corona", c: "Nadie del salón tiene más tareas cumplidas que tú. Si te alcanzan, la pierdes.", v: function (p) { return extEsTop(p, "completed_tasks", 1); }, meta: 1 },
+  { id: "top_nivel", n: "Podio", cat: "En vivo", viva: true, tier: "epica", forma: "hexagono", glifo: "trofeo", c: "Estás entre los 3 niveles más altos del salón.", v: function (p) { return extEsTop(p, "level", 3); }, meta: 1 },
+  { id: "top_racha", n: "Antorcha", cat: "En vivo", viva: true, tier: "oro", forma: "gota", glifo: "llama", c: "Tienes la racha activa más larga del salón.", v: function (p) { return extEsTop(p, "streak_count", 1); }, meta: 1 },
+  { id: "set_racha", n: "Maestro de la constancia", cat: "Maestría", tier: "epica", forma: "hexagono", glifo: "infinito", c: "Conseguiste todas las insignias de Racha.", v: function (p) { return extCompletas(p, "Racha"); }, meta: 1 },
+  { id: "set_juegos", n: "Señor de los juegos", cat: "Maestría", tier: "epica", forma: "hexagono", glifo: "xo", c: "Conseguiste todas las insignias de Juegos.", v: function (p) { return extCompletas(p, "Juegos"); }, meta: 1 },
+  { id: "set_tareas", n: "Erudito", cat: "Maestría", tier: "epica", forma: "hexagono", glifo: "libro", c: "Conseguiste todas las insignias de Tareas.", v: function (p) { return extCompletas(p, "Tareas"); }, meta: 1 },
+  { id: "gran_maestro", n: "Gran maestro", cat: "Maestría", tier: "mitica", forma: "estrella", glifo: "sol", c: "Tienes el 75 % de todas las insignias del tablón.", v: function (p) {
+    var base = INSIGNIAS.filter(function (b) { return !b.especial && b.id !== "gran_maestro"; });
+    var n = base.filter(function (b) { try { return Number(b.v(p)) >= b.meta; } catch (e) { return false; } }).length;
+    return Math.round(n / Math.max(1, base.length) * 100); }, meta: 75 },
+  { id: "sec_elegido", n: "El elegido", cat: "Secretas", oculta: true, pista: "Líder de los suyos y elegido por todos.", tier: "mitica", forma: "estrella", glifo: "sol", c: "Fundaste una hermandad y además fuiste estudiante de la semana.", v: function (p) { var x = extHerDe(p); return x && x.m.rango === "fundador" && extVictorias(p) > 0 ? 1 : 0; }, meta: 1 },
+  { id: "sec_cadejo", n: "Amigo del Cadejo", cat: "Secretas", oculta: true, pista: "Camina de noche y alguien te cuida.", tier: "epica", forma: "gota", glifo: "perro", c: "Tienes la carta del Cadejo.", v: function (p) { return extCartas(p).some(function (id) { return /_ly_cadejo$/.test(id); }) ? 1 : 0; }, meta: 1 },
+  { id: "sec_mascara", n: "El astuto", cat: "Secretas", oculta: true, pista: "La máscara más pícara de Nicaragua.", tier: "mitica", forma: "rombo", glifo: "mascara", c: "Tienes la carta del Güegüense.", v: function (p) { return extCartas(p).some(function (id) { return /_ly_gueguense$/.test(id); }) ? 1 : 0; }, meta: 1 },
+  { id: "sec_perfil", n: "El que todo lo ve", cat: "Secretas", oculta: true, pista: "Un perfil completo dice mucho de ti.", tier: "oro", forma: "rombo", glifo: "ojo", c: "Tres insignias destacadas, biografía y hermandad.", v: function (p) { return (Array.isArray(p.insignias_destacadas) && p.insignias_destacadas.length >= 3 ? 1 : 0) + (p.bio ? 1 : 0) + (extHerDe(p) ? 1 : 0); }, meta: 3 },
+  { id: "sec_caras", n: "Mil caras", cat: "Secretas", oculta: true, pista: "Cambias de cara más que de ropa.", tier: "oro", forma: "circulo", glifo: "interrogacion", c: "Tienes 15 avatares o más.", v: function (p) { return Array.isArray(p.avatars) ? p.avatars.length : 0; }, meta: 15 }
+].forEach(function (b) { if (!INSIGNIAS.some(function (x) { return x.id === b.id; })) { INSIGNIAS.push(b); } });
+
+/* Especiales del salón: las crea quien tenga el permiso y se entregan a personas o a roles. */
+async function extCargarInsignias() {
+  if (!client) { return; }
+  var r = await Promise.all([
+    client.from("tb_insignias_especiales").select("id,nombre,descripcion,tier,forma,glifo,oculta,created_at").order("created_at"),
+    client.from("tb_insignias_otorgadas").select("user_id,insignia_id,motivo,otorgada_por,created_at"),
+    client.from("tb_rol_insignias").select("role_id,insignia_id")
+  ]);
+  if (r[0].error || r[1].error || r[2].error) { return; }
+  ext.esp = r[0].data || []; ext.otorgadas = r[1].data || []; ext.rolIns = r[2].data || [];
+  for (var i = INSIGNIAS.length - 1; i >= 0; i--) { if (INSIGNIAS[i].especial) { INSIGNIAS.splice(i, 1); } }
+  ext.esp.forEach(function (e) {
+    INSIGNIAS.push({ id: "esp_" + e.id, especial: true, espId: e.id, n: e.nombre, cat: "Del salón", tier: e.tier, forma: e.forma,
+      glifo: GLIFOS[e.glifo] ? e.glifo : "estrella", c: e.descripcion, oculta: e.oculta, pista: "Una insignia especial del salón.",
+      v: function (p) { return extTieneEspecial(p, e.id) ? 1 : 0; }, meta: 1 });
+  });
+  ext.listo = true;
+  ext.rarezaClave = "";
+}
+function extTieneEspecial(p, id) {
+  if (ext.otorgadas.some(function (o) { return o.user_id === p.id && o.insignia_id === id; })) { return true; }
+  var mios = rolesDe(p).map(function (r) { return String(r.id); });
+  return ext.rolIns.some(function (x) { return x.insignia_id === id && mios.indexOf(String(x.role_id)) >= 0; });
+}
+function extInsigniaPorId(id) { return INSIGNIAS.filter(function (b) { return b.id === id; })[0] || null; }
+
+/* Prestigio, rango de coleccionista y rareza dentro del salón */
+function extPrestigio(p) {
+  var ok = insigniasDe(p).filter(function (x) { return x.ok; });
+  var puntos = ok.reduce(function (s, x) { return s + (EXT_PUNTOS[x.b.tier] || 0); }, 0);
+  var rango = EXT_RANGOS[0], siguiente = null;
+  for (var i = 0; i < EXT_RANGOS.length; i++) {
+    if (puntos >= EXT_RANGOS[i][0]) { rango = EXT_RANGOS[i]; siguiente = EXT_RANGOS[i + 1] || null; }
+  }
+  return { puntos: puntos, rango: rango[1], desde: rango[0], hasta: siguiente ? siguiente[0] : null, sigNombre: siguiente ? siguiente[1] : null, total: ok.length };
+}
+function extRareza(id) {
+  var clave = profiles.length + "|" + INSIGNIAS.length + "|" + (com.her.miembros || []).length + "|" + ext.talPub.length + "|" + ext.otorgadas.length;
+  if (!ext.rareza || ext.rarezaClave !== clave) {
+    var cuenta = {}, total = 0;
+    profiles.forEach(function (p) {
+      if (p.role === "owner" || (p.status || "active") !== "active") { return; }
+      total++;
+      insigniasDe(p).forEach(function (x) { if (x.ok) { cuenta[x.b.id] = (cuenta[x.b.id] || 0) + 1; } });
+    });
+    ext.rareza = { cuenta: cuenta, total: Math.max(1, total) };
+    ext.rarezaClave = clave;
+  }
+  var n = ext.rareza.cuenta[id] || 0;
+  return { n: n, pct: Math.round(n / ext.rareza.total * 100) };
+}
+function extRarezaTexto(id) {
+  var r = extRareza(id);
+  if (r.n === 0) { return "Nadie la tiene todavía"; }
+  if (r.n === 1) { return "Solo 1 persona la tiene"; }
+  return r.pct <= 5 ? "Rarísima: " + r.pct + " % del salón" : r.pct <= 20 ? "Rara: " + r.pct + " % del salón" : r.pct + " % del salón la tiene";
+}
+function extDestacadas(p) {
+  var ok = insigniasDe(p).filter(function (x) { return x.ok; });
+  var ids = Array.isArray(p.insignias_destacadas) ? p.insignias_destacadas : [];
+  var elegidas = ids.map(function (id) { return ok.filter(function (x) { return x.b.id === id; })[0]; }).filter(Boolean);
+  if (!elegidas.length) {
+    elegidas = ok.slice().sort(function (a, b) { return EXT_ORDEN[a.b.tier] - EXT_ORDEN[b.b.tier]; }).slice(0, 3);
+  }
+  return elegidas.map(function (x) { return x.b; });
+}
+
+/* En la tarjeta: tres destacadas grandes. En el perfil ampliado: prestigio, destacadas y la colección completa. */
+insigniasHtmlPerfil = function (p, completo) {
+  var ok = insigniasDe(p).filter(function (x) { return x.ok; });
+  if (!ok.length) { return ""; }
+  var pr = extPrestigio(p);
+  var dest = extDestacadas(p);
+  var fila = '<div class="tb-ext-dest">' + dest.map(function (b) {
+    return '<button type="button" class="tb-insignia-mini tb-ext-dest-ins ' + b.tier + '" data-ins="' + escapeHtml(b.id) + '" title="' + escapeHtml(b.n) + '">' + insigniaSvg(b, false) + "</button>";
+  }).join("") + "</div>";
+  if (!completo) {
+    return '<div class="tb-insignias-perfil tb-ext-ins-card">' + fila +
+      '<small class="tb-ext-rango-mini">' + ok.length + " insignias, rango " + escapeHtml(pr.rango) + "</small></div>";
+  }
+  ok.sort(function (a, b) { return EXT_ORDEN[a.b.tier] - EXT_ORDEN[b.b.tier]; });
+  var pct = pr.hasta ? Math.round((pr.puntos - pr.desde) / (pr.hasta - pr.desde) * 100) : 100;
+  return '<section class="tb-ext-ins-modal"><div class="tb-ext-prestigio"><div><b>' + escapeHtml(pr.rango) + "</b><small>" + pr.puntos + " de prestigio, " + ok.length + " insignias</small></div>" +
+    '<span class="tb-ext-barra"><i style="width:' + pct + '%"></i></span></div>' + fila +
+    '<div class="tb-ext-todas">' + ok.map(function (x) {
+      return '<button type="button" class="tb-insignia-mini" data-ins="' + escapeHtml(x.b.id) + '" title="' + escapeHtml(x.b.n) + '">' + insigniaSvg(x.b, false) + "</button>";
+    }).join("") + "</div></section>";
+};
+
+/* Ventanita de detalle: suma rareza, rango y si es «en vivo». */
+var _extDetalle = insigniaMostrarDetalle;
+insigniaMostrarDetalle = function (id, ancla) {
+  _extDetalle(id, ancla);
+  var pop = $("#tb-ins-pop");
+  var b = extInsigniaPorId(id);
+  if (!pop || !b) { return; }
+  var extra = '<span class="tb-ext-pop-rareza">' + escapeHtml(extRarezaTexto(id)) + "</span>" +
+    (b.viva ? '<span class="tb-ext-viva">En vivo: se puede perder</span>' : "") +
+    '<span class="tb-ext-pop-pts">+' + (EXT_PUNTOS[b.tier] || 0) + " de prestigio</span>";
+  if (b.especial) {
+    var o = ext.otorgadas.filter(function (x) { return x.insignia_id === b.espId; });
+    if (o.length) { extra += '<span class="tb-ext-pop-pts">Entregada a ' + o.length + (o.length === 1 ? " persona" : " personas") + "</span>"; }
+  }
+  pop.insertAdjacentHTML("beforeend", extra);
+};
+
+/* Revelación de insignias nuevas: oro, épica y mítica tienen su propia ceremonia. */
+var _extToast = mostrarInsigniaNueva;
+mostrarInsigniaNueva = function (b) {
+  if (!b) { return; }
+  if (b.tier === "bronce" || b.tier === "plata") { _extToast(b); return; }
+  var capa = document.createElement("div");
+  capa.className = "tb-ext-revela tb-ext-revela-" + b.tier;
+  capa.setAttribute("role", "dialog");
+  capa.setAttribute("aria-label", "Nueva insignia: " + b.n);
+  var rayos = "";
+  for (var i = 0; i < 18; i++) { rayos += '<i style="transform:rotate(' + (i * 20) + 'deg)"></i>'; }
+  var chispas = "";
+  for (var k = 0; k < 24; k++) {
+    chispas += '<b style="--x:' + Math.round(Math.cos(k / 24 * 6.283) * (140 + (k % 3) * 40)) + "px;--y:" + Math.round(Math.sin(k / 24 * 6.283) * (140 + (k % 3) * 40)) + "px;animation-delay:" + (.35 + (k % 6) * .05) + 's"></b>';
+  }
+  capa.innerHTML = '<div class="tb-ext-revela-rayos" aria-hidden="true">' + rayos + "</div>" +
+    '<div class="tb-ext-revela-chispas" aria-hidden="true">' + chispas + "</div>" +
+    '<div class="tb-ext-revela-centro"><div class="tb-ext-revela-ins">' + insigniaSvg(b, false) + "</div>" +
+    "<small>Nueva insignia " + escapeHtml(TIER_NOMBRE[b.tier] || "") + "</small><h2>" + escapeHtml(b.n) + "</h2><p>" + escapeHtml(b.c) + "</p>" +
+    '<span class="tb-ext-revela-rareza">' + escapeHtml(extRarezaTexto(b.id)) + ", +" + (EXT_PUNTOS[b.tier] || 0) + " de prestigio</span>" +
+    '<div class="tb-ext-revela-acc"><button type="button" class="tb-primary" data-ext-revela-ver>Ver mis insignias</button><button type="button" class="tb-secondary" data-ext-revela-cerrar>Seguir</button></div></div>';
+  root.appendChild(capa);
+  var cerrar = function () { capa.classList.add("sale"); setTimeout(function () { capa.remove(); }, 380); };
+  capa.addEventListener("click", function (ev) {
+    if (ev.target.closest("[data-ext-revela-ver]")) { cerrar(); showView("logros"); return; }
+    if (ev.target.closest("[data-ext-revela-cerrar]") || ev.target === capa) { cerrar(); }
+  });
+  var foco = capa.querySelector("[data-ext-revela-cerrar]");
+  if (foco) { setTimeout(function () { foco.focus(); }, 60); }
+};
+
+/* ---------- Logros: colección completa, prestigio, destacadas, especiales y salón de la fama ---------- */
+var extInsVista = "coleccion";
+var _extRenderLogros = renderLogros;
+renderLogros = function () {
+  _extRenderLogros();
+  var caja = $("#tb-logros");
+  if (!caja || !me) { return; }
+  var seccion = caja.querySelector(".tb-insignias-grid");
+  seccion = seccion ? seccion.closest(".tb-logros-sec") : null;
+  if (!seccion) { return; }
+  var pr = extPrestigio(me);
+  var pct = pr.hasta ? Math.round((pr.puntos - pr.desde) / (pr.hasta - pr.desde) * 100) : 100;
+  var dest = Array.isArray(me.insignias_destacadas) ? me.insignias_destacadas : [];
+  var cabecera = '<section class="tb-card tb-ext-cabecera">' +
+    '<div class="tb-ext-cab-rango"><span class="tb-ext-cab-sello" aria-hidden="true">' + insigniaSvg({ n: pr.rango, tier: pr.puntos >= 1500 ? "mitica" : pr.puntos >= 800 ? "epica" : pr.puntos >= 350 ? "oro" : pr.puntos >= 120 ? "plata" : "bronce", forma: "estrella", glifo: "medalla" }, false) + "</span>" +
+    "<div><small>Tu rango de coleccionista</small><h3>" + escapeHtml(pr.rango) + "</h3>" +
+    '<span class="tb-ext-barra"><i style="width:' + pct + '%"></i></span>' +
+    '<p class="tb-muted">' + pr.puntos + " de prestigio" + (pr.hasta ? ". Te faltan " + (pr.hasta - pr.puntos) + " para «" + escapeHtml(pr.sigNombre) + "»." : ". Llegaste al rango más alto.") + "</p></div></div>" +
+    '<div class="tb-ext-cab-tiers">' + ["mitica", "epica", "oro", "plata", "bronce"].map(function (t) {
+      var n = insigniasDe(me).filter(function (x) { return x.ok && x.b.tier === t; }).length;
+      return '<span class="tb-ext-tier ' + t + '"><b>' + n + "</b>" + TIER_NOMBRE[t] + "</span>";
+    }).join("") + "</div>" +
+    '<div class="tb-ext-cab-dest"><small>Tus destacadas (se ven en tu tarjeta)</small><div>' + [0, 1, 2].map(function (i) {
+      var b = dest[i] ? extInsigniaPorId(dest[i]) : null;
+      return b ? '<button type="button" class="tb-ext-slot lleno" data-ext-fijar="' + escapeHtml(b.id) + '" title="Quitar de destacadas">' + insigniaSvg(b, false) + "</button>"
+        : '<span class="tb-ext-slot" aria-label="Espacio libre">+</span>';
+    }).join("") + "</div></div></section>";
+  var tabs = '<div class="tb-tal-tabs tb-ext-ins-tabs" role="tablist">' +
+    [["coleccion", "Mi colección"], ["fama", "Salón de la fama"]].concat(puede("insignias") ? [["especiales", "Insignias especiales"]] : []).map(function (t) {
+      return '<button type="button" role="tab" class="tb-tal-tab' + (extInsVista === t[0] ? " on" : "") + '" aria-selected="' + (extInsVista === t[0]) + '" data-ext-insvista="' + t[0] + '">' + t[1] + "</button>";
+    }).join("") + "</div>";
+  seccion.insertAdjacentHTML("beforebegin", cabecera);
+  var cab = seccion.querySelector(".tb-logros-head");
+  if (cab) { cab.insertAdjacentHTML("afterend", tabs); }
+  var grid = seccion.querySelector(".tb-insignias-grid");
+  if (extInsVista === "fama") {
+    seccion.querySelectorAll(".tb-logros-filtros").forEach(function (f) { f.classList.add("tb-hidden"); });
+    grid.outerHTML = extFamaHtml();
+    return;
+  }
+  if (extInsVista === "especiales" && puede("insignias")) {
+    seccion.querySelectorAll(".tb-logros-filtros").forEach(function (f) { f.classList.add("tb-hidden"); });
+    grid.outerHTML = extEspecialesHtml();
+    extEnlazarEspeciales();
+    return;
+  }
+  var todas = insigniasDe(me).filter(function (x) { return logrosFiltro === "todas" || x.b.cat === logrosFiltro; });
+  todas.sort(function (a, b) { return (b.ok - a.ok) || (EXT_ORDEN[a.b.tier] - EXT_ORDEN[b.b.tier]); });
+  var fmt = function (n) { return Number(n).toLocaleString("es"); };
+  grid.innerHTML = todas.map(function (x) {
+    var b = x.b, secreta = b.oculta && !x.ok;
+    var pct = Math.min(100, Math.round(x.v / b.meta * 100));
+    var fijada = dest.indexOf(b.id) >= 0;
+    var mostrar = secreta ? { n: "???", tier: b.tier, forma: b.forma, glifo: "interrogacion" } : b;
+    return '<article class="tb-insignia ' + b.tier + (x.ok ? " ok" : " bloqueada") + (secreta ? " secreta" : "") + '">' +
+      (b.viva ? '<span class="tb-ext-viva" title="Se puede perder">En vivo</span>' : "") +
+      insigniaSvg(mostrar, !x.ok) +
+      '<span class="tb-insignia-tier">' + TIER_NOMBRE[b.tier] + "</span>" +
+      "<h4>" + escapeHtml(secreta ? "Insignia secreta" : b.n) + "</h4><p>" + escapeHtml(secreta ? "Pista: " + (b.pista || "Sigue explorando el tablón.") : b.c) + "</p>" +
+      '<small class="tb-ext-rareza">' + escapeHtml(extRarezaTexto(b.id)) + "</small>" +
+      (x.ok ? '<div class="tb-ext-ok"><small class="tb-insignia-hecha">✔ Desbloqueada</small><button type="button" class="tb-ext-fijar' + (fijada ? " on" : "") + '" data-ext-fijar="' + escapeHtml(b.id) + '" aria-pressed="' + fijada + '">' + (fijada ? "Destacada" : "Destacar") + "</button></div>"
+        : secreta ? "" : '<div class="tb-mis-barra"><i style="width:' + pct + '%"></i></div><small class="tb-muted">' + fmt(Math.min(x.v, b.meta)) + " / " + fmt(b.meta) + "</small>") +
+      "</article>";
+  }).join("");
+};
+function extFamaHtml() {
+  var lista = profiles.filter(function (p) { return p.role !== "owner" && (p.status || "active") === "active"; })
+    .map(function (p) { return { p: p, pr: extPrestigio(p) }; })
+    .sort(function (a, b) { return b.pr.puntos - a.pr.puntos; }).slice(0, 10);
+  return '<ol class="tb-ext-fama">' + lista.map(function (x, i) {
+    var dest = extDestacadas(x.p);
+    return '<li class="' + (x.p.id === me.id ? "yo" : "") + '"><span class="tb-ext-fama-pos">' + (i + 1) + "</span>" +
+      '<button type="button" class="tb-her-m-av" data-com-perfil="' + escapeHtml(x.p.id) + '">' + avatarHtml(x.p, "tb-com-av") + "</button>" +
+      "<div><b>" + escapeHtml(x.p.display_name || x.p.username) + "</b><small>" + escapeHtml(x.pr.rango) + ", " + x.pr.total + " insignias</small></div>" +
+      '<span class="tb-ext-fama-ins">' + dest.map(function (b) { return insigniaSvg(b, false); }).join("") + "</span>" +
+      '<b class="tb-ext-fama-pts">' + x.pr.puntos + "</b></li>";
+  }).join("") + "</ol>";
+}
+function extEspecialesHtml() {
+  var glifos = Object.keys(GLIFOS);
+  return '<div class="tb-ext-esp">' +
+    '<form class="tb-ext-esp-form" id="tb-ext-esp-form"><h4>Crear insignia especial</h4>' +
+    '<div class="tb-ext-esp-previa" id="tb-ext-esp-previa"></div>' +
+    '<label class="tb-field"><span>Nombre</span><input id="tb-ext-esp-nombre" maxlength="40" required placeholder="Mejor proyecto de ciencias"></label>' +
+    '<label class="tb-field"><span>Descripción</span><input id="tb-ext-esp-desc" maxlength="200" required placeholder="Por el proyecto ganador de la feria científica."></label>' +
+    '<div class="tb-ext-esp-sel"><label class="tb-field"><span>Rango</span><select id="tb-ext-esp-tier">' + ["bronce", "plata", "oro", "epica", "mitica"].map(function (t) { return '<option value="' + t + '"' + (t === "oro" ? " selected" : "") + ">" + TIER_NOMBRE[t] + "</option>"; }).join("") + "</select></label>" +
+    '<label class="tb-field"><span>Forma</span><select id="tb-ext-esp-forma">' + Object.keys(FORMAS).map(function (f) { return '<option value="' + f + '">' + f.charAt(0).toUpperCase() + f.slice(1) + "</option>"; }).join("") + "</select></label>" +
+    '<label class="tb-field"><span>Símbolo</span><select id="tb-ext-esp-glifo">' + glifos.map(function (g) { return '<option value="' + g + '"' + (g === "estrella" ? " selected" : "") + ">" + g + "</option>"; }).join("") + "</select></label></div>" +
+    '<label class="tb-her-check"><input type="checkbox" id="tb-ext-esp-oculta"> Secreta (se ve como «???» hasta que alguien la recibe)</label>' +
+    '<p class="tb-extra-status" id="tb-ext-esp-status" role="status"></p><button type="submit" class="tb-primary">Crear insignia</button></form>' +
+    '<div class="tb-ext-esp-lista">' + (ext.esp.length ? ext.esp.map(function (e) {
+      var b = extInsigniaPorId("esp_" + e.id);
+      var dadas = ext.otorgadas.filter(function (o) { return o.insignia_id === e.id; });
+      return '<article class="tb-ext-esp-item">' + (b ? insigniaSvg(b, false) : "") + '<div><b>' + escapeHtml(e.nombre) + "</b><small>" + escapeHtml(TIER_NOMBRE[e.tier] || "") + (e.oculta ? ", secreta" : "") + "</small><p>" + escapeHtml(e.descripcion) + "</p>" +
+        (dadas.length ? '<div class="tb-com-personas">' + dadas.map(function (o) {
+          return '<button type="button" class="tb-com-persona" data-ext-quitar="' + escapeHtml(e.id) + '" data-ext-user="' + escapeHtml(o.user_id) + '" title="Quitar">' + escapeHtml(comNombre(o.user_id)) + " <small>✕</small></button>";
+        }).join("") + "</div>" : "") +
+        '<div class="tb-ext-esp-dar"><select data-ext-dar-sel="' + escapeHtml(e.id) + '"><option value="">Entregar a…</option>' + profilesOrdenados().filter(function (p) { return !dadas.some(function (o) { return o.user_id === p.id; }); }).map(function (p) {
+          return '<option value="' + escapeHtml(p.id) + '">' + escapeHtml(p.display_name || p.username) + "</option>";
+        }).join("") + '</select><button type="button" class="tb-secondary" data-ext-dar="' + escapeHtml(e.id) + '">Entregar</button>' +
+        '<button type="button" class="tb-her-mini peligro" data-ext-borrar-esp="' + escapeHtml(e.id) + '">Borrar</button></div></div></article>';
+    }).join("") : '<p class="tb-muted">Todavía no hay insignias especiales.</p>') + "</div></div>";
+}
+function extEnlazarEspeciales() {
+  var form = $("#tb-ext-esp-form");
+  if (!form) { return; }
+  var previa = function () {
+    $("#tb-ext-esp-previa").innerHTML = insigniaSvg({ n: $("#tb-ext-esp-nombre").value || "Insignia", tier: $("#tb-ext-esp-tier").value, forma: $("#tb-ext-esp-forma").value, glifo: $("#tb-ext-esp-glifo").value }, false);
+  };
+  ["tb-ext-esp-tier", "tb-ext-esp-forma", "tb-ext-esp-glifo", "tb-ext-esp-nombre"].forEach(function (id) { $("#" + id).addEventListener("input", previa); });
+  previa();
+  form.onsubmit = async function (ev) {
+    ev.preventDefault();
+    var nombre = $("#tb-ext-esp-nombre").value.trim(), desc = $("#tb-ext-esp-desc").value.trim();
+    var estado = $("#tb-ext-esp-status");
+    if (nombre.length < 3 || desc.length < 3) { estado.textContent = "Escribe nombre y descripción."; return; }
+    var id = nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "").slice(0, 32) || "insignia";
+    if (ext.esp.some(function (e) { return e.id === id; })) { id = (id + "_" + Date.now().toString(36)).slice(0, 40); }
+    var r = await client.from("tb_insignias_especiales").insert({ id: id, nombre: nombre, descripcion: desc, tier: $("#tb-ext-esp-tier").value,
+      forma: $("#tb-ext-esp-forma").value, glifo: $("#tb-ext-esp-glifo").value, oculta: $("#tb-ext-esp-oculta").checked });
+    if (r.error) { estado.textContent = "⚠️ " + comError(r.error); return; }
+    await extCargarInsignias();
+    avisoToast("Insignia creada. Ya puedes entregarla.");
+    renderLogros();
+  };
+}
+
+/* ---------- Pestaña Novedades: historial, y para quien tenga permiso, crear y editar con imágenes ---------- */
+function novItemVacio() { return { icono: "✨", titulo: "", texto: "", vista: "", imagen: "" }; }
+async function novCargarTodas() {
+  if (!client) { return; }
+  var r = await client.from("tb_novedades").select("id,titulo,resumen,items,portada,publicada,created_at,editada_en").order("id", { ascending: false }).limit(60);
+  if (r.error) { ext.nov.error = comError(r.error); ext.nov.listo = false; return; }
+  ext.nov.lista = r.data || [];
+  ext.nov.listo = true;
+  ext.nov.error = "";
+}
+function novImagenHtml(url, alt, clase) {
+  return url ? '<img class="' + (clase || "") + '" src="' + escapeHtml(safeUrl(url)) + '" alt="' + escapeHtml(alt || "") + '" loading="lazy">' : "";
+}
+function novItemsHtml(items) {
+  return '<ul class="tb-com-nov-items">' + (items || []).map(function (it) {
+    var vista = it && COM_VISTAS[it.vista] ? it.vista : "";
+    return '<li><span class="tb-com-nov-ico" aria-hidden="true">' + escapeHtml((it && it.icono) || "✨") + "</span><div>" +
+      "<b>" + escapeHtml((it && it.titulo) || "") + "</b>" + (it && it.texto ? "<p>" + escapeHtml(it.texto) + "</p>" : "") +
+      novImagenHtml(it && it.imagen, it && it.titulo, "tb-nov-item-img") +
+      (vista ? '<button type="button" class="tb-com-nov-ir" data-com-nov-ir="' + vista + '">Ir a ' + COM_VISTAS[vista] + "</button>" : "") +
+      "</div></li>";
+  }).join("") + "</ul>";
+}
+function novVistaRender() {
+  var caja = $("#tb-nov-root");
+  if (!caja || !me) { return; }
+  var btn = $("#tb-nov-nueva");
+  if (btn) { btn.classList.toggle("tb-hidden", !puede("novedades") || !!ext.nov.borrador); }
+  if (ext.nov.error) { caja.innerHTML = '<div class="tb-empty"><b>No se pudieron cargar las novedades</b>' + escapeHtml(ext.nov.error) + "</div>"; return; }
+  if (!ext.nov.listo) { caja.innerHTML = '<p class="tb-muted">Cargando novedades…</p>'; return; }
+  var html = ext.nov.borrador ? novEditorHtml() : "";
+  html += ext.nov.lista.length ? '<div class="tb-nov-lista">' + ext.nov.lista.map(function (n) {
+    var editable = puede("novedades");
+    return '<article class="tb-card tb-nov-card' + (n.publicada ? "" : " oculta") + '">' +
+      novImagenHtml(n.portada, n.titulo, "tb-nov-portada") +
+      '<div class="tb-nov-cuerpo"><header><div><h2>' + escapeHtml(n.titulo) + "</h2><time>" + comFecha(n.created_at, { day: "numeric", month: "long", year: "numeric" }) +
+      (n.editada_en ? ", editada" : "") + "</time></div>" + (n.publicada ? "" : '<span class="tb-tal-estado pendiente">Oculta</span>') + "</header>" +
+      (n.resumen ? '<p class="tb-com-nov-resumen">' + escapeHtml(n.resumen) + "</p>" : "") + novItemsHtml(n.items) +
+      (editable ? '<div class="tb-nov-acc"><button type="button" class="tb-secondary" data-nov-editar="' + n.id + '">Editar</button>' +
+        '<button type="button" class="tb-secondary" data-nov-publicar="' + n.id + '">' + (n.publicada ? "Ocultar" : "Publicar") + "</button>" +
+        '<button type="button" class="tb-her-mini peligro" data-nov-borrar="' + n.id + '">Borrar</button></div>' : "") +
+      "</div></article>";
+  }).join("") + "</div>" : (ext.nov.borrador ? "" : '<div class="tb-empty"><b>Todavía no hay novedades</b>Cuando El Tablón cambie, lo verás aquí.</div>');
+  caja.innerHTML = html;
+}
+function novEditorHtml() {
+  var b = ext.nov.borrador;
+  return '<section class="tb-card tb-nov-editor" aria-labelledby="tb-nov-ed-t"><h2 id="tb-nov-ed-t">' + (ext.nov.editando ? "Editar novedad" : "Nueva novedad") + "</h2>" +
+    '<label class="tb-field"><span>Título</span><input data-nov-campo="titulo" maxlength="80" value="' + escapeHtml(b.titulo) + '" placeholder="Llegan las hermandades" data-com-foco></label>' +
+    '<label class="tb-field"><span>Resumen (opcional)</span><input data-nov-campo="resumen" maxlength="240" value="' + escapeHtml(b.resumen || "") + '" placeholder="Una frase que lo explique todo."></label>' +
+    '<div class="tb-nov-img-campo"><span class="tb-nov-label">Imagen de portada (opcional)</span>' +
+    (b.portada ? '<div class="tb-nov-img-previa">' + novImagenHtml(b.portada, "Portada") + '<button type="button" class="tb-her-mini peligro" data-nov-quitar-img="portada">Quitar</button></div>'
+      : '<button type="button" class="tb-secondary" data-nov-subir="portada">Subir imagen</button>') + "</div>" +
+    '<div class="tb-nov-items-ed">' + b.items.map(function (it, i) {
+      return '<div class="tb-com-nov-fila" data-nov-fila="' + i + '">' +
+        '<label class="tb-field"><span>Ícono</span><input data-nov-item="icono" maxlength="4" value="' + escapeHtml(it.icono || "✨") + '"></label>' +
+        '<label class="tb-field"><span>Título del punto</span><input data-nov-item="titulo" maxlength="60" value="' + escapeHtml(it.titulo || "") + '"></label>' +
+        '<label class="tb-field"><span>Al tocarlo, abrir</span><select data-nov-item="vista"><option value="">Sin botón</option>' +
+        Object.keys(COM_VISTAS).map(function (k) { return '<option value="' + k + '"' + (it.vista === k ? " selected" : "") + ">" + COM_VISTAS[k] + "</option>"; }).join("") + "</select></label>" +
+        '<label class="tb-field wide"><span>Qué cambió</span><textarea data-nov-item="texto" maxlength="220">' + escapeHtml(it.texto || "") + "</textarea></label>" +
+        '<div class="tb-nov-img-campo wide">' + (it.imagen ? '<div class="tb-nov-img-previa">' + novImagenHtml(it.imagen, it.titulo) + '<button type="button" class="tb-her-mini peligro" data-nov-quitar-img="' + i + '">Quitar imagen</button></div>'
+          : '<button type="button" class="tb-secondary" data-nov-subir="' + i + '">Agregar imagen</button>') +
+        (b.items.length > 1 ? '<button type="button" class="tb-her-mini peligro" data-nov-quitar-item="' + i + '">Quitar este punto</button>' : "") + "</div></div>";
+    }).join("") + "</div>" +
+    '<div class="tb-com-nov-acc"><button type="button" class="tb-secondary" data-nov-mas>Agregar otro punto</button></div>' +
+    '<label class="tb-her-check"><input type="checkbox" data-nov-campo="publicada"' + (b.publicada ? " checked" : "") + '> Publicada (si la desmarcas, queda como borrador)</label>' +
+    '<p class="tb-extra-status" id="tb-nov-status" role="status"></p>' +
+    '<div class="tb-her-acciones"><button type="button" class="tb-secondary" data-nov-cancelar>Cancelar</button><button type="button" class="tb-primary" data-nov-guardar' + (ext.nov.guardando ? " disabled" : "") + ">" +
+    (ext.nov.guardando ? "Guardando…" : ext.nov.editando ? "Guardar cambios" : "Publicar") + "</button></div>" +
+    '<input type="file" id="tb-nov-archivo" accept="image/png,image/jpeg,image/webp,image/gif" hidden></section>';
+}
+function novLeerEditor() {
+  var b = ext.nov.borrador;
+  if (!b) { return; }
+  $$("[data-nov-campo]").forEach(function (el) { b[el.dataset.novCampo] = el.type === "checkbox" ? el.checked : el.value; });
+  $$("[data-nov-fila]").forEach(function (fila) {
+    var it = b.items[+fila.dataset.novFila];
+    if (!it) { return; }
+    fila.querySelectorAll("[data-nov-item]").forEach(function (el) { it[el.dataset.novItem] = el.value; });
+  });
+}
+async function novSubirImagen(destino, archivo) {
+  var estado = $("#tb-nov-status");
+  if (!archivo) { return; }
+  if (!/^image\/(png|jpeg|webp|gif)$/.test(archivo.type)) { estado.textContent = "Usa una imagen JPG, PNG, WEBP o GIF."; return; }
+  estado.textContent = "Subiendo imagen…";
+  try {
+    var esGif = archivo.type === "image/gif";
+    var blob = esGif ? archivo : await entregaComprimir(archivo);
+    if (blob.size > 4 * 1024 * 1024) { throw new Error("La imagen pesa más de 4 MB."); }
+    var ruta = me.id + "/" + nombreAleatorio(esGif ? "gif" : "jpg");
+    var up = await client.storage.from("novedades").upload(ruta, blob, { contentType: esGif ? "image/gif" : "image/jpeg", upsert: false });
+    if (up.error) { throw up.error; }
+    var url = client.storage.from("novedades").getPublicUrl(ruta).data.publicUrl;
+    novLeerEditor();
+    if (destino === "portada") { ext.nov.borrador.portada = url; } else { ext.nov.borrador.items[+destino].imagen = url; }
+    novVistaRender();
+    $("#tb-nov-status").textContent = "Imagen lista.";
+  } catch (e) {
+    estado.textContent = "⚠️ " + comError(e);
+  }
+}
+async function novGuardar() {
+  novLeerEditor();
+  var b = ext.nov.borrador, estado = $("#tb-nov-status");
+  var titulo = String(b.titulo || "").trim();
+  var items = b.items.map(function (it) {
+    var x = { icono: String(it.icono || "✨").trim() || "✨", titulo: String(it.titulo || "").trim(), texto: String(it.texto || "").trim() };
+    if (it.vista) { x.vista = it.vista; }
+    if (it.imagen) { x.imagen = it.imagen; }
+    return x;
+  }).filter(function (it) { return it.titulo; });
+  if (titulo.length < 3) { estado.textContent = "Escribe un título de al menos 3 caracteres."; return; }
+  if (!items.length) { estado.textContent = "Agrega al menos un punto con título."; return; }
+  ext.nov.guardando = true;
+  novVistaRender();
+  var datos = { titulo: titulo, resumen: String(b.resumen || "").trim() || null, items: items, portada: b.portada || null, publicada: !!b.publicada };
+  var r = ext.nov.editando
+    ? await client.from("tb_novedades").update(Object.assign({ editada_en: new Date().toISOString() }, datos)).eq("id", ext.nov.editando)
+    : await client.from("tb_novedades").insert(datos);
+  ext.nov.guardando = false;
+  if (r.error) { novVistaRender(); $("#tb-nov-status").textContent = "⚠️ " + comError(r.error); return; }
+  avisoToast(ext.nov.editando ? "Novedad actualizada." : (datos.publicada ? "Publicada: todos la verán al entrar." : "Guardada como borrador."));
+  ext.nov.borrador = null; ext.nov.editando = null;
+  await novCargarTodas();
+  novVistaRender();
+}
+
+/* ---------- Arranque y eventos ---------- */
+async function extIniciar() {
+  extAplicarPermisos();
+  var r = await Promise.all([
+    extCargarInsignias().catch(function () { /* sin tablas */ }),
+    client.from("tb_talentos").select("id,autor,destacado").eq("estado", "publicado").limit(500),
+    client.from("tb_talento_aplausos").select("talento_id")
+  ]);
+  ext.talPub = (r[1] && !r[1].error && r[1].data) || [];
+  ext.aplausos = (r[2] && !r[2].error && r[2].data) || [];
+  comRefrescarTarjetas();
+  setTimeout(revisarInsigniasNuevas, 1500);
+}
+function extVista(nombre) {
+  if (nombre === "novedades") {
+    novVistaRender();
+    novCargarTodas().then(novVistaRender);
+  }
+}
+root.addEventListener("click", async function (ev) {
+  var b = ev.target.closest && ev.target.closest("button");
+  if (!b || !root.contains(b)) { return; }
+  var d = b.dataset;
+  if (d.extInsvista) { extInsVista = d.extInsvista; renderLogros(); return; }
+  if (d.extFijar) {
+    var lista = Array.isArray(me.insignias_destacadas) ? me.insignias_destacadas.slice() : [];
+    var i = lista.indexOf(d.extFijar);
+    if (i >= 0) { lista.splice(i, 1); }
+    else {
+      if (lista.length >= 3) { avisoToast("Ya tienes 3 destacadas. Quita una para elegir otra."); return; }
+      lista.push(d.extFijar);
+    }
+    var r = await client.from("profiles").update({ insignias_destacadas: lista }).eq("id", me.id);
+    if (r.error) { avisoToast(comError(r.error)); return; }
+    me.insignias_destacadas = lista;
+    var p = profiles.find(function (x) { return x.id === me.id; });
+    if (p) { p.insignias_destacadas = lista; }
+    renderLogros();
+    comRefrescarTarjetas();
+    return;
+  }
+  if (d.extDar) {
+    var sel = root.querySelector('[data-ext-dar-sel="' + d.extDar + '"]');
+    if (!sel || !sel.value) { avisoToast("Elige a quién entregarla."); return; }
+    var motivo = window.prompt("¿Por qué la recibe? (opcional, se guarda con la insignia)", "");
+    if (motivo === null) { return; }
+    var r2 = await client.from("tb_insignias_otorgadas").insert({ user_id: sel.value, insignia_id: d.extDar, motivo: motivo.trim() || null, otorgada_por: me.id });
+    if (r2.error) { avisoToast(comError(r2.error)); return; }
+    await extCargarInsignias();
+    avisoToast("Insignia entregada a " + comNombre(sel.value) + ".");
+    renderLogros(); comRefrescarTarjetas();
+    return;
+  }
+  if (d.extQuitar) {
+    if (!window.confirm("¿Quitarle esta insignia a " + comNombre(d.extUser) + "?")) { return; }
+    var r3 = await client.from("tb_insignias_otorgadas").delete().eq("user_id", d.extUser).eq("insignia_id", d.extQuitar);
+    if (r3.error) { avisoToast(comError(r3.error)); return; }
+    await extCargarInsignias(); renderLogros(); comRefrescarTarjetas();
+    return;
+  }
+  if (d.extBorrarEsp) {
+    if (!window.confirm("¿Borrar esta insignia especial? Se le quita a todas las personas que la tengan.")) { return; }
+    var r4 = await client.from("tb_insignias_especiales").delete().eq("id", d.extBorrarEsp);
+    if (r4.error) { avisoToast(comError(r4.error)); return; }
+    await extCargarInsignias(); renderLogros(); comRefrescarTarjetas();
+    return;
+  }
+  /* novedades */
+  if (b.id === "tb-nov-nueva") {
+    ext.nov.editando = null;
+    ext.nov.borrador = { titulo: "", resumen: "", portada: "", publicada: true, items: [novItemVacio()] };
+    novVistaRender();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    return;
+  }
+  if (d.novEditar) {
+    var n = ext.nov.lista.filter(function (x) { return String(x.id) === d.novEditar; })[0];
+    if (!n) { return; }
+    ext.nov.editando = n.id;
+    ext.nov.borrador = { titulo: n.titulo, resumen: n.resumen || "", portada: n.portada || "", publicada: n.publicada,
+      items: (n.items || []).map(function (it) { return { icono: it.icono || "✨", titulo: it.titulo || "", texto: it.texto || "", vista: it.vista || "", imagen: it.imagen || "" }; }) };
+    if (!ext.nov.borrador.items.length) { ext.nov.borrador.items.push(novItemVacio()); }
+    novVistaRender();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    return;
+  }
+  if (d.novPublicar) {
+    var n2 = ext.nov.lista.filter(function (x) { return String(x.id) === d.novPublicar; })[0];
+    if (!n2) { return; }
+    var r5 = await client.from("tb_novedades").update({ publicada: !n2.publicada }).eq("id", n2.id);
+    if (r5.error) { avisoToast(comError(r5.error)); return; }
+    await novCargarTodas(); novVistaRender();
+    return;
+  }
+  if (d.novBorrar) {
+    if (!window.confirm("¿Borrar esta novedad? Ya no aparecerá a nadie.")) { return; }
+    var r6 = await client.from("tb_novedades").delete().eq("id", Number(d.novBorrar));
+    if (r6.error) { avisoToast(comError(r6.error)); return; }
+    await novCargarTodas(); novVistaRender();
+    return;
+  }
+  if (d.novMas !== undefined) { novLeerEditor(); if (ext.nov.borrador.items.length < 8) { ext.nov.borrador.items.push(novItemVacio()); } novVistaRender(); return; }
+  if (d.novQuitarItem) { novLeerEditor(); ext.nov.borrador.items.splice(+d.novQuitarItem, 1); novVistaRender(); return; }
+  if (d.novQuitarImg) { novLeerEditor(); if (d.novQuitarImg === "portada") { ext.nov.borrador.portada = ""; } else { ext.nov.borrador.items[+d.novQuitarImg].imagen = ""; } novVistaRender(); return; }
+  if (d.novSubir) {
+    var input = $("#tb-nov-archivo");
+    input.value = "";
+    input.onchange = function () { novSubirImagen(d.novSubir, input.files && input.files[0]); };
+    input.click();
+    return;
+  }
+  if (d.novCancelar !== undefined) { ext.nov.borrador = null; ext.nov.editando = null; novVistaRender(); return; }
+  if (d.novGuardar !== undefined) { novGuardar(); return; }
 });
 })();
 </script>
