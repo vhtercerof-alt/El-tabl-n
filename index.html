@@ -10307,6 +10307,25 @@ var root = document.getElementById("tablon-root");
 if (!root || root.dataset.ready) {
 return;
 }
+function tbAlmacenSeguro(nombre) {
+  var temporal = Object.create(null);
+  return {
+    getItem: function (clave) {
+      if (Object.prototype.hasOwnProperty.call(temporal, clave)) { return temporal[clave]; }
+      try { return window[nombre].getItem(clave); } catch (error) { return null; }
+    },
+    setItem: function (clave, valor) {
+      try { window[nombre].setItem(clave, String(valor)); delete temporal[clave]; }
+      catch (error) { temporal[clave] = String(valor); }
+    },
+    removeItem: function (clave) {
+      delete temporal[clave];
+      try { window[nombre].removeItem(clave); } catch (error) { /* almacenamiento bloqueado */ }
+    }
+  };
+}
+var tbLocalStorage = tbAlmacenSeguro("localStorage");
+var tbSessionStorage = tbAlmacenSeguro("sessionStorage");
 root.dataset.ready = "1";
 root.classList.add("tb-en-portal");
 var client = null;
@@ -13239,10 +13258,10 @@ return "<tr><td>" + escapeHtml(profile ? profile.display_name : "(borrado)") +
 }).join("") + "</tbody></table></div>";
 }
 function rankedProfiles() {
-return profiles.filter(function (p) { return p.role !== "owner"; }).sort(function (a, b) {
+return profiles.slice().sort(function (a, b) {
 var diff = (b.completed_tasks || 0) - (a.completed_tasks || 0);
 if (diff !== 0) { return diff; }
-return String(a.display_name || "").localeCompare(String(b.display_name || ""));
+return String(a.display_name || "").localeCompare(String(b.display_name || "")) || String(a.id).localeCompare(String(b.id));
 });
 }
 function podiumHtml(profile, place) {
@@ -13579,11 +13598,11 @@ return '<span class="' + clase + '">' + foto + escapeHtml(autor) + "</span>";
 /* ---------- Carga y guardado ---------- */
 function tdLocalClave() { return "tb-td-prog-" + (me ? me.id : "anon"); }
 function tdLocalLeer() {
-try { return JSON.parse(window.localStorage.getItem(tdLocalClave()) || "{}") || {}; }
+try { return JSON.parse(tbLocalStorage.getItem(tdLocalClave()) || "{}") || {}; }
 catch (e) { return {}; }
 }
 function tdLocalGuardar() {
-try { window.localStorage.setItem(tdLocalClave(), JSON.stringify(td.prog)); } catch (e) { /* sin almacenamiento */ }
+try { tbLocalStorage.setItem(tdLocalClave(), JSON.stringify(td.prog)); } catch (e) { /* sin almacenamiento */ }
 }
 async function tdCargar() {
 if (!client || !me) { return; }
@@ -15256,7 +15275,7 @@ desc: "Tranquilo y explicativo. Te guía paso a paso y no se apura." },
 leon: { nombre: "Rugo", color: "#ff8a3c",
 desc: "Relajado y directo. Te habla como un compa, sin tanto rodeo." }
 };
-var mascActiva = window.localStorage.getItem("tb-masc-activa") === "leon" ? "leon" : "gato";
+var mascActiva = tbLocalStorage.getItem("tb-masc-activa") === "leon" ? "leon" : "gato";
 var mascUltimaLinea = null;
 var mascBurbujaTimer = null;
 var mascToques = [];
@@ -15264,7 +15283,7 @@ var mascHartoHasta = 0;
 var mascCharlaTimer = null;
 var mascGuiaVista = null;
 function mascPref(clave, porDefecto) {
-var guardado = window.localStorage.getItem("tb-masc-" + clave);
+var guardado = tbLocalStorage.getItem("tb-masc-" + clave);
 if (guardado === null) { return porDefecto; }
 return guardado === "1";
 }
@@ -15329,7 +15348,7 @@ figura.classList.toggle("on", figura.id === "tb-masc-" + mascActiva);
 }
 function mascPosicionGuardada() {
 try {
-return JSON.parse(window.localStorage.getItem("tb-masc-pos") || "null");
+return JSON.parse(tbLocalStorage.getItem("tb-masc-pos") || "null");
 } catch (error) {
 return null;
 }
@@ -15380,7 +15399,7 @@ if (!arrastrando) { return; }
 arrastrando = false;
 wrap.classList.remove("arrastrando");
 var rect = wrap.getBoundingClientRect();
-window.localStorage.setItem("tb-masc-pos", JSON.stringify({ x: rect.left, y: rect.top }));
+tbLocalStorage.setItem("tb-masc-pos", JSON.stringify({ x: rect.left, y: rect.top }));
 if (!movioDeVerdad) { mascTocar(); }
 }
 wrap.addEventListener("pointerup", soltar);
@@ -15424,7 +15443,7 @@ tarjeta.onclick = function () {
 var cual = tarjeta.dataset.masc;
 if (cual === mascActiva) { return; }
 mascActiva = cual;
-window.localStorage.setItem("tb-masc-activa", cual);
+tbLocalStorage.setItem("tb-masc-activa", cual);
 mascUltimaLinea = null;
 mascGuiaVista = null;
 mascAplicarActiva();
@@ -15438,26 +15457,26 @@ var charla = $("#tb-masc-charla");
 if (voz) {
 voz.checked = mascPref("voz", true);
 voz.onchange = function () {
-window.localStorage.setItem("tb-masc-voz", this.checked ? "1" : "0");
+tbLocalStorage.setItem("tb-masc-voz", this.checked ? "1" : "0");
 };
 }
 if (guia) {
 guia.checked = mascPref("guia", true);
 guia.onchange = function () {
-window.localStorage.setItem("tb-masc-guia", this.checked ? "1" : "0");
+tbLocalStorage.setItem("tb-masc-guia", this.checked ? "1" : "0");
 };
 }
 if (charla) {
 charla.checked = mascPref("charla", true);
 charla.onchange = function () {
-window.localStorage.setItem("tb-masc-charla", this.checked ? "1" : "0");
+tbLocalStorage.setItem("tb-masc-charla", this.checked ? "1" : "0");
 mascReiniciarInactividad();
 };
 }
 var reset = $("#tb-masc-reset");
 if (reset) {
 reset.onclick = function () {
-window.localStorage.removeItem("tb-masc-pos");
+tbLocalStorage.removeItem("tb-masc-pos");
 mascAplicarPosicion(16, window.innerHeight - 118);
 };
 }
@@ -16766,18 +16785,18 @@ var PIXEL_META = 100;
 function pixelClaveToques() { return "tb-pixel-toques-" + (me ? me.id : "x"); }
 function pixelClaveDesbloqueo() { return "tb-pixel-unlocked-" + (me ? me.id : "x"); }
 function pixelDesbloqueado() {
-return window.localStorage.getItem(pixelClaveDesbloqueo()) === "1";
+return tbLocalStorage.getItem(pixelClaveDesbloqueo()) === "1";
 }
 function aplicarPixel(activo, guardar) {
 root.classList.toggle("tb-pixel", !!activo);
-if (guardar) { window.localStorage.setItem("tb-pixel-modo", activo ? "1" : "0"); }
+if (guardar) { tbLocalStorage.setItem("tb-pixel-modo", activo ? "1" : "0"); }
 }
 function pixelMostrarSwitch() {
 var boton = $("#tb-switch-pixel");
 if (boton) { boton.classList.remove("tb-hidden"); }
 }
 function pixelDesbloquear() {
-window.localStorage.setItem(pixelClaveDesbloqueo(), "1");
+tbLocalStorage.setItem(pixelClaveDesbloqueo(), "1");
 pixelMostrarSwitch();
 aplicarPixel(true, true);
 mascDecirTexto("¡Encontraste el modo 8-bit! Ya te aparece el interruptor junto al de día y noche.");
@@ -16785,14 +16804,14 @@ mascDecirTexto("¡Encontraste el modo 8-bit! Ya te aparece el interruptor junto 
 function pixelContarToque() {
 if (pixelDesbloqueado()) { return; }
 var clave = pixelClaveToques();
-var total = parseInt(window.localStorage.getItem(clave) || "0", 10) + 1;
-window.localStorage.setItem(clave, String(total));
+var total = parseInt(tbLocalStorage.getItem(clave) || "0", 10) + 1;
+tbLocalStorage.setItem(clave, String(total));
 if (total >= PIXEL_META) { pixelDesbloquear(); }
 }
 function inicializarPixel() {
 if (pixelDesbloqueado()) {
 pixelMostrarSwitch();
-aplicarPixel(window.localStorage.getItem("tb-pixel-modo") === "1", false);
+aplicarPixel(tbLocalStorage.getItem("tb-pixel-modo") === "1", false);
 }
 }
 var PALABRAS = [
@@ -17707,7 +17726,7 @@ if (result.error) { console.error("[prensa] vistas:", result.error); }
 }
 function hayNoticiaNueva() {
 if (!prensa.length) { return false; }
-var visto = window.localStorage.getItem("tb-noticias-visto-" + (me ? me.id : "x"));
+var visto = tbLocalStorage.getItem("tb-noticias-visto-" + (me ? me.id : "x"));
 return String(prensa[0].id) !== visto;
 }
 function pintarInsigniaNoticias() {
@@ -17720,7 +17739,7 @@ badge.classList.toggle("tb-hidden", !nueva);
 function marcarNoticiasVistas() {
 if (!prensa.length) { return; }
 try {
-window.localStorage.setItem("tb-noticias-visto-" + (me ? me.id : "x"), String(prensa[0].id));
+tbLocalStorage.setItem("tb-noticias-visto-" + (me ? me.id : "x"), String(prensa[0].id));
 } catch (e) { /* sin localStorage, la insignia simplemente no se recuerda. */ }
 pintarInsigniaNoticias();
 }
@@ -20563,7 +20582,7 @@ if (me && has(me, "arcade") && me.arcade && typeof me.arcade === "object") {
 return me.arcade;
 }
 try {
-return JSON.parse(window.localStorage.getItem("tb-arcade-" + (me ? me.id : "x")) || "{}");
+return JSON.parse(tbLocalStorage.getItem("tb-arcade-" + (me ? me.id : "x")) || "{}");
 } catch (e) {
 return {};
 }
@@ -20577,7 +20596,7 @@ var result = await client.from("profiles").update({ arcade: datos }).eq("id", me
 if (!result.error) { return; }
 }
 try {
-window.localStorage.setItem("tb-arcade-" + (me ? me.id : "x"), JSON.stringify(datos));
+tbLocalStorage.setItem("tb-arcade-" + (me ? me.id : "x"), JSON.stringify(datos));
 } catch (e) { /* sin almacenamiento local disponible */ }
 }
 function retosPendientes() {
@@ -24031,8 +24050,8 @@ if (name === "cosmetics") { pushPintar(); }
 mascGuiarVista(name);
 if (name === "shop") {
 updateSpinState();
-if (!window.localStorage.getItem("tb-masc-vio-tienda")) {
-window.localStorage.setItem("tb-masc-vio-tienda", "1");
+if (!tbLocalStorage.getItem("tb-masc-vio-tienda")) {
+tbLocalStorage.setItem("tb-masc-vio-tienda", "1");
 setTimeout(function () { mascDecirDe("leon", ["leon_tienda_canje"]); }, 700);
 }
 }
@@ -24044,8 +24063,28 @@ pintarFondo(name);
 menuLateral(false);
 movePill(true);
 }
+async function tbLeerPaginas(tabla, campo, ascendente) {
+  var filas = [], tamano = 200;
+  for (var desde = 0; ; desde += tamano) {
+    var r = await client.from(tabla).select("*").order(campo, { ascending: ascendente }).order("id").range(desde, desde + tamano - 1);
+    if (r.error) { return { data: null, error: r.error }; }
+    var pagina = r.data || [];
+    filas = filas.concat(pagina);
+    if (pagina.length < tamano) { return { data: filas, error: null }; }
+  }
+}
+async function tbCargarModulos(modulos) {
+  var siguiente = 0;
+  async function trabajador() {
+    while (siguiente < modulos.length) {
+      var cargar = modulos[siguiente++];
+      await cargar();
+    }
+  }
+  await Promise.all([trabajador(), trabajador(), trabajador(), trabajador()]);
+}
 async function loadData() {
-var profilesResult = await client.from("profiles").select("*").order("display_name");
+var profilesResult = await tbLeerPaginas("profiles", "display_name", true);
 if (profilesResult.error) { throw profilesResult.error; }
 profiles = profilesResult.data || [];
 var userResult = await client.auth.getUser();
@@ -24058,8 +24097,7 @@ return profile.id === userResult.data.user.id;
 if (!me) {
 throw new Error("No se encontró el perfil. Ejecuta primero el SQL de configuración.");
 }
-var tasksResult = await client.from("tasks").select("*")
-.order("created_at", { ascending: false });
+var tasksResult = await tbLeerPaginas("tasks", "created_at", false);
 if (tasksResult.error) { throw tasksResult.error; }
 tasks = tasksResult.data || [];
 $$(".tb-owner-only").forEach(function (element) {
@@ -24068,17 +24106,8 @@ element.classList.toggle("tb-hidden", !isOwner());
 $$(".tb-staff-only").forEach(function (element) {
 element.classList.toggle("tb-hidden", !isStaff());
 });
-await loadGifts();
-await loadReacciones();
-await loadLog();
-await loadRewards();
-await loadRoles();
-await loadNoticias();
-await loadPrensa();
-await loadPartida();
-await loadSalarios();
-await loadImagenes();
-await loadRuletaPerfiles();
+// Consultas independientes: máximo cuatro cargas simultáneas.
+await tbCargarModulos([loadGifts, loadReacciones, loadLog, loadRewards, loadRoles, loadNoticias, loadPrensa, loadPartida, loadSalarios, loadImagenes, loadRuletaPerfiles]);
 rpSubscribe();
 sincronizarCatalogo();
 await cargarPartidasGato();
@@ -24130,12 +24159,12 @@ mascDecirDe(mascActiva, MASC_BIENVENIDA[mascActiva]);
 }, 1200);
 try {
 var claveTareas = "tb-masc-tareas-" + me.id;
-var previas = parseInt(window.localStorage.getItem(claveTareas) || "-1", 10);
+var previas = parseInt(tbLocalStorage.getItem(claveTareas) || "-1", 10);
 var ahoraHechas = me.completed_tasks || 0;
 if (previas >= 0 && ahoraHechas > previas) {
 setTimeout(function () { mascDecirDe(mascActiva, MASC_TAREA[mascActiva]); }, 4200);
 }
-window.localStorage.setItem(claveTareas, String(ahoraHechas));
+tbLocalStorage.setItem(claveTareas, String(ahoraHechas));
 } catch (error) { /* sin localStorage la mascota simplemente no comenta las tareas. */ }
 revisarTerminos();
 await revisarVersion();
@@ -24331,7 +24360,7 @@ showMessage("Cuenta creada. Desactiva la confirmación de correo en Supabase.", 
 return;
 }
 showMessage("Cuenta creada.", true);
-await loadData();
+try { await loadData(); } catch (error) { showMessage(error.message || "No se pudieron cargar los datos. Recarga para reintentar."); }
 };
 $("#tb-logout").onclick = async function () {
 mascDecirDe(mascActiva, [mascActiva + "_despedida_1"]);
@@ -25025,13 +25054,17 @@ pintarSwatches("#9fb4ff");
 pintarFondo("home");
 renderThemes();
 if (isConfigured()) {
+if (!window.supabase || typeof window.supabase.createClient !== "function") {
+showMessage("No se pudo cargar la conexión. Comprueba tu internet y recarga la página.");
+} else {
 client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 client.auth.getSession().then(function (result) {
 if (result.data.session) {
 abrirPortal();
 loadData().catch(function (error) { showMessage(error.message); });
 }
-});
+}).catch(function () { showMessage("No se pudo recuperar tu sesión. Recarga para reintentar."); });
+}
 } else {
 showMessage("Antes de usarlo, pega la URL y la clave pública anon de Supabase dentro del script.");
 }
@@ -25897,7 +25930,7 @@ ia: null, filtro: "", ultimoTurnoMio: false, emoteT: 0,
 sonido: true, ocupado: false,
 espectando: null, estEsp: null, vistosEsp: {}, vivo: [], mirando: 0
 };
-try { bn.sonido = window.localStorage.getItem("tb-bn-sonido") !== "0"; } catch (e) { /* sin almacenamiento */ }
+try { bn.sonido = tbLocalStorage.getItem("tb-bn-sonido") !== "0"; } catch (e) { /* sin almacenamiento */ }
 function bnReducido() {
 try { return window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { return false; }
 }
@@ -26511,7 +26544,7 @@ var s = $("#bn-sonido");
 if (s) {
 s.onclick = function () {
 bn.sonido = !bn.sonido;
-try { window.localStorage.setItem("tb-bn-sonido", bn.sonido ? "1" : "0"); } catch (e) { /* nada */ }
+try { tbLocalStorage.setItem("tb-bn-sonido", bn.sonido ? "1" : "0"); } catch (e) { /* nada */ }
 if (bn.sonido) { bnSonido("turno"); }
 pintarNaval();
 };
@@ -27528,7 +27561,7 @@ return;
 if (esCumpleDe(me)) { activarFiesta(); return; }
 if (!me.cumple) {
 var omitido = false;
-try { omitido = window.sessionStorage.getItem("tb-cumple-luego-" + me.id) === "1"; } catch (e) { /* sin sessionStorage se pregunta siempre */ }
+try { omitido = tbSessionStorage.getItem("tb-cumple-luego-" + me.id) === "1"; } catch (e) { /* sin sessionStorage se pregunta siempre */ }
 if (!omitido) { setTimeout(mostrarModalCumple, 900); }
 }
 }
@@ -27568,7 +27601,7 @@ mes.onchange = ajustarDias;
 ajustarDias();
 dia.focus();
 $("#tb-cumple-luego").onclick = function () {
-try { window.sessionStorage.setItem("tb-cumple-luego-" + me.id, "1"); } catch (e) { /* nada */ }
+try { tbSessionStorage.setItem("tb-cumple-luego-" + me.id, "1"); } catch (e) { /* nada */ }
 capa.remove();
 };
 $("#tb-cumple-guardar").onclick = guardarCumple;
@@ -27650,7 +27683,7 @@ $("#tb-fiesta-regalo").onclick = abrirRegaloCumple;
 $("#tb-fiesta-cerrar").onclick = function () { aviso.classList.add("tb-plegado"); };
 aviso.onclick = function (ev) { if (aviso.classList.contains("tb-plegado") && ev.target === aviso) { aviso.classList.remove("tb-plegado"); } };
 $("#tb-fiesta-globos").onclick = function () { capa.classList.toggle("tb-sin-globos"); };
-try { if (window.localStorage.getItem("tb-cumple-regalo-" + me.id) === String(hoyManagua().anio)) { marcarRegaloAbierto(); } } catch (e) { /* nada */ }
+try { if (tbLocalStorage.getItem("tb-cumple-regalo-" + me.id) === String(hoyManagua().anio)) { marcarRegaloAbierto(); } } catch (e) { /* nada */ }
 }
 function marcarRegaloAbierto() {
 var b = $("#tb-fiesta-regalo");
@@ -27667,7 +27700,7 @@ alert(/ya/i.test(error.message || "") ? "Ya abriste tu regalo de este año 🎁"
 if (/ya/i.test(error.message || "")) { marcarRegaloAbierto(); }
 return;
 }
-try { window.localStorage.setItem("tb-cumple-regalo-" + me.id, String(hoyManagua().anio)); } catch (e) { /* nada */ }
+try { tbLocalStorage.setItem("tb-cumple-regalo-" + me.id, String(hoyManagua().anio)); } catch (e) { /* nada */ }
 marcarRegaloAbierto();
 pintarBelis();
 if (datos && datos.regalo) { await abrirRegaloLogro(datos.regalo, "border", "cumple_confeti", "+" + (datos.belis || 0) + " Belis y un contorno exclusivo"); }
@@ -27832,10 +27865,10 @@ function misionUnaVez(clave, fn) {
 if (!me || !clave) { return; }
 var k = "tb-mis-vistos-" + me.id;
 var vistos = [];
-try { vistos = JSON.parse(window.localStorage.getItem(k) || "[]"); } catch (e) { vistos = []; }
+try { vistos = JSON.parse(tbLocalStorage.getItem(k) || "[]"); } catch (e) { vistos = []; }
 if (vistos.indexOf(clave) >= 0) { return; }
 vistos.push(clave);
-try { window.localStorage.setItem(k, JSON.stringify(vistos.slice(-300))); } catch (e) { /* nada */ }
+try { tbLocalStorage.setItem(k, JSON.stringify(vistos.slice(-300))); } catch (e) { /* nada */ }
 fn();
 }
 async function reclamarMision(id) {
@@ -28103,9 +28136,11 @@ function revisarInsigniasNuevas() {
 if (!me) { return; }
 var k = "tb-insignias-vistas-" + me.id;
 var vistas = null;
-try { vistas = JSON.parse(window.localStorage.getItem(k) || "null"); } catch (e) { vistas = null; }
+try { vistas = JSON.parse(tbLocalStorage.getItem(k) || "null"); } catch (e) { vistas = null; }
 var ahora = insigniasDe(me).filter(function (x) { return x.ok; }).map(function (x) { return x.b.id; });
-try { window.localStorage.setItem(k, JSON.stringify(ahora)); } catch (e) { /* nada */ }
+if (!Array.isArray(vistas)) { vistas = null; }
+var registradas = vistas ? vistas.concat(ahora.filter(function (id) { return vistas.indexOf(id) < 0; })) : ahora;
+try { tbLocalStorage.setItem(k, JSON.stringify(registradas)); } catch (e) { /* nada */ }
 if (!vistas) { return; }
 var nuevas = ahora.filter(function (id) { return vistas.indexOf(id) < 0; });
 nuevas.slice(0, 2).forEach(function (id, i) {
@@ -28636,7 +28671,7 @@ function cazaMovReducido() {
 try { return window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { return false; }
 }
 function cazaSinSonido() {
-try { return window.localStorage.getItem("tb-caza-sin-sonido") === "1"; } catch (e) { return false; }
+try { return tbLocalStorage.getItem("tb-caza-sin-sonido") === "1"; } catch (e) { return false; }
 }
 // Sonidos sintetizados con Web Audio (sin archivos).
 var CAZA_SONIDOS = {
@@ -29121,7 +29156,7 @@ if (fx) { fx.click(); return; }
 if (!modal.classList.contains("tb-hidden")) { cazaCerrar(); }
 });
 $("#tb-caza-sonido-chk").onchange = function () {
-try { window.localStorage.setItem("tb-caza-sin-sonido", this.checked ? "0" : "1"); } catch (e) { /* preferencia solo en memoria */ }
+try { tbLocalStorage.setItem("tb-caza-sin-sonido", this.checked ? "0" : "1"); } catch (e) { /* preferencia solo en memoria */ }
 };
 $("#tb-caza-invocar").onclick = async function () {
 this.disabled = true;
@@ -29276,7 +29311,7 @@ return;
 var d = r.data || {};
 if (!d.ok) { aviso.textContent = d.error || "No se pudo enviar la solicitud."; return; }
 acceso.sol = { id: d.id, secreto: d.secreto, usuario: d.usuario, pose: d.pose, codigo: d.codigo, expira: d.expira_en };
-try { window.sessionStorage.setItem(ACCESO_CLAVE_SS, JSON.stringify(acceso.sol)); } catch (e) { /* solo en memoria */ }
+try { tbSessionStorage.setItem(ACCESO_CLAVE_SS, JSON.stringify(acceso.sol)); } catch (e) { /* solo en memoria */ }
 accesoEsperar();
 }
 function accesoEsperar() {
@@ -29355,7 +29390,7 @@ root.classList.remove("tb-acceso-esperando");
 clearInterval(acceso.sondeo);
 clearInterval(acceso.reloj);
 acceso.sol = null;
-try { window.sessionStorage.removeItem(ACCESO_CLAVE_SS); } catch (e) { /* nada */ }
+try { tbSessionStorage.removeItem(ACCESO_CLAVE_SS); } catch (e) { /* nada */ }
 }
 async function accesoCancelar() {
 var s = acceso.sol;
@@ -29365,7 +29400,7 @@ accesoFinal("cancelada");
 // Si recargó la página mientras esperaba, retoma la solicitud.
 function accesoRetomar() {
 var guardada = null;
-try { guardada = JSON.parse(window.sessionStorage.getItem(ACCESO_CLAVE_SS) || "null"); } catch (e) { guardada = null; }
+try { guardada = JSON.parse(tbSessionStorage.getItem(ACCESO_CLAVE_SS) || "null"); } catch (e) { guardada = null; }
 if (!guardada || !guardada.id || Date.parse(guardada.expira) < Date.now()) { accesoLimpiar(); return; }
 acceso.sol = guardada;
 accesoMostrar(true);
@@ -29607,11 +29642,11 @@ return { ok: false, status: 0, datos: { error: "Sin conexión con el servidor. R
 }
 }
 function iaGuardarLocal(clave, valor) {
-try { window.localStorage.setItem(clave + "-" + (me ? me.id : "x"), JSON.stringify(valor)); return true; } catch (e) { return false; }
+try { tbLocalStorage.setItem(clave + "-" + (me ? me.id : "x"), JSON.stringify(valor)); return true; } catch (e) { return false; }
 }
 function iaLeerLocal(clave, porDefecto) {
 try {
-var v = JSON.parse(window.localStorage.getItem(clave + "-" + (me ? me.id : "x")) || "null");
+var v = JSON.parse(tbLocalStorage.getItem(clave + "-" + (me ? me.id : "x")) || "null");
 return v === null ? porDefecto : v;
 } catch (e) { return porDefecto; }
 }
@@ -32426,7 +32461,9 @@ function comFecha(valor, opciones) {
   catch (e) { return ""; }
 }
 function comRefrescarTarjetas() {
+  if (typeof ext !== "undefined" && ext) { ext.rarezaClave = ""; }
   try { renderMyProfile(); renderProfiles(); } catch (e) { console.warn("[comunidad] tarjetas", e); }
+  if ($("#tb-view-logros.active")) { renderLogros(); }
 }
 function comAbrirModal(id) {
   com.volverFoco = document.activeElement;
@@ -33061,7 +33098,7 @@ function estRender() {
       (ganadores.length && isOwner() ? '<div class="tb-com-est-premios">' + ganadores.map(function (x) {
         var clave = "tb-com-premio-" + d.anterior + "-" + x.p.id;
         var dado = false;
-        try { dado = window.localStorage.getItem(clave) === "1"; } catch (e) { dado = false; }
+        try { dado = tbLocalStorage.getItem(clave) === "1"; } catch (e) { dado = false; }
         return dado
           ? '<span class="tb-muted">' + escapeHtml(x.p.display_name || x.p.username) + " ya recibió su premio.</span>"
           : '<button type="button" class="tb-secondary" data-com-premiar="' + escapeHtml(x.p.id) + '">Dar 200 Belis a ' +
@@ -33130,7 +33167,7 @@ async function estPremiar(uid) {
   if (!window.confirm("¿Dar 200 Belis a " + nombre + " por ser estudiante de la semana?")) { return; }
   var r = await client.rpc("owner_give_belis", { target_user: uid, cantidad: 200 });
   if (r.error) { avisoToast(comError(r.error)); return; }
-  try { window.localStorage.setItem("tb-com-premio-" + com.est.datos.anterior + "-" + uid, "1"); } catch (e) { /* nada */ }
+  try { tbLocalStorage.setItem("tb-com-premio-" + com.est.datos.anterior + "-" + uid, "1"); } catch (e) { /* nada */ }
   var p = comPerfil(uid);
   if (p) { p.belis = (p.belis || 0) + 200; }
   avisoToast("Listo: 200 Belis para " + nombre + ".");
@@ -34020,8 +34057,8 @@ function extAplausosRecibidos(p) {
   return ext.aplausos.filter(function (a) { return ids[a.talento_id]; }).length;
 }
 function extEsTop(p, campo, n) {
-  var lista = profiles.filter(function (x) { return x.role !== "owner" && (x.status || "active") === "active"; })
-    .slice().sort(function (a, b) { return (b[campo] || 0) - (a[campo] || 0); });
+  var lista = profiles.filter(function (x) { return (x.status || "active") === "active"; })
+    .slice().sort(function (a, b) { return ((b[campo] || 0) - (a[campo] || 0)) || String(a.display_name || "").localeCompare(String(b.display_name || "")) || String(a.id).localeCompare(String(b.id)); });
   var i = lista.findIndex(function (x) { return x.id === p.id; });
   return i >= 0 && i < n && (p[campo] || 0) > 0 ? 1 : 0;
 }
@@ -34105,7 +34142,7 @@ function extRareza(id) {
   if (!ext.rareza || ext.rarezaClave !== clave) {
     var cuenta = {}, total = 0;
     profiles.forEach(function (p) {
-      if (p.role === "owner" || (p.status || "active") !== "active") { return; }
+      if ((p.status || "active") !== "active") { return; }
       total++;
       insigniasDe(p).forEach(function (x) { if (x.ok) { cuenta[x.b.id] = (cuenta[x.b.id] || 0) + 1; } });
     });
@@ -34205,12 +34242,15 @@ mostrarInsigniaNueva = function (b) {
 var extInsVista = "coleccion";
 var _extRenderLogros = renderLogros;
 renderLogros = function () {
+  // Los valores pueden cambiar aunque la cantidad de perfiles siga igual.
+  ext.rarezaClave = "";
   _extRenderLogros();
   var caja = $("#tb-logros");
   if (!caja || !me) { return; }
   var seccion = caja.querySelector(".tb-insignias-grid");
   seccion = seccion ? seccion.closest(".tb-logros-sec") : null;
   if (!seccion) { return; }
+  var insigniasActuales = insigniasDe(me);
   var pr = extPrestigio(me);
   var pct = pr.hasta ? Math.round((pr.puntos - pr.desde) / (pr.hasta - pr.desde) * 100) : 100;
   var dest = Array.isArray(me.insignias_destacadas) ? me.insignias_destacadas : [];
@@ -34220,7 +34260,7 @@ renderLogros = function () {
     '<span class="tb-ext-barra"><i style="width:' + pct + '%"></i></span>' +
     '<p class="tb-muted">' + pr.puntos + " de prestigio" + (pr.hasta ? ". Te faltan " + (pr.hasta - pr.puntos) + " para «" + escapeHtml(pr.sigNombre) + "»." : ". Llegaste al rango más alto.") + "</p></div></div>" +
     '<div class="tb-ext-cab-tiers">' + ["mitica", "epica", "oro", "plata", "bronce"].map(function (t) {
-      var n = insigniasDe(me).filter(function (x) { return x.ok && x.b.tier === t; }).length;
+      var n = insigniasActuales.filter(function (x) { return x.ok && x.b.tier === t; }).length;
       return '<span class="tb-ext-tier ' + t + '"><b>' + n + "</b>" + TIER_NOMBRE[t] + "</span>";
     }).join("") + "</div>" +
     '<div class="tb-ext-cab-dest"><small>Tus destacadas (se ven en tu tarjeta)</small><div>' + [0, 1, 2].map(function (i) {
@@ -34247,7 +34287,7 @@ renderLogros = function () {
     extEnlazarEspeciales();
     return;
   }
-  var todas = insigniasDe(me).filter(function (x) { return logrosFiltro === "todas" || x.b.cat === logrosFiltro; });
+  var todas = insigniasActuales.filter(function (x) { return logrosFiltro === "todas" || x.b.cat === logrosFiltro; });
   todas.sort(function (a, b) { return (b.ok - a.ok) || (EXT_ORDEN[a.b.tier] - EXT_ORDEN[b.b.tier]); });
   var fmt = function (n) { return Number(n).toLocaleString("es"); };
   grid.innerHTML = todas.map(function (x) {
@@ -34267,7 +34307,7 @@ renderLogros = function () {
   }).join("");
 };
 function extFamaHtml() {
-  var lista = profiles.filter(function (p) { return p.role !== "owner" && (p.status || "active") === "active"; })
+  var lista = profiles.filter(function (p) { return (p.status || "active") === "active"; })
     .map(function (p) { return { p: p, pr: extPrestigio(p) }; })
     .sort(function (a, b) { return b.pr.puntos - a.pr.puntos; }).slice(0, 10);
   return '<ol class="tb-ext-fama">' + lista.map(function (x, i) {
@@ -34464,12 +34504,21 @@ async function extIniciar() {
     client.from("tb_talentos").select("id,autor,destacado").eq("estado", "publicado").limit(500),
     client.from("tb_talento_aplausos").select("talento_id")
   ]);
-  ext.talPub = (r[1] && !r[1].error && r[1].data) || [];
-  ext.aplausos = (r[2] && !r[2].error && r[2].data) || [];
+  if (r[1] && !r[1].error) { ext.talPub = r[1].data || []; }
+  if (r[2] && !r[2].error) { ext.aplausos = r[2].data || []; }
   comRefrescarTarjetas();
   setTimeout(revisarInsigniasNuevas, 1500);
 }
+var extLogrosCargando = null;
 function extVista(nombre) {
+  if (nombre === "logros" && !extLogrosCargando) {
+    // Actualiza las fuentes de insignias al volver a la vista, sin escribir datos.
+    extLogrosCargando = Promise.all([
+      herCargar(), estCargar(), loadRoles(), extIniciar()
+    ]).then(function () { comRefrescarTarjetas(); })
+      .catch(function (error) { console.warn("[logros] actualización", error); })
+      .finally(function () { extLogrosCargando = null; });
+  }
   if (nombre === "novedades") {
     novVistaRender();
     novCargarTodas().then(novVistaRender);
