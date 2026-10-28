@@ -13233,7 +13233,7 @@ return "<tr><td>" + escapeHtml(profile ? profile.display_name : "(borrado)") +
 }).join("") + "</tbody></table></div>";
 }
 function rankedProfiles() {
-return profiles.slice().sort(function (a, b) {
+return profiles.filter(function (p) { return p.role !== "owner"; }).sort(function (a, b) {
 var diff = (b.completed_tasks || 0) - (a.completed_tasks || 0);
 if (diff !== 0) { return diff; }
 return String(a.display_name || "").localeCompare(String(b.display_name || ""));
