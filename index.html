@@ -28321,7 +28321,7 @@ insigniaSvg(x.b, !x.ok) +
 '<span class="tb-insignia-tier">' + TIER_NOMBRE[x.b.tier] + "</span>" +
 "<h4>" + escapeHtml(x.b.n) + "</h4><p>" + escapeHtml(x.b.c) + "</p>" +
 (x.ok ? '<small class="tb-insignia-hecha">✔ Desbloqueada</small>'
-: '<div class="tb-mis-barra"><i style="width:' + pct + '%"></i></div><small class="tb-muted">' + fmt(Math.min(x.v, x.b.meta)) + " / " + fmt(x.b.meta) + "</small>") +
+: '<div class="tb-mis-barra"><i style="width:' + pct + '%"></i></div><small class="tb-muted">' + fmt(Math.min(x.v, x.b.meta)) + " / " + fmt(x.b.meta) + "</small>" + ownerLogroBoton(x.b)) +
 "</article>";
 }).join("") + "</div>";
 caja.innerHTML = cumple + '<section class="tb-card tb-logros-sec">' + misHtml + "</section>" + llaveSeccionHtml() + '<section class="tb-card tb-logros-sec">' + insHtml + "</section>";
@@ -28331,6 +28331,254 @@ $$("[data-logros-cat]").forEach(function (b) { b.onclick = function () { logrosF
 var bc = $("#tb-logros-cumple");
 if (bc) { bc.onclick = mostrarModalCumple; }
 }
+/* ---------- Owner: botón «Conseguir logro» ----------
+   Solo el owner lo ve (isOwner) y solo actúa sobre su propia cuenta. Cada paso usa una función
+   que el servidor ya restringe al owner (owner_set_*, owner_conseguir_logro) o columnas del propio perfil.
+   Nunca baja valores: solo sube lo que falta. Los logros que dependen de otras personas
+   (hermandad, votos, aplausos, rankings, roles, cumpleaños, llave dorada) no muestran el botón. */
+var OWNER_LOGRO_ARCADE = {
+  tetris1k: ["tetris"], tetris5k: ["tetris"], tetris15k: ["tetris"],
+  wordle1: ["wordle", "ganadas"], wordle10: ["wordle", "ganadas"], wordle30: ["wordle", "ganadas"],
+  wordle7: ["wordle", "mejorRacha"],
+  gato1: ["gatoG"], gato10: ["gatoG"], gato30: ["gatoG"],
+  vf500: ["vf", "mixta"], vf2000: ["vf", "mixta"]
+};
+var OWNER_LOGRO_SETS = { set_racha: "Racha", set_juegos: "Juegos", set_tareas: "Tareas" };
+(function () {
+  var st = document.createElement("style");
+  st.textContent = "#tablon-root .tb-owner-logro{margin-top:10px;width:100%;font-size:12px;font-weight:750;padding:8px 10px;cursor:pointer}" +
+    "#tablon-root .tb-owner-logro:disabled{opacity:.6;cursor:default}";
+  document.head.appendChild(st);
+})();
+function ownerLogroNum(v) { return Number(v) || 0; }
+function ownerLogroFalta(b) { try { return ownerLogroNum(b.v(me)) < b.meta; } catch (e) { return false; } }
+function ownerLogroTengo(kind) { var l = me[COLLECTIONS[kind].owned]; return Array.isArray(l) ? l : []; }
+function ownerLogroEsCarta(id) { return /^(carta|shiny)_/.test(id); }
+function ownerLogroCandidatos(kind, filtro, yaElegidos) {
+  var items = COLLECTIONS[kind].items, tengo = ownerLogroTengo(kind).concat(yaElegidos || []);
+  return Object.keys(items).filter(function (id) { return tengo.indexOf(id) < 0 && filtro(id, items[id] || {}); });
+}
+function ownerLogroNormal(id, it) { return !it.soloRegalo && it.rarity !== "Exclusivo" && !ownerLogroEsCarta(id); }
+function ownerLogroCartas(re, yaElegidos) {
+  var tengo = ownerLogroTengo("card").concat(yaElegidos || []);
+  return Object.keys(CARDS).filter(function (id) { return re.test(id) && tengo.indexOf(id) < 0; });
+}
+// Construye lo necesario para un logro dentro de «acc». Devuelve false si no se puede.
+function ownerLogroArmar(b, acc) {
+  var id = b.id, m = b.meta;
+  function elegidos(kind) { return acc.agregar[COLLECTIONS[kind].owned] || []; }
+  function sumar(kind, ids) { var f = COLLECTIONS[kind].owned; acc.agregar[f] = (acc.agregar[f] || []).concat(ids); }
+  function paso(linea, fn) { acc.lineas.push(linea); acc.pasos.push(fn); }
+  if (b.especial) {
+    paso("Entregarte la insignia especial «" + b.n + "»", async function () {
+      var r = await client.from("tb_insignias_otorgadas").insert({ user_id: me.id, insignia_id: b.espId, motivo: "Owner" });
+      if (r.error) { throw r.error; }
+      if (typeof ext !== "undefined" && ext && Array.isArray(ext.otorgadas)) { ext.otorgadas.push({ user_id: me.id, insignia_id: b.espId, motivo: "Owner" }); }
+      return {};
+    });
+    return true;
+  }
+  if (OWNER_LOGRO_SETS[id]) {
+    var hijos = INSIGNIAS.filter(function (x) { return x.cat === OWNER_LOGRO_SETS[id] && !x.especial && x.id !== id && ownerLogroFalta(x); });
+    // Solo la meta más alta de cada grupo (tareas, racha, un juego…): las menores quedan cubiertas.
+    hijos.sort(function (a, b2) { return b2.meta - a.meta; });
+    var grupos = {};
+    hijos = hijos.filter(function (x) {
+      var k = OWNER_LOGRO_ARCADE[x.id] ? OWNER_LOGRO_ARCADE[x.id].join(".") : x.id.replace(/\d+k?$/, "");
+      if (grupos[k]) { return false; }
+      grupos[k] = true; return true;
+    });
+    for (var i = 0; i < hijos.length; i++) { if (!ownerLogroArmar(hijos[i], acc)) { return false; } }
+    return true;
+  }
+  if (/^tarea\d+$/.test(id)) {
+    paso("Tareas cumplidas: " + m, async function () {
+      if (ownerLogroNum(me.completed_tasks) >= m) { return {}; }
+      var r = await client.rpc("owner_set_completions", { target_user: me.id, valor: m, modo: "fijar" });
+      if (r.error) { throw r.error; }
+      return { completed_tasks: r.data };
+    });
+    return true;
+  }
+  if (/^racha\d+$/.test(id)) {
+    paso("Racha máxima: " + m + " días", async function () {
+      if (ownerLogroNum(me.streak_best) >= m) { return {}; }
+      var dias = Math.max(ownerLogroNum(me.streak_count), m);
+      var r = await client.rpc("owner_set_streak", { target_user: me.id, new_streak: dias, new_shields: ownerLogroNum(me.streak_shields) });
+      if (r.error) { throw r.error; }
+      return { streak_count: dias, streak_best: Math.max(ownerLogroNum(me.streak_best), dias) };
+    });
+    return true;
+  }
+  if (/^nivel\d+$/.test(id)) {
+    paso("Nivel " + m, async function () {
+      if (ownerLogroNum(me.level) >= m) { return {}; }
+      var r = await client.rpc("owner_set_level", { target_user: me.id, new_level: m });
+      if (r.error) { throw r.error; }
+      return { level: m };
+    });
+    return true;
+  }
+  if (OWNER_LOGRO_ARCADE[id]) {
+    var ruta = OWNER_LOGRO_ARCADE[id];
+    paso("Récord de juego: " + m.toLocaleString("es"), async function () {
+      var ar = JSON.parse(JSON.stringify(arcadeDe(me)));
+      if (ruta.length === 1) { ar[ruta[0]] = Math.max(ownerLogroNum(ar[ruta[0]]), m); }
+      else {
+        var sub = ar[ruta[0]];
+        if (typeof sub === "number") { sub = { mixta: sub }; }
+        if (!sub || typeof sub !== "object") { sub = {}; }
+        sub[ruta[1]] = Math.max(ownerLogroNum(sub[ruta[1]]), m);
+        ar[ruta[0]] = sub;
+      }
+      var r = await client.from("profiles").update({ arcade: ar }).eq("id", me.id);
+      if (r.error) { throw r.error; }
+      return { arcade: ar };
+    });
+    return true;
+  }
+  if (/^mis\d+$/.test(id)) {
+    acc.misiones = Math.max(acc.misiones || 0, m);
+    acc.lineas.push("Misiones semanales reclamadas: " + m);
+    return true;
+  }
+  if (/^col\d+$/.test(id) || id === "sec_caras") {
+    var kinds = id === "sec_caras" ? ["avatar"] : ["avatar", "banner", "border", "motion", "card"];
+    var tengoAhora = id === "sec_caras" ? ownerLogroTengo("avatar").length + elegidos("avatar").length : totalCosmeticos(me) + kinds.reduce(function (n, k) { return n + elegidos(k).length; }, 0);
+    var faltan = m - tengoAhora;
+    if (faltan <= 0) { return true; }
+    [ownerLogroNormal, function (x, it) { return !ownerLogroEsCarta(x); }].forEach(function (filtro) {
+      kinds.forEach(function (k) {
+        if (faltan <= 0) { return; }
+        var c = ownerLogroCandidatos(k, filtro, elegidos(k)).slice(0, faltan);
+        if (c.length) { sumar(k, c); faltan -= c.length; }
+      });
+    });
+    if (faltan > 0) { return false; }
+    acc.lineas.push((id === "sec_caras" ? "Fotos de perfil" : "Cosméticos") + " añadidos hasta llegar a " + m);
+    return true;
+  }
+  if (id === "excl3") {
+    var faltanE = m - exclusivosDe(me);
+    ["avatar", "banner", "border", "motion", "card"].forEach(function (k) {
+      if (faltanE <= 0) { return; }
+      var c = ownerLogroCandidatos(k, function (x, it) { return it.rarity === "Exclusivo"; }, elegidos(k)).slice(0, faltanE);
+      if (c.length) { sumar("card" === k ? "card" : k, c); faltanE -= c.length; }
+    });
+    if (faltanE > 0) { return false; }
+    acc.lineas.push("Cosméticos exclusivos: hasta " + m);
+    return true;
+  }
+  var cartaRe = { epica1: /^carta_ep26_/, shiny1: /^shiny_ep26_/, cosecha: /^carta_ep26_halloween$/,
+    ley1: /^carta_ly_/, ley_shiny: /^shiny_ly_/, sec_cadejo: /^carta_ly_cadejo$/, sec_mascara: /^carta_ly_gueguense$/ }[id];
+  if (cartaRe) {
+    var cs = ownerLogroCartas(cartaRe, elegidos("card"));
+    if (!cs.length) { return false; }
+    sumar("card", [cs[0]]);
+    acc.lineas.push("Carta: " + ((CARDS[cs[0]] && CARDS[cs[0]].name) || cs[0]));
+    return true;
+  }
+  if (id === "epicas5") {
+    var vistos = {};
+    ownerLogroTengo("card").concat(elegidos("card")).forEach(function (c) { var mm = /^(carta|shiny)_(.+)$/.exec(c); if (mm) { vistos[mm[2]] = true; } });
+    var faltanC = m - Object.keys(vistos).length;
+    if (faltanC <= 0) { return true; }
+    var nuevas = [];
+    ownerLogroCartas(/^carta_/, elegidos("card")).forEach(function (c) {
+      var slug = c.replace(/^carta_/, "");
+      if (faltanC > 0 && !vistos[slug]) { vistos[slug] = true; nuevas.push(c); faltanC--; }
+    });
+    if (faltanC > 0) { return false; }
+    sumar("card", nuevas);
+    acc.lineas.push("Cartas épicas distintas: " + nuevas.length + " más");
+    return true;
+  }
+  if (id === "bio" || id === "estilo") {
+    if (!me.bio) {
+      acc.lineas.push("Escribir tu biografía (te la pido al confirmar)");
+      acc.pedirBio = true;
+    }
+    if (id === "estilo") {
+      [["avatar", ["avatar"]], ["banner", ["banner", "motion"]], ["border", ["border"]]].forEach(function (par) {
+        var kind = par[0];
+        if (par[1].some(function (k) { return equippedOf(me, k); })) { return; }
+        var pool = ownerLogroTengo(kind).filter(function (x) { return COLLECTIONS[kind].items[x]; });
+        var elegido = pool[0];
+        if (!elegido) {
+          var c = ownerLogroCandidatos(kind, ownerLogroNormal, elegidos(kind));
+          if (!c.length) { return; }
+          elegido = c[0]; sumar(kind, [elegido]);
+        }
+        acc.equipar[COLLECTIONS[kind].equipped] = elegido;
+        acc.lineas.push("Equipar " + COLLECTIONS[kind].label.toLowerCase() + ": " + itemName(kind, elegido));
+      });
+    }
+    return true;
+  }
+  return false;
+}
+function ownerLogroPlan(b) {
+  if (!isOwner() || !b || b.id === "llave" || !ownerLogroFalta(b)) { return null; }
+  var acc = { lineas: [], pasos: [], agregar: {}, equipar: {}, misiones: 0, pedirBio: false };
+  var ok = false;
+  try { ok = ownerLogroArmar(b, acc); } catch (e) { ok = false; }
+  if (!ok || (!acc.lineas.length && !acc.pasos.length)) { return null; }
+  return acc;
+}
+function ownerLogroBoton(b) {
+  if (!isOwner()) { return ""; }
+  return ownerLogroPlan(b) ? '<button type="button" class="tb-secondary tb-owner-logro" data-owner-logro="' + escapeHtml(b.id) + '">👑 Conseguir logro</button>' : "";
+}
+function ownerLogroAplicarLocal(c) {
+  if (!c) { return; }
+  Object.assign(me, c);
+  var pf = profiles.find(function (x) { return x.id === me.id; });
+  if (pf && pf !== me) { Object.assign(pf, c); }
+}
+async function ownerConseguirLogro(id, boton) {
+  if (!isOwner()) { return; }
+  var b = INSIGNIAS.filter(function (x) { return x.id === id; })[0];
+  var plan = ownerLogroPlan(b);
+  if (!plan) { avisoToast("Este logro no se puede conseguir desde aquí."); return; }
+  if (!window.confirm("Se aplicará a tu cuenta (solo owner):\n\n• " + plan.lineas.join("\n• ") + "\n\n¿Conseguir «" + b.n + "»?")) { return; }
+  var bio = null;
+  if (plan.pedirBio) {
+    bio = window.prompt("Escribe tu biografía (máx. 200 caracteres):", "");
+    if (!bio || !bio.trim()) { avisoToast("Cancelado: hace falta una biografía."); return; }
+    bio = bio.trim().slice(0, 200);
+  }
+  if (boton) { boton.disabled = true; boton.textContent = "Aplicando…"; }
+  try {
+    for (var i = 0; i < plan.pasos.length; i++) { ownerLogroAplicarLocal(await plan.pasos[i]()); }
+    if (plan.misiones || Object.keys(plan.agregar).length) {
+      var cambios = JSON.parse(JSON.stringify(plan.agregar));
+      if (plan.misiones) { cambios.misiones_total = plan.misiones; }
+      var r = await client.rpc("owner_conseguir_logro", { p_cambios: cambios });
+      if (r.error) { throw r.error; }
+      ownerLogroAplicarLocal(r.data);
+    }
+    var directo = Object.assign({}, plan.equipar);
+    if (bio) { directo.bio = bio; }
+    if (Object.keys(directo).length) {
+      var r2 = await client.from("profiles").update(directo).eq("id", me.id);
+      if (r2.error) { throw r2.error; }
+      ownerLogroAplicarLocal(directo);
+    }
+    avisoToast("👑 Logro conseguido: " + b.n);
+  } catch (e) {
+    alert("No se pudo completar: " + ((e && e.message) || e));
+  }
+  try { if (typeof ext !== "undefined" && ext) { ext.rarezaClave = ""; } } catch (e) { /* nada */ }
+  try { renderMyProfile(); renderProfiles(); renderRanking(); } catch (e) { /* nada */ }
+  try { pintarRacha(); } catch (e) { /* nada */ }
+  renderLogros();
+  setTimeout(revisarInsigniasNuevas, 300);
+}
+
+root.addEventListener("click", function (ev) {
+  var bt = ev.target.closest && ev.target.closest("[data-owner-logro]");
+  if (bt && root.contains(bt) && !bt.disabled) { ownerConseguirLogro(bt.dataset.ownerLogro, bt); }
+});
 // Se llama al terminar de cargar el tablón.
 async function iniciarLogros() {
 try { await sincronizarMisiones(); } catch (e) { /* sin catálogo se reintenta al próximo ingreso */ }
@@ -34424,7 +34672,7 @@ renderLogros = function () {
       "<h4>" + escapeHtml(secreta ? "Insignia secreta" : b.n) + "</h4><p>" + escapeHtml(secreta ? "Pista: " + (b.pista || "Sigue explorando el tablón.") : b.c) + "</p>" +
       '<small class="tb-ext-rareza">' + escapeHtml(extRarezaTexto(b.id)) + "</small>" +
       (x.ok ? '<div class="tb-ext-ok"><small class="tb-insignia-hecha">✔ Desbloqueada</small><button type="button" class="tb-ext-fijar' + (fijada ? " on" : "") + '" data-ext-fijar="' + escapeHtml(b.id) + '" aria-pressed="' + fijada + '">' + (fijada ? "Destacada" : "Destacar") + "</button></div>"
-        : secreta ? "" : '<div class="tb-mis-barra"><i style="width:' + pct + '%"></i></div><small class="tb-muted">' + fmt(Math.min(x.v, b.meta)) + " / " + fmt(b.meta) + "</small>") +
+        : (secreta ? "" : '<div class="tb-mis-barra"><i style="width:' + pct + '%"></i></div><small class="tb-muted">' + fmt(Math.min(x.v, b.meta)) + " / " + fmt(b.meta) + "</small>") + ownerLogroBoton(b)) +
       "</article>";
   }).join("");
 };
