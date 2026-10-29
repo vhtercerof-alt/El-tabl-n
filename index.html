@@ -35626,6 +35626,284 @@ haWrite = function (h, kind, value) {
   }
 };
 
+/* ===================================================================
+   v25 · TROFEOS Y TORNEOS DE HERMANDADES
+   Requiere la migración her_v25_trofeos_torneos (tb_her_trofeos,
+   tb_her_torneos, tb_her_torneo_equipos, tb_her_palmares y sus funciones).
+   =================================================================== */
+var TR = { trofeos: [], torneos: [], equipos: [], palmares: [], tablas: {}, listo: false, cargando: false, abierto: null };
+(function () {
+  var st = document.createElement("style");
+  st.textContent =
+    "#tablon-root .tr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin:14px 0}" +
+    "#tablon-root .tr-trofeo{border:1px solid var(--line);border-radius:15px;padding:14px;text-align:center;background:#ffffff08;position:relative}" +
+    "#tablon-root .tr-trofeo svg{width:64px;height:76px;display:block;margin:0 auto 8px}" +
+    "#tablon-root .tr-trofeo b{display:block;font-size:13px}" +
+    "#tablon-root .tr-trofeo small{display:block;color:var(--muted);font-size:11px;margin-top:3px;line-height:1.45}" +
+    "#tablon-root .tr-trofeo .tr-x{position:absolute;top:6px;right:8px;background:none;border:0;color:var(--muted);cursor:pointer;font:inherit}" +
+    "#tablon-root .tr-vitrina{display:flex;flex-wrap:wrap;gap:14px;margin-top:6px}" +
+    "#tablon-root .tr-pieza{text-align:center;width:88px}" +
+    "#tablon-root .tr-pieza svg{width:54px;height:64px}" +
+    "#tablon-root .tr-pieza b{display:block;font-size:11.5px;margin-top:4px}" +
+    "#tablon-root .tr-pieza small{display:block;color:var(--muted);font-size:10px}" +
+    "#tablon-root .tr-pieza .tr-x2{display:inline-block;font-size:10.5px;color:var(--muted)}" +
+    "#tablon-root .tr-torneo{border:1px solid var(--line);border-radius:15px;padding:16px;margin-bottom:12px;background:#ffffff06}" +
+    "#tablon-root .tr-torneo header{display:flex;align-items:center;gap:12px;justify-content:space-between;flex-wrap:wrap}" +
+    "#tablon-root .tr-torneo header h4{margin:0;font-size:16px}" +
+    "#tablon-root .tr-estado{font-size:11px;font-weight:750;border-radius:999px;padding:3px 10px;border:1px solid var(--line);color:var(--muted)}" +
+    "#tablon-root .tr-estado.vivo{color:#5fd7a4;border-color:#5fd7a466}" +
+    "#tablon-root .tr-estado.fin{color:#ffcf5c;border-color:#ffcf5c66}" +
+    "#tablon-root .tr-form{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin-top:12px}" +
+    "#tablon-root .tr-form input,#tablon-root .tr-form select{border-radius:11px;border:1px solid var(--line);background:#ffffff08;color:var(--text);padding:9px 12px;font:inherit;font-size:12.5px}" +
+    "#tablon-root .tr-form input[type=text]{flex:1;min-width:160px}";
+  document.head.appendChild(st);
+})();
+var TR_COLORES = { oro: ["#fff3b0", "#f0b429", "#7a4b00"], plata: ["#ffffff", "#aebcd6", "#4a5573"],
+  bronce: ["#f6c79a", "#b5702f", "#4e2a0c"], esmeralda: ["#b6ffe2", "#28c98d", "#0b4b35"],
+  zafiro: ["#bcd9ff", "#3b7ddd", "#0d2a5c"], rubi: ["#ffc2cf", "#e0315a", "#5c0b1d"] };
+var TR_FORMAS = ["copa", "estrella", "escudo", "balon", "laurel"];
+function trCol(c) { return TR_COLORES[c] || TR_COLORES.oro; }
+function trSvg(t, chico) {
+  var c = trCol(t.color), id = "trg" + (++comSvgN);
+  var cuerpo = {
+    copa: '<path d="M30 18h40v22a20 20 0 01-40 0z" fill="url(#' + id + ')"/>' +
+      '<path d="M30 22h-9a11 11 0 0011 13M70 22h9a11 11 0 01-11 13" fill="none" stroke="url(#' + id + ')" stroke-width="5"/>' +
+      '<rect x="45" y="58" width="10" height="14" fill="url(#' + id + ')"/><rect x="31" y="72" width="38" height="9" rx="3" fill="url(#' + id + ')"/>',
+    estrella: '<path d="M50 14l10 22 24 3-17.5 17 4.5 24L50 68.5 29 80l4.5-24L16 39l24-3z" fill="url(#' + id + ')"/>',
+    escudo: '<path d="M50 12l30 10v22c0 21-13 35-30 42-17-7-30-21-30-42V22z" fill="url(#' + id + ')"/>' +
+      '<path d="M50 30l5 11 12 1.5-9 8.5 2.5 12L50 57l-10.5 6 2.5-12-9-8.5L45 41z" fill="#ffffff55"/>',
+    balon: '<circle cx="50" cy="46" r="30" fill="url(#' + id + ')"/><path d="M50 26l10 7-4 12H44l-4-12z" fill="#00000055"/>' +
+      '<path d="M26 40l9 7-3 12-9-2zM74 40l-9 7 3 12 9-2zM38 70l6-9h12l6 9-12 6z" fill="#00000033"/>',
+    laurel: '<path d="M50 16c12 8 18 20 18 32 0 13-8 24-18 30-10-6-18-17-18-30 0-12 6-24 18-32z" fill="url(#' + id + ')"/>' +
+      '<path d="M50 24v52" stroke="#00000044" stroke-width="3"/>'
+  }[TR_FORMAS.indexOf(t.forma) >= 0 ? t.forma : "copa"];
+  return '<svg viewBox="0 0 100 ' + (chico ? 92 : 92) + '" role="img" aria-label="Trofeo ' + escapeHtml(t.nombre || "") + '">' +
+    '<defs><linearGradient id="' + id + '" x1="0" y1="0" x2="0" y2="1">' +
+    '<stop offset="0" stop-color="' + c[0] + '"/><stop offset=".55" stop-color="' + c[1] + '"/><stop offset="1" stop-color="' + c[2] + '"/>' +
+    "</linearGradient></defs>" + cuerpo + "</svg>";
+}
+function trPorId(id) { return TR.trofeos.filter(function (t) { return t.id === id; })[0] || null; }
+function trEquiposDe(tid) { return TR.equipos.filter(function (e) { return e.torneo_id === tid; }); }
+function trPalmaresDe(hid) { return TR.palmares.filter(function (p) { return p.hermandad_id === hid; }); }
+async function trCargar() {
+  if (!client || !me) { return; }
+  TR.cargando = true;
+  var r = await Promise.all([
+    client.from("tb_her_trofeos").select("id,nombre,descripcion,forma,color,clave").order("creado_en"),
+    client.from("tb_her_torneos").select("id,nombre,descripcion,trofeo_id,metrica,inicio,fin,estado,campeona").order("creado_en", { ascending: false }).limit(30),
+    client.from("tb_her_torneo_equipos").select("torneo_id,hermandad_id,puntos"),
+    client.from("tb_her_palmares").select("id,hermandad_id,trofeo_id,torneo_id,motivo,ganado_en").order("ganado_en", { ascending: false }).limit(300)
+  ]);
+  if (r[0] && !r[0].error) { TR.trofeos = r[0].data || []; }
+  if (r[1] && !r[1].error) { TR.torneos = r[1].data || []; }
+  if (r[2] && !r[2].error) { TR.equipos = r[2].data || []; }
+  if (r[3] && !r[3].error) { TR.palmares = r[3].data || []; }
+  TR.tablas = {};
+  for (var i = 0; i < TR.torneos.length && i < 8; i++) {
+    var t = TR.torneos[i];
+    var tb = await client.rpc("tb_her_torneo_tabla", { p_torneo: t.id });
+    TR.tablas[t.id] = tb && !tb.error ? (tb.data || []) : [];
+  }
+  TR.listo = true; TR.cargando = false;
+}
+function trTablaHtml(t) {
+  var filas = (TR.tablas[t.id] || []).slice().sort(function (a, b) { return (b.puntos || 0) - (a.puntos || 0); });
+  if (!filas.length) { return '<p class="hx-note">Todavía no hay hermandades inscritas.</p>'; }
+  var tope = Math.max(1, filas[0].puntos || 1);
+  var staff = puede("hermandades");
+  return '<ul class="hv-sem">' + filas.map(function (f, i) {
+    var h = herPorId(f.hermandad_id);
+    return "<li><b>" + (i + 1) + "</b><span>" + escapeHtml(h ? h.nombre : "—") +
+      (t.campeona === f.hermandad_id ? " 👑" : "") + "</span>" +
+      '<span class="hv-barra"><i style="width:' + Math.round((f.puntos || 0) / tope * 100) + '%"></i></span>' +
+      (staff && t.metrica === "manual" && t.estado !== "terminado"
+        ? '<input type="number" min="0" max="9999" value="' + (f.puntos || 0) + '" style="width:74px" data-tr-pts="' + escapeHtml(t.id) + '" data-tr-her="' + escapeHtml(f.hermandad_id) + '" aria-label="Puntos de ' + escapeHtml(h ? h.nombre : "") + '">'
+        : "<small>" + (f.puntos || 0) + "</small>") + "</li>";
+  }).join("") + "</ul>";
+}
+function trTorneoHtml(t) {
+  var trofeo = trPorId(t.trofeo_id);
+  var campeona = t.campeona ? herPorId(t.campeona) : null;
+  var staff = puede("hermandades");
+  return '<article class="tr-torneo"><header>' +
+    (trofeo ? '<span style="width:46px;flex:0 0 auto">' + trSvg(trofeo, true) + "</span>" : "") +
+    "<div style=\"flex:1;min-width:160px\"><h4>" + escapeHtml(t.nombre) + "</h4>" +
+    '<small class="hx-note">' + escapeHtml(t.descripcion || (t.metrica === "manual" ? "Los puntos los pone el staff." : "Cuenta las tareas cumplidas durante el torneo.")) +
+    (trofeo ? " · Premio: " + escapeHtml(trofeo.nombre) : "") + "</small></div>" +
+    '<span class="tr-estado ' + (t.estado === "terminado" ? "fin" : "vivo") + '">' +
+    (t.estado === "terminado" ? (campeona ? "🏆 " + escapeHtml(campeona.nombre) : "Terminado") : "En juego") + "</span></header>" +
+    trTablaHtml(t) +
+    (staff && t.estado !== "terminado"
+      ? '<div class="hx-actions">' +
+        (t.metrica === "manual" ? '<button type="button" class="hx-btn" data-tr-guardar="' + escapeHtml(t.id) + '">Guardar puntos</button>' : "") +
+        '<button type="button" class="hx-btn primary" data-tr-cerrar="' + escapeHtml(t.id) + '">Cerrar y entregar el trofeo</button>' +
+        '<button type="button" class="hx-btn" data-tr-borrar="' + escapeHtml(t.id) + '">Borrar torneo</button></div>'
+      : "") + "</article>";
+}
+function trTrofeosHtml() {
+  if (!puede("hermandades")) { return ""; }
+  return '<section class="tb-card hx-panel hv-panel"><div class="hx-head"><div><h3>Trofeos</h3>' +
+    '<p class="hx-note">Crea los premios que vas a repartir. Después los asignas a un torneo.</p></div></div>' +
+    '<div class="tr-grid">' + TR.trofeos.map(function (t) {
+      return '<div class="tr-trofeo">' + (t.clave ? "" : '<button type="button" class="tr-x" data-tr-trofeo-borrar="' + escapeHtml(t.id) + '" aria-label="Borrar el trofeo ' + escapeHtml(t.nombre) + '">✕</button>') +
+        trSvg(t) + "<b>" + escapeHtml(t.nombre) + "</b><small>" + escapeHtml(t.descripcion || "") +
+        (t.clave === "laliga" ? "<br><i>Se entrega solo</i>" : "") + "</small></div>";
+    }).join("") + "</div>" +
+    '<div class="tr-form"><label class="tb-com-sr" for="tr-nombre">Nombre del trofeo</label>' +
+    '<input id="tr-nombre" type="text" maxlength="40" placeholder="Champions del salón">' +
+    '<label class="tb-com-sr" for="tr-forma">Forma</label><select id="tr-forma">' +
+    TR_FORMAS.map(function (f) { return '<option value="' + f + '">' + f.charAt(0).toUpperCase() + f.slice(1) + "</option>"; }).join("") + "</select>" +
+    '<label class="tb-com-sr" for="tr-color">Color</label><select id="tr-color">' +
+    Object.keys(TR_COLORES).map(function (c) { return '<option value="' + c + '">' + c.charAt(0).toUpperCase() + c.slice(1) + "</option>"; }).join("") + "</select>" +
+    '<label class="tb-com-sr" for="tr-desc">Descripción</label>' +
+    '<input id="tr-desc" type="text" maxlength="200" placeholder="Para el torneo de fin de mes">' +
+    '<button type="button" class="hx-btn primary" data-tr-trofeo-crear>Crear trofeo</button></div>' +
+    '<p class="hv-aviso tb-hidden" id="tr-aviso" role="status"></p></section>';
+}
+function trTorneosHtml() {
+  var vivos = TR.torneos.filter(function (t) { return t.estado !== "terminado"; });
+  var fin = TR.torneos.filter(function (t) { return t.estado === "terminado"; });
+  return '<section class="tb-card hx-panel hv-panel"><div class="hx-head"><div><h3>Torneos</h3>' +
+    '<p class="hx-note">Competencias entre hermandades. El ganador se queda con el trofeo en su vitrina.</p></div></div>' +
+    (vivos.length ? vivos.map(trTorneoHtml).join("") : '<p class="hx-note">No hay torneos en juego ahora mismo.</p>') +
+    (puede("hermandades")
+      ? '<div class="tr-form"><label class="tb-com-sr" for="trn-nombre">Nombre del torneo</label>' +
+        '<input id="trn-nombre" type="text" maxlength="60" placeholder="Champions de noviembre">' +
+        '<label class="tb-com-sr" for="trn-trofeo">Premio</label><select id="trn-trofeo">' +
+        '<option value="">Sin trofeo</option>' + TR.trofeos.map(function (t) {
+          return '<option value="' + escapeHtml(t.id) + '">' + escapeHtml(t.nombre) + "</option>";
+        }).join("") + "</select>" +
+        '<label class="tb-com-sr" for="trn-metrica">Cómo se puntúa</label><select id="trn-metrica">' +
+        '<option value="tareas">Automático: tareas cumplidas</option><option value="manual">Manual: yo pongo los puntos</option></select>' +
+        '<label class="tb-com-sr" for="trn-fin">Último día</label><input id="trn-fin" type="date">' +
+        '<button type="button" class="hx-btn primary" data-tr-torneo-crear>Crear torneo</button></div>' +
+        '<p class="hv-aviso tb-hidden" id="trn-aviso" role="status"></p>'
+      : "") +
+    (fin.length ? '<h4 style="margin:18px 0 10px;font-size:14px">Torneos terminados</h4>' + fin.slice(0, 6).map(trTorneoHtml).join("") : "") +
+    "</section>";
+}
+function trVitrinaHtml(h) {
+  var lista = trPalmaresDe(h.id);
+  var cuenta = {};
+  lista.forEach(function (p) { cuenta[p.trofeo_id] = (cuenta[p.trofeo_id] || 0) + 1; });
+  return '<section class="tb-card hx-panel hv-panel"><div class="hx-head"><div><h3>Vitrina de trofeos</h3>' +
+    '<p class="hx-note">Lo que ha ganado esta hermandad.</p></div><small>' + lista.length + (lista.length === 1 ? " trofeo" : " trofeos") + "</small></div>" +
+    (lista.length
+      ? '<div class="tr-vitrina">' + Object.keys(cuenta).map(function (id) {
+          var t = trPorId(id);
+          if (!t) { return ""; }
+          var ult = lista.filter(function (p) { return p.trofeo_id === id; })[0];
+          return '<div class="tr-pieza">' + trSvg(t, true) + "<b>" + escapeHtml(t.nombre) +
+            (cuenta[id] > 1 ? ' <span class="tr-x2">×' + cuenta[id] + "</span>" : "") + "</b>" +
+            "<small>" + escapeHtml(ult && ult.motivo ? ult.motivo : comFecha(ult ? ult.ganado_en : "")) + "</small></div>";
+        }).join("") + "</div>"
+      : '<p class="hx-note">Todavía sin trofeos. Ganen la temporada o un torneo y aparecerán aquí.</p>') +
+    "</section>";
+}
+/* ---------- Pegado a la vista ---------- */
+var trMineBase = hxMine;
+hxMine = function (m) {
+  var h = herPorId(m.hermandad_id);
+  var base = trMineBase(m);
+  return h ? trVitrinaHtml(h) + base : base;
+};
+var trRenderBase = herRender;
+herRender = function () {
+  var antes = HX.tab;
+  if (HX.tab === "torneos") { HX.tab = "explore"; }
+  trRenderBase();
+  HX.tab = antes;
+  var box = $("#tb-her-root");
+  if (!box || !me || !com.her.listo) { return; }
+  if (!TR.listo && !TR.cargando) { trCargar().then(function () { herRender(); }); }
+  var nav = box.querySelector(".hx-nav");
+  if (nav && !nav.querySelector('[data-hx-tab="torneos"]')) {
+    var b = document.createElement("button");
+    b.type = "button"; b.setAttribute("data-hx-tab", "torneos"); b.textContent = "Torneos y trofeos";
+    if (HX.tab === "torneos") { b.setAttribute("aria-current", "page"); }
+    nav.insertBefore(b, nav.querySelector("span"));
+  }
+  if (HX.tab === "torneos") {
+    var hx = box.querySelector(".hx");
+    if (hx) {
+      var header = hx.querySelector(".hx-mast"), navEl = hx.querySelector(".hx-nav");
+      hx.innerHTML = "";
+      if (header) { hx.appendChild(header); }
+      if (navEl) { hx.appendChild(navEl); }
+      hx.insertAdjacentHTML("beforeend", TR.listo ? trTorneosHtml() + trTrofeosHtml()
+        : '<div class="hx-empty" role="status">Cargando torneos…</div>');
+      navEl && navEl.querySelectorAll("[data-hx-tab]").forEach(function (x) {
+        if (x.dataset.hxTab === "torneos") { x.setAttribute("aria-current", "page"); } else { x.removeAttribute("aria-current"); }
+      });
+    }
+  }
+};
+/* ---------- Eventos ---------- */
+root.addEventListener("click", async function (ev) {
+  var b = ev.target.closest && ev.target.closest("button");
+  if (!b || !root.contains(b) || b.disabled) { return; }
+  var d = b.dataset;
+  function aviso(id, t) { var a = $(id); if (a) { a.textContent = t; a.classList.remove("tb-hidden"); } }
+  async function recargar() { TR.listo = false; await trCargar(); herRender(); }
+  if (d.trTrofeoCrear !== undefined) {
+    var n = ($("#tr-nombre") || {}).value || "";
+    if (!n.trim()) { aviso("#tr-aviso", "Ponle nombre al trofeo."); return; }
+    if (hvGroseria(n)) { aviso("#tr-aviso", "Ese nombre no se permite."); return; }
+    var r = await client.from("tb_her_trofeos").insert({
+      nombre: n.trim().slice(0, 40), descripcion: (($("#tr-desc") || {}).value || "").trim().slice(0, 200) || null,
+      forma: $("#tr-forma").value, color: $("#tr-color").value
+    });
+    if (r.error) { aviso("#tr-aviso", comError(r.error)); return; }
+    await recargar(); avisoToast("Trofeo creado."); return;
+  }
+  if (d.trTrofeoBorrar) {
+    if (!window.confirm("¿Borrar este trofeo? También desaparece de las vitrinas donde se entregó.")) { return; }
+    var r2 = await client.from("tb_her_trofeos").delete().eq("id", d.trTrofeoBorrar);
+    if (r2.error) { avisoToast(comError(r2.error)); return; }
+    await recargar(); return;
+  }
+  if (d.trTorneoCrear !== undefined) {
+    var nt = ($("#trn-nombre") || {}).value || "";
+    if (!nt.trim()) { aviso("#trn-aviso", "Ponle nombre al torneo."); return; }
+    if (hvGroseria(nt)) { aviso("#trn-aviso", "Ese nombre no se permite."); return; }
+    var r3 = await client.rpc("tb_her_torneo_crear", {
+      p_nombre: nt.trim(), p_descripcion: null, p_trofeo: $("#trn-trofeo").value || null,
+      p_metrica: $("#trn-metrica").value, p_fin: $("#trn-fin").value || null, p_equipos: null
+    });
+    if (r3.error) { aviso("#trn-aviso", comError(r3.error)); return; }
+    await recargar(); avisoToast("Torneo creado con todas las hermandades."); return;
+  }
+  if (d.trGuardar) {
+    var pend = $$('[data-tr-pts="' + d.trGuardar + '"]');
+    for (var i = 0; i < pend.length; i++) {
+      var g = await client.rpc("tb_her_torneo_puntos", {
+        p_torneo: d.trGuardar, p_hermandad: pend[i].dataset.trHer, p_puntos: Number(pend[i].value) || 0
+      });
+      if (g.error) { avisoToast(comError(g.error)); return; }
+    }
+    await recargar(); avisoToast("Puntos guardados."); return;
+  }
+  if (d.trCerrar) {
+    if (!window.confirm("Se cierra el torneo y el trofeo pasa a la vitrina de la hermandad que va primera. ¿Seguir?")) { return; }
+    var c = await client.rpc("tb_her_torneo_cerrar", { p_torneo: d.trCerrar, p_campeona: null });
+    if (c.error) { avisoToast(comError(c.error)); return; }
+    await recargar();
+    avisoToast("🏆 Torneo cerrado."); return;
+  }
+  if (d.trBorrar) {
+    if (!window.confirm("¿Borrar este torneo? Los trofeos ya entregados se quedan en las vitrinas.")) { return; }
+    var r4 = await client.from("tb_her_torneos").delete().eq("id", d.trBorrar);
+    if (r4.error) { avisoToast(comError(r4.error)); return; }
+    await recargar(); return;
+  }
+});
+/* Al cerrar la temporada también se entrega LaLiga: hay que releer trofeos. */
+var trCerrarSemanaRefresco = true;
+root.addEventListener("click", function (ev) {
+  var b = ev.target.closest && ev.target.closest("[data-hv-cerrar]");
+  if (b && trCerrarSemanaRefresco) { setTimeout(function () { TR.listo = false; trCargar().then(herRender); }, 1200); }
+}, true);
+
 })();
 </script>
 <script id="tb-halloween-runtime">
