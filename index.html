@@ -16002,7 +16002,7 @@ sale.classList.remove("on");
 capaActiva = capaActiva === "a" ? "b" : "a";
 }
 var TITULAR = "Víctor Hugo";
-var VERSION_TERMINOS = "1.1";
+var VERSION_TERMINOS = "1.2";
 var TEXTO_TERMINOS =
 "<h4>1. Qué es El tablón</h4>" +
 "<p>El tablón es un espacio privado y sin fines de lucro creado para " +
@@ -16019,6 +16019,14 @@ var TEXTO_TERMINOS =
 "vulnerar la seguridad del sitio; y usar los datos de otros usuarios " +
 "fuera de El tablón. El incumplimiento puede terminar en la eliminación " +
 "de la cuenta sin aviso previo.</p>" +
+"<h4>3 bis. Chat de las hermandades</h4>" +
+"<p>Las hermandades tienen un chat privado entre sus miembros. Los mensajes " +
+"pasan por un filtro automático que bloquea insultos y groserías, y quedan " +
+"guardados en el sitio. El fundador de la hermandad y el personal encargado de " +
+"moderación pueden leerlos, ocultarlos o borrarlos, y usarlos para aplicar las " +
+"reglas de convivencia del punto 3. <b>No es un espacio privado frente a la " +
+"moderación</b>: no escribas ahí nada que no quieras que revise un moderador. " +
+"Cada quien responde por lo que escribe.</p>" +
 "<h4>4. Propiedad intelectual del sitio</h4>" +
 "<p>El código, el diseño, los textos, la estructura y los elementos " +
 "gráficos originales de El tablón son propiedad de " + TITULAR + ", que " +
@@ -32763,7 +32771,7 @@ if (ev.key === "Escape" && ent.abierta !== null) { entregaCerrar(); }
    Requiere en Supabase las migraciones com_novedades, com_estrella_semana,
    com_hermandades y com_talentos_alertas.
    =================================================================== */
-var COM_HER_MAX = 10;
+var COM_HER_MAX = Infinity; /* v24: sin límite de miembros */
 var COM_TINTURAS = {
   oro: { nombre: "Oro", comun: "dorado", campo: "#e0b143", carga: "#2a2130" },
   plata: { nombre: "Plata", comun: "plateado", campo: "#cdd5e3", carga: "#283046" },
@@ -33092,7 +33100,7 @@ function herForjaHtml(editar) {
     "</div>" +
     '<form class="tb-her-forja-form" id="tb-her-forja-form" novalidate>' +
     '<h2 id="tb-her-forja-t">' + (editar ? "Editar la hermandad" : "Funda tu hermandad") + "</h2>" +
-    (editar ? "" : '<p class="tb-muted">Serás su fundador. Después invitas a tus compañeros o ellos te piden entrar. Caben hasta ' + COM_HER_MAX + " miembros.</p>") +
+    (editar ? "" : '<p class="tb-muted">Serás su fundador. Después invitas a tus compañeros o ellos te piden entrar. No hay límite de miembros.</p>') +
     '<label class="tb-field"><span>Nombre</span><input id="tb-her-nombre" maxlength="28" required autocomplete="off" ' +
     'placeholder="Los Guardianes del Norte" value="' + escapeHtml(b.nombre) + '" data-com-foco></label>' +
     '<label class="tb-field"><span>Lema (opcional)</span><input id="tb-her-lema" maxlength="90" autocomplete="off" ' +
@@ -33235,7 +33243,7 @@ function herMiaHtml(m) {
     (h.historia ? '<p class="tb-her-historia">' + escapeHtml(h.historia) + "</p>" : "") +
     '<span class="tb-her-rango">' + (soyFundador ? '<span aria-hidden="true">♛</span> Eres el fundador' : "Eres miembro") + "</span>" +
     '<dl class="tb-her-datos">' +
-    "<div><dt>Miembros</dt><dd>" + miembros.length + " de " + COM_HER_MAX + "</dd></div>" +
+    "<div><dt>Miembros</dt><dd>" + miembros.length + "</dd></div>" +
     '<div><dt title="Suma de las tareas cumplidas y los niveles de sus miembros">Poder</dt><dd>' + herPoder(h.id) + "</dd></div>" +
     "<div><dt>Puesto en el salón</dt><dd>" + puesto + "º de " + salon.length + "</dd></div>" +
     "</dl>" +
@@ -33247,7 +33255,7 @@ function herMiaHtml(m) {
 
   html += '<div class="tb-her-cols' + (soyFundador ? "" : " uno") + '">';
   html += '<section class="tb-card tb-her-miembros"><div class="tb-card-head"><h3>Miembros</h3><span class="tb-muted">' +
-    miembros.length + " de " + COM_HER_MAX + '</span></div><ul class="tb-her-mlista">' +
+    miembros.length + '</span></div><ul class="tb-her-mlista">' +
     miembros.map(function (x) {
       var p = comPerfil(x.user_id);
       if (!p) { return ""; }
@@ -33269,7 +33277,7 @@ function herMiaHtml(m) {
     com.her.miembros.forEach(function (x) { ocupados[x.user_id] = true; });
     invitadas.forEach(function (x) { ocupados[x.user_id] = true; });
     var libres = profilesOrdenados().filter(function (p) { return !ocupados[p.id] && p.id !== me.id; });
-    var lleno = miembros.length >= COM_HER_MAX;
+    var lleno = false;
     html += '<section class="tb-card tb-her-gestion">' +
       "<h3>Quieren entrar</h3>" +
       (entrantes.length ? entrantes.map(function (s) {
@@ -33309,7 +33317,7 @@ function herInvitacionesHtml() {
       var h = herPorId(s.hermandad_id);
       if (!h) { return ""; }
       return '<div class="tb-her-inv">' + herEscudoSvg(h, "medio") +
-        "<div><b>" + escapeHtml(h.nombre) + "</b><small>" + herMiembrosDe(h.id).length + " de " + COM_HER_MAX + " miembros</small></div>" +
+        "<div><b>" + escapeHtml(h.nombre) + "</b><small>" + herMiembrosDe(h.id).length + " miembros</small></div>" +
         '<div class="tb-her-sol-acc"><button type="button" class="tb-primary" data-her-aceptar="' + escapeHtml(s.id) + '">Unirme</button>' +
         '<button type="button" class="tb-secondary" data-her-rechazar="' + escapeHtml(s.id) + '">No, gracias</button></div></div>';
     }).join("") : "") +
@@ -33331,7 +33339,7 @@ function herSalonHtml(mio) {
   }
   html += '<ol class="tb-her-lista">' + salon.map(function (h, i) {
     var miembros = herMiembrosDe(h.id);
-    var lleno = miembros.length >= COM_HER_MAX;
+    var lleno = false;
     var accion = "";
     if (!mio) {
       var invitado = herMias("invitacion").find(function (s) { return s.hermandad_id === h.id; });
@@ -35020,18 +35028,18 @@ function hxAction(h){
   var req=herMias("solicitud").some(function(s){return s.hermandad_id===h.id;});
   if(inv)return '<button type="button" class="hx-btn primary" data-her-aceptar="'+hxEsc(inv.id)+'">Aceptar invitación</button>';
   if(req)return '<span class="hx-house-status closed">Solicitud enviada</span>';
-  if(members.length>=COM_HER_MAX||!h.abierta)return "";
+  if(!h.abierta)return "";
   return '<button type="button" class="hx-btn primary" data-her-pedir="'+id+'">Pedir ingreso</button>';
 }
 function hxHouseCard(h){
   var m=hxMetrics(h),id=hxEsc(h.id),fav=hxFavoritas().indexOf(h.id)>=0,selected=HX.compare.indexOf(h.id)>=0;
-  var open=h.abierta&&m.members.length<COM_HER_MAX;
+  var open=!!h.abierta;
   return '<article class="tb-card hx-house" id="tb-her-fila-'+id+'" style="--house:'+hxColor(h)+'"><div class="hx-house-cover">'+
     '<span class="hx-position">N.º '+m.pos+'</span>'+herEscudoSvg(h,"","Escudo de "+h.nombre)+
     '<button type="button" class="hx-fav" data-hx-fav="'+id+'" aria-label="'+(fav?"Quitar de favoritos":"Guardar en favoritos")+'" aria-pressed="'+fav+'">'+(fav?"★":"☆")+'</button></div>'+
-    '<div class="hx-house-body"><span class="hx-house-status'+(open?"":" closed")+'">'+(open?"Recibe solicitudes":m.members.length>=COM_HER_MAX?"Casa completa":"Por invitación")+'</span>'+
+    '<div class="hx-house-body"><span class="hx-house-status'+(open?"":" closed")+'">'+(open?"Recibe solicitudes":"Por invitación")+'</span>'+
     '<button type="button" class="hx-card-open" data-hx-dossier="'+id+'">'+hxEsc(h.nombre)+'</button><p>'+hxEsc(h.lema||"Sin lema")+'</p>'+
-    '<div class="hx-house-numbers"><div><strong>'+hxNum(m.poder)+'</strong><small>Poder colectivo</small></div><div><strong>'+m.members.length+' / '+COM_HER_MAX+'</strong><small>Integrantes</small></div><div><strong>'+hxNum(m.tareas)+'</strong><small>Tareas</small></div></div>'+
+    '<div class="hx-house-numbers"><div><strong>'+hxNum(m.poder)+'</strong><small>Poder colectivo</small></div><div><strong>'+hxNum(m.members.length)+'</strong><small>Integrantes</small></div><div><strong>'+hxNum(m.tareas)+'</strong><small>Tareas</small></div></div>'+
     '<div class="hx-house-footer"><button type="button" class="hx-btn" data-hx-dossier="'+id+'">Ver hermandad ↗</button>'+
     '<button type="button" class="hx-btn" data-hx-compare="'+id+'" aria-pressed="'+selected+'">'+(selected?"✓ Seleccionada":"Comparar")+'</button></div></div></article>';
 }
@@ -35039,7 +35047,7 @@ function hxFiltered(){
   var q=HX.search.trim().toLocaleLowerCase("es"),favs=hxFavoritas();
   return herSalon().filter(function(h){
     var text=[h.nombre,h.lema].join(" ").toLocaleLowerCase("es");
-    return (!q||text.indexOf(q)>=0)&&(HX.filter!=="abiertas"||(h.abierta&&herMiembrosDe(h.id).length<COM_HER_MAX))&&(HX.filter!=="favoritas"||favs.indexOf(h.id)>=0);
+    return (!q||text.indexOf(q)>=0)&&(HX.filter!=="abiertas"||!!h.abierta)&&(HX.filter!=="favoritas"||favs.indexOf(h.id)>=0);
   }).sort(function(a,b){
     if(HX.sort==="nombre")return String(a.nombre).localeCompare(String(b.nombre),"es");
     if(HX.sort==="miembros")return herMiembrosDe(b.id).length-herMiembrosDe(a.id).length;
@@ -35151,7 +35159,7 @@ function hxCompare(){
   var houses=HX.compare.map(herPorId).filter(Boolean);if(houses.length!==2)return;
   hxModal("Comparar hermandades",'<div class="hx-compare">'+houses.map(function(h){
     var m=hxMetrics(h);
-    var rows=[["Puesto en el salón","N.º "+m.pos],["Poder colectivo",hxNum(m.poder)],["Tareas cumplidas",hxNum(m.tareas)],["Integrantes",m.members.length+" / "+COM_HER_MAX],["Nivel medio",m.people.length?(m.niveles/m.people.length).toFixed(1):"—"],["Admisión",h.abierta&&m.members.length<COM_HER_MAX?"Solicitudes abiertas":"Por invitación / completa"]];
+    var rows=[["Puesto en el salón","N.º "+m.pos],["Poder colectivo",hxNum(m.poder)],["Tareas cumplidas",hxNum(m.tareas)],["Integrantes",hxNum(m.members.length)],["Nivel medio",m.people.length?(m.niveles/m.people.length).toFixed(1):"—"],["Admisión",h.abierta?"Solicitudes abiertas":"Por invitación"]];
     return '<article style="--house:'+hxColor(h)+'">'+herEscudoSvg(h,"")+'<h3>'+hxEsc(h.nombre)+'</h3><dl>'+rows.map(function(r){return '<div><dt>'+r[0]+'</dt><dd>'+hxEsc(r[1])+'</dd></div>';}).join("")+'</dl></article>';
   }).join("")+'</div>');
 }
@@ -35159,7 +35167,7 @@ function hxDownload(h){
   var m=hxMetrics(h),shield=herEscudoSvg(h,"").replace("<svg ",'<svg x="790" y="130" width="290" height="380" ');
   var lines=String(h.lema||"Hermandad de El Tablón").match(/.{1,45}(?:\s|$)|.{1,45}/g)||[];
   var svg='<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720"><defs><radialGradient id="hxbg"><stop stop-color="'+hxColor(h)+'"/><stop offset="1" stop-color="#101827"/></radialGradient></defs><rect width="1200" height="720" fill="#101827"/><rect x="700" width="500" height="720" fill="url(#hxbg)" opacity=".55"/><rect x="35" y="35" width="1130" height="650" rx="20" fill="none" stroke="#a8b5ff" stroke-opacity=".45"/><text x="85" y="115" font-family="Arial" font-size="15" letter-spacing="5" fill="#a8b5ff">EL TABLÓN · HERMANDADES</text><text x="85" y="260" font-family="Georgia" font-size="'+(h.nombre.length>22?38:48)+'" fill="#f5edde">'+hxEsc(h.nombre)+'</text>'+lines.slice(0,3).map(function(line,i){return '<text x="85" y="'+(315+i*28)+'" font-family="Arial" font-size="19" fill="#acbacb">'+hxEsc(line.trim())+'</text>';}).join("")+shield+
-    '<path d="M85 450H650" stroke="#a8b5ff" stroke-opacity=".3"/><text x="85" y="500" font-family="Arial" font-size="14" fill="#aab7c9">PODER COLECTIVO</text><text x="85" y="550" font-family="Georgia" font-size="38" fill="#a8b5ff">'+hxNum(m.poder)+'</text><text x="345" y="500" font-family="Arial" font-size="14" fill="#aab7c9">INTEGRANTES</text><text x="345" y="550" font-family="Georgia" font-size="38" fill="#a8b5ff">'+m.members.length+' / '+COM_HER_MAX+'</text><text x="85" y="635" font-family="Arial" font-size="14" fill="#aab7c9">'+hxEsc(m.titulo)+' · Perfil de hermandad</text></svg>';
+    '<path d="M85 450H650" stroke="#a8b5ff" stroke-opacity=".3"/><text x="85" y="500" font-family="Arial" font-size="14" fill="#aab7c9">PODER COLECTIVO</text><text x="85" y="550" font-family="Georgia" font-size="38" fill="#a8b5ff">'+hxNum(m.poder)+'</text><text x="345" y="500" font-family="Arial" font-size="14" fill="#aab7c9">INTEGRANTES</text><text x="345" y="550" font-family="Georgia" font-size="38" fill="#a8b5ff">'+hxNum(m.members.length)+'</text><text x="85" y="635" font-family="Arial" font-size="14" fill="#aab7c9">'+hxEsc(m.titulo)+' · Perfil de hermandad</text></svg>';
   var blob=new Blob([svg],{type:"image/svg+xml;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");
   a.href=url;a.download="hermandad-"+String(h.nombre).normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/gi,"-").toLowerCase()+".svg";
   document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url);},10000);
@@ -35293,7 +35301,7 @@ hxHouseHero=function(h,own){
     '<div class="hx-actions">'+(own&&own.rango==="fundador"?'<button type="button" class="hx-btn primary" data-her-editar>Personalizar</button>':"")+
     '<button type="button" class="hx-btn" data-hx-export="'+id+'">Descargar tarjeta</button><button type="button" class="hx-btn" data-hx-copy="'+id+'">Copiar presentación</button>'+(!own?hxAction(h):"")+'</div>'+
     '<p class="hx-note">Fundador: '+hxEsc(founder?(founder.display_name||founder.username):"—")+(h.created_at?" · "+hxEsc(comFecha(h.created_at)):"")+'</p></div></section>'+
-    '<div class="hx-stats">'+hxStat(hxNum(m.poder),"Poder","Tareas + niveles")+hxStat(m.members.length+" / "+COM_HER_MAX,"Miembros",h.abierta?"Solicitudes abiertas":"Por invitación")+hxStat(hxNum(m.tareas),"Tareas cumplidas","Total del grupo")+hxStat("N.º "+m.pos,"Posición","Ranking de hermandades")+'</div>';
+    '<div class="hx-stats">'+hxStat(hxNum(m.poder),"Poder","Tareas + niveles")+hxStat(hxNum(m.members.length),"Miembros",h.abierta?"Solicitudes abiertas":"Por invitación")+hxStat(hxNum(m.tareas),"Tareas cumplidas","Total del grupo")+hxStat("N.º "+m.pos,"Posición","Ranking de hermandades")+'</div>';
 };
 hxMine=function(m){
   var h=herPorId(m.hermandad_id);if(!h)return '<div class="hx-empty">Hermandad no disponible.</div>';
@@ -35367,6 +35375,368 @@ root.addEventListener("submit",function(ev){
   list.push({id:Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,7),text:text.slice(0,100),done:false});
   haWrite(h,"checklist",list);haRefresh(h,"#ha-new-item");
 });
+
+/* ===================================================================
+   v24 · HERMANDADES DINÁMICAS
+   Requiere en Supabase la migración her_v24_temporadas_chat_titulos_bitacora
+   (tb_her_chat, tb_her_titulos, tb_her_bitacora, tb_her_campeonas, tb_her_reto,
+   tb_palabras_prohibidas y las funciones tb_her_*).
+   =================================================================== */
+var HV = {
+  semana: {}, semanaAportes: {}, campeona: null, campeonaSemana: null,
+  titulos: [], bitacora: [], chat: [], chatVisto: 0, retoHoy: [],
+  listo: false, cargando: false, enviando: false, malas: [], panel: "chat", timer: null
+};
+(function () {
+  var st = document.createElement("style");
+  st.textContent =
+    "#tablon-root .hv-panel{margin-bottom:18px}" +
+    "#tablon-root .hv-tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}" +
+    "#tablon-root .hv-chat{display:flex;flex-direction:column;gap:9px;max-height:330px;overflow:auto;padding-right:4px}" +
+    "#tablon-root .hv-msg{display:flex;gap:9px;align-items:flex-start}" +
+    "#tablon-root .hv-msg .tb-com-av{width:32px;height:32px;flex:0 0 auto}" +
+    "#tablon-root .hv-burbuja{background:#ffffff0d;border:1px solid var(--line);border-radius:13px;padding:8px 11px;max-width:min(560px,82%)}" +
+    "#tablon-root .hv-burbuja b{font-size:12.5px}#tablon-root .hv-burbuja small{color:var(--muted);font-size:10.5px;margin-left:6px}" +
+    "#tablon-root .hv-burbuja p{margin:3px 0 0;font-size:13.5px;line-height:1.5;word-break:break-word;white-space:pre-wrap}" +
+    "#tablon-root .hv-msg.yo{flex-direction:row-reverse}#tablon-root .hv-msg.yo .hv-burbuja{background:color-mix(in srgb,var(--accent) 16%,transparent)}" +
+    "#tablon-root .hv-msg.oculto .hv-burbuja{opacity:.45;font-style:italic}" +
+    "#tablon-root .hv-envio{display:flex;gap:8px;margin-top:12px;align-items:flex-end}" +
+    "#tablon-root .hv-envio textarea{flex:1;min-height:42px;max-height:120px;resize:vertical;border-radius:12px;border:1px solid var(--line);background:#ffffff08;color:var(--text);padding:10px 12px;font:inherit;font-size:13.5px}" +
+    "#tablon-root .hv-bit{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;max-height:300px;overflow:auto}" +
+    "#tablon-root .hv-bit li{display:flex;gap:10px;align-items:baseline;padding:7px 2px;border-bottom:1px solid var(--line);font-size:13px}" +
+    "#tablon-root .hv-bit li:last-child{border-bottom:0}#tablon-root .hv-bit time{color:var(--muted);font-size:11px;margin-left:auto;white-space:nowrap}" +
+    "#tablon-root .hv-bit span.ico{width:22px;text-align:center;flex:0 0 auto}" +
+    "#tablon-root .hv-tit{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}" +
+    "#tablon-root .hv-tit-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:12px;font-weight:700;background:#ffffff08}" +
+    "#tablon-root .hv-tit-chip i{font-style:normal}" +
+    "#tablon-root .hv-tit-chip button{background:none;border:0;color:var(--muted);cursor:pointer;font:inherit;padding:0 2px}" +
+    "#tablon-root .hv-tit-oro{color:#ffcf5c;border-color:#ffcf5c66}#tablon-root .hv-tit-plata{color:#dfe6f5;border-color:#dfe6f566}" +
+    "#tablon-root .hv-tit-fuego{color:#ff9a5c;border-color:#ff9a5c66}#tablon-root .hv-tit-verde{color:#5fd7a4;border-color:#5fd7a466}" +
+    "#tablon-root .hv-tit-azul{color:#7ab6ff;border-color:#7ab6ff66}#tablon-root .hv-tit-rosa{color:#ff8ad1;border-color:#ff8ad166}" +
+    "#tablon-root .hv-corona{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#ffe49a,#f0b429);color:#3a2600;border-radius:999px;padding:4px 11px;font-size:11.5px;font-weight:800}" +
+    "#tablon-root .hv-sem{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}" +
+    "#tablon-root .hv-sem li{display:flex;gap:10px;align-items:center;font-size:13px}" +
+    "#tablon-root .hv-sem b{width:26px;color:var(--muted)}" +
+    "#tablon-root .hv-barra{flex:1;height:9px;border-radius:99px;background:#ffffff14;overflow:hidden}" +
+    "#tablon-root .hv-barra i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2))}" +
+    "#tablon-root .tb-card.hv-campeona{box-shadow:0 0 0 2px #f0b429aa,0 10px 34px #f0b42926}" +
+    "#tablon-root .hv-aviso{font-size:12px;color:#ffb4a8;margin:8px 0 0}";
+  document.head.appendChild(st);
+})();
+var HV_COLORES = ["oro", "plata", "fuego", "verde", "azul", "rosa"];
+var HV_ICONOS = ["★", "♛", "⚔", "🛡", "✒", "🔥", "🌿", "⚓", "🎓", "🎭", "🧠", "🏅"];
+function hvDia(d) { try { return new Date(d).toLocaleString("es", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }); } catch (e) { return ""; } }
+function hvSemanaInicio() {
+  var d = new Date(); var n = (d.getDay() + 6) % 7;
+  d.setDate(d.getDate() - n); d.setHours(0, 0, 0, 0); return d;
+}
+function hvPoderSemana(hid) { return Number(HV.semana[hid]) || 0; }
+function hvEsCampeona(hid) { return !!HV.campeona && HV.campeona === hid; }
+function hvTitulosDe(hid) { return HV.titulos.filter(function (t) { return t.hermandad_id === hid; }); }
+function hvTituloDe(m) {
+  if (!m) { return null; }
+  var t = m.titulo_id ? HV.titulos.filter(function (x) { return x.id === m.titulo_id; })[0] : null;
+  if (t) { return t; }
+  return m.titulo ? { nombre: m.titulo, icono: "★", color: "oro" } : null;
+}
+function hvTituloChip(m) {
+  var t = hvTituloDe(m);
+  if (!t) { return ""; }
+  return '<span class="hv-tit-chip hv-tit-' + escapeHtml(HV_COLORES.indexOf(t.color) >= 0 ? t.color : "oro") + '">' +
+    '<i aria-hidden="true">' + escapeHtml(t.icono || "★") + "</i>" + escapeHtml(t.nombre) + "</span>";
+}
+/* Aviso en el navegador antes de mandar; el servidor vuelve a revisarlo igual. */
+function hvNormalizar(txt) {
+  return String(txt || "").toLowerCase()
+    .replace(/[áàäâã]/g, "a").replace(/[éèëê]/g, "e").replace(/[íìïî]/g, "i")
+    .replace(/[óòöôõ]/g, "o").replace(/[úùüû]/g, "u").replace(/ñ/g, "n")
+    .replace(/0/g, "o").replace(/1/g, "i").replace(/3/g, "e").replace(/4/g, "a").replace(/5/g, "s").replace(/7/g, "t").replace(/@/g, "a").replace(/\$/g, "s")
+    .replace(/[^a-z]/g, "").replace(/(.)\1+/g, "$1");
+}
+function hvGroseria(txt) {
+  var n = hvNormalizar(txt);
+  if (!n) { return null; }
+  for (var i = 0; i < HV.malas.length; i++) {
+    var m = hvNormalizar(HV.malas[i]);
+    if (m && n.indexOf(m) >= 0) { return HV.malas[i]; }
+  }
+  return null;
+}
+async function hvCargar(hid) {
+  if (!client || !me) { return; }
+  HV.cargando = true;
+  var hoy = new Date(); var dia = hoy.getFullYear() + "-" + String(hoy.getMonth() + 1).padStart(2, "0") + "-" + String(hoy.getDate()).padStart(2, "0");
+  var r = await Promise.all([
+    client.rpc("tb_her_semana"),
+    client.from("tb_her_campeonas").select("semana,hermandad_id,poder").order("semana", { ascending: false }).limit(1),
+    client.from("tb_her_titulos").select("id,hermandad_id,nombre,icono,color").order("creado_en"),
+    client.from("tb_palabras_prohibidas").select("palabra"),
+    hid ? client.from("tb_her_bitacora").select("id,tipo,user_id,dato,creado_en").eq("hermandad_id", hid).order("id", { ascending: false }).limit(40) : Promise.resolve({ data: [] }),
+    hid ? client.from("tb_her_chat").select("id,user_id,texto,oculto,creado_en").eq("hermandad_id", hid).order("id", { ascending: false }).limit(60) : Promise.resolve({ data: [] }),
+    hid ? client.from("tb_her_reto").select("user_id,aciertos").eq("hermandad_id", hid).eq("dia", dia) : Promise.resolve({ data: [] })
+  ]);
+  HV.semana = {}; HV.semanaAportes = {};
+  (r[0] && !r[0].error ? r[0].data || [] : []).forEach(function (x) {
+    HV.semana[x.hermandad_id] = Number(x.poder) || 0;
+    HV.semanaAportes[x.hermandad_id] = x.aportes || {};
+  });
+  var camp = r[1] && !r[1].error ? (r[1].data || [])[0] : null;
+  HV.campeona = camp ? camp.hermandad_id : null;
+  HV.campeonaSemana = camp ? camp.semana : null;
+  if (r[2] && !r[2].error) { HV.titulos = r[2].data || []; }
+  if (r[3] && !r[3].error) { HV.malas = (r[3].data || []).map(function (x) { return x.palabra; }); }
+  if (r[4] && !r[4].error) { HV.bitacora = r[4].data || []; }
+  if (r[5] && !r[5].error) { HV.chat = (r[5].data || []).slice().reverse(); }
+  if (r[6] && !r[6].error) { HV.retoHoy = r[6].data || []; }
+  HV.listo = true; HV.cargando = false;
+}
+/* ---------- Temporada ---------- */
+function hvTemporadaHtml(h) {
+  var lista = com.her.lista.slice().map(function (x) { return { h: x, p: hvPoderSemana(x.id) }; })
+    .sort(function (a, b) { return b.p - a.p || String(a.h.nombre).localeCompare(String(b.h.nombre), "es"); });
+  var tope = Math.max(1, lista.length ? lista[0].p : 1);
+  var mio = lista.findIndex(function (x) { return h && x.h.id === h.id; }) + 1;
+  var fin = new Date(hvSemanaInicio()); fin.setDate(fin.getDate() + 7);
+  var faltan = Math.max(0, Math.ceil((fin - new Date()) / 86400000));
+  return '<section class="tb-card hx-panel hv-panel"><div class="hx-head"><div><h3>Temporada de la semana</h3>' +
+    '<p class="hx-note">Cuenta solo las tareas que el grupo cumplió desde el lunes. Cada semana se empieza de cero, así que una hermandad nueva también puede ganar.</p></div>' +
+    (HV.campeona ? '<span class="hv-corona">👑 Campeona: ' + escapeHtml((herPorId(HV.campeona) || {}).nombre || "—") + "</span>" : "") + "</div>" +
+    (h ? '<p class="hx-note"><b>' + escapeHtml(h.nombre) + "</b> va " + (mio ? "N.º " + mio : "sin puntos") +
+      " esta semana con " + hvPoderSemana(h.id) + " tareas. " + (faltan === 1 ? "Queda 1 día." : "Quedan " + faltan + " días.") + "</p>" : "") +
+    '<ul class="hv-sem">' + lista.slice(0, 8).map(function (x, i) {
+      return "<li><b>" + (i + 1) + "</b><span>" + escapeHtml(x.h.nombre) + "</span>" +
+        '<span class="hv-barra"><i style="width:' + Math.round(x.p / tope * 100) + '%"></i></span>' +
+        "<small>" + x.p + "</small></li>";
+    }).join("") + "</ul>" +
+    (isOwner() ? '<div class="hx-actions"><button type="button" class="hx-btn" data-hv-cerrar>Cerrar la semana pasada y coronar</button></div>' : "") +
+    "</section>";
+}
+/* ---------- Bitácora ---------- */
+var HV_BIT = {
+  creada: ["🏰", function (b) { return "Nació la hermandad."; }],
+  entro: ["🙌", function (b) { return comNombre(b.user_id) + " entró a la hermandad."; }],
+  salio: ["👋", function (b) { return comNombre(b.user_id) + " dejó la hermandad."; }],
+  titulo: ["🎖", function (b) { return b.dato ? comNombre(b.user_id) + " ahora es " + b.dato + "." : "A " + comNombre(b.user_id) + " le quitaron el título."; }],
+  campeona: ["👑", function (b) { return "Campeona de la semana con " + (b.dato || "0") + " tareas."; }],
+  escudo: ["🛡", function (b) { return "Cambió el escudo de la hermandad."; }]
+};
+function hvBitacoraHtml() {
+  if (!HV.bitacora.length) {
+    return '<section class="tb-card hx-panel hv-panel"><div class="hx-head"><h3>Bitácora</h3></div>' +
+      '<p class="hx-note">Aquí se irá anotando lo que pase en la hermandad: quién entra, quién recibe un título y cuándo ganan la semana.</p></section>';
+  }
+  return '<section class="tb-card hx-panel hv-panel"><div class="hx-head"><h3>Bitácora</h3><small>Lo último primero</small></div><ul class="hv-bit">' +
+    HV.bitacora.map(function (b) {
+      var d = HV_BIT[b.tipo] || ["•", function () { return b.tipo; }];
+      var texto; try { texto = d[1](b); } catch (e) { texto = b.tipo; }
+      return '<li><span class="ico" aria-hidden="true">' + d[0] + "</span><span>" + escapeHtml(texto) +
+        '</span><time>' + escapeHtml(hvDia(b.creado_en)) + "</time></li>";
+    }).join("") + "</ul></section>";
+}
+/* ---------- Chat ---------- */
+function hvChatHtml(h) {
+  var visibles = HV.chat.filter(function (c) { return !c.oculto || puede("hermandades") || c.user_id === me.id; });
+  return '<section class="tb-card hx-panel hv-panel" id="hv-chat-panel"><div class="hx-head"><div><h3>Chat de la hermandad</h3>' +
+    '<p class="hx-note">Solo lo ven los miembros. Las groserías se bloquean y el staff puede revisarlo.</p></div>' +
+    '<button type="button" class="hx-btn" data-hv-refrescar>↻ Actualizar</button></div>' +
+    '<div class="hv-chat" id="hv-chat-lista" aria-live="polite">' +
+    (visibles.length ? visibles.map(function (c) {
+      var p = comPerfil(c.user_id), mio = c.user_id === me.id;
+      var puedeBorrar = mio || (herMiembro(me.id) || {}).rango === "fundador" || puede("hermandades");
+      return '<div class="hv-msg' + (mio ? " yo" : "") + (c.oculto ? " oculto" : "") + '">' +
+        (p ? avatarHtml(p, "tb-com-av") : "") +
+        '<div class="hv-burbuja"><b>' + escapeHtml(comNombre(c.user_id)) + "</b><small>" + escapeHtml(hvDia(c.creado_en)) + "</small>" +
+        (puedeBorrar ? '<button type="button" class="tb-her-mini peligro" data-hv-borrar="' + c.id + '" aria-label="Borrar mensaje">✕</button>' : "") +
+        "<p>" + escapeHtml(c.oculto ? "(mensaje oculto por el staff)" : c.texto) + "</p></div></div>";
+    }).join("") : '<p class="hx-note">Todavía nadie escribe. Rompé el hielo.</p>') + "</div>" +
+    '<div class="hv-envio"><label class="tb-com-sr" for="hv-chat-txt">Escribe un mensaje</label>' +
+    '<textarea id="hv-chat-txt" maxlength="300" placeholder="Escribe para tu hermandad…"></textarea>' +
+    '<button type="button" class="hx-btn primary" data-hv-enviar' + (HV.enviando ? " disabled" : "") + ">Enviar</button></div>" +
+    '<p class="hv-aviso tb-hidden" id="hv-chat-aviso" role="status"></p></section>';
+}
+async function hvEnviar() {
+  var caja = $("#hv-chat-txt"); if (!caja) { return; }
+  var txt = caja.value.trim();
+  var aviso = $("#hv-chat-aviso");
+  function decir(t) { if (aviso) { aviso.textContent = t; aviso.classList.remove("tb-hidden"); } }
+  if (!txt) { return; }
+  var mala = hvGroseria(txt);
+  if (mala) { decir("Ese mensaje tiene una palabra que no se permite en El tablón. Cámbialo y vuelve a intentarlo."); return; }
+  HV.enviando = true;
+  var r = await client.rpc("tb_her_chat_enviar", { p_texto: txt });
+  HV.enviando = false;
+  if (r.error) { decir(comError(r.error)); return; }
+  caja.value = "";
+  if (aviso) { aviso.classList.add("tb-hidden"); }
+  await hvRefrescarChat();
+}
+async function hvRefrescarChat() {
+  var m = herMiembro(me.id); if (!m) { return; }
+  var r = await client.from("tb_her_chat").select("id,user_id,texto,oculto,creado_en")
+    .eq("hermandad_id", m.hermandad_id).order("id", { ascending: false }).limit(60);
+  if (r.error) { return; }
+  HV.chat = (r.data || []).slice().reverse();
+  var lista = $("#hv-chat-lista");
+  if (!lista) { return; }
+  var panel = $("#hv-chat-panel");
+  var texto = $("#hv-chat-txt") ? $("#hv-chat-txt").value : "";
+  panel.outerHTML = hvChatHtml(herPorId(m.hermandad_id));
+  if (texto && $("#hv-chat-txt")) { $("#hv-chat-txt").value = texto; }
+  var nueva = $("#hv-chat-lista"); if (nueva) { nueva.scrollTop = nueva.scrollHeight; }
+}
+/* ---------- Títulos ---------- */
+function hvTitulosHtml(h, mio) {
+  if (!mio || mio.rango !== "fundador") { return ""; }
+  var lista = hvTitulosDe(h.id);
+  return '<section class="tb-card hx-panel hv-panel"><div class="hx-head"><div><h3>Títulos de la hermandad</h3>' +
+    '<p class="hx-note">Crea los cargos que quieras y repártelos entre tus miembros. Se ven en su perfil.</p></div></div>' +
+    '<div class="hv-tit">' + (lista.length ? lista.map(function (t) {
+      return '<span class="hv-tit-chip hv-tit-' + escapeHtml(t.color) + '"><i aria-hidden="true">' + escapeHtml(t.icono) + "</i>" +
+        escapeHtml(t.nombre) + '<button type="button" data-hv-tit-borrar="' + escapeHtml(t.id) + '" aria-label="Borrar el título ' + escapeHtml(t.nombre) + '">✕</button></span>';
+    }).join("") : '<span class="hx-note">Todavía no has creado títulos.</span>') + "</div>" +
+    '<div class="hx-actions"><label class="tb-com-sr" for="hv-tit-nombre">Nombre del título</label>' +
+    '<input id="hv-tit-nombre" maxlength="24" placeholder="Escriba, Centinela…" style="flex:1;min-width:150px;border-radius:11px;border:1px solid var(--line);background:#ffffff08;color:var(--text);padding:9px 12px;font:inherit">' +
+    '<label class="tb-com-sr" for="hv-tit-icono">Símbolo</label><select id="hv-tit-icono">' +
+    HV_ICONOS.map(function (i) { return '<option value="' + i + '">' + i + "</option>"; }).join("") + "</select>" +
+    '<label class="tb-com-sr" for="hv-tit-color">Color</label><select id="hv-tit-color">' +
+    HV_COLORES.map(function (c) { return '<option value="' + c + '">' + c.charAt(0).toUpperCase() + c.slice(1) + "</option>"; }).join("") + "</select>" +
+    '<button type="button" class="hx-btn primary" data-hv-tit-crear>Crear título</button></div>' +
+    '<p class="hv-aviso tb-hidden" id="hv-tit-aviso" role="status"></p></section>';
+}
+/* ---------- Reto del día compartido ---------- */
+function hvRetoHtml(h) {
+  var gente = herMiembrosDe(h.id).map(function (m) {
+    var r = HV.retoHoy.filter(function (x) { return x.user_id === m.user_id; })[0];
+    return { id: m.user_id, n: r ? r.aciertos : null };
+  }).sort(function (a, b) { return (b.n === null ? -1 : b.n) - (a.n === null ? -1 : a.n); });
+  var hechos = gente.filter(function (x) { return x.n !== null; });
+  return '<section class="tb-card hx-panel hv-panel"><div class="hx-head"><div><h3>Reto del día</h3>' +
+    '<p class="hx-note">Hoy todos en la hermandad reciben las mismas cinco preguntas. Tu resultado queda a la vista de tus compañeros.</p></div>' +
+    "<small>" + hechos.length + " de " + gente.length + " lo hicieron</small></div>" +
+    (hechos.length ? '<ul class="hv-sem">' + hechos.slice(0, 10).map(function (x, i) {
+      return "<li><b>" + (i + 1) + '</b><button type="button" class="hx-btn" data-com-perfil="' + escapeHtml(x.id) + '">' +
+        escapeHtml(comNombre(x.id)) + '</button><span class="hv-barra"><i style="width:' + (x.n / 5 * 100) + '%"></i></span><small>' + x.n + " / 5</small></li>";
+    }).join("") + "</ul>" : '<p class="hx-note">Nadie lo ha resuelto hoy. Sé el primero en las actividades de abajo.</p>') +
+    "</section>";
+}
+/* ---------- Pegado a la vista «Mi hermandad» ---------- */
+var hvMineBase = hxMine;
+hxMine = function (m) {
+  var h = herPorId(m.hermandad_id);
+  var base = hvMineBase(m);
+  if (!h) { return base; }
+  var extra = hvTemporadaHtml(h) + hvChatHtml(h) + hvRetoHtml(h) + hvBitacoraHtml() + hvTitulosHtml(h, m);
+  var corte = base.indexOf('<section class="tb-card hx-panel ha-panel"');
+  if (corte < 0) { return base + extra; }
+  return base.slice(0, corte) + extra + base.slice(corte);
+};
+var hvHeroBase = hxHouseHero;
+hxHouseHero = function (h, own) {
+  var html = hvHeroBase(h, own);
+  if (hvEsCampeona(h.id)) {
+    html = html.replace('<section class="tb-card tb-her-hero"', '<section class="tb-card tb-her-hero hv-campeona"')
+      .replace("</h2>", '</h2><span class="hv-corona">👑 Campeona de la semana</span>');
+  }
+  var sem = hvPoderSemana(h.id);
+  return html.replace('<div class="hx-stats">', '<div class="hx-stats">' + hxStat(hxNum(sem), "Esta semana", "Tareas desde el lunes"));
+};
+/* Los títulos nuevos se ven donde antes solo había texto. */
+var hvMiaBase = hxOriginalMine;
+hxOriginalMine = function (m) {
+  var html = hvMiaBase(m);
+  herMiembrosDe(m.hermandad_id).forEach(function (x) {
+    var t = hvTituloDe(x);
+    if (!t) { return; }
+    html = html.replace('<span class="tb-her-titulo">' + escapeHtml(t.nombre) + "</span>", hvTituloChip(x));
+  });
+  return html;
+};
+var hvRenderBase = herRender;
+herRender = function () {
+  hvRenderBase();
+  var m = me && herMiembro(me.id);
+  if (!HV.listo && !HV.cargando && com.her.listo) {
+    hvCargar(m ? m.hermandad_id : null).then(function () { herRender(); });
+  }
+  var lista = $("#hv-chat-lista");
+  if (lista) { lista.scrollTop = lista.scrollHeight; }
+};
+var hvCargarBase = herCargar;
+herCargar = async function () {
+  await hvCargarBase();
+  var r = await client.from("tb_hermandad_miembros").select("user_id,hermandad_id,rango,unido_en,titulo,titulo_id");
+  if (!r.error) { com.her.miembros = r.data || []; }
+  HV.listo = false;
+};
+/* ---------- Eventos ---------- */
+root.addEventListener("click", async function (ev) {
+  var b = ev.target.closest && ev.target.closest("button");
+  if (!b || !root.contains(b) || b.disabled) { return; }
+  var d = b.dataset;
+  if (d.hvEnviar !== undefined) { b.disabled = true; await hvEnviar(); b.disabled = false; return; }
+  if (d.hvRefrescar !== undefined) { await hvRefrescarChat(); return; }
+  if (d.hvBorrar) {
+    if (!window.confirm("¿Borrar este mensaje?")) { return; }
+    var r = await client.from("tb_her_chat").delete().eq("id", Number(d.hvBorrar));
+    if (r.error) { avisoToast(comError(r.error)); return; }
+    await hvRefrescarChat(); return;
+  }
+  if (d.hvCerrar !== undefined) {
+    if (!window.confirm("Se cerrará la semana pasada y se coronará a la hermandad con más tareas. ¿Seguir?")) { return; }
+    var c = await client.rpc("tb_her_cerrar_semana");
+    if (c.error) { avisoToast(comError(c.error)); return; }
+    HV.listo = false; await herCargar(); await hvCargar((herMiembro(me.id) || {}).hermandad_id); herRender();
+    avisoToast("👑 Temporada cerrada."); return;
+  }
+  if (d.hvTitCrear !== undefined) {
+    var nombre = ($("#hv-tit-nombre") || {}).value || "";
+    var aviso = $("#hv-tit-aviso");
+    function decirT(t) { if (aviso) { aviso.textContent = t; aviso.classList.remove("tb-hidden"); } }
+    if (!nombre.trim()) { decirT("Escribe el nombre del título."); return; }
+    if (hvGroseria(nombre)) { decirT("Ese nombre no se permite."); return; }
+    var t1 = await client.rpc("tb_her_titulo_crear", { p_nombre: nombre.trim(), p_icono: $("#hv-tit-icono").value, p_color: $("#hv-tit-color").value });
+    if (t1.error) { decirT(comError(t1.error)); return; }
+    HV.listo = false; await hvCargar((herMiembro(me.id) || {}).hermandad_id); herRender();
+    avisoToast("Título creado."); return;
+  }
+  if (d.hvTitBorrar) {
+    if (!window.confirm("¿Borrar este título? Quien lo tenga se quedará sin él.")) { return; }
+    var t2 = await client.rpc("tb_her_titulo_borrar", { p_titulo: d.hvTitBorrar });
+    if (t2.error) { avisoToast(comError(t2.error)); return; }
+    HV.listo = false; await herCargar(); await hvCargar((herMiembro(me.id) || {}).hermandad_id); herRender(); return;
+  }
+});
+/* El botón «Título» del fundador ahora elige entre los títulos creados. */
+root.addEventListener("click", async function (ev) {
+  var b = ev.target.closest && ev.target.closest("[data-her-titulo]");
+  if (!b || !root.contains(b)) { return; }
+  ev.stopPropagation();
+  var uid = b.dataset.herTitulo, m = herMiembro(me.id);
+  if (!m) { return; }
+  var lista = hvTitulosDe(m.hermandad_id);
+  if (!lista.length) { avisoToast("Primero crea títulos en «Títulos de la hermandad»."); return; }
+  var actual = herMiembro(uid) || {};
+  var texto = "Título para " + comNombre(uid) + ":\n0. Quitar título\n" +
+    lista.map(function (t, i) { return (i + 1) + ". " + t.icono + " " + t.nombre; }).join("\n");
+  var elige = window.prompt(texto, String(lista.findIndex(function (t) { return t.id === actual.titulo_id; }) + 1));
+  if (elige === null) { return; }
+  var n = parseInt(elige, 10);
+  if (isNaN(n) || n < 0 || n > lista.length) { avisoToast("Número no válido."); return; }
+  var r = await client.rpc("tb_her_titulo_asignar", { p_user: uid, p_titulo: n === 0 ? null : lista[n - 1].id });
+  if (r.error) { avisoToast(comError(r.error)); return; }
+  HV.listo = false; await herCargar(); await hvCargar(m.hermandad_id); herRender();
+  avisoToast(n === 0 ? "Título quitado." : "Título asignado.");
+}, true);
+/* Guarda el reto del día para que lo vean los compañeros. */
+var hvHaWrite = haWrite;
+haWrite = function (h, kind, value) {
+  hvHaWrite(h, kind, value);
+  if (String(kind).indexOf("reto-") === 0 && haAllowed(h)) {
+    client.rpc("tb_her_reto_guardar", { p_aciertos: Number(value) || 0 }).then(function (r) {
+      if (r && !r.error) { HV.listo = false; }
+    }, function () { /* si falla, el reto sigue siendo local */ });
+  }
+};
 
 })();
 </script>
