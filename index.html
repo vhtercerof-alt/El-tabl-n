@@ -14717,12 +14717,16 @@ return item && item.url ? item.url : "";
 function avatarHtml(profile, className) {
 var url = avatarUrl(profile);
 var name = profile.display_name || profile.username || "?";
+/* marca de presencia: el punto lo pinta el módulo de presencia en vivo */
+var marca = profile && profile.id
+? ' data-tb-uid="' + escapeHtml(String(profile.id)) + '"' : "";
+var punto = marca ? '<i class="tb-pres-dot" aria-hidden="true"></i>' : "";
 if (url) {
-return '<div class="' + className + ' tb-avatar-img" style="background-image:url(&quot;' +
-escapeHtml(safeUrl(url)) + '&quot;)"></div>';
+return '<div class="' + className + ' tb-avatar-img"' + marca + ' style="background-image:url(&quot;' +
+escapeHtml(safeUrl(url)) + '&quot;)">' + punto + "</div>";
 }
-return '<div class="' + className + '">' +
-escapeHtml(name.charAt(0).toUpperCase()) + "</div>";
+return '<div class="' + className + '"' + marca + ">" +
+escapeHtml(name.charAt(0).toUpperCase()) + punto + "</div>";
 }
 function roleHtml(profile, todos) {
 var mios = rolesDe(profile);
@@ -26449,6 +26453,7 @@ try { await loadData(); } catch (error) { showMessage(error.message || "No se pu
 $("#tb-logout").onclick = async function () {
 mascDecirDe(mascActiva, [mascActiva + "_despedida_1"]);
 try { await pushDesactivar(true); } catch (error) { /* sin avisos que quitar */ }
+try { presSalir(); } catch (error) { /* la presencia ya se había cerrado */ }
 await client.auth.signOut();
 setTimeout(function () { window.location.reload(); }, 1400);
 };
@@ -36034,6 +36039,8 @@ async function comunidadIniciar() {
   if (!client || !me) { return; }
   client.from("profiles").update({ last_seen_at: new Date().toISOString() }).eq("id", me.id)
     .then(function () { /* solo para las alertas de inactividad */ });
+  presDiaNuevo();   /* deja constancia del día en tb_actividad */
+  presIniciar();    /* presencia en vivo: puntos verdes y panel */
   await Promise.all([
     herCargar().catch(function (e) { console.warn("[hermandades]", e); }),
     estCargar().catch(function (e) { console.warn("[estrella]", e); })
@@ -37972,6 +37979,432 @@ root.addEventListener("click", function (ev) {
   var b = ev.target.closest && ev.target.closest("[data-hv-cerrar]");
   if (b && trCerrarSemanaRefresco) { setTimeout(function () { TR.listo = false; trCargar().then(herRender); }, 1200); }
 }, true);
+
+/* ===================================================================
+   PRESENCIA EN VIVO · quién está en El Tablón ahora mismo
+   Canal Realtime "tb-presencia": cada sesión se anuncia y escucha a las
+   demás. No guarda nada en la base de datos, vive solo mientras la
+   pestaña está abierta.
+     · punto verde (o ámbar si está ausente) en cada avatar
+     · chip en la barra superior + panel lateral con el listado
+     · modo invisible por persona, guardado en el navegador
+   Para retirarlo: borrar este bloque, la llamada a presIniciar() y el
+   punto que agrega avatarHtml().
+   =================================================================== */
+var PRES = {
+  canal: null,
+  mapa: {},            /* uid -> "on" | "away" */
+  vistos: {},          /* uid -> true, para detectar quién acaba de entrar */
+  listo: false,        /* ya pasó el primer sync */
+  estado: "on",
+  desde: Date.now(),
+  invisible: false,
+  abierto: false,
+  ultimoMov: Date.now(),
+  antesDelPanel: null,
+  pendiente: null
+};
+var PRES_IDLE = 180000;      /* 3 min sin tocar nada = ausente */
+var PRES_CLAVE = "tb-pres-invisible";
+
+function presReducido() {
+  return !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+}
+function presEstilos() {
+  if (document.getElementById("tb-pres-css")) { return; }
+  var css = [
+    /* ---------- el punto sobre el avatar ---------- */
+    "#tablon-root [data-tb-uid]{position:relative;overflow:visible}",
+    "#tablon-root .tb-pres-dot{position:absolute;right:-3px;bottom:-3px;width:var(--pres-d,14px);height:var(--pres-d,14px);border-radius:50%;background:#28314d;border:2.5px solid var(--pres-borde,#111c37);opacity:0;transform:scale(.3);transition:opacity .28s ease,transform .3s cubic-bezier(.2,1.5,.4,1),background .28s ease;pointer-events:none;z-index:4}",
+    "#tablon-root [data-tb-pres='on']>.tb-pres-dot{opacity:1;transform:scale(1);background:radial-gradient(circle at 34% 30%,#c6ffe6,#3ce6a0 56%,#12a86d);animation:tbPresLatido 2.6s ease-out infinite}",
+    "#tablon-root [data-tb-pres='away']>.tb-pres-dot{opacity:1;transform:scale(1);background:radial-gradient(circle at 34% 30%,#ffe3b8,#ffb05c 58%,#c9731b);box-shadow:0 0 9px rgba(255,176,92,.55)}",
+    "#tablon-root [data-tb-nuevo]>.tb-pres-dot{animation:tbPresEntra .9s cubic-bezier(.2,1.5,.4,1) 1,tbPresLatido 2.6s ease-out .9s infinite}",
+    "@keyframes tbPresLatido{0%{box-shadow:0 0 0 0 rgba(92,240,165,.5),0 0 12px rgba(60,230,160,.7)}70%{box-shadow:0 0 0 9px rgba(92,240,165,0),0 0 12px rgba(60,230,160,.7)}100%{box-shadow:0 0 0 0 rgba(92,240,165,0),0 0 12px rgba(60,230,160,.7)}}",
+    "@keyframes tbPresEntra{0%{transform:scale(.2);box-shadow:0 0 0 0 rgba(92,240,165,.8)}45%{transform:scale(1.45)}100%{transform:scale(1);box-shadow:0 0 0 16px rgba(92,240,165,0)}}",
+    /* tamaños por tipo de avatar */
+    "#tablon-root .tb-avatar .tb-pres-dot{--pres-d:17px;right:-4px;bottom:-4px}",
+    "#tablon-root .tb-avatar-mini .tb-pres-dot{--pres-d:13px}",
+    "#tablon-root .tb-com-av .tb-pres-dot{--pres-d:12px;border-width:2px}",
+    "#tablon-root .tb-her-avs .tb-com-av .tb-pres-dot{--pres-d:8px;border-width:1.5px;right:-2px;bottom:-2px}",
+    "#tablon-root .tb-autor-foto .tb-pres-dot,#tablon-root .tb-react-cara .tb-pres-dot{display:none}",
+    "#tablon-root .tb-avatar[data-tb-pres='on']{box-shadow:0 0 0 2px rgba(92,240,165,.45),0 0 20px rgba(92,240,165,.22)}",
+    "#tablon-root.tb-light .tb-pres-dot{--pres-borde:#ffffff}",
+    "#tablon-root.tb-pixel .tb-pres-dot{border-radius:3px}",
+    /* ---------- chip de la barra superior ---------- */
+    "#tablon-root .tb-top .tb-pres-chip{position:relative;display:inline-flex;align-items:center;gap:8px;min-height:36px;margin-left:10px;padding:6px 14px 6px 10px;border:1px solid #5cf0a555;border-radius:999px;background:linear-gradient(120deg,#5cf0a51f,#7ae8ff14);color:#bff6dd;font-size:13px;font-weight:900;white-space:nowrap;cursor:pointer;transition:transform .18s ease,border-color .18s ease}",
+    "#tablon-root .tb-top .tb-pres-chip:hover{transform:translateY(-2px);border-color:#5cf0a5}",
+    "#tablon-root .tb-top .tb-pres-chip:focus-visible{outline:2px solid #5cf0a5;outline-offset:2px}",
+    "#tablon-root .tb-pres-chip-luz{width:10px;height:10px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#c6ffe6,#3ce6a0 56%,#12a86d);animation:tbPresLatido 2.6s ease-out infinite;flex:none}",
+    "#tablon-root .tb-pres-chip.oculto-yo{border-color:#8f9bbd55;color:#aab5d6;background:linear-gradient(120deg,#8f9bbd1a,#7ae8ff0d)}",
+    "#tablon-root .tb-pres-chip.oculto-yo .tb-pres-chip-luz{background:#6f7b9d;animation:none}",
+    "#tablon-root .tb-pres-chip b{font-variant-numeric:tabular-nums}",
+    "#tablon-root .tb-pres-chip.sube b{animation:tbPresSube .5s cubic-bezier(.2,1.5,.4,1)}",
+    "@keyframes tbPresSube{0%{transform:translateY(7px) scale(.7);opacity:0}100%{transform:none;opacity:1}}",
+    "@media(max-width:700px){#tablon-root .tb-pres-chip .tb-pres-etq{display:none}}",
+    /* ---------- panel lateral ---------- */
+    "#tablon-root .tb-pres-fondo{position:fixed;inset:0;z-index:59;background:rgba(4,8,22,.5);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:opacity .3s ease}",
+    "#tablon-root .tb-pres-fondo.abierto{opacity:1;pointer-events:auto}",
+    "#tablon-root .tb-pres-panel{position:fixed;top:0;right:0;z-index:60;display:flex;flex-direction:column;width:min(348px,92vw);height:100%;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);background:linear-gradient(165deg,rgba(21,31,63,.96),rgba(9,16,36,.98));border-left:1px solid #5cf0a533;box-shadow:-30px 0 80px rgba(0,0,0,.55);backdrop-filter:blur(20px);transform:translateX(104%);transition:transform .34s cubic-bezier(.2,.9,.25,1)}",
+    "#tablon-root .tb-pres-panel.abierto{transform:none}",
+    "#tablon-root.tb-light .tb-pres-panel{background:linear-gradient(165deg,rgba(255,255,255,.97),rgba(238,243,255,.98));border-left-color:#17b97a44}",
+    "#tablon-root .tb-pres-cab{display:flex;align-items:center;gap:12px;padding:20px 20px 14px;border-bottom:1px solid rgba(180,200,255,.14)}",
+    "#tablon-root .tb-pres-cab h3{margin:0;font-size:17px;font-weight:900;letter-spacing:.2px}",
+    "#tablon-root .tb-pres-cab p{margin:2px 0 0;font-size:12.5px;color:var(--muted)}",
+    "#tablon-root .tb-pres-cerrar{margin-left:auto;appearance:none;border:1px solid rgba(180,200,255,.22);background:rgba(255,255,255,.06);border-radius:12px;width:34px;height:34px;font-size:16px;line-height:1;cursor:pointer;flex:none;transition:background .18s ease}",
+    "#tablon-root .tb-pres-cerrar:hover{background:rgba(255,255,255,.14)}",
+    "#tablon-root .tb-pres-lista{flex:1;overflow:auto;padding:12px 12px 6px;display:flex;flex-direction:column;gap:6px}",
+    "#tablon-root .tb-pres-fila{display:flex;align-items:center;gap:12px;padding:9px 11px;border-radius:15px;border:1px solid transparent;background:rgba(255,255,255,.04);animation:tbPresFila .36s ease both}",
+    "#tablon-root.tb-light .tb-pres-fila{background:rgba(16,28,60,.05)}",
+    "#tablon-root .tb-pres-fila.yo{border-color:#5cf0a540;background:linear-gradient(120deg,rgba(92,240,165,.12),rgba(122,232,255,.05))}",
+    "@keyframes tbPresFila{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}",
+    "#tablon-root .tb-pres-fila .tb-pres-txt{min-width:0;flex:1}",
+    "#tablon-root .tb-pres-fila b{display:block;font-size:14px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}",
+    "#tablon-root .tb-pres-fila small{display:block;font-size:11.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}",
+    "#tablon-root .tb-pres-sello{flex:none;font-size:10.5px;font-weight:900;letter-spacing:.4px;text-transform:uppercase;padding:4px 9px;border-radius:999px}",
+    "#tablon-root .tb-pres-sello.on{color:#0a1b12;background:linear-gradient(120deg,#5cf0a5,#7ae8c0)}",
+    "#tablon-root .tb-pres-sello.away{color:#241603;background:linear-gradient(120deg,#ffc77a,#ffa24d)}",
+    "#tablon-root .tb-pres-vacio{margin:34px 12px;text-align:center;color:var(--muted);font-size:13.5px;line-height:1.6}",
+    "#tablon-root .tb-pres-vacio span{display:block;font-size:38px;margin-bottom:10px;filter:saturate(.7)}",
+    "#tablon-root .tb-pres-pie{padding:13px 16px calc(16px + env(safe-area-inset-bottom,0px));border-top:1px solid rgba(180,200,255,.14)}",
+    "#tablon-root .tb-pres-oculto{display:flex;align-items:center;gap:11px;width:100%;appearance:none;border:1px solid rgba(180,200,255,.2);background:rgba(255,255,255,.05);color:inherit;border-radius:14px;padding:11px 13px;cursor:pointer;text-align:left;font-size:13px;transition:border-color .18s ease,background .18s ease}",
+    "#tablon-root .tb-pres-oculto:hover{border-color:#5cf0a566;background:rgba(92,240,165,.08)}",
+    "#tablon-root .tb-pres-oculto b{display:block;font-weight:800}",
+    "#tablon-root .tb-pres-oculto small{display:block;color:var(--muted);font-size:11.5px;margin-top:1px}",
+    "#tablon-root .tb-pres-sw{flex:none;width:42px;height:24px;border-radius:999px;background:rgba(255,255,255,.14);position:relative;transition:background .22s ease}",
+    "#tablon-root .tb-pres-sw::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .24s cubic-bezier(.2,1.4,.4,1)}",
+    "#tablon-root .tb-pres-oculto[aria-pressed='true'] .tb-pres-sw{background:linear-gradient(120deg,#8f9bbd,#6f7b9d)}",
+    "#tablon-root .tb-pres-oculto[aria-pressed='true'] .tb-pres-sw::after{transform:translateX(18px)}",
+    "@media(prefers-reduced-motion:reduce){#tablon-root .tb-pres-dot,#tablon-root .tb-pres-chip-luz,#tablon-root [data-tb-nuevo]>.tb-pres-dot,#tablon-root .tb-pres-chip.sube b,#tablon-root .tb-pres-fila{animation:none!important}#tablon-root .tb-pres-panel,#tablon-root .tb-pres-fondo,#tablon-root .tb-pres-dot{transition:none}}"
+  ].join("\n");
+  var hoja = document.createElement("style");
+  hoja.id = "tb-pres-css";
+  hoja.textContent = css;
+  document.head.appendChild(hoja);
+}
+
+/* ---------- lectura del estado ---------- */
+function presPerfil(uid) {
+  try {
+    return profiles.filter(function (p) { return String(p.id) === String(uid); })[0] || null;
+  } catch (e) { return null; }
+}
+function presConectados() {
+  return Object.keys(PRES.mapa);
+}
+function presMiEstado() {
+  if (PRES.invisible) { return null; }
+  if (document.hidden) { return "away"; }
+  if (Date.now() - PRES.ultimoMov > PRES_IDLE) { return "away"; }
+  return "on";
+}
+
+/* ---------- pintar los puntos en pantalla ---------- */
+function presPintar() {
+  var nodos = document.querySelectorAll("#tablon-root [data-tb-uid]");
+  var i, nodo, uid, estado;
+  for (i = 0; i < nodos.length; i++) {
+    nodo = nodos[i];
+    uid = nodo.getAttribute("data-tb-uid");
+    estado = PRES.mapa[uid] || "";
+    if (estado) { nodo.setAttribute("data-tb-pres", estado); }
+    else { nodo.removeAttribute("data-tb-pres"); }
+  }
+}
+function presMarcarNuevo(uid) {
+  var nodos = document.querySelectorAll('#tablon-root [data-tb-uid="' + uid + '"]');
+  Array.prototype.forEach.call(nodos, function (n) {
+    n.setAttribute("data-tb-nuevo", "1");
+    setTimeout(function () { n.removeAttribute("data-tb-nuevo"); }, 1000);
+  });
+}
+
+/* ---------- chip de la barra superior ---------- */
+function presChip() {
+  if (document.getElementById("tb-pres-chip")) { return; }
+  var top = document.querySelector("#tablon-root .tb-top");
+  if (!top) { return; }
+  var chip = document.createElement("button");
+  chip.type = "button";
+  chip.id = "tb-pres-chip";
+  chip.className = "tb-pres-chip tb-hidden";
+  chip.setAttribute("aria-expanded", "false");
+  chip.setAttribute("aria-controls", "tb-pres-panel");
+  chip.title = "Quién está conectado ahora";
+  chip.innerHTML = '<span class="tb-pres-chip-luz" aria-hidden="true"></span>' +
+    '<b id="tb-pres-n">0</b><span class="tb-pres-etq">en línea</span>';
+  chip.onclick = function () { presPanelAbrir(!PRES.abierto); };
+  var belis = document.getElementById("tb-belis-top");
+  if (belis && belis.parentNode === top) { top.insertBefore(chip, belis); }
+  else { top.appendChild(chip); }
+}
+function presChipPintar() {
+  var chip = document.getElementById("tb-pres-chip");
+  var num = document.getElementById("tb-pres-n");
+  if (!chip || !num) { return; }
+  var total = presConectados().length;
+  var previo = parseInt(num.textContent, 10) || 0;
+  chip.classList.remove("tb-hidden");
+  chip.classList.toggle("oculto-yo", PRES.invisible);
+  num.textContent = String(total);
+  chip.setAttribute("aria-label", total === 1
+    ? "1 persona en línea. Ver quién está conectado."
+    : total + " personas en línea. Ver quién está conectado.");
+  if (total > previo && !presReducido()) {
+    chip.classList.remove("sube");
+    void chip.offsetWidth;
+    chip.classList.add("sube");
+  }
+}
+
+/* ---------- panel lateral ---------- */
+function presPanel() {
+  if (document.getElementById("tb-pres-panel")) { return; }
+  var raiz = document.getElementById("tablon-root");
+  if (!raiz) { return; }
+  var fondo = document.createElement("div");
+  fondo.className = "tb-pres-fondo";
+  fondo.id = "tb-pres-fondo";
+  fondo.onclick = function () { presPanelAbrir(false); };
+  var panel = document.createElement("aside");
+  panel.className = "tb-pres-panel";
+  panel.id = "tb-pres-panel";
+  panel.setAttribute("role", "dialog");
+  panel.setAttribute("aria-label", "Personas conectadas ahora");
+  panel.setAttribute("aria-hidden", "true");
+  panel.innerHTML =
+    '<div class="tb-pres-cab">' +
+      '<div><h3>Ahora mismo</h3><p id="tb-pres-sub">Nadie más por aquí.</p></div>' +
+      '<button type="button" class="tb-pres-cerrar" id="tb-pres-cerrar" aria-label="Cerrar">✕</button>' +
+    "</div>" +
+    '<div class="tb-pres-lista" id="tb-pres-lista"></div>' +
+    '<div class="tb-pres-pie">' +
+      '<button type="button" class="tb-pres-oculto" id="tb-pres-oculto" aria-pressed="false">' +
+        '<span class="tb-pres-sw" aria-hidden="true"></span>' +
+        "<span><b>Aparecer desconectado</b><small>Sigues viendo quién está, pero nadie te ve a ti.</small></span>" +
+      "</button>" +
+    "</div>";
+  raiz.appendChild(fondo);
+  raiz.appendChild(panel);
+  document.getElementById("tb-pres-cerrar").onclick = function () { presPanelAbrir(false); };
+  document.getElementById("tb-pres-oculto").onclick = function () { presInvisible(!PRES.invisible); };
+  document.addEventListener("keydown", function (ev) {
+    if (ev.key === "Escape" && PRES.abierto) { presPanelAbrir(false); }
+  });
+}
+function presPanelAbrir(abrir) {
+  var panel = document.getElementById("tb-pres-panel");
+  var fondo = document.getElementById("tb-pres-fondo");
+  var chip = document.getElementById("tb-pres-chip");
+  if (!panel || !fondo) { return; }
+  PRES.abierto = !!abrir;
+  panel.classList.toggle("abierto", PRES.abierto);
+  fondo.classList.toggle("abierto", PRES.abierto);
+  panel.setAttribute("aria-hidden", PRES.abierto ? "false" : "true");
+  if (chip) { chip.setAttribute("aria-expanded", PRES.abierto ? "true" : "false"); }
+  if (PRES.abierto) {
+    PRES.antesDelPanel = document.activeElement;
+    presListaPintar();
+    var cerrar = document.getElementById("tb-pres-cerrar");
+    if (cerrar) { cerrar.focus(); }
+  } else if (PRES.antesDelPanel && PRES.antesDelPanel.focus) {
+    PRES.antesDelPanel.focus();
+    PRES.antesDelPanel = null;
+  }
+}
+function presDesdeTexto(ms) {
+  if (!ms) { return ""; }
+  var min = Math.floor((Date.now() - ms) / 60000);
+  if (min < 1) { return "recién llegó"; }
+  if (min === 1) { return "hace 1 minuto"; }
+  if (min < 60) { return "hace " + min + " minutos"; }
+  var h = Math.floor(min / 60);
+  return h === 1 ? "hace 1 hora" : "hace " + h + " horas";
+}
+function presListaPintar() {
+  var caja = document.getElementById("tb-pres-lista");
+  var sub = document.getElementById("tb-pres-sub");
+  var boton = document.getElementById("tb-pres-oculto");
+  if (!caja) { return; }
+  if (boton) { boton.setAttribute("aria-pressed", PRES.invisible ? "true" : "false"); }
+  var uids = presConectados();
+  var yo = me ? String(me.id) : "";
+  uids.sort(function (a, b) {
+    if (a === yo) { return -1; }
+    if (b === yo) { return 1; }
+    var pa = presPerfil(a), pb = presPerfil(b);
+    var na = pa ? (pa.display_name || pa.username || "") : "";
+    var nb = pb ? (pb.display_name || pb.username || "") : "";
+    return na.localeCompare(nb, "es");
+  });
+  var otros = uids.filter(function (u) { return u !== yo; }).length;
+  if (sub) {
+    sub.textContent = PRES.invisible
+      ? (otros ? otros + (otros === 1 ? " persona conectada · estás oculto" : " personas conectadas · estás oculto") : "Estás oculto.")
+      : (otros === 0 ? "Por ahora solo tú."
+        : otros === 1 ? "Hay 1 persona más contigo." : "Hay " + otros + " personas más contigo.");
+  }
+  if (!uids.length) {
+    caja.innerHTML = '<div class="tb-pres-vacio"><span aria-hidden="true">🌙</span>' +
+      "El tablón está en silencio.<br>Cuando alguien entre, aparece aquí al instante.</div>";
+    return;
+  }
+  caja.innerHTML = uids.map(function (uid) {
+    var p = presPerfil(uid);
+    var estado = PRES.mapa[uid] || "on";
+    var esYo = uid === yo;
+    var nombre = p ? (p.display_name || p.username || "Alguien") : "Alguien";
+    var usuario = p && p.username ? "@" + p.username : "";
+    var detalle = estado === "away" ? "Ausente" : presDesdeTexto(PRES.desdeDe ? PRES.desdeDe[uid] : 0);
+    var foto = p ? avatarHtml(p, "tb-com-av")
+      : '<div class="tb-com-av" data-tb-uid="' + escapeHtml(uid) + '">?<i class="tb-pres-dot" aria-hidden="true"></i></div>';
+    return '<div class="tb-pres-fila' + (esYo ? " yo" : "") + '">' + foto +
+      '<span class="tb-pres-txt"><b>' + escapeHtml(nombre) + (esYo ? " · tú" : "") + "</b>" +
+      "<small>" + escapeHtml(usuario + (usuario && detalle ? " · " : "") + detalle) + "</small></span>" +
+      '<span class="tb-pres-sello ' + estado + '">' + (estado === "away" ? "Ausente" : "En línea") + "</span>" +
+      "</div>";
+  }).join("");
+  presPintar();
+}
+
+/* ---------- modo invisible ---------- */
+function presInvisible(valor) {
+  PRES.invisible = !!valor;
+  try { tbLocalStorage.setItem(PRES_CLAVE, PRES.invisible ? "1" : "0"); } catch (e) { /* sin memoria del navegador */ }
+  presAnunciar(true);
+  presChipPintar();
+  presListaPintar();
+  if (typeof avisoToast === "function") {
+    avisoToast(PRES.invisible ? "👻 Ahora apareces desconectado." : "🟢 Vuelves a aparecer en línea.");
+  }
+}
+
+/* ---------- anunciar mi estado ---------- */
+function presAnunciar(forzar) {
+  if (!PRES.canal || !me) { return; }
+  var estado = presMiEstado();
+  if (estado === null) {
+    if (PRES.estado !== null || forzar) {
+      PRES.estado = null;
+      try { PRES.canal.untrack(); } catch (e) { /* el canal ya no está */ }
+    }
+    return;
+  }
+  if (estado === PRES.estado && !forzar) { return; }
+  PRES.estado = estado;
+  try {
+    PRES.canal.track({ uid: String(me.id), estado: estado, desde: PRES.desde });
+  } catch (e) { /* si falla, el próximo latido lo reintenta */ }
+}
+
+/* ---------- sincronizar lo que llega ---------- */
+function presSync() {
+  if (!PRES.canal || !PRES.canal.presenceState) { return; }
+  var crudo = {};
+  try { crudo = PRES.canal.presenceState() || {}; } catch (e) { crudo = {}; }
+  var mapa = {}, desde = {};
+  Object.keys(crudo).forEach(function (clave) {
+    var entradas = crudo[clave] || [];
+    entradas.forEach(function (ent) {
+      var uid = String(ent.uid || clave);
+      var est = ent.estado === "away" ? "away" : "on";
+      if (mapa[uid] !== "on") { mapa[uid] = est; }
+      if (!desde[uid] || (ent.desde && ent.desde < desde[uid])) { desde[uid] = ent.desde || Date.now(); }
+    });
+  });
+  var nuevos = Object.keys(mapa).filter(function (u) { return !PRES.vistos[u]; });
+  PRES.mapa = mapa;
+  PRES.desdeDe = desde;
+  PRES.vistos = {};
+  Object.keys(mapa).forEach(function (u) { PRES.vistos[u] = true; });
+  presPintar();
+  presChipPintar();
+  if (PRES.abierto) { presListaPintar(); }
+  if (PRES.listo && nuevos.length) { presSaludar(nuevos); }
+  PRES.listo = true;
+}
+function presSaludar(nuevos) {
+  var yo = me ? String(me.id) : "";
+  var otros = nuevos.filter(function (u) { return u !== yo; });
+  if (!otros.length) { return; }
+  otros.forEach(presMarcarNuevo);
+  if (typeof avisoToast !== "function") { return; }
+  if (otros.length > 2) {
+    avisoToast("🟢 " + otros.length + " personas acaban de entrar al tablón.");
+    return;
+  }
+  otros.forEach(function (uid) {
+    var p = presPerfil(uid);
+    avisoToast("🟢 " + (p ? (p.display_name || p.username) : "Alguien") + " acaba de conectarse.");
+  });
+}
+
+/* ---------- arranque y cierre ---------- */
+function presIniciar() {
+  if (!client || !me || PRES.canal) { return; }
+  if (typeof client.channel !== "function") { return; }
+  try { PRES.invisible = tbLocalStorage.getItem(PRES_CLAVE) === "1"; } catch (e) { PRES.invisible = false; }
+  presEstilos();
+  presChip();
+  presPanel();
+  try {
+    PRES.canal = client.channel("tb-presencia", {
+      config: { presence: { key: String(me.id) } }
+    });
+    PRES.canal.on("presence", { event: "sync" }, presSync);
+    PRES.canal.on("presence", { event: "join" }, presSync);
+    PRES.canal.on("presence", { event: "leave" }, presSync);
+    PRES.canal.subscribe(function (estado) {
+      if (estado === "SUBSCRIBED") { presAnunciar(true); }
+    });
+  } catch (e) {
+    PRES.canal = null;
+    return;
+  }
+  /* repintar cuando la app vuelve a dibujar cualquier vista */
+  try {
+    var raiz = document.getElementById("tablon-root");
+    if (raiz && window.MutationObserver) {
+      new MutationObserver(function () {
+        if (PRES.pendiente) { return; }
+        PRES.pendiente = setTimeout(function () { PRES.pendiente = null; presPintar(); }, 140);
+      }).observe(raiz, { childList: true, subtree: true });
+    }
+  } catch (e) { /* sin observador, los puntos se pintan en cada sync */ }
+  /* actividad del usuario, para distinguir presente de ausente */
+  ["pointerdown", "keydown", "wheel", "touchstart"].forEach(function (ev) {
+    document.addEventListener(ev, function () {
+      PRES.ultimoMov = Date.now();
+      if (PRES.estado === "away") { presAnunciar(); }
+    }, { passive: true });
+  });
+  document.addEventListener("visibilitychange", function () {
+    PRES.ultimoMov = Date.now();
+    presAnunciar();
+    if (!document.hidden) { presDiaNuevo(); }
+  });
+  setInterval(function () {
+    presAnunciar();
+    if (PRES.abierto) { presListaPintar(); }
+  }, 20000);
+  window.addEventListener("pagehide", presSalir);
+}
+function presSalir() {
+  if (!PRES.canal) { return; }
+  try { PRES.canal.untrack(); } catch (e) { /* ya se fue */ }
+  try { client.removeChannel(PRES.canal); } catch (e) { /* ya se fue */ }
+  PRES.canal = null;
+}
+
+/* ---------- registro diario de actividad (tb_actividad) ---------- */
+function presDiaNuevo() {
+  var hoy = new Date().toDateString();
+  if (PRES.diaRegistrado === hoy) { return; }
+  PRES.diaRegistrado = hoy;
+  try {
+    client.rpc("tb_registrar_actividad").then(function () { /* registrado */ },
+      function () { /* sin registro, no afecta la sesión */ });
+  } catch (e) { /* sin conexión */ }
+}
 
 })();
 </script>
