@@ -8072,7 +8072,7 @@ html.hw-temporada [fill="#cf6420"] { fill: #778756; } html.hw-temporada [stroke=
    - URL: ?tema=navidad  ?tema=halloween  ?tema=normal  (también sirve ?halloween=1 / ?halloween=0).
    Halloween: cementerio, mascotas disfrazadas y caza de espíritus. Navidad: pueblo nevado, luces, Michi de Santa y Rugo abrigado. */
 (function () {
-var KEY = "tb-tema", VIEJA = "tb-tema-halloween", TEMAS = { normal: 1, halloween: 1, navidad: 1 };
+var KEY = "tb-tema-local", GKEY = "tb-tema-global", VIEJA = "tb-tema-halloween", TEMAS = { normal: 1, halloween: 1, navidad: 1 };
 function leer(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
 function guardar(v) { try { localStorage.setItem(KEY, v); localStorage.removeItem(VIEJA); } catch (e) { /* sin almacenamiento: vale solo esta carga */ } }
 var q = location.search, f = /[?&]tema=([a-z]+)/.exec(q), h = /[?&]halloween=([01])/.exec(q);
@@ -8086,12 +8086,49 @@ try { var nv = navigator; debil = !!((nv.deviceMemory && nv.deviceMemory <= 4) |
 window.TB_EFECTOS = ef;
 window.TB_LITE_INICIAL = ef === "ligero" || (ef === "auto" && debil);
 var pedido = f && TEMAS[f[1]] ? f[1] : (h ? (h[1] === "1" ? "halloween" : "normal") : null);
-if (pedido) { guardar(pedido); }
-var tema = pedido || leer(KEY) || (leer(VIEJA) === "1" ? "halloween" : "normal");
-if (!TEMAS[tema]) { tema = "normal"; }
+/* orden: URL > elección de este dispositivo > tema para todos (guardado en el servidor) > normal */
+/* TEMA UNIVERSAL: el mismo para todos. DEFECTO viene dentro de este archivo (así aplica aunque el servidor no responda);
+   si la tabla tb_tema_global existe, el tema que elija el owner reemplaza al DEFECTO. Ya no hay elecciones por dispositivo. */
+var DEFECTO = "navidad";
+try { localStorage.removeItem(KEY); localStorage.removeItem(VIEJA); } catch (e) { /* nada que limpiar */ }
+var glob = leer(GKEY); if (!TEMAS[glob]) { glob = null; }
+var tema = pedido || glob || DEFECTO;
+var hayLocal = !!pedido; /* ?tema= solo vale para probar en esa carga, no se guarda */
 window.TB_TEMA = tema;
 window.TB_HALLOWEEN = tema === "halloween";
 window.TB_NAVIDAD = tema === "navidad";
+/* TEMA PARA TODOS: se lee del servidor (sin iniciar sesión) y queda en caché para pintar al instante la próxima vez */
+var G_URL = "https://quppebdummixryqqcady.supabase.co", G_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF1cHBlYmR1bW1peHJ5cXFjYWR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU2ODk1NjMsImV4cCI6MjEwMTI2NTU2M30.amk4S_scOxrWQr7kHMbYjWuFIE7wA789KSGkcm2-NFY", ultimoChequeo = 0;
+/* aplica el tema del servidor (lo llama la lectura anónima de aquí y, de respaldo, la lectura con sesión iniciada) */
+window.tbTemaGlobalAplicar = function (g) {
+  if (!TEMAS[g]) { return; }
+  try { localStorage.setItem(GKEY, g); } catch (e) { /* solo esta carga */ }
+  window.TB_TEMA_GLOBAL = g;
+  var sel = document.getElementById("tb-tema-local"); if (sel) { sel.options[0].text = "Igual que todos (" + g + ")"; }
+  var st = document.getElementById("tb-tema-status"); if (st && !st.textContent) { st.textContent = "Tema guardado en el servidor: " + g + "."; }
+  if (!hayLocal && g !== tema) {
+    try { if (sessionStorage.getItem("tb-tg-recarga") === g) { return; } sessionStorage.setItem("tb-tg-recarga", g); } catch (e) { /* sin sesión */ }
+    location.reload();
+  } else { try { sessionStorage.removeItem("tb-tg-recarga"); } catch (e) { /* nada */ } }
+};
+function avisarGlobal(msg) { window.TB_GLOBAL_ERROR = msg; var st = document.getElementById("tb-tema-status"); if (st) { st.textContent = msg; } }
+function revisarGlobal() {
+  if (Date.now() - ultimoChequeo < 30000) { return; }
+  ultimoChequeo = Date.now();
+  try {
+    fetch(G_URL + "/rest/v1/tb_tema_global?select=tema&id=eq.1", { headers: { apikey: G_KEY, Authorization: "Bearer " + G_KEY } })
+      .then(function (r) {
+        if (!r.ok) { avisarGlobal("No se pudo leer el tema del servidor (HTTP " + r.status + "). Mientras tanto todos ven el tema predeterminado (" + DEFECTO + "). Para poder cambiarlo desde el panel, ejecuta ACTIVAR-tema-global.sql en Supabase."); return null; }
+        return r.json();
+      })
+      .then(function (j) {
+        if (j && !j.length) { avisarGlobal("La tabla tb_tema_global está vacía: vuelve a ejecutar ACTIVAR-tema-global.sql."); return; }
+        if (j) { window.tbTemaGlobalAplicar(j[0] && j[0].tema); }
+      }).catch(function () { /* sin red: se queda el tema en caché */ });
+  } catch (e) { /* sin fetch */ }
+}
+revisarGlobal();
+document.addEventListener("visibilitychange", function () { if (!document.hidden) { revisarGlobal(); } });
 var activos = { "tb-halloween-theme": "halloween", "tb-halloween-decor": "halloween", "tb-navidad-theme": "navidad", "tb-navidad-decor": "navidad" };
 function aplicarHojas() {
   Object.keys(activos).forEach(function (id) { var st = document.getElementById(id); if (st) { st.disabled = activos[id] !== tema; } });
@@ -8122,18 +8159,37 @@ document.addEventListener("DOMContentLoaded", function () {
       location.replace(location.pathname + limpia + location.hash);
     };
   });
-  var radios = document.querySelectorAll('input[name="tb-tema"]');
-  Array.prototype.forEach.call(radios, function (r) {
-    r.checked = r.value === tema;
+  var recargar = function () {
+    var limpia = location.search.replace(/[?&](tema|halloween|efectos)=[a-z01]+/g, "").replace(/^&/, "?");
+    location.replace(location.pathname + limpia + location.hash);
+  };
+  var st = document.getElementById("tb-tema-status");
+  var radiosG = document.querySelectorAll('input[name="tb-tema-global"]');
+  var actualG = glob || DEFECTO;
+  Array.prototype.forEach.call(radiosG, function (r) {
+    r.checked = r.value === actualG;
     r.onchange = function () {
       if (!r.checked) { return; }
-      guardar(r.value);
-      var st = document.getElementById("tb-tema-status"); if (st) { st.textContent = "Aplicando el tema…"; }
-      /* se quitan ?tema= y ?halloween= de la URL para que no pisen la elección */
-      var limpia = location.search.replace(/[?&](tema|halloween|efectos)=[a-z01]+/g, "").replace(/^&/, "?");
-      location.replace(location.pathname + limpia + location.hash);
+      if (st) { st.textContent = "Guardando para todos…"; }
+      if (typeof window.tbGuardarTemaGlobal !== "function") { if (st) { st.textContent = "Todavía no se puede guardar: espera a que cargue la sesión."; } return; }
+      window.tbGuardarTemaGlobal(r.value).then(function (res) {
+        if (res && res.error) { if (st) { st.textContent = res.error; } r.checked = false; var prev = document.querySelector('input[name="tb-tema-global"][value="' + actualG + '"]'); if (prev) { prev.checked = true; } return; }
+        try { localStorage.setItem(GKEY, r.value); } catch (e) { /* solo esta carga */ }
+        if (st) { st.textContent = "Listo: todos verán el tema " + r.value + "."; }
+        setTimeout(recargar, 700);
+      });
     };
   });
+  var selL = document.getElementById("tb-tema-local");
+  if (selL) {
+    selL.value = hayLocal ? tema : "";
+    if (glob) { selL.options[0].text = "Igual que todos (" + glob + ")"; }
+    selL.onchange = function () {
+      try { if (selL.value) { localStorage.setItem(KEY, selL.value); } else { localStorage.removeItem(KEY); } localStorage.removeItem(VIEJA); } catch (e) { /* solo esta carga */ }
+      if (st) { st.textContent = "Aplicando el tema…"; }
+      recargar();
+    };
+  }
 });
 })();
 </script>
@@ -9528,12 +9584,14 @@ Avisar al celular a quienes tienen los avisos activados
 <section id="tb-view-owner" class="tb-view tb-owner-only">
 <details class="tb-card tb-extra-owner" id="tb-tema-panel">
 <summary>🎨 Tema de temporada</summary>
-<p class="tb-muted">Elige cómo se ve El Tablón en este dispositivo. Se guarda en este navegador, así que los estudiantes siguen viendo el tema normal. Úsalo en el equipo de la exposición de AEP.</p>
-<div class="tb-tema-opciones" role="radiogroup" aria-label="Tema de temporada">
-<label class="tb-tema-op"><input type="radio" name="tb-tema" value="normal"><span><b>Normal</b><small>El de todos los días.</small></span></label>
-<label class="tb-tema-op"><input type="radio" name="tb-tema" value="halloween"><span><b>🎃 Halloween</b><small>Cementerio, mascotas disfrazadas y caza de espíritus.</small></span></label>
-<label class="tb-tema-op"><input type="radio" name="tb-tema" value="navidad"><span><b>🎄 Navidad</b><small>Luces, nieve, Michi de Santa y Rugo abrigado.</small></span></label>
+<p class="tb-muted">Elige el tema de temporada de El Tablón para todos los usuarios.</p>
+<h4 style="margin:14px 0 4px;font-size:14px">Tema para todos</h4>
+<div class="tb-tema-opciones" role="radiogroup" aria-label="Tema para todos">
+<label class="tb-tema-op"><input type="radio" name="tb-tema-global" value="normal"><span><b>Normal</b><small>El de todos los días.</small></span></label>
+<label class="tb-tema-op"><input type="radio" name="tb-tema-global" value="halloween"><span><b>🎃 Halloween</b><small>Cementerio, mascotas disfrazadas y caza de espíritus.</small></span></label>
+<label class="tb-tema-op"><input type="radio" name="tb-tema-global" value="navidad"><span><b>🎄 Navidad</b><small>Luces, nieve, Michi de Santa y Rugo abrigado.</small></span></label>
 </div>
+<p class="tb-muted">Es el mismo para todos los usuarios y dispositivos; se ve al abrir o volver a la página. Sin ejecutar ACTIVAR-tema-global.sql todos ven Navidad por defecto; con él puedes cambiarlo desde aquí.</p>
 <p class="tb-muted">La caza de espíritus de Halloween, además, tiene que estar abierta en el servidor.</p>
 <p class="tb-extra-status" id="tb-tema-status" role="status" aria-live="polite"></p>
 </details>
@@ -27075,6 +27133,7 @@ rpSubscribe();
 sincronizarCatalogo();
 /* los memes pesan mucho (imágenes en base64): al entrar solo se traen los datos livianos; las imágenes llegan al abrir Memes */
 cargarMemes(true).then(function () { if (arcadeActual === "hub") { renderArcade(); } }).catch(function () { /* sin memes */ });
+client.from("tb_tema_global").select("tema").eq("id", 1).maybeSingle().then(function (r) { if (r && r.data && window.tbTemaGlobalAplicar) { window.tbTemaGlobalAplicar(r.data.tema); } }).catch(function () { /* sin tabla */ });
 renderTasks();
 renderProfiles();
 renderMyProfile();
@@ -28020,6 +28079,13 @@ if (isConfigured()) {
 if (!window.supabase || typeof window.supabase.createClient !== "function") {
 showMessage("No se pudo cargar la conexión. Comprueba tu internet y recarga la página.");
 } else {
+window.tbGuardarTemaGlobal = async function (tema) {
+  if (!client || !isOwner()) { return { error: "Solo el owner puede cambiar el tema para todos." }; }
+  var r = await client.from("tb_tema_global").update({ tema: tema, updated_at: new Date().toISOString() }).eq("id", 1).select();
+  if (r.error) { return { error: faltaTablaTb(r.error) ? "Falta ejecutar ACTIVAR-tema-global.sql en el SQL Editor de Supabase." : r.error.message }; }
+  if (!r.data || !r.data.length) { return { error: "No se pudo guardar: ejecuta ACTIVAR-tema-global.sql en Supabase (y comprueba que eres owner)." }; }
+  return { ok: true };
+};
 var TB_PERF = /[?&]perf=1/.test(location.search), tbPerfLog = [];
 function tbPerfOpciones() {
   if (!TB_PERF) { return undefined; }
