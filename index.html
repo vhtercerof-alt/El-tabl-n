@@ -9297,6 +9297,11 @@ Sandoval, gracias por ser el mayor consumidor de El tablón.
 <div class="tb-brand"><span class="tb-logo" role="img" aria-label="Logo de El Tablón"></span> El tablón</div>
 <h2 id="tb-auth-title">Bienvenido</h2>
 <p id="tb-auth-sub" class="tb-muted">Ingresa con tu usuario y contraseña.</p>
+<p class="tb-muted" style="margin:14px 0 6px;font-size:13px">¿De qué sección eres?</p>
+<div class="tb-tabs" id="tb-seccion" role="group" aria-label="Sección">
+<button type="button" class="tb-tab active" data-seccion="10B">10mo B</button>
+<button type="button" class="tb-tab" data-seccion="8A">8vo A</button>
+</div>
 <div class="tb-tabs">
 <button type="button" class="tb-tab active" data-auth="login">Entrar</button>
 <button type="button" class="tb-tab" data-auth="register">Crear cuenta</button>
@@ -16698,6 +16703,36 @@ SUPABASE_ANON_KEY.trim().split(".").length === 3
 }
 function isStaff() { return !!me && (me.role === "owner" || me.role === "admin"); }
 function isOwner() { return !!me && me.role === "owner"; }
+/* ---------- Secciones: 10mo B / 8vo A ---------- */
+var TB_SECCIONES = { "10B": "10mo B", "8A": "8vo A" };
+var tbSeccion = (function () {
+try { var g = tbLocalStorage.getItem("tb_seccion"); return TB_SECCIONES[g] ? g : "10B"; } catch (e) { return "10B"; }
+})();
+var tbSeccionExplicita = false;
+function tbPintarSeccion() {
+$$("[data-seccion]").forEach(function (b) { b.classList.toggle("active", b.dataset.seccion === tbSeccion); });
+}
+function tbFijarSeccion(sec) {
+if (!TB_SECCIONES[sec]) { sec = "10B"; }
+var cambio = sec !== tbSeccion;
+tbSeccion = sec;
+try { tbLocalStorage.setItem("tb_seccion", sec); } catch (e) {}
+if (cambio) { try { acceso.lista = null; } catch (e) {} }
+tbPintarSeccion();
+}
+async function tbEntrarSeccion() {
+var elegida = tbSeccionExplicita ? tbSeccion : null;
+tbSeccionExplicita = false;
+var r = await client.rpc("tb_entrar_seccion", { p_seccion: elegida });
+if (r.error || typeof r.data !== "string") { return; }
+if (elegida && r.data !== elegida) {
+var real = r.data;
+try { await client.auth.signOut(); } catch (e) {}
+tbFijarSeccion(real);
+throw new Error("Esa cuenta pertenece a " + (TB_SECCIONES[real] || real) + ". Elige tu sección arriba e inténtalo de nuevo.");
+}
+tbFijarSeccion(r.data);
+}
 function weekFriday(offsetWeeks) {
 var date = new Date();
 date.setHours(12, 0, 0, 0);
@@ -28205,6 +28240,10 @@ pintarRankingArcade();
 };
 });
 }
+$$("[data-seccion]").forEach(function (b) {
+b.addEventListener("click", function () { tbFijarSeccion(b.dataset.seccion); });
+});
+tbPintarSeccion();
 function switchAuth(mode) {
 $$("[data-auth]").forEach(function (button) {
 button.classList.toggle("active", button.dataset.auth === mode);
@@ -28293,6 +28332,7 @@ async function tbCargarModulos(modulos) {
   await Promise.all([trabajador(), trabajador(), trabajador(), trabajador()]);
 }
 async function loadData() {
+await tbEntrarSeccion();
 /* perfiles, sesión y tareas no dependen entre sí: van a la vez (antes eran 3 viajes seguidos) */
 var carga = await Promise.all([tbLeerPaginas("profiles", "display_name", true), client.auth.getUser(), tbLeerPaginas("tasks", "created_at", false)]);
 var profilesResult = carga[0];
@@ -28504,6 +28544,7 @@ if (!client) {
 showMessage("Configura SUPABASE_URL y SUPABASE_ANON_KEY en el script.");
 return;
 }
+tbSeccionExplicita = true;
 if (loginModoActual === "codigo") { await entrarConCodigo(); return; }
 var escrito = $("#tb-login-user").value;
 var result = await client.auth.signInWithPassword({
@@ -28559,6 +28600,7 @@ password: $("#tb-register-pass").value,
 options: {
 data: {
 username: username,
+section: tbSeccion,
 display_name: $("#tb-register-name").value.trim(),
 bio: $("#tb-register-bio").value.trim()
 }
@@ -35080,7 +35122,7 @@ $("#tb-usuarios-buscar").value = "";
 var caja = $("#tb-usuarios-lista");
 if (!acceso.lista || Date.now() - acceso.listaEn > 60000) {
 caja.innerHTML = '<p class="tb-usuarios-vacio">Cargando usuarios…</p>';
-var r = await client.rpc("tb_usuarios_lista");
+var r = await client.rpc("tb_usuarios_lista", { p_seccion: tbSeccion });
 if (r.error) {
 caja.innerHTML = '<p class="tb-usuarios-vacio">' + (faltaTablaTb(r.error)
 ? "Esta lista todavía no está activada. Pídele ayuda a Víctor Hugo."
@@ -41846,7 +41888,7 @@ function presIniciar() {
   presChip();
   presPanel();
   try {
-    PRES.canal = client.channel("tb-presencia", {
+    PRES.canal = client.channel("tb-presencia-" + tbSeccion, {
       config: { presence: { key: String(me.id) } }
     });
     PRES.canal.on("presence", { event: "sync" }, presSync);
