@@ -11277,6 +11277,365 @@ fill="none" stroke="#ff8f3b" stroke-width="13" stroke-linecap="round"/>
   #tablon-root .tb-her-llama, #tablon-root .tb-com-herchip.v2::after, #tablon-root .tb-ins-mitico, #tablon-root .tb-ext-revela-rayos, #tablon-root .tb-ext-revela *, #tablon-root .tb-ext-viva::before { animation: none !important; }
 }
 </style>
+<style id="tb-campeon">
+/* ═══ SEMANA DEL CAMPEÓN · 1.er lugar Feria Emprendedora 2026 ═══ */
+/* chip de la barra superior */
+.tb-top .cp-chip { position: relative; display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 6px 13px 6px 6px; border: 1px solid #ffd36b77; border-radius: 999px; background: linear-gradient(125deg, #3b2406, #4a1d3a); color: #fff3d6; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer; transition: transform .2s ease, border-color .2s ease; }
+.tb-top .cp-chip:hover { transform: translateY(-2px); border-color: #ffd36b; }
+.tb-top .cp-chip:focus-visible { outline: 2px solid #ffd36b; outline-offset: 2px; }
+.cp-chip-ico { width: 24px; height: 24px; flex: none; display: grid; place-items: center; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #fff6d0, #f0b42955 70%); }
+.cp-chip-ico svg { width: 20px; height: 20px; }
+.tb-top .cp-chip.alerta::after { content: ""; position: absolute; top: -2px; right: -2px; width: 10px; height: 10px; border-radius: 50%; background: #ff5a5a; box-shadow: 0 0 10px #ff5a5a; animation: tbLatido 1.2s ease-in-out infinite; }
+#tablon-root.tb-light .tb-top .cp-chip { background: linear-gradient(125deg, #fff4d0, #ffe3ee); color: #5a3a00; border-color: #e0a84a88; }
+@media (max-width: 700px) { .tb-top .cp-chip .cp-chip-etq { display: none; } .tb-top .cp-chip { padding: 6px; } }
+
+/* tarjeta de inicio */
+.cp-home { position: relative; overflow: hidden; display: flex; align-items: center; gap: 20px; margin: 0 0 18px; padding: 20px 22px; border: 1px solid #ffd36b55; border-radius: 22px; background: linear-gradient(120deg, #2b0f45, #4a1d3a 55%, #3b2406); color: #fff4e0; }
+.cp-home-fondo { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(60% 120% at 12% 50%, #ffd36b33, transparent 70%), url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2090%2090%22%3E%3Crect%20x%3D%228%22%20y%3D%2210%22%20width%3D%227%22%20height%3D%223%22%20rx%3D%221%22%20fill%3D%22%23ffd36b%22%20transform%3D%22rotate%2825%2011%2011%29%22%2F%3E%3Crect%20x%3D%2252%22%20y%3D%226%22%20width%3D%223%22%20height%3D%227%22%20rx%3D%221%22%20fill%3D%22%23fff3b0%22%20transform%3D%22rotate%28-20%2053%209%29%22%2F%3E%3Crect%20x%3D%2230%22%20y%3D%2234%22%20width%3D%227%22%20height%3D%223%22%20rx%3D%221%22%20fill%3D%22%23f0b429%22%20transform%3D%22rotate%28-35%2033%2035%29%22%2F%3E%3Crect%20x%3D%2270%22%20y%3D%2240%22%20width%3D%226%22%20height%3D%223%22%20rx%3D%221%22%20fill%3D%22%23ff5a7a%22%20transform%3D%22rotate%2840%2073%2041%29%22%2F%3E%3Ccircle%20cx%3D%2218%22%20cy%3D%2260%22%20r%3D%222%22%20fill%3D%22%235ad1ff%22%2F%3E%3Crect%20x%3D%2244%22%20y%3D%2264%22%20width%3D%223%22%20height%3D%227%22%20rx%3D%221%22%20fill%3D%22%23ffd36b%22%20transform%3D%22rotate%2815%2045%2067%29%22%2F%3E%3Crect%20x%3D%2276%22%20y%3D%2274%22%20width%3D%227%22%20height%3D%223%22%20rx%3D%221%22%20fill%3D%22%23fff%22%20transform%3D%22rotate%28-10%2079%2075%29%22%2F%3E%3Ccircle%20cx%3D%2262%22%20cy%3D%2224%22%20r%3D%221.6%22%20fill%3D%22%23fff6d0%22%2F%3E%3C%2Fsvg%3E') 0 0 / 90px 90px; opacity: .55; }
+.cp-home-copa { position: relative; flex: none; width: 92px; height: 92px; display: grid; place-items: center; border-radius: 50%; background: radial-gradient(circle, #ffd36b55, transparent 70%); }
+.cp-home-copa svg { width: 78px; height: 78px; animation: cpFlota 3.6s ease-in-out infinite; }
+.cp-home-txt { position: relative; min-width: 0; }
+.cp-home h2 { margin: 4px 0 6px; font-size: clamp(19px, 3.2vw, 26px); line-height: 1.15; background: linear-gradient(100deg, #fff3b0, #ffd36b 40%, #fffaf0 55%, #f0b429); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.cp-home p { margin: 0 0 12px; color: #ffe9c7; font-size: 14px; line-height: 1.5; }
+.cp-home-acciones { display: flex; flex-wrap: wrap; gap: 8px; }
+.cp-home .tb-secondary { color: #fff4e0; border-color: #ffd36b66; background: #ffffff12; }
+.cp-home.cp-home-compacta { padding: 0; border: 0; background: none; }
+.cp-home-mini { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 16px; border: 1px solid #ffd36b44; border-radius: 16px; background: linear-gradient(120deg, #2b0f4588, #3b240688); color: #fff4e0; font: inherit; text-align: left; cursor: pointer; }
+.cp-home-mini > span:nth-child(2) { flex: 1; display: grid; }
+.cp-home-mini small { color: #ffd27a; font-size: 12px; }
+.cp-home-mini:hover { border-color: #ffd36b; }
+#tablon-root.tb-light .cp-home-mini { background: linear-gradient(120deg, #fff4d0, #ffe3ee); color: #3a2400; }
+#tablon-root.tb-light .cp-home-mini small { color: #8a5a06; }
+@media (max-width: 560px) { .cp-home { flex-direction: column; align-items: flex-start; gap: 8px; padding: 18px; } .cp-home-copa { width: 64px; height: 64px; } .cp-home-copa svg { width: 54px; height: 54px; } }
+@keyframes cpFlota { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-6px) rotate(3deg); } }
+
+/* modal */
+.cp-modal-card { width: min(640px, 100%); }
+.cp-kicker { display: inline-block; font-size: 11.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #ffd27a; }
+#tablon-root.tb-light .cp-kicker { color: #9a6206; }
+.cp-modal-card h3 { margin: 4px 0 0; font-size: 22px; }
+.cp-tabs { margin-top: 14px; }
+.cp-tabs button[aria-selected="true"] { border-bottom-color: #ffd36b; }
+.cp-aviso { min-height: 1em; margin: 10px 0 0; color: #ff9a8a; font-size: 13px; }
+.cp-aviso:empty { display: none; }
+.cp-bloque { margin: 0 0 14px; padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: #ffffff06; }
+.cp-bloque h4, .cp-libro h4 { margin: 0 0 8px; font-size: 15px; }
+.cp-bloque p { margin: 0 0 10px; font-size: 13.5px; line-height: 1.55; }
+.cp-bloque p:last-child { margin-bottom: 0; }
+.cp-nota { font-size: 12.5px !important; }
+.cp-ok { color: #7fe0b0; font-weight: 700; }
+#tablon-root.tb-light .cp-ok { color: #12896a; }
+.cp-vitrina { display: grid; grid-template-columns: 140px 1fr; gap: 18px; align-items: center; margin: 0 0 14px; padding: 16px; border: 1px solid #ffd36b44; border-radius: 18px; background: radial-gradient(80% 120% at 0% 50%, #ffd36b22, transparent 70%), #ffffff05; }
+.cp-vitrina-carta { width: 140px; aspect-ratio: 600 / 760; border-radius: 12px; background-size: cover; background-position: center; background-color: #12061f; box-shadow: 0 14px 30px #0008, 0 0 0 1px #ffd36b55; }
+.cp-vitrina-txt h4 { margin: 4px 0 10px; font-size: 17px; }
+.cp-mensaje { margin: 0 0 12px; padding: 10px 14px; border-left: 3px solid #ffd36b; border-radius: 0 12px 12px 0; background: #ffd36b12; font-size: 14px; line-height: 1.5; font-style: italic; white-space: pre-line; }
+.cp-mensaje cite { display: block; margin-top: 6px; font-size: 12px; font-style: normal; color: var(--muted); }
+.cp-datos { display: flex; gap: 18px; margin: 0; padding: 0; list-style: none; }
+.cp-datos li { display: grid; }
+.cp-datos b { font-size: 22px; line-height: 1; color: #ffd36b; font-variant-numeric: tabular-nums; }
+#tablon-root.tb-light .cp-datos b { color: #9a6206; }
+.cp-datos small { color: var(--muted); font-size: 11.5px; }
+@media (max-width: 520px) { .cp-vitrina { grid-template-columns: 1fr; gap: 12px; text-align: center; } .cp-vitrina-carta { width: 120px; justify-self: center; } .cp-mensaje { text-align: left; } .cp-datos { justify-content: center; } }
+.cp-adornos { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+.cp-adorno { display: grid; gap: 4px; justify-items: center; padding: 12px 10px; border: 1px solid var(--line); border-radius: 14px; text-align: center; background: #ffffff05; }
+.cp-adorno.on { border-color: #ffd36b99; box-shadow: 0 0 0 1px #ffd36b44 inset; }
+.cp-adorno b { font-size: 12.5px; }
+.cp-adorno small { color: var(--muted); font-size: 11px; }
+.cp-adorno button { margin-top: 4px; padding: 7px 12px; font-size: 12px; }
+.cp-adorno-prev { position: relative; width: 100%; height: 58px; display: grid; place-items: center; overflow: hidden; border-radius: 10px; background: #00000022; }
+.cp-adorno-prev .nv-titulo { margin: 0; max-width: 96%; font-size: 10.5px; white-space: normal; line-height: 1.3; text-align: center; }
+.cp-prev-nombre { font-size: 17px; font-weight: 800; }
+.cp-prev-st { width: 44px; height: 44px; }
+.cp-prev-fx { position: absolute; inset: 0; background-size: cover; background-position: center; }
+.cp-firma-input { width: 100%; box-sizing: border-box; padding: 11px 13px; border: 1px solid var(--line); border-radius: 12px; background: #ffffff08; color: var(--text); font: inherit; font-size: 14px; resize: vertical; }
+.cp-firma-input:focus-visible { outline: 2px solid #ffd36b; outline-offset: 1px; }
+.cp-firma-pie { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 8px; }
+.cp-firma-pie small { color: var(--muted); font-variant-numeric: tabular-nums; }
+.cp-libro { margin-top: 4px; }
+.cp-firmas { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; margin: 0; padding: 0; list-style: none; }
+.cp-firmas li { position: relative; padding: 12px 14px 10px; border: 1px solid #ffd36b33; border-radius: 4px 14px 14px 14px; background: linear-gradient(160deg, #fff7e608, #ffd36b0d); }
+.cp-firmas li.oculta { opacity: .5; border-style: dashed; }
+.cp-firmas p { margin: 0 0 8px; font-size: 13.5px; line-height: 1.5; word-wrap: break-word; }
+.cp-firmas small { color: var(--muted); font-size: 11.5px; }
+.cp-firmas small b { color: var(--text); }
+.cp-mod { margin-top: 6px; padding: 4px 9px; border: 1px solid var(--line); border-radius: 8px; background: none; color: var(--muted); font: inherit; font-size: 11px; cursor: pointer; }
+.cp-owner .cp-campos { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; margin: 10px 0; }
+.cp-owner label { display: grid; gap: 5px; font-size: 12px; font-weight: 700; color: var(--muted); }
+.cp-owner input[type=date], .cp-owner input[type=number], .cp-owner textarea { padding: 9px 11px; border: 1px solid var(--line); border-radius: 10px; background: #ffffff08; color: var(--text); font: inherit; font-size: 13px; font-weight: 500; }
+.cp-owner .cp-largo { margin-bottom: 10px; }
+.cp-owner .cp-check { display: flex; align-items: center; gap: 8px; color: var(--text); font-size: 13px; font-weight: 600; }
+.cp-botones { display: flex; flex-wrap: wrap; gap: 8px; }
+
+
+/* cosméticos de campeón */
+.nv-titulo.campeon { background: linear-gradient(100deg, #6b4500, #f0b429 40%, #fff3b0 50%, #f0b429 60%, #6b4500); background-size: 250% 100%; border-color: #fff1b8; color: #2a1800; box-shadow: 0 0 10px #ffd36b55; animation: nvIrisFondo 4.5s linear infinite; }
+.nv-nom-campeon { background: linear-gradient(100deg, #b8860b, #ffd36b 25%, #fffbe6 38%, #ffd36b 50%, #c98a12 75%, #fff3b0); -webkit-background-clip: text; background-clip: text; color: transparent; background-size: 250% 100%; letter-spacing: .03em; filter: drop-shadow(0 0 5px #ffd36b88) drop-shadow(0 1px 0 #5a3a00); animation: nvLuces 3s linear infinite; }
+.nv-pfx-campeon { overflow: hidden; background: radial-gradient(70% 90% at 50% 120%, #ffd36b33, transparent 70%); }
+.nv-pfx-campeon::before { content: ""; position: absolute; left: -90px; right: -90px; top: -90px; bottom: -90px; --dx: 0px; --dy: 90px; background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2090%2090%22%3E%3Crect%20x%3D%228%22%20y%3D%2210%22%20width%3D%227%22%20height%3D%223%22%20rx%3D%221%22%20fill%3D%22%23ffd36b%22%20transform%3D%22rotate%2825%2011%2011%29%22%2F%3E%3Crect%20x%3D%2252%22%20y%3D%226%22%20width%3D%223%22%20height%3D%227%22%20rx%3D%221%22%20fill%3D%22%23fff3b0%22%20transform%3D%22rotate%28-20%2053%209%29%22%2F%3E%3Crect%20x%3D%2230%22%20y%3D%2234%22%20width%3D%227%22%20height%3D%223%22%20rx%3D%221%22%20fill%3D%22%23f0b429%22%20transform%3D%22rotate%28-35%2033%2035%29%22%2F%3E%3Crect%20x%3D%2270%22%20y%3D%2240%22%20width%3D%226%22%20height%3D%223%22%20rx%3D%221%22%20fill%3D%22%23ff5a7a%22%20transform%3D%22rotate%2840%2073%2041%29%22%2F%3E%3Ccircle%20cx%3D%2218%22%20cy%3D%2260%22%20r%3D%222%22%20fill%3D%22%235ad1ff%22%2F%3E%3Crect%20x%3D%2244%22%20y%3D%2264%22%20width%3D%223%22%20height%3D%227%22%20rx%3D%221%22%20fill%3D%22%23ffd36b%22%20transform%3D%22rotate%2815%2045%2067%29%22%2F%3E%3Crect%20x%3D%2276%22%20y%3D%2274%22%20width%3D%227%22%20height%3D%223%22%20rx%3D%221%22%20fill%3D%22%23fff%22%20transform%3D%22rotate%28-10%2079%2075%29%22%2F%3E%3Ccircle%20cx%3D%2262%22%20cy%3D%2224%22%20r%3D%221.6%22%20fill%3D%22%23fff6d0%22%2F%3E%3C%2Fsvg%3E") 0 0 / 90px 90px; animation: nvFxMov 4.2s linear infinite; }
+.nv-pfx-campeon::after { content: ""; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2070%2070%22%3E%3Cpath%20d%3D%22M16%208l1.6%205%205%201.6-5%201.6L16%2021l-1.6-4.8-5-1.6%205-1.6z%22%20fill%3D%22%23fff6d0%22%2F%3E%3Cpath%20d%3D%22M52%2040l1.2%203.6%203.6%201.2-3.6%201.2L52%2049.6l-1.2-3.6-3.6-1.2%203.6-1.2z%22%20fill%3D%22%23ffd36b%22%2F%3E%3C%2Fsvg%3E") 0 0 / 70px 70px; animation: cpDestello 2.4s steps(1, end) infinite; }
+@keyframes cpDestello { 0%, 49% { opacity: 1; } 50%, 100% { opacity: .2; } }
+#tablon-root.tb-lite .nv-pfx-campeon::after { animation: none; }
+
+/* bienvenida animada */
+.cp-bv { position: fixed; inset: 0; z-index: 2147482000; display: grid; place-items: center; padding: 20px; overflow: hidden; background: radial-gradient(90% 70% at 50% 20%, #4a1d3a, #12061f 60%, #070310); color: #fff4e0; animation: cpBvEntra .45s ease both; }
+.cp-bv.cp-bv-fuera { animation: cpBvSale .38s ease both; }
+@keyframes cpBvEntra { from { opacity: 0; } to { opacity: 1; } }
+@keyframes cpBvSale { to { opacity: 0; } }
+.cp-bv-luces span { position: absolute; top: -10vh; width: 34vmax; height: 120vh; background: linear-gradient(180deg, #ffe9a855, transparent 85%); clip-path: polygon(46% 0, 54% 0, 100% 100%, 0 100%); transform-origin: 50% 0; pointer-events: none; }
+.cp-bv-luces span:first-child { left: -6vmax; animation: cpBvLuzI 5s ease-in-out infinite alternate; }
+.cp-bv-luces span:last-child { right: -6vmax; background: linear-gradient(180deg, #ffc87855, transparent 85%); animation: cpBvLuzD 5s ease-in-out infinite alternate; }
+@keyframes cpBvLuzI { from { transform: rotate(-30deg); } to { transform: rotate(-8deg); } }
+@keyframes cpBvLuzD { from { transform: rotate(30deg); } to { transform: rotate(8deg); } }
+.cp-bv-confeti i { position: absolute; top: -20px; left: var(--x); width: 9px; height: 5px; border-radius: 1px; background: var(--c); transform: rotate(var(--r)); animation: cpBvCae var(--t) linear var(--d) infinite; pointer-events: none; }
+.cp-bv-confeti i:nth-child(3n) { width: 6px; height: 6px; border-radius: 50%; }
+@keyframes cpBvCae { to { transform: translate(30px, 110vh) rotate(calc(var(--r) + 540deg)); } }
+.cp-bv-escena { position: relative; width: min(520px, 100%); max-height: 100%; overflow: auto; text-align: center; animation: cpBvSube .7s cubic-bezier(.2, .8, .25, 1.15) .15s both; }
+@keyframes cpBvSube { from { opacity: 0; transform: translateY(40px) scale(.94); } to { opacity: 1; transform: none; } }
+.cp-bv-podio { display: flex; align-items: flex-end; justify-content: center; gap: 0; height: 200px; margin-bottom: 8px; }
+.cp-bv-masc { width: 200px; height: 200px; display: grid; place-items: end center; font-size: 64px; }
+.cp-bv-masc svg { width: 100% !important; height: 100% !important; }
+.cp-bv-michi { animation: cpBvSalta 1.4s ease-in-out .9s infinite; }
+.cp-bv-rugo { animation: cpBvSalta 1.4s ease-in-out 1.6s infinite; }
+@keyframes cpBvSalta { 0%, 55%, 100% { transform: translateY(0); } 25% { transform: translateY(-14px) rotate(-3deg); } }
+.cp-bv-copa { width: 90px; height: 120px; display: grid; place-items: center; background: radial-gradient(circle at 50% 45%, #ffd36b66, transparent 65%); animation: cpBvCopa .8s cubic-bezier(.2, .9, .3, 1.4) .45s both; }
+.cp-bv-copa svg { width: 86px; height: 86px; filter: drop-shadow(0 6px 18px #ffd36b88); }
+@keyframes cpBvCopa { from { opacity: 0; transform: translateY(50px) scale(.4); } to { opacity: 1; transform: none; } }
+.cp-bv h2 { margin: 6px 0 8px; font-size: clamp(34px, 8vw, 54px); line-height: 1; letter-spacing: .04em; background: linear-gradient(100deg, #b8860b, #ffd36b 30%, #fffbe6 45%, #ffd36b 60%, #c98a12); background-size: 250% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: nvLuces 3s linear infinite; }
+.cp-bv p { margin: 0 auto 14px; max-width: 420px; color: #ffe9c7; font-size: 15px; line-height: 1.55; }
+.cp-bv .cp-mensaje { text-align: left; color: #fff4e0; }
+.cp-bv .cp-mensaje cite { color: #ffd27a; }
+.cp-bv-acciones { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.cp-bv .tb-secondary { color: #fff4e0; border-color: #ffd36b66; background: #ffffff12; }
+.cp-bv-quieta, .cp-bv-quieta *, .cp-bv-quieta .cp-bv-luces span { animation: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .cp-home-copa svg, .cp-bv, .cp-bv *, .nv-titulo.campeon, .nv-nom-campeon, .nv-pfx-campeon::before, .nv-pfx-campeon::after { animation: none !important; }
+  .cp-bv-confeti { display: none; }
+}
+@media (max-width: 480px) { .cp-bv-podio { height: 130px; } .cp-bv-masc { width: 130px; height: 130px; } .cp-bv-copa { width: 56px; height: 80px; } .cp-bv-copa svg { width: 54px; height: 54px; } }
+/* ═══ v2 · Ruta del campeón ═══ */
+.cp-ruta { border-color: #ffd36b55; background: radial-gradient(120% 80% at 100% 0%, #ffd36b14, transparent 60%), #ffffff06; }
+.cp-ruta-cab { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.cp-ruta-cuenta { padding: 3px 10px; border: 1px solid #ffd36b66; border-radius: 999px; color: #ffd36b; font-weight: 800; font-size: 12.5px; font-variant-numeric: tabular-nums; }
+#tablon-root.tb-light .cp-ruta-cuenta { color: #9a6206; }
+.cp-barra { height: 10px; margin: 4px 0 14px; border-radius: 99px; background: #ffffff14; overflow: hidden; }
+.cp-barra i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #f0b429, #ffd36b, #fff3b0, #ffd36b); background-size: 200% 100%; animation: nvLuces 3s linear infinite; transition: width .6s cubic-bezier(.2, .8, .2, 1); }
+.cp-misiones { display: grid; gap: 8px; margin: 0 0 14px; padding: 0; list-style: none; }
+.cp-misiones li { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: #ffffff05; }
+.cp-misiones li.hecha { border-color: #7fe0b077; background: #7fe0b00f; }
+.cp-mis-n { flex: none; width: 26px; height: 26px; display: grid; place-items: center; border-radius: 50%; border: 2px solid #ffd36b88; color: #ffd36b; font-size: 12px; font-weight: 800; }
+.cp-misiones li.hecha .cp-mis-n { border-color: #7fe0b0; background: #7fe0b0; color: #0b2a1e; }
+.cp-mis-ico { font-size: 20px; flex: none; }
+.cp-misiones li > div { flex: 1; display: grid; gap: 2px; min-width: 0; }
+.cp-misiones small { color: var(--muted); font-size: 12px; line-height: 1.45; }
+.cp-mis-av { flex: none; padding: 3px 9px; border-radius: 999px; background: #ffffff10; font-size: 11.5px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.cp-misiones li.hecha .cp-mis-av { color: #7fe0b0; background: #7fe0b018; }
+.cp-misiones button { flex: none; padding: 7px 12px; font-size: 12px; }
+@media (max-width: 520px) { .cp-misiones li { flex-wrap: wrap; } .cp-misiones button { margin-left: 36px; } }
+.cp-reclamar { width: 100%; font-size: 15px; }
+.cp-reclamar.listo:not(:disabled) { background: linear-gradient(110deg, #b8860b, #ffd36b 40%, #fff3b0 50%, #ffd36b 60%, #b8860b); background-size: 250% 100%; color: #2a1800; box-shadow: 0 0 22px #ffd36b66; animation: nvLuces 3s linear infinite, cpLatidoSuave 1.6s ease-in-out infinite; }
+@keyframes cpLatidoSuave { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+.cp-ins-previa, .cp-ins-ganada { display: flex; align-items: center; gap: 12px; margin: 0 0 12px; padding: 10px 12px; border: 1px dashed #b07aff66; border-radius: 12px; }
+.cp-ins-ganada { border-style: solid; border-color: #b07aff99; background: #b07aff14; }
+.cp-ins-previa > span, .cp-ins-ganada > span { width: 48px; height: 52px; flex: none; }
+.cp-ins-previa > span, .cp-ins-ganada > span { display: block; }
+#tablon-root .cp-ins-previa svg, #tablon-root .cp-ins-ganada svg { display: block; width: 48px !important; height: 52px !important; }
+#tablon-root .cp-owner :is(input, textarea) { font-weight: 500; }
+.cp-ins-previa div, .cp-ins-ganada div { display: grid; }
+.cp-ins-previa small, .cp-ins-ganada small { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; }
+.cp-grupo { margin: 0 0 8px; border: 1px solid var(--line); border-radius: 12px; }
+.cp-grupo summary { padding: 11px 14px; cursor: pointer; font-weight: 750; font-size: 13.5px; }
+.cp-grupo[open] summary { border-bottom: 1px solid var(--line); }
+.cp-grupo-campos { display: grid; gap: 10px; padding: 12px 14px; }
+.cp-owner input[type=text] { padding: 9px 11px; border: 1px solid var(--line); border-radius: 10px; background: #ffffff08; color: var(--text); font: inherit; font-size: 13px; font-weight: 500; }
+
+/* ═══ v2 · Día de suerte x2 ═══ */
+.cp-x2-mini { flex: none; display: inline-grid; place-items: center; min-width: 44px; height: 44px; padding: 0 6px; border-radius: 12px; background: linear-gradient(135deg, #1fd17a, #0f7a4a); color: #fff; font-weight: 900; font-size: 20px; letter-spacing: -.02em; box-shadow: 0 0 0 2px #b6ffd955 inset, 0 0 18px #1fd17a66; text-shadow: 0 2px 0 #0b4b2c; }
+.tb-top .cp-chip .cp-chip-x2 { position: relative; display: inline-grid; place-items: center; min-width: 26px; height: 20px; padding: 0 5px; border-radius: 7px; background: linear-gradient(135deg, #1fd17a, #0f7a4a); color: #fff; font-size: 11.5px; font-weight: 900; box-shadow: 0 0 12px #1fd17aaa; animation: cpX2Pulso 1.3s ease-in-out infinite; }
+@keyframes cpX2Pulso { 0%, 100% { transform: scale(1) rotate(-4deg); box-shadow: 0 0 8px #1fd17a88; } 50% { transform: scale(1.16) rotate(4deg); box-shadow: 0 0 18px #1fd17a; } }
+.cp-home-x2 { display: flex; align-items: center; gap: 12px; width: 100%; max-width: 520px; margin: 0 0 12px; padding: 10px 14px 10px 10px; border: 1px solid #5cf0a5aa; border-radius: 14px; background: linear-gradient(110deg, #0f3b2c, #1f6f4f 50%, #0f3b2c); background-size: 220% 100%; color: #e4fff2; font: inherit; text-align: left; cursor: pointer; animation: nvLuces 4s linear infinite; }
+.cp-home-x2 > span:nth-child(2) { flex: 1; display: grid; }
+.cp-home-x2 small { color: #b6ffd9; font-size: 12px; }
+.cp-home-x2 > span:last-child { font-size: 22px; animation: cpTrebolGira 3s linear infinite; }
+.cp-agenda-x2 { display: flex; align-items: center; gap: 12px; }
+.cp-agenda-x2 > div { flex: 1; display: grid; gap: 2px; }
+.cp-agenda-x2 small { color: var(--muted); font-size: 12.5px; }
+.cp-agenda-x2:not(.hoy) .cp-x2-mini { filter: grayscale(.6) brightness(.8); box-shadow: none; }
+.cp-agenda-x2.hoy { border-color: #5cf0a5aa; background: linear-gradient(110deg, #0f3b2c55, #1f6f4f44); }
+/* cartel en la Tienda */
+.cp-x2 { position: relative; overflow: hidden; display: flex; align-items: center; gap: 18px; margin: 0 0 16px; padding: 18px 22px; border: 2px solid #5cf0a5; border-radius: 20px; background: radial-gradient(80% 140% at 0% 50%, #2fe08a55, transparent 60%), linear-gradient(115deg, #06281b, #0f5a39 45%, #0a3d27); color: #eafff4; box-shadow: 0 0 28px #1fd17a44, 0 0 0 4px #1fd17a1a; animation: cpX2Borde 2.4s ease-in-out infinite; }
+.cp-x2::after { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 30%, #ffffff30 45%, transparent 60%); background-size: 250% 100%; animation: cpX2Brillo 3.2s ease-in-out infinite; pointer-events: none; }
+@keyframes cpX2Borde { 0%, 100% { border-color: #5cf0a5; box-shadow: 0 0 22px #1fd17a44, 0 0 0 4px #1fd17a1a; } 50% { border-color: #ffd36b; box-shadow: 0 0 34px #ffd36b55, 0 0 0 6px #ffd36b1f; } }
+@keyframes cpX2Brillo { 0% { background-position: 130% 0; } 60%, 100% { background-position: -30% 0; } }
+.cp-x2-treboles { position: absolute; inset: 0; pointer-events: none; }
+.cp-x2-treboles i { position: absolute; bottom: -30px; left: var(--x); font-style: normal; font-size: calc(18px * var(--s)); opacity: .55; animation: cpTrebolSube 6s linear var(--d) infinite; }
+@keyframes cpTrebolSube { 0% { transform: translateY(0) rotate(0); opacity: 0; } 15% { opacity: .6; } 100% { transform: translateY(-170px) rotate(320deg); opacity: 0; } }
+@keyframes cpTrebolGira { to { transform: rotate(360deg); } }
+.cp-x2-num { position: relative; flex: none; display: grid; place-items: center; width: 96px; height: 96px; border-radius: 26px; background: conic-gradient(from 0deg, #1fd17a, #ffd36b, #5cf0a5, #fff3b0, #1fd17a); }
+.cp-x2-num::before { content: ""; position: absolute; inset: 5px; border-radius: 22px; background: radial-gradient(circle at 35% 30%, #2a8f5c, #07331f); }
+.cp-x2-num span { position: relative; font-size: 46px; font-weight: 900; letter-spacing: -.04em; line-height: 1; background: linear-gradient(180deg, #fffbe6, #ffd36b 55%, #f0b429); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 3px 0 #0b4b2c); animation: cpX2Salta 1.4s cubic-bezier(.3, 1.6, .5, 1) infinite; }
+.cp-x2-num { animation: none; }
+.cp-x2-num::after { content: ""; position: absolute; inset: -4px; border-radius: 30px; border: 2px dashed #b6ffd988; animation: cpTrebolGira 9s linear infinite; }
+@keyframes cpX2Salta { 0%, 100% { transform: scale(1) rotate(-6deg); } 40% { transform: scale(1.18) rotate(6deg); } 60% { transform: scale(.96) rotate(-2deg); } }
+.cp-x2-txt { position: relative; display: grid; gap: 4px; min-width: 0; }
+.cp-x2-txt > b { font-size: clamp(18px, 3vw, 24px); letter-spacing: .06em; background: linear-gradient(90deg, #fffbe6, #b6ffd9, #ffd36b, #fffbe6); background-size: 250% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: nvLuces 3s linear infinite; }
+.cp-x2-txt > span { color: #d6ffea; font-size: 14px; }
+.cp-x2-datos { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.cp-x2-chip { padding: 4px 11px; border: 1px solid #5cf0a566; border-radius: 999px; background: #00000033; font-size: 12.5px; }
+.cp-x2-chip b { color: #ffd36b; font-variant-numeric: tabular-nums; }
+@media (max-width: 560px) { .cp-x2 { flex-direction: column; text-align: center; padding: 16px; } .cp-x2-datos { justify-content: center; } .cp-x2-num { width: 80px; height: 80px; } .cp-x2-num span { font-size: 38px; } }
+/* ruedas con giro extra disponible */
+.tb-wheel-outer.cp-x2-rueda { border-radius: 50%; box-shadow: 0 0 0 4px #1fd17a66, 0 0 30px #1fd17a88; animation: cpX2Rueda 1.8s ease-in-out infinite !important; }
+.cp-x2-tag { display: none; }
+.cp-x2-rueda .cp-x2-tag { position: absolute; top: -6px; right: -6px; z-index: 6; display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, #1fd17a, #0f7a4a); color: #fff; font-weight: 900; font-size: 17px; box-shadow: 0 0 0 3px #b6ffd9aa, 0 4px 12px #0008; animation: cpX2Pulso 1.3s ease-in-out infinite; }
+@keyframes cpX2Rueda { 0%, 100% { box-shadow: 0 0 0 4px #1fd17a55, 0 0 22px #1fd17a66; } 50% { box-shadow: 0 0 0 6px #ffd36b88, 0 0 40px #ffd36b88; } }
+/* botón de giro extra */
+.cp-extra { display: inline-flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; padding: 12px 20px; border: 0; border-radius: 14px; background: linear-gradient(110deg, #0f7a4a, #1fd17a 35%, #b6ffd9 50%, #1fd17a 65%, #0f7a4a); background-size: 250% 100%; color: #04210f; font: inherit; font-weight: 900; font-size: 15px; letter-spacing: .03em; cursor: pointer; box-shadow: 0 0 20px #1fd17a88, 0 4px 0 #0b4b2c; animation: nvLuces 2.4s linear infinite, cpLatidoSuave 1.2s ease-in-out infinite; }
+.cp-extra b { padding: 2px 7px; border-radius: 8px; background: #04210f; color: #ffd36b; }
+.cp-extra:active { transform: translateY(2px); box-shadow: 0 0 20px #1fd17a88, 0 2px 0 #0b4b2c; }
+.cp-extra:disabled { opacity: .55; animation: none; cursor: wait; }
+.cp-extra:focus-visible { outline: 3px solid #ffd36b; outline-offset: 3px; }
+/* explosión de tréboles */
+.cp-boom { position: fixed; z-index: 2147482500; width: 0; height: 0; pointer-events: none; }
+.cp-boom i { position: absolute; left: -10px; top: -10px; font-style: normal; font-size: 20px; animation: cpBoom .95s cubic-bezier(.15, .7, .3, 1) forwards; }
+@keyframes cpBoom { from { transform: translate(0, 0) scale(.4) rotate(0); opacity: 1; } to { transform: translate(var(--dx), var(--dy)) scale(1.1) rotate(var(--r)); opacity: 0; } }
+/* sello «x2» al abrir la Tienda */
+.cp-sello { position: fixed; inset: 0; z-index: 2147482400; display: grid; place-items: center; background: radial-gradient(circle, #06281bcc, #020a06e6 70%); cursor: pointer; animation: cpBvEntra .25s ease both; }
+.cp-sello.fuera { animation: cpBvSale .35s ease both; }
+.cp-sello-in { display: grid; justify-items: center; gap: 6px; text-align: center; color: #eafff4; padding: 20px; }
+.cp-sello-x2 { font-size: clamp(110px, 30vw, 200px); font-weight: 900; line-height: .9; letter-spacing: -.05em; background: linear-gradient(180deg, #fffbe6, #ffd36b 50%, #1fd17a); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 8px 0 #0b4b2c) drop-shadow(0 0 30px #1fd17a); animation: cpSelloGolpe .7s cubic-bezier(.2, 1.6, .4, 1) both; }
+@keyframes cpSelloGolpe { 0% { transform: scale(3) rotate(-18deg); opacity: 0; } 60% { transform: scale(.9) rotate(4deg); opacity: 1; } 100% { transform: scale(1) rotate(-6deg); } }
+.cp-sello-in b { font-size: clamp(20px, 5vw, 30px); letter-spacing: .08em; animation: cpBvSube .5s ease .35s both; }
+.cp-sello-in small { font-size: 15px; color: #b6ffd9; animation: cpBvSube .5s ease .5s both; }
+@media (prefers-reduced-motion: reduce) {
+  .cp-x2, .cp-x2 *, .cp-x2::after, .cp-x2-rueda, .cp-x2-rueda::after, .cp-extra, .cp-chip-x2, .cp-home-x2, .cp-home-x2 *, .cp-sello *, .cp-barra i, .cp-reclamar { animation: none !important; }
+  .cp-x2-treboles, .cp-boom { display: none; }
+}
+#tablon-root.tb-lite .cp-x2-treboles { display: none; }
+/* ═══ v3 · skins de campeón, vista previa de premios ═══ */
+.cp-skin-g { display: none; }
+html.cp-skin-michi #tb-masc-gato .cp-skin-michi-g, html.cp-skin-rugo #tb-masc-leon .cp-skin-rugo-g, .cp-skin-vista .cp-skin-g, .cp-con-skins .cp-skin-g { display: inline; }
+html.cp-skin-michi #tb-masc-gato :is(.nv-costume, .hw-costume), html.cp-skin-rugo #tb-masc-leon :is(.nv-costume, .hw-costume),
+.cp-skin-vista :is(.nv-costume, .hw-costume), .cp-con-skins :is(.nv-costume, .hw-costume) { display: none !important; }
+.cp-skin-vista .rg-gorra, .cp-con-skins .rg-gorra { display: inline !important; }
+.cp-masc-cuerpo { transform-box: view-box; transform-origin: 0 0; transition: transform .35s ease; }
+html.cp-skin-michi #tb-masc-gato .cp-masc-cuerpo, .cp-sk-michi .cp-masc-cuerpo, .cp-con-skins .cp-bv-michi .cp-masc-cuerpo { transform: translate(28px, 10px) scale(.86); }
+html.cp-skin-rugo #tb-masc-leon .cp-masc-cuerpo, .cp-sk-rugo .cp-masc-cuerpo, .cp-con-skins .cp-bv-rugo .cp-masc-cuerpo { transform: translate(0px, 10px) scale(.86); }
+.cp-skin-copa { transform-box: view-box; animation: cpSkinCopa 3.2s ease-in-out infinite; }
+.cp-skin-michi-g .cp-skin-copa { transform-origin: 38px 176px; }
+.cp-skin-rugo-g .cp-skin-copa { transform-origin: 160px 180px; animation-delay: -1.6s; }
+.cp-b2 { animation-delay: -.8s !important; }
+@keyframes cpSkinCopa { 0%, 100% { transform: rotate(-1.5deg); } 50% { transform: rotate(1.5deg) translateY(-1.5px); } }
+.cp-skin-tubo { transform-box: view-box; transform-origin: 106px 110px; animation: cpSopla 2.2s ease-in-out infinite; }
+@keyframes cpSopla { 0%, 45%, 100% { transform: scaleX(.78); } 60%, 85% { transform: scaleX(1.04); } }
+.cp-skin-brillo { animation: cpChispaSkin 1.6s steps(1, end) infinite; }
+@keyframes cpChispaSkin { 0%, 49% { opacity: 1; } 50%, 100% { opacity: .15; } }
+.cp-skin-reflejo { animation: cpReflejo 3s ease-in-out infinite; }
+@keyframes cpReflejo { 0%, 70%, 100% { opacity: .15; } 80% { opacity: .8; } }
+.cp-skin-prev { height: 120px !important; background: radial-gradient(circle at 50% 60%, #ffd36b33, #00000022 70%) !important; }
+.cp-skin-vista { display: block; width: 116px; height: 116px; }
+.cp-skin-vista svg { width: 100%; height: 100%; display: block; }
+.cp-skins-tit { margin: 16px 0 8px; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+.cp-evento { padding: 2px 8px; border-radius: 999px; background: linear-gradient(90deg, #ffb35c, #ff6b7a, #a9e4ff); color: #1b0d10; font-size: 10.5px; font-weight: 800; }
+.cp-premio { margin: 0 auto 8px; max-width: 240px; }
+.cp-premio .tb-item-preview { width: 100%; min-height: 70px; margin: 0; border-radius: 12px; animation: nvAparece .45s ease both; box-shadow: 0 8px 22px #0007; }
+.cp-premio-card .tb-item-preview { min-height: 120px; }
+.cp-premio-avatar .tb-item-preview, .cp-premio-border .tb-item-preview { width: 96px; min-height: 96px; margin: 0 auto; }
+@media (prefers-reduced-motion: reduce) { .cp-skin-copa, .cp-skin-tubo, .cp-skin-brillo, .cp-skin-reflejo { animation: none !important; } .cp-skin-tubo { transform: none; } }
+/* ═══ v4 · Ruleta de campeón y aspecto de las mascotas ═══ */
+.cp-ruleta { border-color: #ffd36b55; }
+.cp-rw { position: relative; width: min(300px, 78vw); aspect-ratio: 1; margin: 6px auto 12px; }
+.cp-rw-rueda { position: absolute; inset: 0; border-radius: 50%; border: 6px solid #ffe7a3; box-shadow: 0 0 0 4px #8a5a06, 0 10px 30px #0008, inset 0 0 0 3px #ffffff55; overflow: hidden; will-change: transform; }
+.cp-rw-rueda::before { content: ""; position: absolute; inset: 0; border-radius: 50%; background: repeating-conic-gradient(from 0deg, #ffffff40 0 1deg, transparent 1deg 60deg), radial-gradient(circle, transparent 55%, #00000026 100%); pointer-events: none; }
+.cp-rw-item { position: absolute; left: 50%; top: 50%; width: 76px; margin: -38px 0 0 -38px; display: grid; justify-items: center; gap: 2px; transform: rotate(var(--a)) translateY(-31%) translateY(-62px); text-align: center; }
+.cp-rw-ico { width: 46px; height: 46px; display: grid; place-items: center; border-radius: 50%; background: #0000002e; box-shadow: inset 0 0 0 2px #ffffff55; overflow: hidden; }
+.cp-rw-ico svg { width: 34px; height: 34px; }
+.cp-rw-ico .cp-skin-vista { width: 46px; height: 46px; }
+.cp-rw-emoji { font-size: 24px; line-height: 1; }
+.cp-rw-aa { font-size: 20px; font-weight: 900; }
+.cp-rw-item small { padding: 1px 6px; border-radius: 99px; background: #000000a0; color: #fff; font-size: 10px; font-weight: 800; letter-spacing: .02em; }
+.cp-rw-item.tiene .cp-rw-ico::after { content: "✓"; position: absolute; transform: translate(16px, -16px); width: 16px; height: 16px; display: grid; place-items: center; border-radius: 50%; background: #1fd17a; color: #04210f; font-size: 10px; font-weight: 900; }
+.cp-rw-centro { position: absolute; left: 50%; top: 50%; width: 22%; height: 22%; transform: translate(-50%, -50%); display: grid; place-items: center; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #fff6d0, #f0b429 60%, #8a5a06); box-shadow: 0 0 0 4px #8a5a06, 0 4px 14px #0009; z-index: 2; }
+.cp-rw-centro svg { width: 70%; height: 70%; }
+.cp-rw-flecha { position: absolute; top: -14px; left: 50%; z-index: 3; width: 0; height: 0; transform: translateX(-50%); border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 30px solid #ff3b5c; filter: drop-shadow(0 3px 2px #0008); }
+.cp-rw-flecha::after { content: ""; position: absolute; left: -6px; top: -27px; width: 12px; height: 12px; border-radius: 50%; background: #fff; }
+.cp-rw-boton { display: block; width: 100%; max-width: 320px; margin: 0 auto 12px; font-size: 15px; }
+.cp-rw-boton.listo:not(:disabled) { background: linear-gradient(110deg, #b8860b, #ffd36b 40%, #fff3b0 50%, #ffd36b 60%, #b8860b); background-size: 250% 100%; color: #2a1800; box-shadow: 0 0 22px #ffd36b66; animation: nvLuces 3s linear infinite, cpLatidoSuave 1.6s ease-in-out infinite; }
+.cp-rw-res:empty { display: none; }
+.cp-rw-premio { display: flex; align-items: center; gap: 12px; max-width: 360px; margin: 0 auto 12px; padding: 10px; border: 1px solid var(--line); border-radius: 14px; background: #ffffff08; animation: nvAparece .45s ease both; }
+.cp-rw-premio.nuevo { border-color: #ffd36b; box-shadow: 0 0 18px #ffd36b44; }
+.cp-rw-premio .cp-adorno-prev { width: 110px; flex: none; }
+.cp-rw-premio > div:last-child { display: grid; gap: 3px; }
+.cp-rw-premio small { color: var(--muted); font-size: 12px; }
+.cp-rw-lista { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 4px 12px; margin: 0; padding: 0; list-style: none; font-size: 12.5px; color: var(--muted); }
+.cp-rw-lista li.tiene { color: var(--text); }
+.cp-rw-punto { display: inline-block; width: 10px; height: 10px; margin-right: 6px; border-radius: 50%; vertical-align: middle; }
+.cp-adorno.bloqueado { opacity: .55; }
+.cp-adorno.bloqueado .cp-adorno-prev { filter: grayscale(.8) brightness(.7); }
+.cp-candado { margin-top: 6px; font-size: 11.5px; color: var(--muted); }
+/* selector de aspecto en Mascota */
+.cp-look-fila { display: grid; gap: 8px; margin: 10px 0 14px; }
+.cp-look-ops { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; }
+.cp-look-op { display: grid; justify-items: center; gap: 4px; padding: 8px 6px; border: 2px solid var(--line); border-radius: 14px; background: #ffffff08; color: var(--text); font: inherit; cursor: pointer; transition: transform .15s ease, border-color .2s ease; }
+.cp-look-op:hover:not(:disabled) { transform: translateY(-2px); }
+.cp-look-op.on { border-color: #ffd36b; background: #ffd36b18; }
+.cp-look-op.bloq { opacity: .5; cursor: not-allowed; }
+.cp-look-op small { font-size: 11.5px; font-weight: 700; }
+.cp-look-fig { width: 72px; height: 72px; display: grid; place-items: center; }
+.cp-look-fig > span { display: block; width: 72px; height: 72px; }
+.cp-look-fig svg { width: 100% !important; height: 100% !important; display: block; }
+.cp-look-auto { display: grid !important; place-items: center; font-size: 34px; }
+.cp-look-op:focus-visible { outline: 2px solid #ffd36b; outline-offset: 2px; }
+/* vistas previas de cada aspecto */
+.cp-look-prev .cp-skin-g { display: none !important; }
+.cp-look-normal :is(.nv-costume, .hw-costume) { display: none !important; }
+.cp-look-normal .rg-gorra, .cp-look-halloween .rg-gorra { display: inline !important; }
+.cp-look-halloween .hw-costume { display: inline !important; }
+.cp-look-halloween .nv-costume { display: none !important; }
+.cp-look-navidad .nv-costume { display: inline !important; }
+.cp-look-navidad .hw-costume, .cp-look-navidad .rg-gorra { display: none !important; }
+/* aspecto elegido en la mascota guía */
+html.cp-look-gato-normal #tb-masc-gato :is(.nv-costume, .hw-costume) { display: none !important; }
+html.cp-look-gato-halloween #tb-masc-gato .hw-costume { display: inline !important; }
+html.cp-look-gato-halloween #tb-masc-gato .nv-costume { display: none !important; }
+html.cp-look-gato-navidad #tb-masc-gato .nv-costume { display: inline !important; }
+html.cp-look-gato-navidad #tb-masc-gato .hw-costume { display: none !important; }
+html.cp-look-leon-normal #tb-masc-leon :is(.nv-costume, .hw-costume) { display: none !important; }
+html.cp-look-leon-normal #tb-masc-leon .rg-gorra, html.cp-look-leon-halloween #tb-masc-leon .rg-gorra { display: inline !important; }
+html.cp-look-leon-halloween #tb-masc-leon .hw-costume { display: inline !important; }
+html.cp-look-leon-halloween #tb-masc-leon .nv-costume { display: none !important; }
+html.cp-look-leon-navidad #tb-masc-leon .nv-costume { display: inline !important; }
+html.cp-look-leon-navidad #tb-masc-leon :is(.hw-costume, .rg-gorra) { display: none !important; }
+html.cp-skin-rugo #tb-masc-leon .rg-gorra { display: inline !important; }
+/* ═══ v5 · rarezas y etiquetas de los aspectos ═══ */
+.cp-look-ops { grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)) !important; }
+.cp-look-op { align-content: start; gap: 5px; padding: 10px 8px 12px; text-align: center; }
+.cp-look-op strong { font-size: 13px; }
+.cp-look-fig { position: relative; }
+.cp-look-fig > .cp-look-candado { position: absolute; right: -4px; bottom: -2px; display: grid !important; place-items: center; width: 26px !important; height: 26px !important; border-radius: 50%; background: #0b1024; box-shadow: 0 0 0 2px #ffffff22; font-size: 13px; }
+.cp-look-op.bloq { opacity: 1; }
+.cp-look-op.bloq .cp-look-fig > span:first-child { filter: grayscale(1) brightness(.55); }
+.cp-look-op.bloq strong, .cp-look-op.bloq .cp-look-rz { opacity: .7; }
+.cp-look-rz { font-size: 10.5px !important; }
+.cp-look-modo { padding: 2px 8px; border-radius: 999px; background: #ffffff12; color: var(--muted); font-weight: 700; }
+.cp-look-tag { display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 10.5px; font-weight: 850; letter-spacing: .03em; text-transform: uppercase; }
+.cp-tag-temporal { background: linear-gradient(90deg, #3b2a6e, #6c4fd9); color: #efe7ff; box-shadow: inset 0 0 0 1px #b59bff66; }
+.cp-tag-exclusiva { background: linear-gradient(90deg, #ffb35c, #ff6b7a, #a9e4ff, #ffb35c); background-size: 250% 100%; color: #1b0d10; box-shadow: 0 0 12px #ff6b7a55; animation: nvLuces 4s linear infinite; }
+.cp-look-sub { display: block; color: var(--muted); font-size: 11px; line-height: 1.35; }
+.cp-look-op.evento .cp-look-sub { color: #ffc98a; }
+#tablon-root.tb-light .cp-look-op.evento .cp-look-sub { color: #a8451a; }
+.cp-skin-item .cp-tag-exclusiva { margin: 2px 0; }
+@media (prefers-reduced-motion: reduce) { .cp-tag-exclusiva { animation: none; } }
+/* ═══ v6 · vitrina editable ═══ */
+.cp-vitrina-txt { position: relative; }
+.cp-v-editar { margin-top: 10px; padding: 6px 12px; border: 1px dashed #ffd36b88; border-radius: 10px; background: #ffd36b12; color: #ffd36b; font: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer; }
+.cp-v-editar:hover { background: #ffd36b22; }
+#tablon-root.tb-light .cp-v-editar { color: #9a6206; }
+.cp-vitrina-editando { align-items: start; border-style: dashed; }
+.cp-vitrina-editando .cp-vitrina-txt { display: grid; gap: 8px; }
+.cp-v-campo { display: grid; gap: 4px; font-size: 12px; font-weight: 700; color: var(--muted); }
+.cp-v-campo :is(input, textarea) { width: 100%; box-sizing: border-box; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; background: #ffffff08; color: var(--text); font: inherit; font-size: 13.5px; font-weight: 500; }
+.cp-v-dos { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+</style>
 <script>
 (function () {
 "use strict";
@@ -15022,6 +15381,281 @@ var NV_ARBOL = (function () {
   };
 })();
 try { EPIC_COLLECTION.push(NV_ARBOL.entrada()); } catch (e) { console.warn("[navidad] no se pudo dibujar la carta del árbol", e); }
+/* ===================================================================
+   CARTA ÉPICA · COPA · CAMPEONES DE LA FERIA (calidad «Evento»)
+   El Tablón ganó el 1.er lugar de la Feria Emprendedora 2026.
+   Escenario de noche: telón, reflectores que se cruzan, podio y la copa
+   dorada con laureles mientras cae confeti. La Shiny es la «Edición
+   Prisma»: copa holográfica bajo una aurora.
+   LIGERA A PROPÓSITO (igual que Abeto): sin filtros SVG, 6 animaciones,
+   el confeti es un solo grupo que se desliza y los destellos usan steps().
+   =================================================================== */
+var CP_CARTA = (function () {
+  function rng(seed) { var s = seed >>> 0; return function () { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
+  function r1(n) { return Math.round(n * 10) / 10; }
+  function pal(sh) {
+    if (sh) {
+      return {
+        fondo: ["#050a1f", "#16154a", "#0b2a44"], telon: ["#1c1f5c", "#2c3590", "#0d0f33"], telonLuz: "#9ff7ff",
+        luz: "159,247,255", luz2: "210,168,255", halo: "200,240,255", aurora: ["#7dffd9", "#d2a8ff"],
+        copa: "url(#cpHolo)", copaSombra: "#6f6fc9", copaBorde: "#ffffff", copaLuz: "#ffffff",
+        laurel: ["#bff8ff", "#7f8fd6"], placa: "#26286a", placaTxt: "#dff9ff",
+        podio: [["#e9f6ff", "#9fb3ec", "#5a68b8"], ["#cfe0ff", "#8395d6", "#3f4a96"], ["#f0d9ff", "#b48cff", "#6f52c9"]], podioTxt: "#1b1d4a",
+        confeti: ["#9ff7ff", "#d2a8ff", "#ffffff", "#ff9be0", "#8fb8ff"], banderas: ["#9ff7ff", "#d2a8ff", "#ff9be0", "#ffffff"],
+        suelo: ["#141a4d", "#05071a"], metal: ["#8ff7ff", "#c9a8ff", "#ffffff", "#c9a8ff", "#8ff7ff"],
+        titulo: "#effcff", sub: "#d2b8ff", pie: "#9ff7ff", velo: "#040716", chispa: "#ffffff"
+      };
+    }
+    return {
+      fondo: ["#12061f", "#2b0f45", "#3b0d22"], telon: ["#7a0f22", "#b41f33", "#3a0610"], telonLuz: "#ffd36b",
+      luz: "255,236,170", luz2: "255,200,120", halo: "255,214,120", aurora: null,
+      copa: "url(#cpOro)", copaSombra: "#8a5a06", copaBorde: "#fff1b8", copaLuz: "#fffbe6",
+      laurel: ["#5fd18a", "#1f7a4d"], placa: "#3a2306", placaTxt: "#ffe7a3",
+      podio: [["#fff3b0", "#f0b429", "#8a5a06"], ["#ffffff", "#c3cde0", "#6d7896"], ["#ffd2a8", "#c9783a", "#6a3610"]], podioTxt: "#2a1800",
+      confeti: ["#ffd36b", "#ff5a7a", "#5ad1ff", "#7fe0b0", "#ffffff"], banderas: ["#ff5a7a", "#ffd36b", "#5ad1ff", "#7fe0b0"],
+      suelo: ["#2a1236", "#0b0410"], metal: ["#fff1c9", "#e0a84a", "#fffaf0", "#c9333f", "#fff1c9"],
+      titulo: "#fff4e0", sub: "#ffd27a", pie: "#ffcf8a", velo: "#0b0410", chispa: "#fff6d0"
+    };
+  }
+
+  function estilos() {
+    /* 6 animaciones en total; el confeti es UN grupo que baja (repinta poco). */
+    return "<style>" +
+      ".cp-conf{animation:cpConf 11s linear infinite}@keyframes cpConf{from{transform:translateY(0)}to{transform:translateY(760px)}}" +
+      ".cp-reflI{transform-box:fill-box;transform-origin:0 0;animation:cpRefl 7s ease-in-out infinite alternate}" +
+      ".cp-reflD{transform-box:fill-box;transform-origin:100% 0;animation:cpRefl 7s ease-in-out -3.5s infinite alternate-reverse}" +
+      "@keyframes cpRefl{from{transform:rotate(-5deg)}to{transform:rotate(5deg)}}" +
+      ".cp-halo{animation:cpHalo 3.4s ease-in-out infinite}@keyframes cpHalo{0%,100%{opacity:.6}50%{opacity:1}}" +
+      ".cp-brillo{animation:cpBrillo 5s ease-in-out infinite}@keyframes cpBrillo{0%,55%{transform:translateX(-170px)}80%,100%{transform:translateX(170px)}}" +
+      ".cp-chispa{animation:cpChispa 2.8s steps(1,end) infinite}.cp-chispa2{animation-delay:-1.4s}@keyframes cpChispa{0%,49%{opacity:1}50%,100%{opacity:.12}}" +
+      "</style>";
+  }
+
+  function defs(P, sh) {
+    return "<defs>" +
+      '<linearGradient id="cpFondo" x2="0" y2="1"><stop stop-color="' + P.fondo[0] + '"/><stop offset=".6" stop-color="' + P.fondo[1] + '"/><stop offset="1" stop-color="' + P.fondo[2] + '"/></linearGradient>' +
+      '<linearGradient id="cpTelon" x2="1"><stop stop-color="' + P.telon[2] + '"/><stop offset=".25" stop-color="' + P.telon[1] + '"/><stop offset=".5" stop-color="' + P.telon[0] + '"/><stop offset=".75" stop-color="' + P.telon[1] + '"/><stop offset="1" stop-color="' + P.telon[2] + '"/></linearGradient>' +
+      '<linearGradient id="cpHaz" x2="0" y2="1"><stop stop-color="rgb(' + P.luz + ')" stop-opacity=".55"/><stop offset="1" stop-color="rgb(' + P.luz + ')" stop-opacity="0"/></linearGradient>' +
+      '<linearGradient id="cpHaz2" x2="0" y2="1"><stop stop-color="rgb(' + P.luz2 + ')" stop-opacity=".45"/><stop offset="1" stop-color="rgb(' + P.luz2 + ')" stop-opacity="0"/></linearGradient>' +
+      '<radialGradient id="cpHalo"><stop stop-color="rgb(' + P.halo + ')" stop-opacity=".8"/><stop offset=".35" stop-color="rgb(' + P.halo + ')" stop-opacity=".28"/><stop offset="1" stop-color="rgb(' + P.halo + ')" stop-opacity="0"/></radialGradient>' +
+      '<radialGradient id="cpFoco" cy=".3"><stop stop-color="rgb(' + P.luz + ')" stop-opacity=".35"/><stop offset="1" stop-color="rgb(' + P.luz + ')" stop-opacity="0"/></radialGradient>' +
+      '<linearGradient id="cpOro" x2="1" y2=".25"><stop stop-color="#8a5a06"/><stop offset=".22" stop-color="#f0b429"/><stop offset=".42" stop-color="#fff3b0"/><stop offset=".58" stop-color="#ffd36b"/><stop offset=".85" stop-color="#c98a12"/><stop offset="1" stop-color="#7a4b00"/></linearGradient>' +
+      '<linearGradient id="cpHolo" x2="1" y2=".4"><stop stop-color="#7f8fd6"/><stop offset=".2" stop-color="#9ff7ff"/><stop offset=".4" stop-color="#ffffff"/><stop offset=".6" stop-color="#d2a8ff"/><stop offset=".8" stop-color="#ff9be0"/><stop offset="1" stop-color="#6f52c9"/></linearGradient>' +
+      '<linearGradient id="cpBanda" x2="1"><stop stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".75"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>' +
+      '<linearGradient id="cpSuelo" x2="0" y2="1"><stop stop-color="' + P.suelo[0] + '"/><stop offset="1" stop-color="' + P.suelo[1] + '"/></linearGradient>' +
+      '<linearGradient id="cpP0" x2="0" y2="1"><stop stop-color="' + P.podio[0][0] + '"/><stop offset=".5" stop-color="' + P.podio[0][1] + '"/><stop offset="1" stop-color="' + P.podio[0][2] + '"/></linearGradient>' +
+      '<linearGradient id="cpP1" x2="0" y2="1"><stop stop-color="' + P.podio[1][0] + '"/><stop offset=".5" stop-color="' + P.podio[1][1] + '"/><stop offset="1" stop-color="' + P.podio[1][2] + '"/></linearGradient>' +
+      '<linearGradient id="cpP2" x2="0" y2="1"><stop stop-color="' + P.podio[2][0] + '"/><stop offset=".5" stop-color="' + P.podio[2][1] + '"/><stop offset="1" stop-color="' + P.podio[2][2] + '"/></linearGradient>' +
+      '<linearGradient id="cpMetal"><stop stop-color="' + P.metal[0] + '"/><stop offset=".3" stop-color="' + P.metal[1] + '"/><stop offset=".52" stop-color="' + P.metal[2] + '"/><stop offset=".75" stop-color="' + P.metal[3] + '"/><stop offset="1" stop-color="' + P.metal[4] + '"/></linearGradient>' +
+      '<linearGradient id="cpVelo" x2="0" y2="1"><stop stop-color="' + P.velo + '" stop-opacity="0"/><stop offset="1" stop-color="' + P.velo + '"/></linearGradient>' +
+      '<clipPath id="cpCopaClip"><path d="' + COPA + '"/></clipPath>' +
+      (sh ? '<linearGradient id="cpAur" x2="1" y2="1"><stop stop-color="' + P.aurora[0] + '" stop-opacity="0"/><stop offset=".5" stop-color="' + P.aurora[0] + '" stop-opacity=".4"/><stop offset="1" stop-color="' + P.aurora[1] + '" stop-opacity="0"/></linearGradient>' : "") +
+      "</defs>";
+  }
+
+  /* silueta de la copa (cuerpo + pie), centrada en x = 300 */
+  var COPA = "M222 214 H378 V256 C378 318 344 352 316 362 V392 C316 402 324 410 340 414 V428 H260 V414 C276 410 284 402 284 392 V362 C256 352 222 318 222 256 Z";
+
+  /* ---------- el escenario ---------- */
+  function escenario(P, sh, R) {
+    var s = '<rect width="600" height="760" fill="url(#cpFondo)"/>';
+    if (sh) { s += '<path d="M-20 170 Q 170 60 330 140 T 640 90 L 640 200 Q 470 170 320 230 T -20 260Z" fill="url(#cpAur)"/>'; }
+    // estrellas fijas del fondo
+    var est = "";
+    for (var i = 0; i < 34; i++) { est += '<circle cx="' + r1(R() * 600) + '" cy="' + r1(70 + R() * 300) + '" r="' + r1(0.6 + R() * 1.3) + '"/>'; }
+    s += '<g fill="#fff" opacity=".55">' + est + "</g>";
+    // reflectores que se cruzan (dos haces que se balancean)
+    s += '<path class="cp-reflI" d="M40 40 L360 520 L170 540Z" fill="url(#cpHaz)"/>' +
+      '<path class="cp-reflD" d="M560 40 L240 520 L430 540Z" fill="url(#cpHaz2)"/>' +
+      '<circle cx="40" cy="40" r="16" fill="rgb(' + P.luz + ')" opacity=".9"/><circle cx="560" cy="40" r="16" fill="rgb(' + P.luz2 + ')" opacity=".9"/>';
+    // telón a los lados con pliegues
+    s += '<path d="M0 0 H118 C104 120 96 260 112 400 C88 420 40 430 0 424Z" fill="url(#cpTelon)"/>' +
+      '<path d="M600 0 H482 C496 120 504 260 488 400 C512 420 560 430 600 424Z" fill="url(#cpTelon)"/>' +
+      '<g stroke="#000" stroke-opacity=".25" stroke-width="3" fill="none"><path d="M30 0 C26 140 24 280 34 424M70 0 C62 140 58 280 74 416M570 0 C574 140 576 280 566 424M530 0 C538 140 542 280 526 416"/></g>' +
+      '<path d="M0 0 H600 V34 Q 450 64 300 42 Q 150 64 0 34Z" fill="url(#cpTelon)"/>' +
+      '<path d="M0 34 Q 150 64 300 42 Q 450 64 600 34" fill="none" stroke="' + P.telonLuz + '" stroke-width="2.4" stroke-dasharray="2 7" stroke-linecap="round"/>';
+    // banderines de la feria
+    var bd = "", n = 13;
+    for (i = 0; i < n; i++) {
+      var x0 = 70 + i * 36, y0 = 82 + Math.sin(i / (n - 1) * Math.PI) * 26, y1 = 82 + Math.sin((i + 1) / (n - 1) * Math.PI) * 26;
+      bd += '<path d="M' + r1(x0) + " " + r1(y0) + " L" + r1(x0 + 32) + " " + r1(y1) + " L" + r1(x0 + 16) + " " + r1((y0 + y1) / 2 + 26) + 'Z" fill="' + P.banderas[i % P.banderas.length] + '"/>';
+    }
+    s += '<path d="M70 82 Q 300 134 538 82" fill="none" stroke="#ffffff88" stroke-width="1.4"/>' + '<g opacity=".92">' + bd + "</g>";
+    // suelo del escenario y foco
+    s += '<path d="M0 520 H600 V760 H0Z" fill="url(#cpSuelo)"/>' +
+      '<path d="M0 520 H600" stroke="' + P.telonLuz + '" stroke-opacity=".35" stroke-width="2"/>' +
+      '<ellipse cx="300" cy="560" rx="250" ry="46" fill="url(#cpFoco)"/>';
+    return s;
+  }
+
+  /* ---------- podio ---------- */
+  function podio(P) {
+    function bloque(x, y, w, h, g, num) {
+      return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="4" fill="url(#' + g + ')"/>' +
+        '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="7" rx="3" fill="#fff" opacity=".35"/>' +
+        '<text x="' + (x + w / 2) + '" y="' + (y + h / 2 + 15) + '" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="40" fill="' + P.podioTxt + '" opacity=".75">' + num + "</text>";
+    }
+    return bloque(110, 486, 118, 64, "cpP1", "2") + bloque(372, 498, 118, 52, "cpP2", "3") + bloque(220, 428, 160, 122, "cpP0", "1") +
+      '<path d="M220 428 H380" stroke="#fff" stroke-opacity=".6" stroke-width="2"/>';
+  }
+
+  /* ---------- laurel ---------- */
+  function laurel(P, flip) {
+    var s = "", i;
+    for (i = 0; i < 9; i++) {
+      var a = Math.PI * (0.62 + i * 0.07), cx = 300 + Math.cos(a) * 128, cy = 300 - Math.sin(a) * 128 + 40, rot = (a * 180 / Math.PI) - 140;
+      s += '<ellipse cx="' + r1(cx) + '" cy="' + r1(cy) + '" rx="17" ry="7" transform="rotate(' + r1(rot) + " " + r1(cx) + " " + r1(cy) + ')" fill="' + P.laurel[i % 2] + '"/>';
+    }
+    return '<g' + (flip ? ' transform="translate(600 0) scale(-1 1)"' : "") + ">" +
+      '<path d="M190 386 Q 156 290 210 196" fill="none" stroke="' + P.laurel[1] + '" stroke-width="4" stroke-linecap="round"/>' + s + "</g>";
+  }
+
+  /* ---------- la copa ---------- */
+  function copa(P, sh) {
+    var est = "";
+    for (var k = 0; k < 10; k++) { var ang = -Math.PI / 2 + k * Math.PI / 5, rr = k % 2 ? 7 : 17; est += (k ? "L" : "M") + r1(300 + Math.cos(ang) * rr) + " " + r1(276 + Math.sin(ang) * rr); }
+    return '<circle cx="300" cy="300" r="190" fill="url(#cpHalo)" class="cp-halo"/>' +
+      laurel(P, false) + laurel(P, true) +
+      // asas
+      '<path d="M226 230 C176 224 172 296 236 314" fill="none" stroke="' + P.copaSombra + '" stroke-width="15" stroke-linecap="round"/>' +
+      '<path d="M226 230 C176 224 172 296 236 314" fill="none" stroke="' + P.copa + '" stroke-width="10" stroke-linecap="round"/>' +
+      '<path d="M374 230 C424 224 428 296 364 314" fill="none" stroke="' + P.copaSombra + '" stroke-width="15" stroke-linecap="round"/>' +
+      '<path d="M374 230 C424 224 428 296 364 314" fill="none" stroke="' + P.copa + '" stroke-width="10" stroke-linecap="round"/>' +
+      // cuerpo
+      '<path d="' + COPA + '" fill="' + P.copa + '" stroke="' + P.copaSombra + '" stroke-width="2"/>' +
+      '<ellipse cx="300" cy="214" rx="78" ry="11" fill="' + P.copaSombra + '"/><ellipse cx="300" cy="212" rx="74" ry="8" fill="' + P.copaBorde + '" opacity=".55"/>' +
+      '<path d="M238 240 C240 300 262 334 290 348" fill="none" stroke="' + P.copaLuz + '" stroke-width="6" stroke-linecap="round" opacity=".55"/>' +
+      '<path d="' + est + 'Z" fill="' + P.copaSombra + '" opacity=".55"/>' +
+      // franja de brillo que cruza la copa
+      '<g clip-path="url(#cpCopaClip)"><g class="cp-brillo"><rect x="250" y="190" width="46" height="260" transform="rotate(18 273 320)" fill="url(#cpBanda)"/></g></g>' +
+      // base y placa
+      '<rect x="244" y="426" width="112" height="16" rx="3" fill="' + P.copaSombra + '"/>' +
+      '<rect x="254" y="398" width="92" height="22" rx="3" fill="' + P.placa + '" stroke="' + P.copaBorde + '" stroke-opacity=".6"/>' +
+      '<text x="300" y="413" text-anchor="middle" font-family="Georgia,serif" font-size="11" letter-spacing="2" fill="' + P.placaTxt + '">EL TABLÓN</text>' +
+      // cinta «1.er LUGAR»
+      '<path d="M228 352 L250 340 L350 340 L372 352 L350 364 L250 364Z" fill="' + (sh ? "#d2a8ff" : "#c9303f") + '"/>' +
+      '<text x="300" y="357" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="12" letter-spacing="2" fill="#fff">1.ᵉʳ LUGAR</text>';
+  }
+
+  /* ---------- confeti (un solo grupo; se repite arriba para el bucle) ---------- */
+  function confeti(P, R) {
+    var s = "";
+    for (var i = 0; i < 46; i++) {
+      var x = r1(R() * 600), y = r1(R() * 760), c = P.confeti[i % P.confeti.length], rot = Math.round(R() * 180), pieza;
+      if (i % 3 === 0) { pieza = '<circle cx="' + x + '" cy="' + y + '" r="3"/>'; }
+      else { pieza = '<rect x="' + x + '" y="' + y + '" width="' + (i % 2 ? 9 : 5) + '" height="' + (i % 2 ? 4 : 9) + '" transform="rotate(' + rot + " " + x + " " + y + ')"/>'; }
+      s += pieza.replace("/>", ' fill="' + c + '"/>');
+    }
+    return '<g opacity=".9"><g class="cp-conf">' + s + '<g transform="translate(0 -760)">' + s + "</g></g></g>";
+  }
+  function chispas(P) {
+    function c(x, y, z) { return '<path d="M' + x + " " + (y - z) + "l" + r1(z * .3) + " " + r1(z * .7) + " " + r1(z * .7) + " " + r1(z * .3) + " " + r1(-z * .7) + " " + r1(z * .3) + " " + r1(-z * .3) + " " + r1(z * .7) + " " + r1(-z * .3) + " " + r1(-z * .7) + " " + r1(-z * .7) + " " + r1(-z * .3) + " " + r1(z * .7) + " " + r1(-z * .3) + 'z"/>'; }
+    return '<g class="cp-chispa" fill="' + P.chispa + '">' + c(212, 190, 10) + c(404, 260, 8) + c(352, 168, 6) + "</g>" +
+      '<g class="cp-chispa cp-chispa2" fill="' + P.chispa + '">' + c(392, 186, 10) + c(198, 282, 7) + c(260, 160, 6) + "</g>";
+  }
+
+  function escena(sh) {
+    var P = pal(sh), R = rng(sh ? 9071 : 2026);
+    var fondo = escenario(P, sh, R);
+    return { P: P, cuerpo: fondo + podio(P) + copa(P, sh) + chispas(P) + confeti(P, R) };
+  }
+
+  function marco(P, sh) {
+    var lema = sh ? "✦ SHINY · EDICIÓN PRISMA ✦" : "EDICIÓN EVENTO · PRIMER LUGAR";
+    return '<rect y="520" width="600" height="240" fill="url(#cpVelo)"/>' +
+      '<g fill="none" stroke="url(#cpMetal)"><rect x="17" y="17" width="566" height="726" rx="32" stroke-width="3"/><rect x="25" y="25" width="550" height="710" rx="26" opacity=".5"/>' +
+      '<path d="M36 121V65l29-29h95M440 36h95l29 29v56M36 639v56l29 29h95M440 724h95l29-29v-56" stroke-width="4"/>' +
+      '<path d="m36 139 9 16-9 16-9-16Zm528 0 9 16-9 16-9-16ZM36 594l9 16-9 16-9-16Zm528 0 9 16-9 16-9-16Z"/></g>' +
+      '<rect x="180" y="46" width="240" height="26" rx="13" fill="' + P.velo + '" opacity=".55"/>' +
+      '<text x="300" y="64" text-anchor="middle" fill="' + P.pie + '" font-family="Georgia,serif" font-size="13" letter-spacing="4">EL TABLÓN · FERIA 2026</text>' +
+      '<path d="M190 596h80m60 0h80" stroke="' + P.pie + '" opacity=".5"/>' +
+      '<g transform="translate(300 596)" fill="' + P.pie + '"><path d="M-9-10h18v6a9 9 0 01-18 0z"/><rect x="-2" y="4" width="4" height="5"/><rect x="-7" y="9" width="14" height="3" rx="1"/></g>' +
+      '<text x="300" y="642" text-anchor="middle" fill="' + P.titulo + '" font-family="Georgia,serif" font-size="34" letter-spacing="7">CAMPEONES</text>' +
+      '<text x="300" y="672" text-anchor="middle" fill="' + P.sub + '" font-family="Georgia,serif" font-style="italic" font-size="17" letter-spacing="1">1.er lugar · Feria Emprendedora 2026</text>' +
+      '<text x="300" y="708" text-anchor="middle" fill="' + P.pie + '" font-family="sans-serif" font-size="10" letter-spacing="4" opacity=".85">' + lema + "</text>";
+  }
+
+  function abrir(w, h) { return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + w + " " + h + '">'; }
+  function carta(sh) { var e = escena(sh); return abrir(600, 760) + defs(e.P, sh) + estilos() + e.cuerpo + marco(e.P, sh) + "</svg>"; }
+  /* En el perfil la carta es más alta que ancha: el escenario se alarga hacia abajo
+     (piso brillante y más confeti) para que el arte llegue completo hasta el final. */
+  function perfil(sh) {
+    var e = escena(sh), P = e.P, R = rng(sh ? 3141 : 2718);
+    return abrir(600, 1000) + defs(P, sh) + estilos() +
+      '<defs><linearGradient id="cpPiso" x2="0" y2="1"><stop stop-color="' + P.suelo[0] + '"/><stop offset="1" stop-color="' + P.velo + '"/></linearGradient>' +
+      '<clipPath id="cpBajo"><rect y="740" width="600" height="260"/></clipPath></defs>' +
+      '<rect width="600" height="1000" fill="url(#cpPiso)"/>' + e.cuerpo +
+      '<rect y="756" width="600" height="244" fill="url(#cpPiso)" opacity=".9"/>' +
+      '<g opacity=".35" stroke="' + P.telonLuz + '" stroke-width="1.4"><path d="M0 800 H600M0 860 H600M0 930 H600"/></g>' +
+      '<ellipse cx="300" cy="790" rx="230" ry="40" fill="url(#cpFoco)"/>' +
+      '<g clip-path="url(#cpBajo)"><g transform="translate(0 240)">' + confeti(P, R) + "</g></g></svg>";
+  }
+  function banner() {
+    // El escenario se extiende a los lados (fijo); la escena central es la que se anima.
+    var e = escena(false), P = e.P, bd = "";
+    for (var i = 0; i < 30; i++) { bd += '<path d="M' + (i * 40) + " 40 L" + (i * 40 + 36) + " 40 L" + (i * 40 + 18) + ' 68Z" fill="' + P.banderas[i % 4] + '"/>'; }
+    return abrir(1200, 480) + defs(P, false) +
+      '<defs><linearGradient id="cpBm"><stop stop-color="#fff" stop-opacity="0"/><stop offset=".2" stop-color="#fff"/><stop offset=".8" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient><mask id="cpM"><rect x="300" width="600" height="480" fill="url(#cpBm)"/></mask></defs>' +
+      estilos() + '<rect width="1200" height="480" fill="url(#cpFondo)"/>' +
+      '<path d="M0 0 H300 C280 160 270 300 290 420 C200 440 80 450 0 440Z" fill="url(#cpTelon)"/>' +
+      '<path d="M1200 0 H900 C920 160 930 300 910 420 C1000 440 1120 450 1200 440Z" fill="url(#cpTelon)"/>' +
+      '<g opacity=".9">' + bd + "</g>" +
+      '<path d="M0 400 H1200 V480 H0Z" fill="url(#cpSuelo)"/>' +
+      '<g mask="url(#cpM)"><svg x="300" y="-130" width="600" height="760" viewBox="0 0 600 760">' + e.cuerpo + "</svg></g></svg>";
+  }
+
+  return {
+    carta: carta, perfil: perfil, banner: banner,
+    entrada: function () {
+      return {
+        id: "ep26_campeon", slug: "campeon", name: "Copa · Campeones de la Feria", rarity: "Evento",
+        accent: "#ffd36b", mid: "#4a1d3a", dark: "#12061f", scene: "campeon", index: 36, arteDirecto: true,
+        description: "El Tablón ganó el primer lugar de la Feria Emprendedora 2026. Reflectores, telón, confeti y una copa que brilla para todo el salón. La Shiny es la Edición Prisma: la copa se vuelve holograma bajo una aurora.",
+        banner: banner(), card: carta(false), letter: carta(false), shiny: carta(true), perfil: perfil(false), perfilShiny: perfil(true)
+      };
+    }
+  };
+})();
+try { EPIC_COLLECTION.push(CP_CARTA.entrada()); } catch (e) { console.warn("[campeones] no se pudo dibujar la carta de la copa", e); }
+/* Estilos de la carta de la Copa (como Jack, Copo y Abeto: arte a sangre en el perfil, sin banner). */
+(function cpCartaCss() {
+  var c = "#tablon-root .tb-ep26-campeon", id = "ep26_campeon", d = "#12061f";
+  var css = c + "{--ep26-accent:#ffd36b;--ep26-dark:" + d + ";--ep26-surface:var(--" + id + "-card);--ep26-letter:var(--" + id + "-letter);--ep26-letter-still:var(--" + id + "-letter-still);--ep26-shiny:var(--" + id + "-shiny);--sh-base:var(--" + id + "-sbase)}" +
+    c + ".tb-carta-shiny{--ep26-accent:#9ff7ff;--carta-glow:#d2a8ff66}" +
+    c + " .tb-shiny-art :is(.tb-sh-fig,.tb-sh-p1,.tb-sh-p2){display:none}" +
+    "#tablon-root :is(.tb-profile-card,.tb-modal-card).tb-ep26-campeon{--ep26-letter:var(--" + id + "-perfil);--ep26-letter-still:var(--" + id + "-perfil-still)}" +
+    c + ".tb-profile-card:not(.tb-carta-shiny)," + c + ".tb-modal-card:not(.tb-carta-shiny){background-image:var(--" + id + "-perfil-still)!important;background-color:" + d + "!important}" +
+    "#tablon-root .tb-art-pausa.tb-ep26-campeon.tb-profile-card:not(.tb-carta-shiny),#tablon-root.tb-modal-abierto #tb-app .tb-ep26-campeon.tb-profile-card:not(.tb-carta-shiny){background-image:var(--" + id + "-perfil-still)!important}" +
+    c + " .tb-shiny-art{background-image:var(--" + id + "-sbase);background-size:cover;background-position:center top;background-repeat:no-repeat}" +
+    "#tablon-root .tb-art-pausa.tb-ep26-campeon .tb-shiny-art{background-image:var(--" + id + "-sbase-still)}" +
+    "#tablon-root .tb-art-pausa.tb-ep26-campeon,#tablon-root.tb-modal-abierto #tb-app .tb-ep26-campeon{--" + id + "-banner:var(--" + id + "-still);--" + id + "-card:var(--" + id + "-card-still);--" + id + "-letter:var(--" + id + "-letter-still);--" + id + "-perfil:var(--" + id + "-perfil-still);--" + id + "-sbase:var(--" + id + "-sbase-still)}" +
+    c + " .tb-profile-body{background:linear-gradient(180deg," + d + "00 0%," + d + "00 22%," + d + "55 48%," + d + "b3 78%," + d + "d9 100%)!important;border-top:0!important}" +
+    c + ":not(.tb-carta-shiny) :is(.tb-profile-body h3,.tb-profile-body > p,.tb-profile-body small){text-shadow:0 1px 3px #000c,0 0 12px #000a}" +
+    c + ":not(.tb-carta-shiny) :is(.tb-banner,.tb-modal-banner){background:none!important;border:0!important;box-shadow:none!important;animation:none!important}" +
+    c + ".tb-modal-card:not(.tb-carta-shiny) .tb-modal-banner{height:190px}" +
+    c + ".tb-profile-card:not(.tb-carta-shiny) .tb-banner{height:205px}" +
+    c + ".tb-modal-card:not(.tb-carta-shiny) .tb-carta-art{background-position:center 12%}" +
+    "#tablon-root .tb-cf-campeon :is(h2,h3){font-family:Georgia,'Times New Roman',serif,'Noto Color Emoji'!important;letter-spacing:.04em!important;color:#fff4d6!important;text-shadow:0 0 16px #ffd36b66,0 2px 0 #3a1406}" +
+    "#tablon-root .tb-cf-campeon.tb-carta-shiny :is(h2,h3){color:#f3ecff!important;text-shadow:0 0 16px #8ff7ff66,0 2px 0 #1d1838}" +
+    c + ".tb-carta-shiny::before{background:linear-gradient(100deg,#8ff7ff,#e1c9ff,#ffffff);color:#17142e}" +
+    c + " .tb-shiny-art::after{content:\"\";position:absolute;inset:0;background:linear-gradient(125deg,transparent 20%,#8ff7ff1a 35%,#d2a8ff33 45%,#ffffff15 55%,transparent 70%);background-size:300% 100%;mix-blend-mode:screen;animation:tbFlow 12s ease-in-out infinite;pointer-events:none}" +
+    c + ".tb-art-pausa .tb-shiny-art::after{animation-play-state:paused}" +
+    "@media(prefers-reduced-motion:reduce){" + c + " .tb-shiny-art::after{animation:none!important}}" +
+    /* coreografía de obtención: la copa sube al podio con un rebote */
+    ".tb-cg-ent-campeon.tb-cg-intro .tb-cg-escena{animation:cpSube var(--cg-T) cubic-bezier(.2,.7,.25,1) both}" +
+    "@keyframes cpSube{0%,40%{opacity:0;transform:translateY(90px) scale(.72)}68%{opacity:.7;transform:translateY(-10px) scale(1.06)}86%{opacity:.95;transform:translateY(2px) scale(.99)}100%{opacity:1;transform:none}}" +
+    ".tb-cg-ent-campeon .tb-cg-dorso{background:radial-gradient(ellipse at center,#ffd36b44,transparent 60%),linear-gradient(145deg,#4a1d3a,#12061f);border-color:#ffd36b}" +
+    ".tb-cg-ent-campeon.tb-cg-shiny .tb-cg-dorso{background:radial-gradient(ellipse at center,#8ff7ff33,transparent 60%),linear-gradient(145deg,#1d1f58,#06101f);border-color:#9ff7ff}" +
+    ".tb-cg-ent-campeon .tb-cg-frente{background-size:100% 100%;background-position:center}" +
+    ".tb-cg-ent-campeon .tb-cg-placa,.tb-cg-ent-campeon .tb-cg-flash,.tb-cg-ent-campeon .tb-cg-prisma{display:none}" +
+    ".tb-cg-ent-campeon.tb-cg-quieto .tb-cg-escena{animation:none!important;opacity:1;transform:none}" +
+    "@media(prefers-reduced-motion:reduce){.tb-cg-ent-campeon .tb-cg-escena{animation:none!important;transform:none;opacity:1}}";
+  var st = document.createElement("style");
+  st.id = "tb-campeon-carta-css";
+  st.textContent = css;
+  // Al final del documento: así gana a las reglas genéricas de las cartas épicas.
+  (document.body || document.head).appendChild(st);
+})();
 /* ===================================================================
    LEYENDAS DE NICARAGUA · 14 conceptos animados (v22)
    Cada leyenda genera 3 cosméticos: banner animado (MOTIONS), tarjeta
@@ -28431,6 +29065,7 @@ navIniciar().catch(function (error) { console.warn("[navidad]", error); }).then(
 accesoOwnerIniciar();
 comunidadIniciar().catch(function (error) { console.warn("[comunidad]", error); });
 lyRecetas();
+campIniciar().catch(function (error) { console.warn("[campeones]", error); });
 }
 $$("[data-auth]").forEach(function (button) {
 button.onclick = function () { switchAuth(button.dataset.auth); };
@@ -38907,9 +39542,13 @@ async function estCargar() {
   com.est.error = "";
 }
 function estPuedeVotar() { return !!me && me.role !== "owner"; }
+function estEsOwner(id) {
+  var p = typeof id === "object" ? id : comPerfil(id);
+  return !!p && String(p.role || "").toLowerCase() === "owner";
+}
 function estCandidatos() {
   return profilesOrdenados().filter(function (p) {
-    return me && p.id !== me.id && p.role !== "owner" && (p.status || "active") === "active";
+    return me && p.id !== me.id && !estEsOwner(p) && (p.status || "active") === "active";
   });
 }
 function estQuedaTexto(cierre) {
@@ -38927,7 +39566,7 @@ function estRender() {
   var d = com.est.datos;
   var ganadores = (d.ganadores || []).map(function (g) {
     var p = comPerfil(g.id);
-    return p ? { p: p, g: g } : null;
+    return p && !estEsOwner(p) ? { p: p, g: g } : null;
   }).filter(Boolean);
   var html = '<section class="tb-card tb-com-est" aria-labelledby="tb-com-est-t">';
   if (ganadores.length) {
@@ -38967,7 +39606,7 @@ function estRender() {
   }
   html += "</div>";
   if (puede("estrella")) {
-    var vivo = d.en_vivo || [];
+    var vivo = (d.en_vivo || []).filter(function (x) { return !estEsOwner(x.id); });
     html += '<details class="tb-com-est-owner"><summary>Conteo en vivo y premios</summary>' +
       (vivo.length ? '<ol class="tb-com-est-vivo">' + vivo.map(function (x) {
         return "<li><span>" + escapeHtml(comNombre(x.id)) + "</span><b>" + x.votos + "</b></li>";
@@ -39647,6 +40286,7 @@ root.addEventListener("click", function (ev) {
   }
   /* estrella */
   if (d.comVotar !== undefined) { estAbrirVoto(); return; }
+  if (d.comCand && estEsOwner(d.comCand)) { return; }
   if (d.comVotoCerrar !== undefined) { comCerrarModal("tb-com-voto-modal"); return; }
   if (d.comCand) {
     com.est.sel = d.comCand;
@@ -42400,6 +43040,1312 @@ function presDiaNuevo() {
   } catch (e) { /* sin conexión */ }
 }
 
+/* ===================================================================
+   SEMANA DEL CAMPEÓN · El Tablón ganó el 1.er lugar de la Feria
+   Emprendedora 2026. Requiere supabase/ACTIVAR-semana-campeon.sql (v2).
+   · Bienvenida animada (una vez por usuario y por versión).
+   · Vitrina con el mensaje del owner (se queda después del evento).
+   · Ruta del campeón: 4 misiones (firmar el libro, entrar N días, jugar
+     un minijuego y girar una ruleta). Al completarlas se reclama la carta
+     «Copa · Campeones de la Feria», Belis, 4 adornos exclusivos y las
+     skins de campeón de Michi y Rugo.
+   · Insignia «Estuve ahí»: se gana al firmar el libro de firmas.
+   · Día de suerte x2: un giro extra en cada ruleta clásica y rarezas altas
+     (Épico, Legendario, Único) con el doble de probabilidad; con cartel,
+     sello animado, ruedas brillantes y cuenta regresiva.
+   · Las ruletas clásicas muestran la vista previa del premio.
+   · Todos los textos se editan desde el Panel del owner.
+   El servidor decide fechas, misiones, premios y límites; el navegador
+   solo dibuja.
+   =================================================================== */
+var CAMP_SQL = "ACTIVAR-semana-campeon.sql";
+var CAMP = { estado: "nada", datos: null, publico: {}, firmantes: {}, firmas: null, tab: "celebra", avisado: false, enviando: false, visitaDia: "" };
+var CAMP_ITEMS = { titulo: "ti_campeon26", nombre: "no_campeon", sticker: "st_trofeo", fx: "fx_campeon" };
+var CAMP_SLOTS = ["titulo", "nombre", "sticker", "fx"];
+var CAMP_SLOT_NOMBRE = { titulo: "Título", nombre: "Estilo de nombre", sticker: "Calcomanía", fx: "Efecto de perfil" };
+
+/* ---------- textos (el owner los cambia; vacío = texto original) ---------- */
+var CAMP_TXT_DEF = {
+  bv_kicker: "Feria Emprendedora 2026",
+  bv_titulo: "¡PRIMER LUGAR!",
+  bv_texto: "El Tablón ganó la feria. Esto es de todo el salón: cada tarea, cada mensaje y cada idea cuenta.",
+  bv_boton: "🏆 Ver la celebración",
+  chip: "Campeones",
+  home_kicker: "Semana del Campeón",
+  home_titulo: "¡El Tablón ganó el primer lugar!",
+  home_texto: "Feria Emprendedora 2026. Completa la Ruta del campeón y gánate la Copa.",
+  modal_kicker: "🏆 1.er lugar · Feria Emprendedora 2026",
+  modal_titulo: "Semana del Campeón",
+  vitrina_kicker: "Vitrina de El Tablón",
+  vitrina_titulo: "1.er lugar · Feria Emprendedora 2026",
+  firma_mensaje: "— Tu profe",
+  vitrina_copas: "copas ganadas",
+  vitrina_firmas: "firmas",
+  vitrina_fin: "La Semana del Campeón terminó, pero este logro se queda aquí para siempre.",
+  ruta_titulo: "🏆 Ruta del campeón",
+  ruta_texto: "Completa las 4 misiones antes del {fin} para ganarte la carta «Copa · Campeones de la Feria» y {belis} Belis.",
+  ruleta_titulo: "🎰 Ruleta de campeón",
+  ruleta_texto: "Gira una vez al día y gana los cosméticos de la celebración. Si te sale uno repetido, te llevas Belis.",
+  ruleta_boton: "¡Girar!",
+  ruleta_usado: "Vuelve mañana para otro giro",
+  ruleta_x2: "Hoy es día x2: tienes 2 giros.",
+  ruta_boton: "Reclamar la Copa",
+  ruta_falta: "Te faltan {n} misiones",
+  ruta_listo: "¡Ruta completada! La Copa ya es tuya. Gracias por ser parte de esto.",
+  ruta_no_puede: "La Copa es para quienes ya estaban en El Tablón el día de la feria. Igual puedes firmar el libro y ganar la insignia.",
+  m_firma_t: "Felicita al salón",
+  m_firma_d: "Deja tu mensaje en el libro de firmas.",
+  m_dias_t: "Presente toda la semana",
+  m_dias_d: "Entra a El Tablón en {n} días distintos.",
+  m_juego_t: "A jugar",
+  m_juego_d: "Juega una partida de cualquier minijuego de Actividades.",
+  m_ruleta_t: "Prueba tu suerte",
+  m_ruleta_d: "Gira cualquier ruleta clásica de la Tienda.",
+  libro_titulo: "📖 Libro de firmas",
+  libro_texto: "Un mensaje para todos (máximo 200 letras). Al firmar ganas {belis} Belis y la insignia «{insignia}». Solo se puede firmar una vez.",
+  libro_placeholder: "¡Felicidades, salón! Lo logramos…",
+  libro_boton: "Firmar el libro",
+  libro_gracias: "✍️ Ya firmaste el libro. ¡Misión cumplida!",
+  suerte_titulo: "DÍA DE SUERTE x2",
+  suerte_texto: "Hoy cada ruleta clásica te regala un giro extra y las rarezas Épico, Legendario y Único salen el doble.",
+  suerte_boton: "¡GIRO EXTRA!",
+  suerte_proximo: "El {fecha}: un giro extra en cada ruleta clásica y rarezas altas x2.",
+  suerte_pronto: "La fecha del día x2 se anuncia pronto.",
+  look_temporal: "Aspecto temporal",
+  look_vuelve: "Se podrá obtener en {fecha}",
+  look_exclusiva: "Exclusiva",
+  look_exclusiva_sub: "Dentro de poco dejará de ser conseguible para siempre, ¡corre a conseguirla!",
+  look_exclusiva_fin: "Ya no se puede conseguir.",
+  ins_nombre: "Estuve ahí",
+  ins_texto: "Firmaste el libro del salón cuando El Tablón ganó el primer lugar de la Feria Emprendedora 2026."
+};
+var CAMP_TXT_GRUPOS = [
+  ["Bienvenida animada", [["bv_kicker", "Línea pequeña de arriba"], ["bv_titulo", "Título grande"], ["bv_texto", "Texto", 1], ["bv_boton", "Botón"]]],
+  ["Inicio y botón de arriba", [["chip", "Botón de la barra superior"], ["home_kicker", "Línea pequeña (se le agrega «hasta el…»)"], ["home_titulo", "Título"], ["home_texto", "Texto", 1]]],
+  ["Ventana y vitrina", [["modal_kicker", "Línea pequeña"], ["modal_titulo", "Título de la ventana"], ["vitrina_kicker", "Etiqueta de la vitrina"], ["vitrina_titulo", "Título de la vitrina"], ["firma_mensaje", "Firma de tu mensaje"], ["vitrina_copas", "Dato: copas ganadas"], ["vitrina_firmas", "Dato: firmas"], ["vitrina_fin", "Texto cuando termina la semana", 1]]],
+  ["Ruta del campeón", [["ruta_titulo", "Título"], ["ruta_texto", "Explicación ({fin} = último día, {belis} = Belis)", 1], ["ruta_boton", "Botón para reclamar"], ["ruta_falta", "Botón bloqueado ({n} = misiones que faltan)"], ["ruta_listo", "Mensaje al completarla", 1], ["ruta_no_puede", "Mensaje para quien no puede ganarla", 1],
+    ["m_firma_t", "Misión 1 · título"], ["m_firma_d", "Misión 1 · descripción", 1], ["m_dias_t", "Misión 2 · título"], ["m_dias_d", "Misión 2 · descripción ({n} = días)", 1],
+    ["m_juego_t", "Misión 3 · título"], ["m_juego_d", "Misión 3 · descripción", 1], ["m_ruleta_t", "Misión 4 · título"], ["m_ruleta_d", "Misión 4 · descripción", 1]]],
+  ["Ruleta de campeón", [["ruleta_titulo", "Título"], ["ruleta_texto", "Explicación", 1], ["ruleta_boton", "Botón para girar"], ["ruleta_usado", "Botón cuando ya giró"], ["ruleta_x2", "Aviso en el día x2"]]],
+  ["Libro de firmas", [["libro_titulo", "Título"], ["libro_texto", "Instrucciones ({belis} = Belis, {insignia} = nombre de la insignia)", 1], ["libro_placeholder", "Texto de ejemplo en la caja"], ["libro_boton", "Botón"], ["libro_gracias", "Mensaje después de firmar"]]],
+  ["Día de suerte x2", [["suerte_titulo", "Título del cartel"], ["suerte_texto", "Texto del cartel", 1], ["suerte_boton", "Botón de giro extra"], ["suerte_proximo", "Aviso antes del día ({fecha} = fecha)", 1], ["suerte_pronto", "Aviso si aún no hay fecha", 1]]],
+  ["Aspectos de mascota", [["look_temporal", "Etiqueta de Halloween y Navidad"], ["look_vuelve", "Subtítulo si está bloqueado ({fecha} = cuándo vuelve)"], ["look_exclusiva", "Etiqueta de las skins de evento"], ["look_exclusiva_sub", "Subtítulo durante la celebración", 1], ["look_exclusiva_fin", "Subtítulo cuando terminó"]]],
+  ["Insignia", [["ins_nombre", "Nombre de la insignia"], ["ins_texto", "Descripción", 1]]]
+];
+function campT(k, vars) {
+  var t = CAMP.datos && CAMP.datos.textos && typeof CAMP.datos.textos[k] === "string" && CAMP.datos.textos[k].trim() ? CAMP.datos.textos[k] : (CAMP_TXT_DEF[k] || "");
+  if (vars) { Object.keys(vars).forEach(function (v) { t = t.split("{" + v + "}").join(String(vars[v])); }); }
+  return t;
+}
+function campTH(k, vars) { return escapeHtml(campT(k, vars)); }
+
+/* ---------- cosméticos exclusivos (no salen en ruletas) ---------- */
+NAV_ST.st_trofeo = '<path d="M14 9h20v9a10 10 0 0 1-20 0z" fill="#f0b429" stroke="#8a5a06" stroke-width="1.6"/>' +
+  '<path d="M14 12H9a5 5 0 0 0 6 8M34 12h5a5 5 0 0 1-6 8" fill="none" stroke="#f0b429" stroke-width="3"/>' +
+  '<path d="M17 12q1 8 6 11" stroke="#fff6d0" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+  '<rect x="21" y="28" width="6" height="6" fill="#c98a12"/><rect x="15" y="34" width="18" height="6" rx="2" fill="#8a5a06"/>' +
+  '<text x="24" y="21" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="9" fill="#5a3a00">1</text>' +
+  '<path d="M7 6l1 2.4 2.4 1-2.4 1L7 12.8l-1-2.4-2.4-1 2.4-1zM41 30l.8 1.8 1.8.8-1.8.8-.8 1.8-.8-1.8-1.8-.8 1.8-.8z" fill="#fff6d0"/>';
+NAV_CAT.ti_campeon26 = { t: "titulo", n: "Campeón 2026", ico: "🏆", r: "Evento", cls: "campeon", camp: true };
+NAV_CAT.no_campeon = { t: "nombre", n: "Oro de campeón", r: "Evento", camp: true };
+NAV_CAT.st_trofeo = { t: "sticker", n: "Copa del primer lugar", r: "Evento", camp: true };
+NAV_CAT.fx_campeon = { t: "fx", n: "Lluvia de campeones", r: "Evento", camp: true };
+
+
+/* ---------- insignia «Estuve ahí»: se gana al firmar el libro ---------- */
+function campFirmo(p) {
+  if (!p) { return false; }
+  if (CAMP.firmantes[p.id]) { return true; }
+  var yo = CAMP.datos && CAMP.datos.yo;
+  return !!(me && p.id === me.id && yo && yo.firma && !yo.firma_oculta);
+}
+var CAMP_INS = { id: "campeon26", n: CAMP_TXT_DEF.ins_nombre, cat: "Especiales", tier: "epica", forma: "estrella", glifo: "trofeo",
+  c: CAMP_TXT_DEF.ins_texto, v: function (p) { return campFirmo(p) ? 1 : 0; }, meta: 1, oculta: true };
+try { INSIGNIAS.push(CAMP_INS); } catch (e) { console.warn("[campeones] insignia", e); }
+function campAplicarTextosInsignia() { CAMP_INS.n = campT("ins_nombre"); CAMP_INS.c = campT("ins_texto"); }
+
+/* ---------- coreografía al obtener la carta: los reflectores buscan la copa ---------- */
+try { if (typeof CG_EVENTO !== "undefined" && CG_EVENTO) { CG_EVENTO.campeon = 1; } } catch (e) { /* nada */ }
+try {
+  if (typeof CG_RECETAS !== "undefined" && CG_RECETAS) {
+    CG_RECETAS.campeon = { ent: "campeon", emo: "🏆", lema: "Los reflectores buscan algo en el escenario…",
+      init: function (S) { S.conf = []; for (var i = 0; i < 54; i++) { S.conf.push({ a: cgR(0.2, Math.PI - 0.2), v: cgR(220, 520), w: cgR(4, 9), g: cgR(0, 6.28), c: i % 4 }); } },
+      draw: function (c, W, H, t, S, P) {
+        if (S.T <= .5) { t = S.T + 2; }
+        var q = Math.min(1, t / S.T), fade = Math.max(0, 1 - (t - S.T) / 1.1), reveal = Math.max(0, Math.min(1, (t - S.T) / 1.2));
+        var oro = P.sh ? "159,247,255" : "255,214,120", cols = P.sh ? ["159,247,255", "210,168,255", "255,255,255", "255,155,224"] : ["255,214,120", "255,90,122", "90,209,255", "127,224,176"];
+        var cx = W / 2, cy = H * .44, R = Math.min(W * .3, H * .25, 240);
+        var busca = Math.max(0, Math.min(1, q / .62)), dibuja = Math.max(0, Math.min(1, (q - .5) / .4));
+        c.save();
+        // dos reflectores que barren el escenario hasta cruzarse en el centro
+        [[0, -1], [W, 1]].forEach(function (f, k) {
+          var ang = (1 - cgEase(busca)) * (k ? -.9 : .9) + Math.sin(t * 2 + k) * (1 - busca) * .25;
+          c.save(); c.translate(f[0], -20); c.rotate(Math.atan2(cy - (-20), cx - f[0]) - Math.PI / 2 + ang);
+          var g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, "rgba(" + oro + "," + (.42 * fade) + ")"); g.addColorStop(1, "rgba(" + oro + ",0)");
+          c.fillStyle = g; c.beginPath(); c.moveTo(-10, 0); c.lineTo(10, 0); c.lineTo(R * .9, H * 1.2); c.lineTo(-R * .9, H * 1.2); c.closePath(); c.fill(); c.restore();
+        });
+        // la copa se traza en el cruce de los reflectores
+        if (dibuja > 0) {
+          c.globalAlpha = fade; c.strokeStyle = "rgba(" + oro + ",.95)"; c.lineWidth = 3; c.lineCap = "round"; c.lineJoin = "round";
+          var s = R / 120, x0 = cx, y0 = cy - R * .45;
+          c.beginPath(); c.moveTo(x0 - 60 * s, y0); c.lineTo(x0 + 60 * s, y0);
+          c.moveTo(x0 - 60 * s, y0); c.quadraticCurveTo(x0 - 62 * s, y0 + 90 * s * dibuja, x0, y0 + 110 * s * dibuja);
+          c.moveTo(x0 + 60 * s, y0); c.quadraticCurveTo(x0 + 62 * s, y0 + 90 * s * dibuja, x0, y0 + 110 * s * dibuja);
+          if (dibuja > .6) { c.moveTo(x0, y0 + 110 * s); c.lineTo(x0, y0 + 150 * s); c.moveTo(x0 - 40 * s, y0 + 160 * s); c.lineTo(x0 + 40 * s, y0 + 160 * s);
+            c.moveTo(x0 - 60 * s, y0 + 14 * s); c.quadraticCurveTo(x0 - 104 * s, y0 + 18 * s, x0 - 50 * s, y0 + 64 * s);
+            c.moveTo(x0 + 60 * s, y0 + 14 * s); c.quadraticCurveTo(x0 + 104 * s, y0 + 18 * s, x0 + 50 * s, y0 + 64 * s); }
+          c.stroke();
+          var halo = c.createRadialGradient(x0, y0 + 60 * s, 4, x0, y0 + 60 * s, R * 1.8);
+          halo.addColorStop(0, "rgba(" + oro + "," + (.22 * dibuja * fade) + ")"); halo.addColorStop(1, "rgba(" + oro + ",0)");
+          c.fillStyle = halo; c.fillRect(0, 0, W, H);
+        }
+        // confeti al revelar
+        var kk = t - S.T * .9;
+        if (kk > 0 && kk < 1.8) {
+          S.conf.forEach(function (p) {
+            var x = cx + Math.cos(p.a) * p.v * kk * .8, y = cy - Math.sin(p.a) * p.v * kk + 320 * kk * kk;
+            c.globalAlpha = Math.max(0, 1 - kk / 1.8); c.fillStyle = "rgb(" + cols[p.c] + ")";
+            c.save(); c.translate(x, y); c.rotate(p.g + kk * 6); c.fillRect(-p.w / 2, -2, p.w, 4); c.restore();
+          });
+        }
+        c.globalAlpha = 1;
+        if (reveal > 0 && reveal < 1) { c.strokeStyle = "rgba(" + oro + "," + (1 - reveal) * .65 + ")"; c.lineWidth = 2; c.beginPath(); c.arc(cx, cy, R * (1 + reveal * 2), 0, 6.283); c.stroke(); }
+        c.restore();
+      } };
+  }
+} catch (e) { console.warn("[campeones] coreografía", e); }
+
+/* ---------- utilidades ---------- */
+function campHoy() { return (CAMP.datos && CAMP.datos.hoy) || ""; }
+function campActiva() { return !!(CAMP.datos && CAMP.datos.activa_ahora); }
+function campYo() { return (CAMP.datos && CAMP.datos.yo) || {}; }
+function campReclamado() { return !!campYo().reclamado; }
+function campItems() { var it = campYo().items; return Array.isArray(it) ? it : []; }
+// Los cosméticos de campeón solo se tienen si salieron en la ruleta (también para el owner).
+function campTieneItem(id) { return campItems().indexOf(id) >= 0; }
+function campPuedeUsar() { return campItems().length > 0; }
+function campSuerteHoy() { return !!(CAMP.datos && CAMP.datos.suerte_hoy); }
+function campGiroUsado(kind) { var g = (CAMP.datos && CAMP.datos.giros) || []; return g.indexOf(kind) >= 0; }
+function campFechaLarga(iso) {
+  if (!iso) { return ""; }
+  var d = String(iso).slice(0, 10);
+  return (+d.slice(8, 10)) + " de " + MESES_ES[+d.slice(5, 7) - 1];
+}
+function campEqDe(uid) { return CAMP.publico[uid] || null; }
+function campMensaje(error) {
+  if (faltaTablaTb(error)) { return "Falta activar la celebración: ejecuta supabase/" + CAMP_SQL + " en el SQL Editor de Supabase."; }
+  return (error && error.message) || String(error || "Error de conexión.");
+}
+function campRepintarPerfiles() {
+  try { renderMyProfile(); renderProfiles(); } catch (e) { /* las vistas se pintan después */ }
+}
+
+/* ---------- los adornos de campeón se ven en los perfiles ---------- */
+var campNavEquipoDeBase = navEquipoDe;
+navEquipoDe = function (p) {
+  var base = campNavEquipoDeBase(p), o = p && campEqDe(p.id);
+  if (!o) { return base; }
+  var e = {};
+  if (base) { Object.keys(base).forEach(function (k) { e[k] = base[k]; }); }
+  CAMP_SLOTS.forEach(function (s) { if (o[s]) { e[s] = CAMP_ITEMS[s]; if (s === "titulo") { e.titulo_num = null; } } });
+  return e;
+};
+var campExTieneBase = exTiene;
+exTiene = function (id) {
+  if (NAV_CAT[id] && NAV_CAT[id].camp) { return campTieneItem(id); }
+  return campExTieneBase(id);
+};
+var campExNotaBase = exNota;
+exNota = function (cat, id, abierto) {
+  if (NAV_CAT[id] && NAV_CAT[id].camp && !abierto) { return "Ruleta de campeón 🏆"; }
+  return campExNotaBase(cat, id, abierto);
+};
+var campExEquiparBase = exEquipar;
+exEquipar = async function (cat, id) {
+  var slot = EX_CATS[cat].slot;
+  if (id && NAV_CAT[id] && NAV_CAT[id].camp) {
+    if (await campEquipar(slot, true)) { renderInventory(); }
+    return;
+  }
+  var o = me && campEqDe(me.id);
+  if (o && o[slot]) {
+    if (!(await campEquipar(slot, false))) { renderInventory(); return; }
+    if (!id) { renderInventory(); return; }
+  }
+  return campExEquiparBase(cat, id);
+};
+
+async function campEquipar(slot, on) {
+  if (!client || !me) { return false; }
+  var r;
+  try { r = await client.rpc("tb_campeon_equipar", { p_slot: slot, p_on: !!on }); } catch (e) { r = { error: e }; }
+  if (r.error) { avisoToast("⚠️ " + campMensaje(r.error)); return false; }
+  var eq = (r.data && r.data.eq) || {};
+  if (CAMP.datos && CAMP.datos.yo) { CAMP.datos.yo.eq = eq; }
+  var algo = CAMP_SLOTS.some(function (s) { return eq[s]; });
+  if (algo) { CAMP.publico[me.id] = { titulo: !!eq.titulo, nombre: !!eq.nombre, sticker: !!eq.sticker, fx: !!eq.fx }; } else { delete CAMP.publico[me.id]; }
+  campAplicarSkins();
+  campRepintarPerfiles();
+  campPintarModal();
+  return true;
+}
+
+/* ---------- carga ---------- */
+async function campCargar() {
+  if (!client || !me) { return; }
+  var r;
+  try { r = await client.rpc("tb_campeon_estado"); } catch (e) { r = { error: e }; }
+  if (r.error) {
+    CAMP.estado = faltaTablaTb(r.error) ? "falta" : "error";
+    if (CAMP.estado === "falta" && isOwner() && !CAMP.avisado) {
+      CAMP.avisado = true;
+      avisoToast("🏆 Para activar la Semana del Campeón ejecuta supabase/" + CAMP_SQL + " en el SQL Editor de Supabase.");
+    }
+    if (CAMP.estado === "error") { console.warn("[campeones] estado:", r.error.message); }
+    campPintarAccesos();
+    return;
+  }
+  CAMP.datos = r.data || {};
+  CAMP.estado = "lista";
+  campAplicarTextosInsignia();
+  campAplicarSkins();
+  campPintarAccesos();
+  try { campPintarLooks(); } catch (e) { /* la vista se pinta después */ }
+}
+// Cuenta el día de hoy para la misión «Presente toda la semana» (una vez por día y pestaña).
+async function campVisita() {
+  if (!client || !me || !campActiva()) { return; }
+  var hoy = campHoy();
+  if (CAMP.visitaDia === hoy) { return; }
+  CAMP.visitaDia = hoy;
+  try {
+    var r = await client.rpc("tb_campeon_visita");
+    if (!r.error && r.data && r.data.progreso && CAMP.datos && CAMP.datos.yo) {
+      CAMP.datos.yo.progreso = r.data.progreso;
+      campPintarAccesos();
+    }
+  } catch (e) { CAMP.visitaDia = ""; }
+}
+async function campCargarPublico() {
+  if (!client || !me) { return; }
+  var r;
+  try { r = await client.rpc("tb_campeon_publico"); } catch (e) { return; }
+  if (r.error) { return; }
+  CAMP.publico = {};
+  CAMP.firmantes = {};
+  (r.data || []).forEach(function (x) {
+    if (x.t || x.n || x.s || x.f) { CAMP.publico[x.u] = { titulo: !!x.t, nombre: !!x.n, sticker: !!x.s, fx: !!x.f }; }
+    if (x.fi) { CAMP.firmantes[x.u] = true; }
+  });
+  campRepintarPerfiles();
+  try { revisarInsigniasNuevas(); } catch (e) { /* nada */ }
+}
+async function campCargarFirmas() {
+  if (!client || !me) { return; }
+  var r;
+  try { r = await client.rpc("tb_campeon_firmas"); } catch (e) { r = { error: e }; }
+  CAMP.firmas = r.error ? [] : (r.data || []);
+  campPintarModal();
+}
+
+/* ---------- Ruta del campeón ---------- */
+function campMisiones() {
+  var p = (campYo().progreso) || {}, d = CAMP.datos || {};
+  var lista = [
+    { id: "firma", ico: "✍️", t: campT("m_firma_t"), d: campT("m_firma_d"), ok: !!p.firma, av: p.firma ? "Firmado" : "", ir: "firmas", irTxt: "Firmar" },
+    { id: "dias", ico: "📅", t: campT("m_dias_t"), d: campT("m_dias_d", { n: p.meta_dias || d.meta_dias || 3 }),
+      ok: (p.dias || 0) >= (p.meta_dias || 1), av: Math.min(p.dias || 0, p.meta_dias || 0) + " / " + (p.meta_dias || 0) + " días", ir: "", irTxt: "" },
+    { id: "juego", ico: "🎮", t: campT("m_juego_t"), d: campT("m_juego_d"), ok: !!p.juego, av: p.juego ? "¡Listo!" : "", ir: "juegos", irTxt: "Ir a Actividades" },
+    { id: "ruleta", ico: "🎰", t: campT("m_ruleta_t"), d: campT("m_ruleta_d"), ok: !!p.ruleta, av: p.ruleta ? "¡Listo!" : "", ir: "tienda", irTxt: "Ir a la Tienda" }
+  ];
+  return lista.filter(function (m) { return !m.oculta; });
+}
+function campRutaResumen() {
+  var ms = campMisiones(), hechas = ms.filter(function (m) { return m.ok; }).length;
+  return { hechas: hechas, total: ms.length, completa: !!((campYo().progreso || {}).completa) };
+}
+function campHtmlRuta() {
+  var d = CAMP.datos, yo = campYo(), res = campRutaResumen();
+  var h = '<section class="cp-bloque cp-ruta"><div class="cp-ruta-cab"><h4>' + campTH("ruta_titulo") + "</h4>" +
+    '<span class="cp-ruta-cuenta">' + res.hechas + " / " + res.total + "</span></div>";
+  if (yo.reclamado) { return h + '<p class="cp-ok">' + campTH("ruta_listo") + "</p></section>"; }
+  h += "<p>" + campTH("ruta_texto", { fin: campFechaLarga(d.fin), belis: d.belis || 0 }) + "</p>";
+  if (!yo.puede) { h += '<p class="tb-muted">' + campTH("ruta_no_puede") + "</p>"; }
+  h += '<div class="cp-barra" role="progressbar" aria-valuemin="0" aria-valuemax="' + res.total + '" aria-valuenow="' + res.hechas + '"><i style="width:' + Math.round(res.hechas / Math.max(1, res.total) * 100) + '%"></i></div>';
+  h += '<ol class="cp-misiones">' + campMisiones().map(function (m, i) {
+    return '<li class="' + (m.ok ? "hecha" : "") + '"><span class="cp-mis-n" aria-hidden="true">' + (m.ok ? "✓" : (i + 1)) + "</span>" +
+      '<span class="cp-mis-ico" aria-hidden="true">' + m.ico + "</span><div><b>" + escapeHtml(m.t) + "</b><small>" + escapeHtml(m.d) + "</small></div>" +
+      (m.av ? '<span class="cp-mis-av">' + escapeHtml(m.av) + "</span>" : "") +
+      (!m.ok && m.ir ? '<button type="button" class="tb-secondary" data-camp-ir="' + m.ir + '">' + escapeHtml(m.irTxt) + "</button>" : "") + "</li>";
+  }).join("") + "</ol>";
+  if (yo.puede) {
+    var listo = res.completa;
+    h += '<button type="button" class="tb-primary cp-reclamar' + (listo ? " listo" : "") + '" data-camp-reclamar' + (!listo || CAMP.enviando ? " disabled" : "") + ">" +
+      (listo ? "🏆 " + campTH("ruta_boton") : "🔒 " + campTH("ruta_falta", { n: res.total - res.hechas })) + "</button>";
+  }
+  return h + "</section>";
+}
+
+/* ---------- accesos: chip, tarjeta de inicio y modal ---------- */
+var CAMP_COPA_SVG = '<svg viewBox="0 0 48 48" aria-hidden="true">' + NAV_ST.st_trofeo + "</svg>";
+function campCrearDom() {
+  if ($("#tb-camp-chip")) { return; }
+  var chip = document.createElement("button");
+  chip.type = "button";
+  chip.className = "cp-chip tb-hidden";
+  chip.id = "tb-camp-chip";
+  chip.title = "Semana del Campeón";
+  var ancla = $("#tb-nav-chip") || $("#tb-belis-top");
+  if (ancla && ancla.parentNode) { ancla.parentNode.insertBefore(chip, ancla); }
+  chip.onclick = function () { campAbrir("celebra"); };
+
+  var home = $("#tb-view-home");
+  if (home) {
+    var tarjeta = document.createElement("div");
+    tarjeta.className = "cp-home tb-hidden";
+    tarjeta.id = "tb-camp-home";
+    var bienvenida = home.querySelector(".tb-welcome");
+    if (bienvenida && bienvenida.nextSibling) { home.insertBefore(tarjeta, bienvenida.nextSibling); } else { home.insertBefore(tarjeta, home.firstChild); }
+    tarjeta.addEventListener("click", function (ev) {
+      var b = ev.target.closest("[data-camp-abrir]");
+      if (b) { campAbrir(b.dataset.campAbrir || "celebra"); return; }
+      if (ev.target.closest("[data-camp-x2]")) { showView("shop"); }
+    });
+  }
+
+  var modal = document.createElement("div");
+  modal.className = "tb-modal tb-hidden";
+  modal.id = "tb-modal-camp";
+  modal.setAttribute("role", "dialog");
+  modal.setAttribute("aria-modal", "true");
+  modal.setAttribute("aria-labelledby", "tb-camp-titulo");
+  modal.innerHTML = '<div class="tb-modal-card tb-glass cp-modal-card">' +
+    '<div class="tb-modal-head"><div><span class="cp-kicker" id="tb-camp-kicker"></span>' +
+    '<h3 id="tb-camp-titulo"></h3></div>' +
+    '<button type="button" class="tb-close" data-camp-cerrar aria-label="Cerrar">×</button></div>' +
+    '<div class="nv-tabs cp-tabs" role="tablist" aria-label="Secciones de la celebración">' +
+    '<button type="button" role="tab" data-camp-tab="celebra" aria-controls="tb-camp-panel">Celebración</button>' +
+    '<button type="button" role="tab" data-camp-tab="firmas" aria-controls="tb-camp-panel">Libro de firmas</button>' +
+    '<button type="button" role="tab" data-camp-tab="owner" aria-controls="tb-camp-panel" class="tb-hidden" id="tb-camp-tab-owner">Panel del owner</button>' +
+    '</div><div id="tb-camp-panel" role="tabpanel"></div><p class="cp-aviso" id="tb-camp-aviso" role="alert"></p></div>';
+  root.appendChild(modal);
+  modal.addEventListener("click", function (ev) {
+    if (ev.target === modal || ev.target.closest("[data-camp-cerrar]")) { campCerrar(); return; }
+    var t = ev.target.closest("[data-camp-tab]");
+    if (t) { CAMP.tab = t.dataset.campTab; campPintarModal(); if (CAMP.tab === "firmas") { campCargarFirmas(); } return; }
+    campClickPanel(ev).catch(function (e) { campAviso("⚠️ " + campMensaje(e)); });
+  });
+  document.addEventListener("keydown", function (ev) {
+    if (ev.key === "Escape" && !modal.classList.contains("tb-hidden")) { campCerrar(); }
+  });
+}
+function campPintarAccesos() {
+  var chip = $("#tb-camp-chip"), home = $("#tb-camp-home");
+  var lista = CAMP.estado === "lista" && CAMP.datos;
+  var activa = lista && campActiva(), x2 = lista && campSuerteHoy();
+  if (chip) {
+    chip.classList.toggle("tb-hidden", !activa);
+    var yo = campYo(), res = lista ? campRutaResumen() : null;
+    chip.classList.toggle("alerta", !!(activa && yo.puede && !yo.reclamado && res && res.completa));
+    chip.innerHTML = '<span class="cp-chip-ico">' + CAMP_COPA_SVG + '</span><span class="cp-chip-etq">' + campTH("chip") + "</span>" +
+      (x2 ? '<b class="cp-chip-x2" title="' + campTH("suerte_titulo") + '">x2</b>' : "");
+  }
+  if (!home) { return; }
+  if (!lista || !CAMP.datos.activo) { home.classList.add("tb-hidden"); home.innerHTML = ""; return; }
+  home.classList.remove("tb-hidden");
+  home.classList.toggle("cp-home-compacta", !activa);
+  if (!activa) {
+    home.innerHTML = '<button type="button" class="cp-home-mini" data-camp-abrir="celebra"><span class="cp-chip-ico">' + CAMP_COPA_SVG +
+      '</span><span><b>' + campTH("vitrina_kicker") + "</b><small>" + campTH("vitrina_titulo") + '</small></span><span aria-hidden="true">›</span></button>';
+    return;
+  }
+  var y = campYo(), r = campRutaResumen(), acciones = [];
+  if (y.puede && !y.reclamado) {
+    acciones.push('<button type="button" class="tb-primary" data-camp-abrir="celebra">' + (r.completa ? "🏆 " + campTH("ruta_boton") : "🗺️ " + campTH("ruta_titulo").replace(/^\S*\s/, "") + " · " + r.hechas + "/" + r.total) + "</button>");
+  }
+  if (!y.firma) { acciones.push('<button type="button" class="tb-secondary" data-camp-abrir="firmas">✍️ ' + campTH("m_firma_t") + "</button>"); }
+  var ru = campRuletaUsos();
+  if (ru.usados < ru.max) { acciones.push('<button type="button" class="tb-secondary" data-camp-abrir="celebra">' + campTH("ruleta_titulo") + "</button>"); }
+  if (!acciones.length) { acciones.push('<button type="button" class="tb-secondary" data-camp-abrir="celebra">🏆 ' + campTH("vitrina_kicker") + "</button>"); }
+  home.innerHTML = '<div class="cp-home-fondo" aria-hidden="true"></div>' +
+    '<div class="cp-home-copa" aria-hidden="true">' + CAMP_COPA_SVG + "</div>" +
+    '<div class="cp-home-txt"><span class="cp-kicker">' + campTH("home_kicker") + " · hasta el " + escapeHtml(campFechaLarga(CAMP.datos.fin)) + "</span>" +
+    "<h2>" + campTH("home_titulo") + "</h2><p>" + campTH("home_texto") + "</p>" +
+    (x2 ? '<button type="button" class="cp-home-x2" data-camp-x2><span class="cp-x2-mini">x2</span><span><b>' + campTH("suerte_titulo") + "</b><small>" + campTH("suerte_texto") + '</small></span><span aria-hidden="true">🍀</span></button>' : "") +
+    '<div class="cp-home-acciones">' + acciones.join("") + "</div></div>";
+}
+function campAbrir(tab) {
+  var modal = $("#tb-modal-camp");
+  if (!modal) { return; }
+  if (tab) { CAMP.tab = tab; }
+  modal.classList.remove("tb-hidden");
+  root.classList.add("tb-modal-abierto");
+  campAviso("");
+  campPintarModal();
+  campCargar().then(campPintarModal);
+  if (CAMP.tab === "firmas") { campCargarFirmas(); }
+  setTimeout(function () { var c = modal.querySelector(".tb-close"); if (c) { c.focus(); } }, 60);
+}
+function campCerrar() {
+  var modal = $("#tb-modal-camp");
+  if (!modal || modal.classList.contains("tb-hidden")) { return; }
+  modal.classList.add("tb-hidden");
+  root.classList.remove("tb-modal-abierto");
+}
+function campAviso(t) { var a = $("#tb-camp-aviso"); if (a) { a.textContent = t || ""; } }
+
+/* ---------- contenido del modal ---------- */
+function campPintarModal() {
+  var modal = $("#tb-modal-camp");
+  if (!modal || modal.classList.contains("tb-hidden") || CAMP.girando) { return; }
+  var k = $("#tb-camp-kicker"), ti = $("#tb-camp-titulo");
+  if (k) { k.textContent = campT("modal_kicker"); }
+  if (ti) { ti.textContent = campT("modal_titulo"); }
+  var tabOwner = $("#tb-camp-tab-owner");
+  if (tabOwner) { tabOwner.classList.toggle("tb-hidden", !isOwner()); }
+  if (CAMP.tab === "owner" && !isOwner()) { CAMP.tab = "celebra"; }
+  $$("[data-camp-tab]").forEach(function (b) { if (b.getAttribute("role") === "tab") { b.setAttribute("aria-selected", b.dataset.campTab === CAMP.tab ? "true" : "false"); } });
+  var panel = $("#tb-camp-panel");
+  if (!panel) { return; }
+  if (CAMP.estado === "falta") {
+    panel.innerHTML = '<div class="cp-bloque"><p class="tb-muted">' + (isOwner()
+      ? "Para activar la celebración ejecuta supabase/" + escapeHtml(CAMP_SQL) + " en el SQL Editor de Supabase y recarga la página."
+      : "La celebración se activa muy pronto.") + "</p></div>";
+    return;
+  }
+  if (CAMP.estado !== "lista" || !CAMP.datos) { panel.innerHTML = '<p class="tb-muted" role="status">Cargando…</p>'; return; }
+  var abierto = panel.querySelector("details[open]");
+  var grupoAbierto = abierto ? abierto.dataset.grupo : null;
+  panel.innerHTML = CAMP.tab === "firmas" ? campHtmlFirmas() : CAMP.tab === "owner" ? campHtmlOwner() : campHtmlCelebra();
+  if (grupoAbierto) { var g = panel.querySelector('details[data-grupo="' + grupoAbierto + '"]'); if (g) { g.open = true; } }
+}
+function campHtmlCelebra() {
+  var d = CAMP.datos, yo = campYo(), activa = campActiva();
+  var h = campHtmlVitrina();
+  if (!activa) {
+    return h + '<p class="tb-muted cp-nota">' + campTH("vitrina_fin") + "</p>" + campHtmlMisAdornos();
+  }
+  h += campHtmlRuta();
+  h += campHtmlRuleta();
+  h += campHtmlMisAdornos();
+  h += '<section class="cp-bloque cp-agenda-x2' + (campSuerteHoy() ? " hoy" : "") + '"><span class="cp-x2-mini">x2</span><div><b>' + campTH("suerte_titulo") + "</b><small>" +
+    (campSuerteHoy() ? campTH("suerte_texto") : d.suerte_dia ? campTH("suerte_proximo", { fecha: campFechaLarga(d.suerte_dia) }) : campTH("suerte_pronto")) + "</small></div>" +
+    (campSuerteHoy() ? '<button type="button" class="tb-primary" data-camp-ir="tienda">🍀 Ir a la Tienda</button>' : "") + "</section>";
+  return h;
+}
+function campHtmlVitrina() {
+  var d = CAMP.datos;
+  var carta = '<div class="cp-vitrina-carta" style="background-image:var(--ep26_campeon-card-still, var(--ep26_campeon-card))" role="img" aria-label="Carta Copa · Campeones de la Feria"></div>';
+  if (isOwner() && CAMP.editVitrina) {
+    var campo = function (id, etq, val, largo) {
+      return '<label class="cp-v-campo"><span>' + etq + "</span>" + (largo
+        ? '<textarea id="' + id + '" rows="3" maxlength="400">' + escapeHtml(val) + "</textarea>"
+        : '<input type="text" id="' + id + '" maxlength="400" value="' + escapeHtml(val) + '">') + "</label>";
+    };
+    return '<section class="cp-vitrina cp-vitrina-editando">' + carta + '<div class="cp-vitrina-txt cp-owner">' +
+      campo("tb-camp-v-kicker", "Etiqueta", campT("vitrina_kicker")) +
+      campo("tb-camp-v-titulo", "Título", campT("vitrina_titulo")) +
+      campo("tb-camp-v-mensaje", "Tu mensaje", d.mensaje || "", true) +
+      campo("tb-camp-v-firma", "Firma", campT("firma_mensaje")) +
+      '<div class="cp-v-dos">' + campo("tb-camp-v-copas", "Dato 1", campT("vitrina_copas")) + campo("tb-camp-v-firmas", "Dato 2", campT("vitrina_firmas")) + "</div>" +
+      '<div class="cp-botones"><button type="button" class="tb-primary" data-camp-v-guardar>Guardar vitrina</button>' +
+      '<button type="button" class="tb-secondary" data-camp-v-cancelar>Cancelar</button></div></div></section>';
+  }
+  return '<section class="cp-vitrina">' + carta +
+    '<div class="cp-vitrina-txt"><span class="cp-kicker">' + campTH("vitrina_kicker") + "</span><h4>" + campTH("vitrina_titulo") + "</h4>" +
+    (d.mensaje ? '<blockquote class="cp-mensaje">' + escapeHtml(d.mensaje) + "<cite>" + campTH("firma_mensaje") + "</cite></blockquote>" : "") +
+    '<ul class="cp-datos"><li><b>' + (d.reclamados || 0) + "</b><small>" + campTH("vitrina_copas") + "</small></li><li><b>" + (d.firmas || 0) + "</b><small>" + campTH("vitrina_firmas") + "</small></li></ul>" +
+    (isOwner() ? '<button type="button" class="cp-v-editar" data-camp-v-editar title="Editar la vitrina">✏️ Editar vitrina</button>' : "") +
+    "</div></section>";
+}
+function campHtmlMisAdornos() {
+  var eq = (campYo().eq) || {}, tengo = CAMP_PREMIOS.filter(function (x) { return campTieneItem(x.id); });
+  var h = '<section class="cp-bloque"><h4>✨ Tus cosméticos de campeón · ' + tengo.length + " / " + CAMP_PREMIOS.length + "</h4>";
+  if (!tengo.length) { return h + '<p class="tb-muted cp-nota">Todavía no tienes ninguno: gíralos en la Ruleta de campeón.</p></section>'; }
+  h += '<p class="tb-muted cp-nota">Los adornos también aparecen en Personalizar; las skins, en Mascota → Aspecto.</p><div class="cp-adornos">';
+  h += CAMP_PREMIOS.map(function (x) {
+    var tiene = campTieneItem(x.id);
+    if (x.skin) {
+      var on = tiene && campLook(x.skin) === "campeon";
+      return '<div class="cp-adorno cp-skin-item' + (on ? " on" : "") + (tiene ? "" : " bloqueado") + '"><div class="cp-adorno-prev cp-skin-prev">' + campPreviaSkin(x.skin) + "</div>" +
+        "<b>" + escapeHtml(x.n) + '</b><span class="cp-look-tag cp-tag-exclusiva">' + campTH("look_exclusiva") + "</span><small>Skin de mascota · Evento</small>" +
+        (tiene ? '<button type="button" class="' + (on ? "tb-secondary" : "tb-primary") + '" data-camp-look="' + x.skin + '" data-camp-look-v="' + (on ? "auto" : "campeon") + '">' + (on ? "Quitar" : "Usar") + "</button>"
+          : '<span class="cp-candado">🔒 En la ruleta</span>') + "</div>";
+    }
+    var on2 = tiene && !!eq[x.slot];
+    return '<div class="cp-adorno' + (on2 ? " on" : "") + (tiene ? "" : " bloqueado") + '"><div class="cp-adorno-prev">' + campPrevia(x.slot, x.id) + "</div>" +
+      "<b>" + escapeHtml(NAV_CAT[x.id].n) + "</b><small>" + escapeHtml(CAMP_SLOT_NOMBRE[x.slot]) + "</small>" +
+      (tiene ? '<button type="button" class="' + (on2 ? "tb-secondary" : "tb-primary") + '" data-camp-eq="' + x.slot + '" data-camp-on="' + (on2 ? "0" : "1") + '">' + (on2 ? "Quitar" : "Equipar") + "</button>"
+        : '<span class="cp-candado">🔒 En la ruleta</span>') + "</div>";
+  }).join("");
+  return h + "</div></section>";
+}
+function campPrevia(s, id) {
+  var nombre = me ? (me.display_name || me.username || "Tu nombre").split(" ")[0] : "Campeón";
+  if (s === "titulo") { return navTituloHtml(id); }
+  if (s === "nombre") { return '<span class="cp-prev-nombre">' + navNombreEstilo(id, nombre) + "</span>"; }
+  if (s === "sticker") { return '<svg class="cp-prev-st" viewBox="0 0 48 48" aria-hidden="true">' + NAV_ST[id] + "</svg>"; }
+  return '<span class="cp-prev-fx" style="' + (me ? bannerStyle(me) : "") + '"><span class="nv-pfx nv-pfx-campeon"></span></span>';
+}
+function campHtmlFirmas() {
+  var d = CAMP.datos, yo = campYo(), h = "";
+  if (campActiva()) {
+    if (yo.firma) {
+      h += '<section class="cp-bloque"><p class="cp-ok">' + campTH("libro_gracias") + "</p>" +
+        (yo.firma_oculta ? "" : '<div class="cp-ins-ganada"><span>' + insigniaSvg(CAMP_INS, false) + "</span><div><small>Insignia ganada</small><b>" + escapeHtml(CAMP_INS.n) + "</b></div></div>") + "</section>";
+    } else {
+      h += '<section class="cp-bloque"><h4>✍️ ' + campTH("m_firma_t") + '</h4><p class="tb-muted">' + campTH("libro_texto", { belis: d.premio_firma || 0, insignia: campT("ins_nombre") }) + "</p>" +
+        '<div class="cp-ins-previa"><span>' + insigniaSvg(CAMP_INS, true) + "</span><div><small>Insignia al firmar</small><b>" + escapeHtml(CAMP_INS.n) + "</b></div></div>" +
+        '<label class="tb-com-sr" for="tb-camp-firma">Tu mensaje</label>' +
+        '<textarea id="tb-camp-firma" class="cp-firma-input" maxlength="200" rows="3" placeholder="' + campTH("libro_placeholder") + '"></textarea>' +
+        '<div class="cp-firma-pie"><small id="tb-camp-firma-n">0 / 200</small><button type="button" class="tb-primary" data-camp-firmar' + (CAMP.enviando ? " disabled" : "") + ">" + campTH("libro_boton") + "</button></div></section>";
+    }
+  }
+  var lista = CAMP.firmas;
+  if (lista === null) { return h + '<p class="tb-muted" role="status">Cargando firmas…</p>'; }
+  var staff = isStaff();
+  h += '<section class="cp-libro"><h4>' + campTH("libro_titulo") + " · " + lista.filter(function (f) { return !f.oculta; }).length + "</h4>";
+  if (!lista.length) { return h + '<p class="tb-muted">Todavía nadie firma. ¡Sé el primero!</p></section>'; }
+  h += '<ul class="cp-firmas">' + lista.map(function (f) {
+    return '<li class="' + (f.oculta ? "oculta" : "") + '"><p>' + escapeHtml(f.texto) + "</p><small><b>" + escapeHtml(f.nombre || f.usuario || "") + "</b>" +
+      (f.usuario ? " @" + escapeHtml(f.usuario) : "") + (staff && f.seccion ? " · " + escapeHtml(TB_SECCIONES[f.seccion] || f.seccion) : "") + (f.oculta ? " · oculta" : "") + "</small>" +
+      (staff ? '<button type="button" class="cp-mod" data-camp-moderar="' + escapeHtml(f.u) + '" data-camp-ocultar="' + (f.oculta ? "0" : "1") + '">' + (f.oculta ? "Mostrar" : "Ocultar") + "</button>" : "") + "</li>";
+  }).join("") + "</ul></section>";
+  return h;
+}
+function campHtmlOwner() {
+  var d = CAMP.datos;
+  var corte = d.corte ? String(d.corte).slice(0, 10) : "";
+  var h = '<section class="cp-bloque cp-owner"><h4>Configuración</h4>' +
+    '<label class="cp-check"><input type="checkbox" id="tb-camp-o-activo"' + (d.activo ? " checked" : "") + "> Celebración visible (si la apagas, también se oculta la vitrina)</label>" +
+    '<div class="cp-campos">' +
+    '<label>Empieza<input type="date" id="tb-camp-o-inicio" value="' + escapeHtml(d.inicio || "") + '"></label>' +
+    '<label>Termina<input type="date" id="tb-camp-o-fin" value="' + escapeHtml(d.fin || "") + '"></label>' +
+    '<label>Día de suerte x2<input type="date" id="tb-camp-o-suerte" value="' + escapeHtml(d.suerte_dia || "") + '"></label>' +
+    '<label>Belis de la Copa<input type="number" min="0" max="5000" step="10" id="tb-camp-o-belis" value="' + (d.belis || 0) + '"></label>' +
+    '<label>Belis por firmar<input type="number" min="0" max="1000" step="5" id="tb-camp-o-firma" value="' + (d.premio_firma || 0) + '"></label>' +
+    '<label>Misión 2: días distintos<input type="number" min="1" max="7" id="tb-camp-o-dias" value="' + (d.meta_dias || 3) + '"></label>' +
+    '<label>Fundadores: cuentas creadas hasta<input type="date" id="tb-camp-o-corte" value="' + escapeHtml(corte) + '"></label>' +
+    "</div>" +
+    '<label class="cp-check"><input type="checkbox" id="tb-camp-o-fund"' + (d.solo_fundadores ? " checked" : "") + "> La Copa es solo para fundadores (si lo apagas, cualquiera puede completar la ruta)</label>" +
+    '<label class="cp-largo">Tu mensaje para el salón (bienvenida y vitrina)<textarea id="tb-camp-o-mensaje" maxlength="400" rows="3">' + escapeHtml(d.mensaje || "") + "</textarea></label>" +
+    '<div class="cp-botones"><button type="button" class="tb-primary" data-camp-o-guardar>Guardar todo</button>' +
+    '<button type="button" class="tb-secondary" data-camp-o-bienvenida>Mostrar la bienvenida otra vez a todos</button></div></section>';
+  h += '<section class="cp-bloque cp-owner"><h4>✏️ Textos</h4><p class="tb-muted cp-nota">Cambia cualquier texto de la celebración y toca «Guardar todo» (guarda también la configuración de arriba). Si dejas un campo vacío vuelve al texto original. Lo que va entre llaves, como {n}, se reemplaza solo.</p>' +
+    CAMP_TXT_GRUPOS.map(function (g, gi) {
+      return '<details class="cp-grupo" data-grupo="' + gi + '"><summary>' + escapeHtml(g[0]) + "</summary><div class=\"cp-grupo-campos\">" + g[1].map(function (c) {
+        var k = c[0], val = campT(k), id = "tb-camp-t-" + k;
+        return '<label for="' + id + '">' + escapeHtml(c[1]) + (c[2] ? '<textarea id="' + id + '" data-camp-txt="' + k + '" rows="2" maxlength="400">' + escapeHtml(val) + "</textarea>"
+          : '<input type="text" id="' + id + '" data-camp-txt="' + k + '" maxlength="400" value="' + escapeHtml(val) + '">') + "</label>";
+      }).join("") + "</div></details>";
+    }).join("") +
+    '<div class="cp-botones"><button type="button" class="tb-primary" data-camp-o-textos>Guardar todo</button>' +
+    '<button type="button" class="tb-secondary" data-camp-o-textos-reset>Restaurar los textos originales</button></div></section>';
+  h += '<section class="cp-bloque"><h4>✨ Shiny de la Copa</h4><p class="tb-muted">La versión Shiny no se reparte: regálala tú desde Panel → Regalos, en la categoría de cartas épicas: <b>Shiny · Copa · Campeones de la Feria</b>.</p></section>' +
+    '<section class="cp-bloque"><h4>📊 Hasta ahora</h4><p class="tb-muted">' + (d.reclamados || 0) + " copas ganadas · " + (d.firmas || 0) + " firmas visibles. Las firmas se moderan en la pestaña Libro de firmas.</p></section>";
+  return h;
+}
+
+/* ---------- acciones ---------- */
+async function campClickPanel(ev) {
+  var b = ev.target.closest("button");
+  if (!b || b.disabled) { return; }
+  var d = b.dataset;
+  if (d.campReclamar !== undefined) { return campReclamar(b); }
+  if (d.campEq) { b.disabled = true; await campEquipar(d.campEq, d.campOn === "1"); renderInventory(); return; }
+  if (d.campLook) { campSetLook(d.campLook, d.campLookV); return; }
+  if (d.campVEditar !== undefined) { CAMP.editVitrina = true; campPintarModal(); var f = $("#tb-camp-v-mensaje"); if (f) { f.focus(); } return; }
+  if (d.campVCancelar !== undefined) { CAMP.editVitrina = false; campPintarModal(); return; }
+  if (d.campVGuardar !== undefined) { return campGuardarVitrina(b); }
+  if (d.campRuleta !== undefined) { return campGirarRuleta(b); }
+  if (d.campFirmar !== undefined) { return campFirmar(b); }
+  if (d.campModerar) { return campModerar(d.campModerar, d.campOcultar === "1"); }
+  if (d.campIr) {
+    if (d.campIr === "firmas") { CAMP.tab = "firmas"; campPintarModal(); campCargarFirmas(); return; }
+    campCerrar(); showView(d.campIr === "tienda" ? "shop" : "arcade"); return;
+  }
+  if (d.campOGuardar !== undefined) { return campOwnerGuardar(false); }
+  if (d.campOBienvenida !== undefined) {
+    if (!window.confirm("La bienvenida animada volverá a aparecer una vez a cada usuario. ¿Seguir?")) { return; }
+    return campOwnerGuardar(true);
+  }
+  if (d.campOTextos !== undefined) { return campOwnerTextos(false); }
+  if (d.campOTextosReset !== undefined) {
+    if (!window.confirm("Todos los textos vuelven a los originales. ¿Seguir?")) { return; }
+    return campOwnerTextos(true);
+  }
+}
+async function campReclamar(b) {
+  if (CAMP.enviando) { return; }
+  CAMP.enviando = true; b.disabled = true;
+  try {
+    var datos = await tbRpc("tb_campeon_reclamar");
+    await campCargar();
+    pintarBelis();
+    renderInventory(); campRepintarPerfiles();
+    try { if (typeof renderEpicGallery === "function") { renderEpicGallery(); } } catch (e) { /* nada */ }
+    campCerrar();
+    try { abrirAdquisicionCarta("ep26_campeon", false, true); } catch (e) { /* sin animación */ }
+    avisoToast("🏆 ¡Copa ganada! +" + ((datos && datos.belis) || 0) + " Belis, la carta y tus adornos de campeón.");
+  } catch (e) {
+    campAviso("⚠️ " + campMensaje(e));
+  } finally {
+    CAMP.enviando = false;
+    campPintarModal();
+  }
+}
+async function campFirmar(b) {
+  var caja = $("#tb-camp-firma"), texto = caja ? caja.value.replace(/\s+/g, " ").trim() : "";
+  if (texto.length < 3) { campAviso("Escribe un mensaje un poquito más largo."); return; }
+  if (typeof hvGroseria === "function" && hvGroseria(texto)) { campAviso("Ese mensaje tiene palabras que no se permiten. Escríbelo de otra forma."); return; }
+  if (CAMP.enviando) { return; }
+  CAMP.enviando = true; b.disabled = true;
+  try {
+    var datos = await tbRpc("tb_campeon_firmar", { p_texto: texto });
+    pintarBelis();
+    if (me) { CAMP.firmantes[me.id] = true; }
+    await campCargar();
+    campAviso("");
+    campRepintarPerfiles();
+    try { revisarInsigniasNuevas(); } catch (e) { /* nada */ }
+    avisoToast("✍️ ¡Gracias por firmar! +" + ((datos && datos.premio) || 0) + " Belis y la insignia «" + campT("ins_nombre") + "».");
+  } catch (e) {
+    campAviso("⚠️ " + campMensaje(e));
+  } finally {
+    CAMP.enviando = false;
+  }
+  await campCargarFirmas();
+}
+async function campModerar(uid, ocultar) {
+  var r = await client.rpc("tb_campeon_moderar", { p_user: uid, p_ocultar: !!ocultar });
+  if (r.error) { campAviso("⚠️ " + campMensaje(r.error)); return; }
+  if (ocultar) { delete CAMP.firmantes[uid]; } else { CAMP.firmantes[uid] = true; }
+  campRepintarPerfiles();
+  await campCargarFirmas();
+}
+async function campGuardarConfig(p, aviso) {
+  var r = await client.rpc("tb_campeon_config_guardar", { p: p });
+  if (r.error) { campAviso("⚠️ " + campMensaje(r.error)); return false; }
+  await campCargar();
+  // Comprobación: lo que se mandó tiene que volver del servidor. Si no vuelve,
+  // la base de datos tiene una versión vieja de las funciones.
+  var fallo = "";
+  if (p.textos) {
+    var srv = (CAMP.datos && CAMP.datos.textos) || null;
+    if (!srv) { fallo = "textos"; }
+    else { Object.keys(p.textos).forEach(function (k) { if (srv[k] !== p.textos[k]) { fallo = "textos"; } }); }
+  }
+  if (typeof p.mensaje === "string" && CAMP.datos && (CAMP.datos.mensaje || "") !== p.mensaje.slice(0, 400)) { fallo = fallo || "mensaje"; }
+  CAMP.editVitrina = false;
+  campPintarModal();
+  campPintarAccesos();
+  campRepintarPerfiles();
+  if (fallo) {
+    campAviso("⚠️ El servidor no guardó los " + (fallo === "textos" ? "textos" : "cambios") + ". Vuelve a correr supabase/" + CAMP_SQL + " completo en el SQL Editor (tiene que terminar con «Semana del Campeón activada») y prueba otra vez.");
+    return false;
+  }
+  avisoToast(aviso);
+  return true;
+}
+// Textos personalizados: los del editor si está abierto; si no, los que ya están guardados.
+function campRecogerTextos(extra) {
+  var textos = {}, campos = $$("[data-camp-txt]");
+  if (campos.length) {
+    campos.forEach(function (e) {
+      var k = e.dataset.campTxt, val = e.value.trim();
+      if (val && val !== CAMP_TXT_DEF[k]) { textos[k] = val; }
+    });
+  } else {
+    var g = (CAMP.datos && CAMP.datos.textos) || {};
+    Object.keys(g).forEach(function (k) { if (g[k] && g[k] !== CAMP_TXT_DEF[k]) { textos[k] = g[k]; } });
+  }
+  Object.keys(extra || {}).forEach(function (k) {
+    var val = String(extra[k] || "").trim();
+    if (val && val !== CAMP_TXT_DEF[k]) { textos[k] = val; } else { delete textos[k]; }
+  });
+  return textos;
+}
+async function campOwnerGuardar(nuevaBienvenida) {
+  var v = function (id) { var e = $(id); return e ? e.value : ""; };
+  var corte = v("#tb-camp-o-corte");
+  var p = {
+    activo: !!($("#tb-camp-o-activo") || {}).checked, solo_fundadores: !!($("#tb-camp-o-fund") || {}).checked,
+    inicio: v("#tb-camp-o-inicio") || null, fin: v("#tb-camp-o-fin") || null,
+    suerte_dia: v("#tb-camp-o-suerte") || "",
+    corte: corte ? corte + "T23:59:59-06:00" : null,
+    belis: parseInt(v("#tb-camp-o-belis"), 10), premio_firma: parseInt(v("#tb-camp-o-firma"), 10),
+    meta_dias: parseInt(v("#tb-camp-o-dias"), 10),
+    mensaje: v("#tb-camp-o-mensaje").trim(), nueva_bienvenida: !!nuevaBienvenida,
+    textos: campRecogerTextos()
+  };
+  Object.keys(p).forEach(function (k) { if (p[k] === null || (typeof p[k] === "number" && isNaN(p[k]))) { delete p[k]; } });
+  return campGuardarConfig(p, nuevaBienvenida ? "🏆 La bienvenida volverá a aparecer una vez para cada usuario." : "Cambios guardados: ya los ven todos.");
+}
+async function campOwnerTextos(restaurar) {
+  if (restaurar) { return campGuardarConfig({ textos: {} }, "Textos originales restaurados."); }
+  return campOwnerGuardar(false);
+}
+// Edición directa de la vitrina (solo el owner).
+async function campGuardarVitrina(b) {
+  var v = function (id) { var e = $(id); return e ? e.value : ""; };
+  b.disabled = true;
+  var textos = campRecogerTextos({
+    vitrina_kicker: v("#tb-camp-v-kicker"), vitrina_titulo: v("#tb-camp-v-titulo"), firma_mensaje: v("#tb-camp-v-firma"),
+    vitrina_copas: v("#tb-camp-v-copas"), vitrina_firmas: v("#tb-camp-v-firmas")
+  });
+  var ok = await campGuardarConfig({ textos: textos, mensaje: v("#tb-camp-v-mensaje").trim() }, "Vitrina actualizada: ya la ven todos.");
+  if (!ok) { b.disabled = false; }
+}
+document.addEventListener("input", function (ev) {
+  if (ev.target && ev.target.id === "tb-camp-firma") {
+    var n = $("#tb-camp-firma-n");
+    if (n) { n.textContent = ev.target.value.length + " / 200"; }
+  }
+});
+
+/* ---------- día de suerte x2: un giro extra en cada ruleta clásica ---------- */
+function campMsFinDia() {
+  // Nicaragua no cambia de horario: siempre UTC−6.
+  var mg = Date.now() - 6 * 3600000;
+  return (Math.floor(mg / 86400000) + 1) * 86400000 - mg;
+}
+function campExtrasDisponibles() {
+  return Object.keys(COLLECTIONS).filter(function (k) { return !campGiroUsado(k) && (typeof collectionSupported !== "function" || collectionSupported(k)); }).length;
+}
+var campRenderShopBase = renderShop;
+renderShop = function () {
+  campRenderShopBase.apply(this, arguments);
+  var box = $("#tb-shop");
+  if (!box || !me || !campSuerteHoy()) { return; }
+  if (!box.querySelector(".cp-x2")) {
+    var aviso = document.createElement("div");
+    aviso.className = "cp-x2";
+    aviso.setAttribute("role", "status");
+    var tr = "";
+    for (var i = 0; i < 9; i++) { tr += '<i style="--x:' + (6 + i * 11) + "%;--d:" + (i * .7).toFixed(1) + "s;--s:" + (0.7 + (i % 3) * .25).toFixed(2) + '">🍀</i>'; }
+    aviso.innerHTML = '<div class="cp-x2-treboles" aria-hidden="true">' + tr + "</div>" +
+      '<div class="cp-x2-num" aria-hidden="true"><span>x2</span></div>' +
+      '<div class="cp-x2-txt"><b>' + campTH("suerte_titulo") + "</b><span>" + campTH("suerte_texto") + "</span>" +
+      '<div class="cp-x2-datos"><span class="cp-x2-chip">🎟️ Giros extra: <b id="tb-camp-x2-quedan">' + campExtrasDisponibles() + "</b></span>" +
+      '<span class="cp-x2-chip">⏳ Termina en <b id="tb-camp-x2-reloj">' + countdownText(campMsFinDia()) + "</b></span></div></div>";
+    box.insertBefore(aviso, box.firstChild);
+  }
+  Object.keys(COLLECTIONS).forEach(function (kind) {
+    var boton = $("#tb-spin-" + kind);
+    if (!boton || $("#tb-camp-extra-" + kind)) { return; }
+    var extra = document.createElement("button");
+    extra.type = "button";
+    extra.className = "cp-extra tb-hidden";
+    extra.id = "tb-camp-extra-" + kind;
+    extra.innerHTML = '<span aria-hidden="true">🍀</span> ' + campTH("suerte_boton") + ' <b>x2</b>';
+    extra.onclick = function () { campGiroExtra(kind, extra); };
+    boton.insertAdjacentElement("afterend", extra);
+    var rueda = $("#tb-rueda-" + kind);
+    if (rueda && !rueda.querySelector(".cp-x2-tag")) { rueda.insertAdjacentHTML("beforeend", '<span class="cp-x2-tag" aria-hidden="true">x2</span>'); }
+  });
+  campActualizarExtras();
+  campSelloX2();
+};
+var campUpdateSpinStateBase = updateSpinState;
+updateSpinState = function () {
+  campUpdateSpinStateBase.apply(this, arguments);
+  campActualizarExtras();
+};
+function campActualizarExtras() {
+  if (!CAMP.datos) { return; }
+  var suerte = campSuerteHoy();
+  Object.keys(COLLECTIONS).forEach(function (kind) {
+    var b = $("#tb-camp-extra-" + kind), rueda = $("#tb-rueda-" + kind);
+    var libre = suerte && !campGiroUsado(kind);
+    if (rueda) { rueda.classList.toggle("cp-x2-rueda", libre); }
+    if (!b) { return; }
+    var mostrar = libre && !spinningKind && msUntilSpin(kind) > 0;
+    b.classList.toggle("tb-hidden", !mostrar);
+  });
+  var reloj = $("#tb-camp-x2-reloj"), quedan = $("#tb-camp-x2-quedan");
+  if (reloj) { reloj.textContent = countdownText(campMsFinDia()); }
+  if (quedan) { quedan.textContent = String(campExtrasDisponibles()); }
+}
+function campExplosion(ancla) {
+  if (!ancla || root.classList.contains("tb-lite") || (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)) { return; }
+  var r = ancla.getBoundingClientRect(), capa = document.createElement("div");
+  capa.className = "cp-boom";
+  capa.setAttribute("aria-hidden", "true");
+  capa.style.left = (r.left + r.width / 2) + "px";
+  capa.style.top = (r.top + r.height / 2) + "px";
+  var piezas = ["🍀", "✨", "🍀", "⭐", "🍀", "✨"];
+  for (var i = 0; i < 16; i++) {
+    var a = (i / 16) * Math.PI * 2, dist = 70 + (i % 4) * 22;
+    capa.innerHTML += '<i style="--dx:' + Math.round(Math.cos(a) * dist) + "px;--dy:" + Math.round(Math.sin(a) * dist - 30) + "px;--r:" + Math.round(Math.random() * 360) + 'deg">' + piezas[i % piezas.length] + "</i>";
+  }
+  root.appendChild(capa);
+  setTimeout(function () { capa.remove(); }, 1100);
+}
+// Sello grande «x2» la primera vez que se abre la Tienda ese día.
+function campSelloX2() {
+  if (!me || !campSuerteHoy()) { return; }
+  var shop = $("#tb-view-shop");
+  if (!shop || !shop.classList.contains("active") || $("#tb-camp-sello")) { return; }
+  var clave = "tb-camp-x2-" + me.id + "-" + campHoy();
+  try { if (tbLocalStorage.getItem(clave)) { return; } tbLocalStorage.setItem(clave, "1"); } catch (e) { if (CAMP.selloVisto) { return; } }
+  CAMP.selloVisto = true;
+  var s = document.createElement("div");
+  s.id = "tb-camp-sello";
+  s.className = "cp-sello";
+  s.setAttribute("role", "status");
+  s.innerHTML = '<div class="cp-sello-in"><span class="cp-sello-x2">x2</span><b>' + campTH("suerte_titulo") + "</b><small>" + campTH("suerte_texto") + "</small></div>";
+  root.appendChild(s);
+  var quitar = function () { s.classList.add("fuera"); setTimeout(function () { s.remove(); }, 350); };
+  s.addEventListener("click", quitar);
+  setTimeout(quitar, 2600);
+}
+async function campGiroExtra(kind, b) {
+  b.disabled = true;
+  try {
+    await tbRpc("tb_campeon_giro_extra", { p_kind: kind });
+    if (CAMP.datos) { CAMP.datos.giros = (CAMP.datos.giros || []).concat([kind]); }
+    campExplosion(b);
+    renderShop();
+    avisoToast("🍀 ¡Giro extra listo! Ya puedes girar otra vez.");
+  } catch (e) {
+    avisoToast("⚠️ " + campMensaje(e));
+    b.disabled = false;
+  }
+}
+
+/* ---------- misión «A jugar»: cualquier partida de un minijuego ---------- */
+var CAMP_JUEGOS = ["gato_jugar", "gato_ganar", "naval_jugar", "naval_ganar", "pin_jugar", "pin_ganar", "stop_jugar", "stop_ganar",
+  "tetris_partida", "tetris_puntos", "vf_aciertos", "wordle_ganar"];
+var campMisionEventoBase = misionEvento;
+misionEvento = function (evento) {
+  try { if (CAMP_JUEGOS.indexOf(evento) >= 0) { campMinijuego(); } } catch (e) { /* la misión normal sigue igual */ }
+  return campMisionEventoBase.apply(this, arguments);
+};
+async function campMinijuego() {
+  if (!client || !me || !campActiva()) { return; }
+  var p = (campYo().progreso) || {};
+  if (p.juego || CAMP.juegoEnviado) { return; }
+  CAMP.juegoEnviado = true;
+  try {
+    var r = await client.rpc("tb_campeon_minijuego");
+    if (r.error) { CAMP.juegoEnviado = false; return; }
+    if (r.data && r.data.progreso && CAMP.datos && CAMP.datos.yo) { CAMP.datos.yo.progreso = r.data.progreso; }
+    campPintarAccesos(); campPintarModal();
+    avisoToast("🎮 ¡Misión de la Ruta del campeón cumplida: " + campT("m_juego_t") + "!");
+  } catch (e) { CAMP.juegoEnviado = false; }
+}
+
+/* ---------- día x2: las ruletas clásicas usan el sorteo con rarezas altas x2 ---------- */
+var campTbRpcBase = tbRpc;
+tbRpc = async function (nombre, args) {
+  if (nombre === "tb_girar" && campSuerteHoy() && !CAMP.sinGirarX2) {
+    try { return await campTbRpcBase("tb_campeon_girar", args); }
+    catch (e) {
+      if (!faltaTablaTb(e)) { throw e; }
+      CAMP.sinGirarX2 = true;   // el SQL nuevo aún no está: se usa el giro normal
+    }
+  }
+  return campTbRpcBase.apply(this, arguments);
+};
+
+/* ---------- vista previa del premio en las ruletas clásicas ---------- */
+var campMostrarPremioGiroBase = mostrarPremioGiro;
+mostrarPremioGiro = function (kind, datos) {
+  campMostrarPremioGiroBase.apply(this, arguments);
+  try {
+    if (!datos || datos.tipo === "carta") { return; }
+    var caja = $("#tb-prize-" + kind), item = COLLECTIONS[kind] && COLLECTIONS[kind].items[datos.premio];
+    if (!caja || !item) { return; }
+    var rz = item.rarity || datos.rareza || "";
+    var arte = previewHtml(kind, datos.premio, true);
+    caja.innerHTML = '<div class="ex-premio cp-premio cp-premio-' + kind + '">' + arte + "</div><b>" + escapeHtml(item.name) + "</b>" +
+      (rz ? ' · <span class="' + rarityClass(rz) + '">' + escapeHtml(rz) + "</span>" : "") + "<br>" +
+      '<small class="tb-muted">' + (datos.nuevo ? "¡Desbloqueado! Equípalo en Personalizar." : "Repetido · +" + (datos.pago || 0) + " Belis") +
+      (datos.x2 ? " · 🍀 x2" : "") + "</small>";
+    if (datos.nuevo && (rz === "Legendario" || rz === "Único") && typeof navConfeti === "function") {
+      var rect = caja.getBoundingClientRect();
+      navConfeti(rect.left + rect.width / 2, rect.top + 20, rz === "Único" ? "unica" : "legendaria");
+      try { navSonar("gran"); } catch (e) { /* sin sonido */ }
+    }
+  } catch (e) { console.warn("[campeones] vista previa del premio", e); }
+};
+
+/* ---------- skins de campeón de Michi y Rugo (rareza Evento) ---------- */
+var CAMP_SKINS = {
+  michi: { n: "Michi campeón", d: "Con la copa de orejas grandes y un espantasuegras", fig: "#tb-masc-gato" },
+  rugo: { n: "Rugo campeón", d: "Con su copa dorada y lentes de sol", fig: "#tb-masc-leon" }
+};
+/* Cada skin tiene dos capas: «fondo» (la copa grande, detrás de la mascota) y
+   «frente» (el brazo que la abraza y los accesorios). Con la skin puesta, la
+   mascota se achica un poco y se corre a un lado para dejarle espacio a la copa.
+   Sin degradados con id: el SVG se clona en varias partes y los id repetidos fallan. */
+var CAMP_SKIN_SVG = {
+  michi: {
+    // copa plateada de orejas grandes, a la izquierda (≈120 de alto)
+    fondo: '<g class="cp-skin-g cp-skin-michi-g"><g class="cp-skin-copa"><g transform="translate(38 56) scale(.8)">' +
+      '<path d="M-24 30 C-30 30 -31 22 -27 17 C-21 9 -21 1 -29 -1 C-39 -3 -43 10 -43 30 C-43 70 -25 104 -8 122" fill="none" stroke="#6f7686" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '<path d="M24 30 C30 30 31 22 27 17 C21 9 21 1 29 -1 C39 -3 43 10 43 30 C43 70 25 104 8 122" fill="none" stroke="#6f7686" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '<path d="M-24 30 C-30 30 -31 22 -27 17 C-21 9 -21 1 -29 -1 C-39 -3 -43 10 -43 30 C-43 70 -25 104 -8 122" fill="none" stroke="#e6eaf2" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '<path d="M24 30 C30 30 31 22 27 17 C21 9 21 1 29 -1 C39 -3 43 10 43 30 C43 70 25 104 8 122" fill="none" stroke="#c2c8d4" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '<path d="M-27 29 H27 L24 35 H-24 Z" fill="#8f96a5" stroke="#6f7686" stroke-width="1.4"/>' +
+      '<rect x="-17" y="35" width="34" height="8" fill="#d4d9e3" stroke="#6f7686" stroke-width="1.4"/>' +
+      '<path d="M-17 43 H17 L30 56 V58 C30 90 22 112 8 124 H-8 C-22 112 -30 90 -30 58 V56 Z" fill="#c9ced8" stroke="#6f7686" stroke-width="1.6"/>' +
+      '<path d="M-30 56 H30 V59 H-30 Z" fill="#a4abb9"/>' +
+      '<path d="M-28 60 C-28 90 -20 110 -8 122 V60 Z" fill="#acb3c0"/>' +
+      '<path d="M4 59 V123 C10 118 15 110 17 100 V59 Z" fill="#f2f5fa"/>' +
+      '<circle cx="0" cy="76" r="7" fill="#b7bdc9" stroke="#8d94a3" stroke-width="2"/>' +
+      '<rect x="-6" y="124" width="12" height="6" fill="#b5bcc8" stroke="#6f7686" stroke-width="1.2"/>' +
+      '<path d="M-7 130 H7 C9 138 19 141 27 146 H-27 C-19 141 -9 138 -7 130 Z" fill="#a9b0bd" stroke="#6f7686" stroke-width="1.4"/>' +
+      '<rect x="-29" y="146" width="58" height="5" rx="2" fill="#8d94a3"/></g>' +
+      '<path d="M8 52 l2 4.5 4.5 2-4.5 2-2 4.5-2-4.5-4.5-2 4.5-2z" fill="#fff" class="cp-skin-brillo"/>' +
+      '<path d="M70 150 l1.6 3.6 3.6 1.6-3.6 1.6-1.6 3.6-1.6-3.6-3.6-1.6 3.6-1.6z" fill="#fff" class="cp-skin-brillo cp-b2"/></g></g>',
+    // brazo que abraza la copa + espantasuegras en la boca (sigue a la mascota)
+    frente: '<g class="cp-skin-g cp-skin-michi-g">' +
+      '<path d="M90 152 C76 154 58 146 47 133" fill="none" stroke="#6c4fd9" stroke-width="12" stroke-linecap="round"/>' +
+      '<circle cx="45" cy="131" r="8" fill="#7b5dfe"/><circle cx="42" cy="127.5" r="2.1" fill="#ff9ec4" opacity=".85"/><circle cx="47.5" cy="126.8" r="2.1" fill="#ff9ec4" opacity=".85"/>' +
+      '<g transform="translate(28 10) scale(.86)"><g class="cp-skin-sopla">' +
+      '<g class="cp-skin-tubo">' +
+      '<path d="M106 110 L150 118 C163 120 165 133 154 134 C146 135 145 126 152 125" fill="none" stroke="#ff5a7a" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '<path d="M110 110.7 L150 118" fill="none" stroke="#ffd36b" stroke-width="8" stroke-dasharray="6 6"/>' +
+      '<path d="M151 118 C163 120 165 133 154 134" fill="none" stroke="#5ad1ff" stroke-width="8" stroke-dasharray="5 6" stroke-linecap="round"/>' +
+      '<circle cx="152" cy="126" r="3" fill="#fff4f6"/></g>' +
+      '<rect x="98" y="106" width="11" height="8" rx="2.5" fill="#2b2b3a"/><rect x="100" y="107.5" width="4" height="2" rx="1" fill="#fff" opacity=".5"/>' +
+      '<path d="M166 108 l5 -5 M170 116 l7 -2 M168 126 l7 2" stroke="#ffd36b" stroke-width="2.4" stroke-linecap="round" class="cp-skin-brillo"/></g></g>' +
+      "</g>"
+  },
+  rugo: {
+    // copa dorada estilo plano, a la derecha (≈118 de alto)
+    fondo: '<g class="cp-skin-g cp-skin-rugo-g"><g class="cp-skin-copa"><g transform="translate(160 62)">' +
+      '<path d="M-26 14 H-38 C-38 40 -30 54 -16 58" fill="none" stroke="#ffa62b" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '<path d="M26 14 H38 C38 40 30 54 16 58" fill="none" stroke="#ff7a2e" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '<path d="M-26 0 H26 V36 C26 56 14 70 0 70 C-14 70 -26 56 -26 36 Z" fill="#ffd21f"/>' +
+      '<path d="M0 0 H26 V36 C26 56 14 70 0 70 Z" fill="#ffb400"/>' +
+      '<rect x="-26" y="10" width="52" height="4" fill="#ffa000" opacity=".6"/>' +
+      '<circle cx="0" cy="36" r="11" fill="#ffb400"/><path d="M0 25 A11 11 0 0 1 0 47 Z" fill="#ff9d00"/>' +
+      '<rect x="-6" y="70" width="12" height="20" fill="#ffc21a"/><rect x="0" y="70" width="6" height="20" fill="#ffa800"/>' +
+      '<rect x="-18" y="90" width="36" height="16" fill="#4d5c68"/><rect x="0" y="90" width="18" height="16" fill="#3b4752"/>' +
+      '<rect x="-26" y="106" width="52" height="12" fill="#4d5c68"/><rect x="0" y="106" width="26" height="12" fill="#33404a"/></g>' +
+      '<path d="M190 56 l2 4.5 4.5 2-4.5 2-2 4.5-2-4.5-4.5-2 4.5-2z" fill="#fff6d0" class="cp-skin-brillo"/>' +
+      '<path d="M128 72 l1.6 3.6 3.6 1.6-3.6 1.6-1.6 3.6-1.6-3.6-3.6-1.6 3.6-1.6z" fill="#fff6d0" class="cp-skin-brillo cp-b2"/></g></g>',
+    // brazo que abraza la copa + lentes de sol negros (siguen a la mascota)
+    frente: '<g class="cp-skin-g cp-skin-rugo-g">' +
+      '<path d="M110 152 C124 150 136 134 145 121" fill="none" stroke="#ff8f3b" stroke-width="12" stroke-linecap="round"/>' +
+      '<circle cx="147" cy="119" r="8" fill="#ffb766"/><circle cx="144.5" cy="115.5" r="2.1" fill="#ffe1b0"/><circle cx="150" cy="115" r="2.1" fill="#ffe1b0"/>' +
+      '<g transform="translate(0 10) scale(.86)"><g class="cp-skin-lentes">' +
+      '<path d="M70 80 L59 76 M134 79 L145 74" stroke="#000" stroke-width="3.6" stroke-linecap="round"/>' +
+      '<path d="M69 76 H101 C101 92 97 101 85.5 101 C74 101 69 92 69 76 Z" fill="#000" stroke="#000" stroke-width="2"/>' +
+      '<path d="M103 75 H135 C135 91 131 100 119 100 C107.5 100 103 91 103 75 Z" fill="#000" stroke="#000" stroke-width="2"/>' +
+      '<path d="M100.5 79 Q102 75.5 103.5 79" fill="none" stroke="#000" stroke-width="3.4"/>' +
+      '<path d="M74 80 H83 M108 79 H117" stroke="#fff" stroke-width="2.2" stroke-linecap="round" opacity=".55"/>' +
+      '<path class="cp-skin-reflejo" d="M79 96 L93 82 M113 95 L127 81" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/></g></g>' +
+      "</g>"
+  }
+};
+function campInyectarSkins() {
+  Object.keys(CAMP_SKINS).forEach(function (k) {
+    var svg = $(CAMP_SKINS[k].fig + " svg");
+    if (!svg || svg.querySelector(".cp-masc-cuerpo")) { return; }
+    // La mascota original entra en un grupo propio para poder achicarla y correrla.
+    var ns = "http://www.w3.org/2000/svg", cuerpo = document.createElementNS(ns, "g");
+    cuerpo.setAttribute("class", "cp-masc-cuerpo cp-masc-" + k);
+    while (svg.firstChild) { cuerpo.appendChild(svg.firstChild); }
+    svg.appendChild(cuerpo);
+    svg.insertAdjacentHTML("afterbegin", CAMP_SKIN_SVG[k].fondo);
+    svg.insertAdjacentHTML("beforeend", CAMP_SKIN_SVG[k].frente);
+  });
+}
+try { campInyectarSkins(); } catch (e) { console.warn("[campeones] skins", e); }
+/* Aspecto de cada mascota (se guarda en este dispositivo, como la mascota activa):
+   auto = según la temporada, normal, halloween, navidad o campeon (si tienes la skin). */
+var CAMP_LOOKS = [["auto", "Según la temporada", "🗓️"], ["normal", "Normal", "🐾"], ["halloween", "Halloween", "🎃"], ["navidad", "Navidad", "🎅"], ["campeon", "Campeón", "🏆"]];
+var CAMP_LOOK_MASC = { michi: { fig: "#tb-masc-gato", cls: "gato", nombre: "Michi" }, rugo: { fig: "#tb-masc-leon", cls: "leon", nombre: "Rugo" } };
+/* Rareza de cada aspecto. Los de temporada solo los tienen las cuentas que ya
+   existían durante esa temporada (hasta = fin de la temporada, hora de Nicaragua). */
+var CAMP_LOOK_INFO = {
+  normal: { r: "Común" },
+  halloween: { r: "Legendario", temporada: true, hasta: "2026-11-01T06:00:00Z", edicion: "Halloween 2026", vuelve: "octubre 2027" },
+  navidad: { r: "Legendario", temporada: true, hasta: "2027-01-01T06:00:00Z", edicion: "Navidad 2026", vuelve: "noviembre 2027" },
+  campeon: { r: "Evento", evento: true }
+};
+function campLookDisponible(k, v) {
+  var info = CAMP_LOOK_INFO[v];
+  if (!info) { return true; }
+  if (info.evento) { return campTieneItem("skin_" + k); }
+  if (info.temporada) {
+    // La fecha de la cuenta la da el servidor; si no se sabe, el aspecto queda bloqueado.
+    var creada = campYo().cuenta_creada || CAMP.cuentaCreada;
+    return !!creada && Date.parse(creada) < Date.parse(info.hasta);
+  }
+  return true;
+}
+async function campCargarCuenta() {
+  if (!client) { return; }
+  try {
+    var r = await client.auth.getSession();
+    var u = r && r.data && r.data.session && r.data.session.user;
+    if (u && u.created_at && me && u.id === me.id) { CAMP.cuentaCreada = u.created_at; }
+  } catch (e) { /* sin fecha: los aspectos de temporada quedan bloqueados */ }
+}
+function campLookClave(k) { return "tb-masc-look-" + (me ? me.id : "") + "-" + k; }
+function campLook(k) {
+  var v = "auto";
+  try { v = tbLocalStorage.getItem(campLookClave(k)) || "auto"; } catch (e) { v = (CAMP.looks && CAMP.looks[k]) || "auto"; }
+  if (v !== "auto" && !campLookDisponible(k, v)) { v = "auto"; }
+  return v;
+}
+function campSetLook(k, v) {
+  CAMP.looks = CAMP.looks || {};
+  CAMP.looks[k] = v;
+  try { tbLocalStorage.setItem(campLookClave(k), v); } catch (e) { /* solo esta sesión */ }
+  campAplicarSkins();
+  campPintarLooks();
+  campPintarModal();
+}
+function campAplicarSkins() {
+  var html = document.documentElement;
+  Object.keys(CAMP_LOOK_MASC).forEach(function (k) {
+    var v = campLook(k), c = CAMP_LOOK_MASC[k].cls;
+    CAMP_LOOKS.forEach(function (l) { html.classList.toggle("cp-look-" + c + "-" + l[0], l[0] === v && v !== "auto"); });
+  });
+  html.classList.toggle("cp-skin-michi", campLook("michi") === "campeon");
+  html.classList.toggle("cp-skin-rugo", campLook("rugo") === "campeon");
+}
+function campPreviaLook(k, v) {
+  var svg = $(CAMP_LOOK_MASC[k].fig + " svg");
+  var cls = v === "campeon" ? "cp-skin-vista cp-sk-" + k : "cp-look-prev cp-look-" + v;
+  return '<span class="' + cls + '">' + (svg ? svg.outerHTML : (k === "michi" ? "🐱" : "🦁")) + "</span>";
+}
+function campPintarLooks() {
+  var vista = $("#tb-view-mascota");
+  if (!vista || !me) { return; }
+  var caja = $("#tb-camp-looks");
+  if (!caja) {
+    var picker = $("#tb-masc-picker"), tarjeta = picker && picker.closest(".tb-card");
+    caja = document.createElement("div");
+    caja.className = "tb-card cp-looks";
+    caja.id = "tb-camp-looks";
+    caja.style.marginTop = "16px";
+    if (tarjeta && tarjeta.parentNode) { tarjeta.parentNode.insertBefore(caja, tarjeta.nextSibling); } else { vista.appendChild(caja); }
+    caja.addEventListener("click", function (ev) {
+      var b = ev.target.closest("[data-camp-look]");
+      if (!b || b.disabled) { return; }
+      campSetLook(b.dataset.campLook, b.dataset.campLookV);
+    });
+  }
+  caja.innerHTML = '<div class="tb-card-head"><h3>Aspecto de las mascotas</h3><span class="tb-muted">Se guarda en este dispositivo</span></div>' +
+    Object.keys(CAMP_LOOK_MASC).map(function (k) {
+      var actual = campLook(k);
+      return '<div class="cp-look-fila"><b>' + CAMP_LOOK_MASC[k].nombre + '</b><div class="cp-look-ops">' + CAMP_LOOKS.map(function (l) {
+        var v = l[0], info = CAMP_LOOK_INFO[v] || {}, bloq = !campLookDisponible(k, v), etiqueta = "";
+        if (info.temporada) {
+          etiqueta = '<span class="cp-look-tag cp-tag-temporal">' + campTH("look_temporal") + "</span>" +
+            '<span class="cp-look-sub">' + (bloq ? campTH("look_vuelve", { fecha: info.vuelve }) : escapeHtml(info.edicion)) + "</span>";
+        } else if (info.evento) {
+          etiqueta = '<span class="cp-look-tag cp-tag-exclusiva">' + campTH("look_exclusiva") + "</span>" +
+            '<span class="cp-look-sub">' + (campActiva() ? campTH("look_exclusiva_sub") : campTH("look_exclusiva_fin")) + "</span>";
+        }
+        var motivo = info.evento ? "Sale en la Ruleta de campeón" : info.temporada ? "Tu cuenta no existía en " + info.edicion : "";
+        return '<button type="button" class="cp-look-op' + (actual === v ? " on" : "") + (bloq ? " bloq" : "") + (info.evento ? " evento" : "") + '" data-camp-look="' + k + '" data-camp-look-v="' + v + '"' +
+          (bloq ? ' disabled title="' + escapeHtml(motivo) + '"' : "") + ' aria-pressed="' + (actual === v ? "true" : "false") + '">' +
+          '<span class="cp-look-fig">' + (v === "auto" ? '<span class="cp-look-auto">' + l[2] + "</span>" : campPreviaLook(k, v)) + (bloq ? '<span class="cp-look-candado" aria-hidden="true">🔒</span>' : "") + "</span>" +
+          "<strong>" + escapeHtml(l[1]) + "</strong>" +
+          (info.r ? '<span class="' + rarityClass(info.r) + ' cp-look-rz">' + escapeHtml(info.r) + "</span>" : '<span class="cp-look-rz cp-look-modo">Modo</span>') +
+          etiqueta + "</button>";
+      }).join("") + "</div></div>";
+    }).join("");
+}
+var campRenderMascotaVistaBase = renderMascotaVista;
+renderMascotaVista = function () {
+  campRenderMascotaVistaBase.apply(this, arguments);
+  try { campPintarLooks(); } catch (e) { console.warn("[campeones] aspecto", e); }
+};
+function campPreviaSkin(k) {
+  var svg = $(CAMP_SKINS[k].fig + " svg");
+  return '<span class="cp-skin-vista cp-sk-' + k + '">' + (svg ? svg.outerHTML : (k === "michi" ? "🐱" : "🦁")) + "</span>";
+}
+
+
+/* ---------- Ruleta de campeón: los 6 cosméticos de la celebración ---------- */
+// El orden es el mismo que tb_campeon_premios() en el servidor.
+var CAMP_PREMIOS = [
+  { id: "ti_campeon26", slot: "titulo", n: "Título «Campeón 2026»", corto: "Título", col: "#f0b429" },
+  { id: "no_campeon", slot: "nombre", n: "Nombre «Oro de campeón»", corto: "Nombre", col: "#7b5dfe" },
+  { id: "st_trofeo", slot: "sticker", n: "Calcomanía «Copa del primer lugar»", corto: "Calcomanía", col: "#1fb87a" },
+  { id: "fx_campeon", slot: "fx", n: "Efecto «Lluvia de campeones»", corto: "Efecto", col: "#ff5a7a" },
+  { id: "skin_michi", skin: "michi", n: "Skin «Michi campeón»", corto: "Michi", col: "#5ad1ff" },
+  { id: "skin_rugo", skin: "rugo", n: "Skin «Rugo campeón»", corto: "Rugo", col: "#ff8f3b" }
+];
+function campIconoPremio(x) {
+  if (x.skin) { return campPreviaSkin(x.skin); }
+  if (x.slot === "titulo") { return '<span class="cp-rw-emoji">🏷️</span>'; }
+  if (x.slot === "nombre") { return '<span class="nv-nom nv-nom-campeon cp-rw-aa">Aa</span>'; }
+  if (x.slot === "sticker") { return CAMP_COPA_SVG; }
+  return '<span class="cp-rw-emoji">🎊</span>';
+}
+function campRuletaUsos() {
+  var y = campYo();
+  return { usados: y.ruleta_usados || 0, max: y.ruleta_max || (campSuerteHoy() ? 2 : 1) };
+}
+function campHtmlRuleta() {
+  var u = campRuletaUsos(), libre = u.usados < u.max, n = CAMP_PREMIOS.length, paso = 360 / n;
+  var fondo = "conic-gradient(" + CAMP_PREMIOS.map(function (x, i) {
+    return x.col + " " + (i * paso) + "deg " + ((i + 1) * paso) + "deg";
+  }).join(",") + ")";
+  var items = CAMP_PREMIOS.map(function (x, i) {
+    return '<div class="cp-rw-item' + (campTieneItem(x.id) ? " tiene" : "") + '" style="--a:' + (i * paso + paso / 2) + 'deg"><span class="cp-rw-ico">' + campIconoPremio(x) + "</span><small>" + escapeHtml(x.corto) + "</small></div>";
+  }).join("");
+  var h = '<section class="cp-bloque cp-ruleta"><div class="cp-ruta-cab"><h4>' + campTH("ruleta_titulo") + '</h4><span class="cp-ruta-cuenta">' +
+    CAMP_PREMIOS.filter(function (x) { return campTieneItem(x.id); }).length + " / " + n + "</span></div>" +
+    "<p>" + campTH("ruleta_texto") + (u.max > 1 ? " <b>🍀 " + campTH("ruleta_x2") + "</b>" : "") + "</p>" +
+    '<div class="cp-rw"><span class="cp-rw-flecha" aria-hidden="true"></span>' +
+    '<div class="cp-rw-rueda" id="tb-camp-rueda" style="background:' + fondo + ";transform:rotate(" + (CAMP.ruedaAng || 0) + 'deg)">' + items + "</div>" +
+    '<div class="cp-rw-centro" aria-hidden="true">' + CAMP_COPA_SVG + "</div></div>" +
+    '<div class="cp-rw-res" id="tb-camp-rw-res" role="status">' + (CAMP.ruedaRes || "") + "</div>" +
+    '<button type="button" class="tb-primary cp-rw-boton' + (libre ? " listo" : "") + '" data-camp-ruleta' + (!libre || CAMP.girando ? " disabled" : "") + ">" +
+    (libre ? "🎰 " + campTH("ruleta_boton") + (u.max > 1 ? " (" + (u.max - u.usados) + ")" : "") : "⏳ " + campTH("ruleta_usado") + " · " + countdownText(campMsFinDia())) + "</button>" +
+    '<ul class="cp-rw-lista">' + CAMP_PREMIOS.map(function (x) {
+      return '<li class="' + (campTieneItem(x.id) ? "tiene" : "") + '"><span class="cp-rw-punto" style="background:' + x.col + '"></span>' + escapeHtml(x.n) + (campTieneItem(x.id) ? " ✓" : "") + "</li>";
+    }).join("") + "</ul></section>";
+  return h;
+}
+function campHtmlPremioRuleta(x, d) {
+  var arte = x.skin ? campPreviaSkin(x.skin) : campPrevia(x.slot, x.id);
+  return '<div class="cp-rw-premio' + (d.nuevo ? " nuevo" : "") + '"><div class="cp-adorno-prev' + (x.skin ? " cp-skin-prev" : "") + '">' + arte + "</div><div><b>" + escapeHtml(x.n) + "</b>" +
+    '<small>' + (d.nuevo ? (x.skin ? "¡Nuevo! Elígela en Mascota → Aspecto." : "¡Nuevo! Equípalo abajo o en Personalizar.") : "Repetido · +" + (d.pago || 0) + " Belis") + "</small></div></div>";
+}
+async function campGirarRuleta(b) {
+  if (CAMP.girando) { return; }
+  CAMP.girando = true; b.disabled = true;
+  var datos;
+  try { datos = await tbRpc("tb_campeon_ruleta"); }
+  catch (e) { CAMP.girando = false; b.disabled = false; campAviso("⚠️ " + campMensaje(e)); return; }
+  var n = CAMP_PREMIOS.length, paso = 360 / n, i = Math.max(0, datos.indice || 0);
+  var actual = CAMP.ruedaAng || 0, centro = i * paso + paso / 2;
+  var objetivo = ((360 - centro) % 360 + 360) % 360, resto = ((actual % 360) + 360) % 360;
+  var fin = actual + 360 * 6 + ((objetivo - resto + 360) % 360) + (Math.random() - 0.5) * paso * 0.5;
+  CAMP.ruedaAng = fin;
+  var rueda = $("#tb-camp-rueda"), res = $("#tb-camp-rw-res");
+  if (res) { res.innerHTML = ""; }
+  var reducido = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (rueda) {
+    rueda.style.transition = reducido ? "none" : "transform 4.2s cubic-bezier(.15,.7,.12,1)";
+    void rueda.offsetWidth;
+    rueda.style.transform = "rotate(" + fin + "deg)";
+  }
+  setTimeout(function () {
+    CAMP.girando = false;
+    if (CAMP.datos && CAMP.datos.yo) {
+      if (datos.items) { CAMP.datos.yo.items = datos.items; }
+      CAMP.datos.yo.ruleta_usados = datos.ruleta_usados;
+      CAMP.datos.yo.ruleta_max = datos.ruleta_max;
+    }
+    var x = CAMP_PREMIOS[i] || CAMP_PREMIOS[0];
+    CAMP.ruedaRes = campHtmlPremioRuleta(x, datos);
+    pintarBelis();
+    if (datos.pago) { try { avisoBelis("+" + datos.pago + " Belis"); } catch (e) { /* nada */ } }
+    campPintarModal();
+    campPintarAccesos();
+    renderInventory();
+    try { campPintarLooks(); } catch (e) { /* nada */ }
+    var caja = $("#tb-camp-rw-res");
+    if (datos.nuevo && caja && typeof navConfeti === "function") {
+      var r = caja.getBoundingClientRect();
+      try { navConfeti(r.left + r.width / 2, r.top + 10, "legendaria"); navSonar("gran"); } catch (e) { /* sin efectos */ }
+    }
+  }, reducido ? 200 : 4300);
+}
+
+/* ---------- bienvenida animada ---------- */
+function campBienvenidaClave() { return "tb-camp-bienvenida-" + (me ? me.id : "") + "-v" + ((CAMP.datos && CAMP.datos.version) || 1); }
+function campDebeBienvenida() {
+  if (!me || !campActiva()) { return false; }
+  try { return !tbLocalStorage.getItem(campBienvenidaClave()); } catch (e) { return !CAMP.bienvenidaVista; }
+}
+function campMarcarBienvenida() {
+  CAMP.bienvenidaVista = true;
+  try { tbLocalStorage.setItem(campBienvenidaClave(), "1"); } catch (e) { /* solo esta sesión */ }
+}
+function campProgramarBienvenida(intento) {
+  intento = intento || 0;
+  if (!campDebeBienvenida() || intento > 12) { return; }
+  setTimeout(function () {
+    // Espera a que no haya otra ventana abierta (términos, premio diario…).
+    var otra = root.querySelector(".tb-modal:not(.tb-hidden)") || root.querySelector(".tb-cg");
+    if (otra || document.hidden) { campProgramarBienvenida(intento + 1); return; }
+    campMostrarBienvenida();
+  }, intento ? 3000 : 2600);
+}
+function campMostrarBienvenida() {
+  if ($("#tb-camp-bienvenida") || !campDebeBienvenida()) { return; }
+  campMarcarBienvenida();
+  var ligero = root.classList.contains("tb-lite") || (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  var gato = $("#tb-masc-gato svg"), leon = $("#tb-masc-leon svg");
+  var conf = "", n = ligero ? 0 : 36, colores = ["#ffd36b", "#ff5a7a", "#5ad1ff", "#7fe0b0", "#ffffff", "#c4a8ff"];
+  for (var i = 0; i < n; i++) {
+    conf += '<i style="--x:' + Math.round(Math.random() * 100) + "%;--d:" + (Math.random() * 1.6).toFixed(2) + "s;--t:" + (2.6 + Math.random() * 1.8).toFixed(2) +
+      "s;--r:" + Math.round(Math.random() * 360) + "deg;--c:" + colores[i % colores.length] + '"></i>';
+  }
+  var d = CAMP.datos || {};
+  var capa = document.createElement("div");
+  capa.id = "tb-camp-bienvenida";
+  capa.className = "cp-bv cp-con-skins" + (ligero ? " cp-bv-quieta" : "");
+  capa.setAttribute("role", "dialog");
+  capa.setAttribute("aria-modal", "true");
+  capa.setAttribute("aria-labelledby", "tb-camp-bv-titulo");
+  capa.innerHTML = '<div class="cp-bv-luces" aria-hidden="true"><span></span><span></span></div>' +
+    '<div class="cp-bv-confeti" aria-hidden="true">' + conf + "</div>" +
+    '<div class="cp-bv-escena">' +
+    '<div class="cp-bv-podio" aria-hidden="true">' +
+    '<div class="cp-bv-masc cp-bv-michi">' + (gato ? gato.outerHTML : "🐱") + "</div>" +
+    '<div class="cp-bv-copa">' + CAMP_COPA_SVG + "</div>" +
+    '<div class="cp-bv-masc cp-bv-rugo">' + (leon ? leon.outerHTML : "🦁") + "</div></div>" +
+    '<span class="cp-kicker">' + campTH("bv_kicker") + "</span>" +
+    '<h2 id="tb-camp-bv-titulo">' + campTH("bv_titulo") + "</h2>" +
+    "<p>" + campTH("bv_texto") + "</p>" +
+    (d.mensaje ? '<blockquote class="cp-mensaje">' + escapeHtml(d.mensaje) + "<cite>" + campTH("firma_mensaje") + "</cite></blockquote>" : "") +
+    '<div class="cp-bv-acciones">' +
+    '<button type="button" class="tb-primary" data-bv-ir>' + campTH("bv_boton") + "</button>" +
+    '<button type="button" class="tb-secondary" data-bv-cerrar>Cerrar</button></div></div>';
+  root.appendChild(capa);
+  var cerrar = function () {
+    capa.classList.add("cp-bv-fuera");
+    setTimeout(function () { capa.remove(); }, 380);
+    document.removeEventListener("keydown", teclas);
+  };
+  var teclas = function (ev) { if (ev.key === "Escape") { cerrar(); } };
+  document.addEventListener("keydown", teclas);
+  capa.addEventListener("click", function (ev) {
+    if (ev.target.closest("[data-bv-cerrar]")) { cerrar(); return; }
+    if (ev.target.closest("[data-bv-ir]")) { cerrar(); setTimeout(function () { campAbrir("celebra"); }, 200); }
+  });
+  setTimeout(function () { var b = capa.querySelector("[data-bv-ir]"); if (b) { b.focus(); } }, 80);
+}
+
+/* ---------- inicio ---------- */
+// Al cambiar de cuenta sin recargar no debe quedar nada de la sesión anterior.
+function campReiniciar() {
+  ["estado", "datos", "firmas", "cuentaCreada", "looks", "ruedaRes", "ruedaAng", "girando", "juegoEnviado", "selloVisto", "bienvenidaVista", "sinGirarX2", "enviando"].forEach(function (k) { delete CAMP[k]; });
+  CAMP.estado = "nada"; CAMP.datos = null; CAMP.firmas = null; CAMP.publico = {}; CAMP.firmantes = {}; CAMP.visitaDia = ""; CAMP.tab = "celebra";
+  var html = document.documentElement;
+  Array.prototype.slice.call(html.classList).forEach(function (c) { if (/^cp-(look|skin)-/.test(c)) { html.classList.remove(c); } });
+}
+async function campIniciar() {
+  campReiniciar();
+  campCrearDom();
+  campPintarAccesos();
+  await campCargarCuenta();
+  await campCargar();
+  if (CAMP.estado !== "lista") { return; }
+  await campVisita();
+  campCargarPublico().catch(function (e) { console.warn("[campeones] público:", e); });
+  campProgramarBienvenida(0);
+  if (!CAMP.escuchaVisible) {
+    CAMP.escuchaVisible = true;
+    document.addEventListener("visibilitychange", function () {
+      if (!document.hidden && me && CAMP.estado === "lista") { campCargar().then(campVisita); }
+    });
+  }
+}
 })();
 </script>
 <script id="tb-halloween-runtime">
